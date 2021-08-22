@@ -1,0 +1,47 @@
+{
+  "name": "vega",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "toshusai",
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt generate",
+    "lint": "eslint -c .eslintrc.json --ext \".ts,.vue\" --ignore-path .gitignore . --fix"
+  },
+  "description": "Browser-based video editing software.",
+  "keywords": [
+    "video editor",
+    "nuxt",
+    "ffmpeg"
+  ],
+  "dependencies": {
+    "@ffmpeg/core": "^0.10.0",
+    "@ffmpeg/ffmpeg": "^0.10.1",
+    "ccapture.js": "^1.1.0",
+    "core-js": "^3.15.1",
+    "nuxt": "^2.15.7",
+    "three": "^0.131.3",
+    "uuid": "^8.3.2",
+    "vue-property-decorator": "^9.1.2",
+    "wavesurfer.js": "^5.1.0"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^2.15.7",
+    "@nuxt/typescript-build": "^2.1.0",
+    "@nuxtjs/eslint-config-typescript": "^6.0.1",
+    "@nuxtjs/eslint-module": "^3.0.2",
+    "@types/ccapture.js": "^1.1.1",
+    "@types/stats": "^0.16.30",
+    "@types/three": "^0.130.1",
+    "@types/uuid": "^8.3.1",
+    "@types/wavesurfer.js": "^5.1.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-nuxt": "^2.0.0",
+    "eslint-plugin-prettier-vue": "^3.1.0",
+    "eslint-plugin-vue": "^7.15.1",
+    "prettier": "^2.3.2",
+    "vue-class-component": "^7.2.6"
+  }
+}

@@ -1,0 +1,18 @@
+# TODO
+- support image
+- text
+  - custom fonts
+  - text align
+  - outline
+- animation
+  - keyframe editor
+  - graph editor
+- undo/redo
+- split text strip
+- split audio strip
+- zoom preview
+- move preview
+- keyboard shortcut
+  - play/pause by space key
+- select multiple strips
+- show error texture in preview when video asset not found

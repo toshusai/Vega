@@ -1,0 +1,28 @@
+<template>
+  <div class="text-strip">
+    {{ strip.text }}
+  </div>
+</template>
+
+<style scoped>
+.text-strip {
+  background-color: var(--green);
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  /* for left handle */
+  padding-left: 4px;
+}
+</style>
+
+<script lang="ts">
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import { TextStrip } from "~/models";
+
+@Component({})
+export default class TextStripComp extends Vue {
+  @Prop({ default: () => undefined })
+  strip!: TextStrip;
+}
+</script>
