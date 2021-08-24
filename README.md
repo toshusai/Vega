@@ -43,5 +43,5 @@ Documents - https://vega.toshusai.net/docs
 - **Test Video**
   - copyright 2008, Blender Foundation - https://www.bigbuckbunny.org
 
-# Lisence
-MIT Lisence
+# License
+MIT License
