@@ -128,6 +128,7 @@ export default class Encoder extends Vue {
 
   async cancel() {
     this.modal.close();
+    await this.recorder?.cancel();
     await this.videoEenderer?.cancel();
     this.isEncoding = false;
     this.ffmpegProgress = 0;

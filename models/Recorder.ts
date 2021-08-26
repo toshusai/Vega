@@ -3,6 +3,7 @@ import { Strip } from "./strips";
 import { PLAY_EVERY_FRAME } from "~/plugins/config";
 
 export default class Recorder {
+  isRecording: boolean = false;
   canvas: HTMLCanvasElement;
   scene: Scene;
   camera: Camera;
@@ -40,11 +41,13 @@ export default class Recorder {
   }
 
   async start() {
+    this.isRecording = true;
     this.capturer?.start();
     await this.update(0);
   }
 
   async update(_time: number) {
+    if (!this.isRecording) return;
     for (let i = 0; i < this.strips.length; i++) {
       const s = this.strips[i];
       await s.update(
@@ -63,18 +66,28 @@ export default class Recorder {
     if (this.currentFrame <= this.frames) {
       window.requestAnimationFrame((v) => this.update(v));
     } else {
-      for (let i = 0; i < this.strips.length; i++) {
-        const s = this.strips[i];
-        await s.update(0, 1000 / this.fps, false, PLAY_EVERY_FRAME, this.fps);
-      }
-
       await this.end();
     }
   }
 
+  async stopStrips() {
+    for (let i = 0; i < this.strips.length; i++) {
+      const s = this.strips[i];
+      await s.update(0, 1000 / this.fps, false, PLAY_EVERY_FRAME, this.fps);
+    }
+  }
+
   async end() {
+    await this.stopStrips();
     const data = await this.writeWebm();
+    this.isRecording = false;
     this.onEnd(data);
+  }
+
+  async cancel() {
+    await this.stopStrips();
+    this.capturer?.stop();
+    this.isRecording = false;
   }
 
   private writeWebm() {
