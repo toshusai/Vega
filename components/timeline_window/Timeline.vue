@@ -206,7 +206,7 @@ export default class Timeline extends Vue {
   }
 
   addTextStrip() {
-    const newStrip = new TextStrip(this.$store.state.defaultFont);
+    const newStrip = new TextStrip(TextStrip.defaultFont);
     newStrip.start = this.currentTime;
     newStrip.length = 5;
     newStrip.text = "New Text";
