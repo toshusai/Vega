@@ -92,7 +92,6 @@
       :height="height"
       :scene="scene"
       :camera="camera"
-      @changeCurrentTime="changeCurrentTime"
     />
   </div>
 </template>
@@ -307,6 +306,10 @@ export default class IndexPage extends Vue {
   }
 
   async update(time: number = 0) {
+    if (this.rendererWindow && this.rendererWindow.isEncoding) {
+      window.requestAnimationFrame(this.update);
+      return;
+    }
     if (time - this.lastUpdate + 0.02 <= 1000 / this.fps) {
       window.requestAnimationFrame(this.update);
       return;
