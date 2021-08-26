@@ -130,6 +130,8 @@ export default class Encoder extends Vue {
     this.modal.close();
     await this.videoEenderer?.cancel();
     this.isEncoding = false;
+    this.ffmpegProgress = 0;
+    this.ccaptureProgress = 0;
   }
 
   open() {
