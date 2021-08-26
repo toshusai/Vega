@@ -179,6 +179,7 @@ export default class IndexPage extends Vue {
     this.camera.position.set(0, 0, 10);
     this.canvas = this.previewWindow?.renderCanvas || null;
     await FontAsset.init();
+    this.update(0);
   }
 
   addAsset(asset: Asset) {
