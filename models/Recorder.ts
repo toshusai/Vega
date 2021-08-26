@@ -63,6 +63,11 @@ export default class Recorder {
     if (this.currentFrame <= this.frames) {
       window.requestAnimationFrame((v) => this.update(v));
     } else {
+      for (let i = 0; i < this.strips.length; i++) {
+        const s = this.strips[i];
+        await s.update(0, 1000 / this.fps, false, PLAY_EVERY_FRAME, this.fps);
+      }
+
       await this.end();
     }
   }
