@@ -8,7 +8,7 @@ Editor - https://vega.toshusai.net
 
 Documents - https://vega.toshusai.net/docs
 
-<img src="static/static/img/vega_screenshot.png" width="50%">
+<img src="static/static/img/vega_screenshot.png" width="100%">
 
 # Support Browsers
 - Google Chrome 92
