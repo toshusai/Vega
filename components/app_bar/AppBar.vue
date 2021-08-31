@@ -1,17 +1,19 @@
 <template>
   <div class="app-bar">
-    <AppBarMenuButton @click="clickFile"> File </AppBarMenuButton>
+    <AppBarMenuButton @click="openProjectMenu"> Project </AppBarMenuButton>
     <AppBarMenu ref="fileMenu">
-      <AppBarMenuItem @click="openFile">
-        Open File
+      <AppBarMenuItem @click="openProject">
+        Open Project
         <input
           ref="input"
           type="file"
           style="display: none"
-          @change="changeOpenFile"
+          @change="changeOpenProject"
         />
       </AppBarMenuItem>
-      <AppBarMenuItem @click="downloadProjectEmit"> Save File </AppBarMenuItem>
+      <AppBarMenuItem @click="downloadProjectEmit">
+        Save Project
+      </AppBarMenuItem>
     </AppBarMenu>
 
     <AppBarMenuButton @click="renderVideo"> Render </AppBarMenuButton>
@@ -34,6 +36,7 @@ import AppBarMenu from "./AppBarMenu.vue";
 import AppBarMenuButton from "./AppBarMenuButton.vue";
 import AboutModal from "./AboutModal.vue";
 import { Project } from "~/models";
+import { VegaError } from "~/plugins/error";
 
 @Component({
   components: {
@@ -68,7 +71,7 @@ export default class AppBar extends Vue {
     this.$emit("renderVideo");
   }
 
-  openFile() {
+  openProject() {
     this.input.click();
   }
 
@@ -76,16 +79,20 @@ export default class AppBar extends Vue {
     this.renderVideoEmit();
   }
 
-  async changeOpenFile(e: MouseEvent) {
+  async changeOpenProject(e: MouseEvent) {
     const target = e.target as HTMLInputElement;
     if (target.files && target.files.length == 1) {
-      const file = target.files[0];
-      const text = await file.text();
-      this.openProjectEmit(JSON.parse(text));
+      try {
+        const file = target.files[0];
+        const text = await file.text();
+        this.openProjectEmit(JSON.parse(text));
+      } catch {
+        throw new VegaError("Invalid project file format.");
+      }
     }
   }
 
-  clickFile(e: MouseEvent) {
+  openProjectMenu(e: MouseEvent) {
     this.fileMneu.open(e);
   }
 }
