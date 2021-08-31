@@ -15,3 +15,7 @@ It works this time!
 - Fix fail render start.
 - Fix depended ccapture.js.
 - Fix not stop recording when cancel.
+
+# v0.0.2
+- Add delete strip.
+- Small refactorings.
