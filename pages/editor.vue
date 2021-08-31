@@ -10,7 +10,7 @@
         <div style="width: 50%; display: flex; flex-flow: column">
           <ProjectWindow
             :duration="duration"
-            :strips="sequences"
+            :strips="strips"
             :currentTime="currentTime"
             :canvas="canvas"
             :fps="fps"
@@ -58,7 +58,7 @@
       <div style="width: 80%">
         <TimelineWindow
           :currentTime="currentTime"
-          :strips="sequences"
+          :strips="strips"
           :selectedStrips="selectedStrips"
           :duration="duration"
           @addAsset="addAsset"
@@ -87,7 +87,7 @@
       ref="rendererWindow"
       :currentTime="currentTime"
       :fps="fps"
-      :strips="sequences"
+      :strips="strips"
       :duration="duration"
       :width="width"
       :height="height"
@@ -145,7 +145,7 @@ export default class IndexPage extends Vue {
   isPlay: boolean = false;
   duration: number = 15;
   currentTime: number = 0;
-  sequences: Strip[] = [];
+  strips: Strip[] = [];
   lastAnimationTime: number = 0;
   playRequests: number[] = [];
   assets: Asset[] = [];
@@ -170,7 +170,7 @@ export default class IndexPage extends Vue {
   }
 
   get selectedStripIndex() {
-    return this.sequences.findIndex((s) => s == this.selectedStrip);
+    return this.strips.findIndex((s) => s == this.selectedStrip);
   }
 
   async mounted() {
@@ -190,7 +190,7 @@ export default class IndexPage extends Vue {
     const i = this.assets.findIndex((a) => a == this.selectedAsset);
     const oldAsset = this.assets[i];
     this.assets.splice(i, 1, newAsset);
-    this.sequences.forEach((s) => {
+    this.strips.forEach((s) => {
       if (s instanceof VideoStrip && newAsset instanceof VideoAsset) {
         if (s.videoAsset == oldAsset) {
           s.updateAsset(newAsset);
@@ -200,8 +200,8 @@ export default class IndexPage extends Vue {
   }
 
   changeStripPropery(index: number, name: string, value: any) {
-    if (index < 0 || this.sequences.length <= index) return;
-    const target = this.sequences[index];
+    if (index < 0 || this.strips.length <= index) return;
+    const target = this.strips[index];
     switch (name) {
       case "layer":
         target.layer = value;
@@ -245,13 +245,13 @@ export default class IndexPage extends Vue {
       return;
     }
 
-    const i = this.sequences.findIndex((_s) => _s.id == s.id);
-    if (this.selectedStrips.includes(this.sequences[i])) {
+    const i = this.strips.findIndex((_s) => _s.id == s.id);
+    if (this.selectedStrips.includes(this.strips[i])) {
       this.selectedStrips = [s];
     } else {
       this.selectedStrips = [];
     }
-    this.sequences.splice(i, 1, s);
+    this.strips.splice(i, 1, s);
   }
 
   changeStripPos(pos: IVector3) {
@@ -264,13 +264,13 @@ export default class IndexPage extends Vue {
   }
 
   changeStrips(strips: Strip[]) {
-    this.sequences = strips;
+    this.strips = strips;
   }
 
   deleteStrip(strip: Strip) {
-    const i = this.sequences.findIndex((s) => s == strip);
+    const i = this.strips.findIndex((s) => s == strip);
     if (i != -1) {
-      this.sequences.splice(i, 1);
+      this.strips.splice(i, 1);
     }
   }
 
@@ -335,8 +335,8 @@ export default class IndexPage extends Vue {
       this.currentTime += delta / 1000;
     }
 
-    for (let i = 0; i < this.sequences.length; i++) {
-      const s = this.sequences[i];
+    for (let i = 0; i < this.strips.length; i++) {
+      const s = this.strips[i];
       await s.update(
         this.currentTime,
         delta,
@@ -356,7 +356,7 @@ export default class IndexPage extends Vue {
   }
 
   addStrip(ts: Strip) {
-    this.sequences.push(ts);
+    this.strips.push(ts);
     if (ts instanceof TextStrip || ts instanceof VideoStrip) {
       this.scene?.add(ts.obj);
     }
@@ -376,7 +376,7 @@ export default class IndexPage extends Vue {
       duration: this.duration,
       version: VEGA_VERSION,
       assets: this.assets.map((a) => a.toInterface()),
-      strips: this.sequences.map((s) => s.toInterface()),
+      strips: this.strips.map((s) => s.toInterface()),
     };
     download(new Blob([JSON.stringify(project)]), project.name + ".json");
   }
@@ -390,12 +390,9 @@ export default class IndexPage extends Vue {
       AssetUtil.interfacesToInstances(project.assets)
     );
 
-    this.sequences = StripUtil.interfacesToInstances(
-      project.strips,
-      this.assets
-    );
+    this.strips = StripUtil.interfacesToInstances(project.strips, this.assets);
 
-    this.sequences.forEach((s) => {
+    this.strips.forEach((s) => {
       if (s instanceof TextStrip || s instanceof VideoStrip) {
         this.scene?.add(s.obj);
       }
@@ -409,7 +406,7 @@ export default class IndexPage extends Vue {
   }
 
   change() {
-    this.sequences.forEach((s: Strip) => {
+    this.strips.forEach((s: Strip) => {
       s.update(this.currentTime, 0, false, SYNC_TO_AUDIO, this.fps);
     });
   }
