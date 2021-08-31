@@ -55,7 +55,10 @@
         <MenuButton @click="addTextStrip">Add Text</MenuButton>
         <MenuButton @click="addVideoStrip">Add Video</MenuButton>
         <MenuButton @click="addAudioStrip">Add Audio</MenuButton>
-        <MenuButton @click="split">Split</MenuButton>
+        <MenuButton v-if="hasSelectedStrip" @click="split"> Split </MenuButton>
+        <MenuButton v-if="hasSelectedStrip" @click="deleteStrip">
+          Delete
+        </MenuButton>
       </ContextMenu>
     </div>
   </div>
@@ -176,6 +179,10 @@ export default class Timeline extends Vue {
     };
   }
 
+  get hasSelectedStrip() {
+    return this.selectedStrips.length > 0;
+  }
+
   mounted() {
     this.updateMinScale();
     window.addEventListener("resize", () => {
@@ -194,6 +201,10 @@ export default class Timeline extends Vue {
 
   addStripEmit(strip: Strip) {
     this.$emit("addStrip", strip);
+  }
+
+  deleteStripEmit(strip: Strip) {
+    this.$emit("deleteStrip", strip);
   }
 
   addStrip(strip: Strip) {
@@ -363,6 +374,13 @@ export default class Timeline extends Vue {
       throw new VegaError(
         `Split operations are not supported in ${target.type}.`
       );
+    }
+    this.contextMenu.close();
+  }
+
+  deleteStrip() {
+    if (this.selectedStrips.length > 0) {
+      this.deleteStripEmit(this.selectedStrips[0]);
     }
     this.contextMenu.close();
   }

@@ -66,6 +66,7 @@
           @changeCurrentTime="changeCurrentTime"
           @changeSelectedStrips="changeSelectedStrips"
           @changeStrip="(i, name, value) => changeStripPropery(i, name, value)"
+          @deleteStrip="deleteStrip"
         />
       </div>
       <div style="width: 20%">
@@ -264,6 +265,13 @@ export default class IndexPage extends Vue {
 
   changeStrips(strips: Strip[]) {
     this.sequences = strips;
+  }
+
+  deleteStrip(strip: Strip) {
+    const i = this.sequences.findIndex((s) => s == strip);
+    if (i != -1) {
+      this.sequences.splice(i, 1);
+    }
   }
 
   changeWidth(width: number) {
