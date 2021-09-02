@@ -1,6 +1,7 @@
 <template>
   <span>
     <input
+      data-cy="vega-input"
       class="vega-input"
       :type="type"
       :step="step"

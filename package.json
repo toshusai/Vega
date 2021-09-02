@@ -7,6 +7,7 @@
     "dev": "nuxt",
     "build": "nuxt generate",
     "lint": "eslint -c .eslintrc.json --ext \".ts,.vue\" --ignore-path .gitignore . --fix",
+    "cypress:run": "cypress run",
     "cypress:open": "cypress open"
   },
   "description": "Browser-based video editing software.",
@@ -38,6 +39,7 @@
     "@types/wavesurfer.js": "^5.1.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "cypress": "^8.3.1",
+    "cypress-file-upload": "^5.0.8",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-nuxt": "^2.0.0",
