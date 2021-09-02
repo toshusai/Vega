@@ -1,5 +1,10 @@
 <template>
-  <vega-input :type="type" :value="value" @change="change" />
+  <vega-input
+    data-cy="vega-value-input"
+    :type="type"
+    :value="value"
+    @change="change"
+  ></vega-input>
 </template>
 
 <script lang="ts">
