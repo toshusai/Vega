@@ -90,6 +90,7 @@ export default class AppBar extends Vue {
         throw new VegaError("Invalid project file format.");
       }
     }
+    this.fileMneu.close();
   }
 
   openProjectMenu(e: MouseEvent) {
