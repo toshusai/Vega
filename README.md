@@ -13,6 +13,9 @@ Documents - https://vega.toshusai.net/docs
 # Support Browsers
 - Google Chrome 92
 
+# Develop
+Check [static/docs/dev/README.md](static/docs/dev/README.md)
+
 # Thanks Open Source Softwares/Libraries
 
 - **JavaScript Framework**
