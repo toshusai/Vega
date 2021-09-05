@@ -1,5 +1,10 @@
 <template>
-  <div class="asset-window" @drop="drop" @dragover="dragover">
+  <div
+    class="asset-window"
+    @drop="drop"
+    @dragover="dragover"
+    @dragleave="dragleave"
+  >
     <window-name-tag name="Assets" />
     <asset-list-item
       v-for="(asset, i) in assets"
@@ -13,6 +18,9 @@
         Add File
       </VegaFileButton>
     </div>
+    <div v-if="canDrop" class="drop-file">
+      <div style="margin: auto">Add File</div>
+    </div>
   </div>
 </template>
 
@@ -21,6 +29,7 @@
   border: 1px solid var(--black);
   height: 100%;
   box-sizing: border-box;
+  position: relative;
 }
 
 .upload-button {
@@ -31,6 +40,17 @@
 .upload-button-container {
   width: 100%;
   padding: 8px;
+}
+
+.drop-file {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background-color: rgba(0 0 0 / 0.5);
+  pointer-events: none;
 }
 </style>
 
@@ -54,6 +74,8 @@ export default class AssetWindow extends Vue {
 
   selected: null | Asset = null;
 
+  canDrop: boolean = false;
+
   select(asset: Asset) {
     this.selected = asset;
     this.$emit("changeSelectedAsset", asset);
@@ -61,6 +83,11 @@ export default class AssetWindow extends Vue {
 
   dragover(e: DragEvent) {
     e.preventDefault();
+    this.canDrop = true;
+  }
+
+  dragleave(_: DragEvent) {
+    this.canDrop = false;
   }
 
   addAsset(file: File) {
@@ -74,6 +101,7 @@ export default class AssetWindow extends Vue {
   }
 
   drop(e: DragEvent) {
+    this.canDrop = false;
     e.preventDefault();
     const files = e.dataTransfer?.files;
     if (files && files.length == 1) {
