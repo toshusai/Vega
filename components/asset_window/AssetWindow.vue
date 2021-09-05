@@ -8,6 +8,11 @@
       :selected="selected == asset"
       @click="select(asset)"
     />
+    <div class="upload-button-container">
+      <VegaFileButton class="upload-button" @change="addAsset">
+        Add File
+      </VegaFileButton>
+    </div>
   </div>
 </template>
 
@@ -16,6 +21,16 @@
   border: 1px solid var(--black);
   height: 100%;
   box-sizing: border-box;
+}
+
+.upload-button {
+  margin: auto;
+  display: flex;
+}
+
+.upload-button-container {
+  width: 100%;
+  padding: 8px;
 }
 </style>
 
@@ -26,6 +41,7 @@ import { v4 } from "uuid";
 import AssetListItem from "./AssetWindowListItem.vue";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
 import { Asset, VideoAsset } from "~/models";
+import { VegaError } from "~/plugins/error";
 
 @Component({
   components: { AssetListItem, WindowNameTag },
@@ -47,20 +63,24 @@ export default class AssetWindow extends Vue {
     e.preventDefault();
   }
 
+  addAsset(file: File) {
+    if (file.type == "video/mp4") {
+      const src = window.URL.createObjectURL(file);
+      const asset = new VideoAsset(v4(), file.name, src);
+      this.$emit("addAsset", asset);
+    } else {
+      throw new VegaError("Unsupported file type" + file.type);
+    }
+  }
+
   drop(e: DragEvent) {
     e.preventDefault();
     const files = e.dataTransfer?.files;
     if (files && files.length == 1) {
       const file = files[0];
-      const src = window.URL.createObjectURL(file);
-      if (file.type == "video/mp4") {
-        const asset = new VideoAsset(v4(), file.name, src);
-        this.$emit("addAsset", asset);
-      } else {
-        // console.warn("Unsupported file type", file.type);
-      }
+      this.addAsset(file);
     } else {
-      // console.warn("Unsupported drop multiple files");
+      throw new VegaError("Unsupported drop multiple files.");
     }
   }
 }
