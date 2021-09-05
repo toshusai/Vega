@@ -93,6 +93,10 @@ export default class VideoStripComp extends Vue {
     this.wave?.load(n.video);
   }
 
+  updateStrip() {
+    this.stripWatch(this.strip);
+  }
+
   mounted() {
     this.wave = WaveSufer.create({
       container: this.$refs.wave as HTMLElement,
@@ -102,7 +106,13 @@ export default class VideoStripComp extends Vue {
     });
 
     this.wave.load(this.strip.video);
+
+    this.strip.event.addEventListener("update", this.updateStrip);
     this.watchViodeOffset();
+  }
+
+  beforeDestroy() {
+    this.strip.event.removeEventListener("update", this.updateStrip);
   }
 }
 </script>

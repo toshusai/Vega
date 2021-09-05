@@ -37,6 +37,8 @@ export class VideoStrip extends Strip {
   playRequests: number[] = [];
   videoDuration: number = 0;
 
+  event: EventTarget = new EventTarget();
+
   readonly videoAsset?: VideoAsset;
 
   get src() {
@@ -126,6 +128,7 @@ export class VideoStrip extends Strip {
       );
       this.loaded = true;
       asset.valid = true;
+      this.event.dispatchEvent(new CustomEvent("update"));
     };
     this.video.load();
   }
