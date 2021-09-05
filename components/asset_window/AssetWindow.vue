@@ -17,6 +17,10 @@
       <VegaFileButton class="upload-button" @change="addAsset">
         Add File
       </VegaFileButton>
+      <div v-if="showHint" style="padding: 4px">
+        Click "Add File" or Drag and Drop here your video/audio file to link
+        asset.
+      </div>
     </div>
     <div v-if="canDrop" class="drop-file">
       <div style="margin: auto">Add File</div>
@@ -75,6 +79,10 @@ export default class AssetWindow extends Vue {
   selected: null | Asset = null;
 
   canDrop: boolean = false;
+
+  get showHint() {
+    return this.assets.length == 0;
+  }
 
   select(asset: Asset) {
     this.selected = asset;
