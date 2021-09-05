@@ -19,3 +19,9 @@ It works this time!
 # v0.0.2
 - Add delete strip.
 - Small refactorings.
+
+# v0.0.3
+- Fix project file handler.
+- Fix can not create empty audio strip.
+- Add more cypress tests.
+- Fixed some bugs.
