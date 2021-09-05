@@ -1,5 +1,5 @@
-describe("Open Badic Project File", () => {
-  it("successfully open project file.", () => {
+describe("Add file from AssetWindow", () => {
+  it("successfully add a asset file.", () => {
     cy.visit("/editor");
     cy.contains("Add File").find("input").attachFile("assets/bun33s.mp4");
 
