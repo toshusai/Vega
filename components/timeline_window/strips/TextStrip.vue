@@ -1,5 +1,5 @@
 <template>
-  <div class="text-strip">
+  <div data-vega-text-strip class="text-strip">
     {{ strip.text }}
   </div>
 </template>

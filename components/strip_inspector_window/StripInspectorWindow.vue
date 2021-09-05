@@ -1,5 +1,5 @@
 <template>
-  <div class="strip-inspector">
+  <div data-vega-strip-inspector-window class="strip-inspector">
     <window-name-tag name="Strip Inspector" />
     <component
       :is="comp"

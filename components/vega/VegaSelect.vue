@@ -1,5 +1,5 @@
 <template>
-  <select class="vega-select" :value="value" @change="change">
+  <select data-vega-select class="vega-select" :value="value" @change="change">
     <option v-for="(item, i) in items" :key="i" :value="item.value">
       {{ item.text }}
     </option>

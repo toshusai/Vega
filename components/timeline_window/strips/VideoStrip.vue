@@ -1,5 +1,5 @@
 <template>
-  <div class="video-strip">
+  <div data-vega-video-strip class="video-strip">
     <div ref="wave" class="wave" :style="waveStyle" />
     <span v-if="strip.videoAsset">
       {{ strip.videoAsset.name }}

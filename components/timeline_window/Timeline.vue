@@ -1,5 +1,5 @@
 <template>
-  <div class="root">
+  <div class="root" data-vega-timeline>
     <WindowNameTag name="Timeline" />
     <div>
       <timeline-zoom-buttons @downScale="downScale" @upScale="upScale" />
@@ -8,6 +8,7 @@
     <div
       ref="scroll"
       class="timeline-container"
+      data-vega-timeline-container
       @drop="drop"
       @dragover="dragover"
       @contextmenu="openContextMenu"
