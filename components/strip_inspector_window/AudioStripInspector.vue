@@ -6,9 +6,6 @@
     <div class="label">Length</div>
     <div>{{ strip.length.toFixed(2) }}</div>
 
-    <!-- <div class="label">Keyframes</div> -->
-    <!-- <div>{{ strip.keyframes }}</div> -->
-
     <div class="label">Src</div>
     <div>{{ strip.src }}</div>
   </div>
