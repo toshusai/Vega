@@ -2,7 +2,7 @@ import { Asset, AudioAsset, FontAsset, VideoAsset } from "./assets";
 import { Strip, TextStrip, AudioStrip, VideoStrip } from "./strips";
 import type { Project } from "./Project";
 
-const VEGA_VERSION = "v0.0.1";
+const VEGA_VERSION = "v0.0.3";
 
 export {
   Strip,
