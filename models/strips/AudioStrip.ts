@@ -14,10 +14,9 @@ export class AudioStrip extends Strip {
 
   playRequests: number[] = [];
 
+  loaded: boolean = false;
+
   get src() {
-    if (window) {
-      return this.audio.src.replace(window.location.origin, "");
-    }
     return this.audio.src;
   }
 
@@ -30,15 +29,27 @@ export class AudioStrip extends Strip {
     this.id = iface.id;
     this.layer = iface.layer;
     this.length = iface.length;
-    if (asset) {
-      this.audio.src = asset.path;
-      this.asset = asset;
-    }
+    this.updateAsset(asset);
+
     if (iface.id) {
       this.id = iface.id;
     } else {
       this.id = v4();
     }
+  }
+
+  public updateAsset(asset?: AudioAsset) {
+    if (!asset) {
+      this.audio.src = "";
+      this.loaded = false;
+      return;
+    }
+    this.loaded = false;
+    this.audio.src = asset.path;
+    this.audio.onloadedmetadata = () => {
+      this.loaded = true;
+    };
+    this.audio.load();
   }
 
   wait(time: number) {
@@ -61,6 +72,7 @@ export class AudioStrip extends Strip {
     playMode: PlayMode,
     fps: number
   ) {
+    if (!this.loaded) return;
     const lwoFps = delta < 1000 / fps - FPS_ERROR_TOLERANCE;
     if (this.start < time && time < this.end) {
       this.audio.volume = 1;

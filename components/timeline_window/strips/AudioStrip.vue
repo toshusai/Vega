@@ -1,7 +1,12 @@
 <template>
   <div class="audio-strip">
     <div ref="wave" class="wave" />
-    {{ strip.asset.name }}
+    <span v-if="strip.asset">
+      {{ strip.asset.name }}
+    </span>
+    <div v-if="!strip.loaded" class="error">
+      [Error] Audio Resouce Not Found
+    </div>
   </div>
 </template>
 
