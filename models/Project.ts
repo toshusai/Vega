@@ -1,5 +1,5 @@
 import { IAsset, IAudioAsset, IFontAsset, IVideoAsset } from "./assets";
-import { IStrip, ITextStrip, IVideoStrip } from "./strips";
+import { IStrip, IText3DStrip, IVideoStrip } from "./strips";
 
 export interface Project {
   version: string;
@@ -10,7 +10,7 @@ export interface Project {
   duration: number;
 
   assets: (IAsset | IAudioAsset | IVideoAsset | IFontAsset)[];
-  strips: (IStrip | IVideoStrip | ITextStrip)[];
+  strips: (IStrip | IVideoStrip | IText3DStrip)[];
 }
 
 export function isProject(input: any): input is Project {

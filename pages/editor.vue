@@ -108,7 +108,7 @@ import {
   FontAsset,
   Project,
   Strip,
-  TextStrip,
+  Text3DStrip,
   VEGA_VERSION,
   VideoAsset,
   VideoStrip,
@@ -219,12 +219,12 @@ export default class IndexPage extends Vue {
         }
         break;
       case "position.x":
-        if (target instanceof VideoStrip || target instanceof TextStrip) {
+        if (target instanceof VideoStrip || target instanceof Text3DStrip) {
           target.position.x = value;
         }
         break;
       case "position.y":
-        if (target instanceof VideoStrip || target instanceof TextStrip) {
+        if (target instanceof VideoStrip || target instanceof Text3DStrip) {
           target.position.y = value;
         }
         break;
@@ -236,7 +236,7 @@ export default class IndexPage extends Vue {
   // Replace the strip.
   // Also replace threejs object in scene by THREE.Object3D.uuid
   changeStrip(s: Strip) {
-    if (s instanceof TextStrip || s instanceof VideoStrip) {
+    if (s instanceof Text3DStrip || s instanceof VideoStrip) {
       const target = this.scene?.getObjectByProperty("uuid", s.id);
       if (target) {
         this.scene?.remove(target);
@@ -258,7 +258,7 @@ export default class IndexPage extends Vue {
   changeStripPos(pos: IVector3) {
     if (
       this.selectedStrip instanceof VideoStrip ||
-      this.selectedStrip instanceof TextStrip
+      this.selectedStrip instanceof Text3DStrip
     ) {
       this.selectedStrip.position.set(pos.x, pos.y, pos.z);
     }
@@ -358,7 +358,7 @@ export default class IndexPage extends Vue {
 
   addStrip(ts: Strip) {
     this.strips.push(ts);
-    if (ts instanceof TextStrip || ts instanceof VideoStrip) {
+    if (ts instanceof Text3DStrip || ts instanceof VideoStrip) {
       this.scene?.add(ts.obj);
     }
   }
@@ -396,7 +396,7 @@ export default class IndexPage extends Vue {
     this.strips = StripUtil.interfacesToInstances(project.strips, this.assets);
 
     this.strips.forEach((s) => {
-      if (s instanceof TextStrip || s instanceof VideoStrip) {
+      if (s instanceof Text3DStrip || s instanceof VideoStrip) {
         this.scene?.add(s.obj);
       }
     });

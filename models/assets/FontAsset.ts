@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { TextStrip } from "../strips";
+import { Text3DStrip } from "../strips";
 import { Asset, IAsset } from "./Asset";
 
 export type IFontAsset = IAsset;
@@ -17,7 +17,7 @@ export class FontAsset extends Asset implements IFontAsset {
         loader.load(
           defaultFontPath,
           (font) => {
-            TextStrip.defaultFont = font;
+            Text3DStrip.defaultFont = font;
             FontAsset.defaultFont = new FontAsset(
               "gentilis_bold",
               "gentilis_bold",

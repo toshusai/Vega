@@ -4,7 +4,7 @@ import { IVector3 } from "../math/Vector3";
 import { Strip } from "./Strip";
 import { PlayMode } from "~/plugins/config";
 
-export interface ITextStrip {
+export interface IText3DStrip {
   id: string;
   start: number;
   length: number;
@@ -17,7 +17,7 @@ export interface ITextStrip {
   type: string;
 }
 
-export class TextStrip extends Strip implements ITextStrip {
+export class Text3DStrip extends Strip implements IText3DStrip {
   public static defaultFont: T.Font;
   text: string = "";
   fontSize: number = 100;
@@ -26,13 +26,13 @@ export class TextStrip extends Strip implements ITextStrip {
   obj!: T.Mesh;
   fontAssetId: string = FontAsset.defaultFont.id;
   fontAsset: FontAsset = FontAsset.defaultFont;
-  type: string = "Text";
+  type: string = "Text3D";
   font!: T.Font;
 
   prevText: string = "";
 
-  public static create(iface: ITextStrip, font: T.Font) {
-    const text = new TextStrip(font);
+  public static create(iface: IText3DStrip, font: T.Font) {
+    const text = new Text3DStrip(font);
     text.color = iface.color;
     if (iface.fontAssetId) text.fontAssetId = iface.fontAssetId;
 
@@ -53,7 +53,7 @@ export class TextStrip extends Strip implements ITextStrip {
     return text;
   }
 
-  public toInterface(): ITextStrip {
+  public toInterface(): IText3DStrip {
     return {
       id: this.id,
       color: this.color,

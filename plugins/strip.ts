@@ -2,9 +2,9 @@ import { Asset, AudioAsset, VideoAsset } from "~/models";
 import {
   AudioStrip,
   IStrip,
-  ITextStrip,
+  IText3DStrip,
   IVideoStrip,
-  TextStrip,
+  Text3DStrip,
   VideoStrip,
 } from "~/models/strips";
 
@@ -22,9 +22,9 @@ export class StripUtil {
         const ias = JSON.parse(JSON.stringify(s)) as IVideoStrip;
         const aa = getAssetById(ias.assetId) as AudioAsset | undefined;
         return new AudioStrip(s, aa);
-      } else if (s.type == "Text") {
-        const its = JSON.parse(JSON.stringify(s)) as ITextStrip;
-        return TextStrip.create(its, TextStrip.defaultFont);
+      } else if (s.type == "Text3D") {
+        const its = JSON.parse(JSON.stringify(s)) as IText3DStrip;
+        return Text3DStrip.create(its, Text3DStrip.defaultFont);
       } else {
         throw new Error("Error Undefined Strip Type: " + s.type);
       }

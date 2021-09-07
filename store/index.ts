@@ -1,5 +1,5 @@
 import * as T from "three";
-import { FontAsset, TextStrip } from "~/models";
+import { FontAsset, Text3DStrip } from "~/models";
 
 export const state = () => ({
   defaultFont: null,
@@ -24,7 +24,7 @@ export const mutations = {
     const defaultFontPath =
       "/static/assets/default/fonts/gentilis_bold.typeface.json";
     loader.load(defaultFontPath, (font) => {
-      TextStrip.defaultFont = font;
+      Text3DStrip.defaultFont = font;
       FontAsset.defaultFont = new FontAsset(
         "gentilis_bold",
         "gentilis_bold",
