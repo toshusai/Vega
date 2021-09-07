@@ -2,6 +2,7 @@
 
 # v0.0.4
 - Change TextStrip to Text3DStrip.
+- Reverse version order in this file.
 
 # v0.0.3
 - Fix project file handler.
