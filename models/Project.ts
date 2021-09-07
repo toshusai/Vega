@@ -13,6 +13,19 @@ export interface Project {
   strips: (IStrip | IVideoStrip | IText3DStrip)[];
 }
 
+export function migrationProject(project: Project) {
+  if (project.version < "v0.0.4") {
+    project.strips.forEach((s) => {
+      if (s.type == "Text") {
+        // @ts-ignore
+        // force update readonly property.
+        s.type = "Text3D";
+      }
+    });
+  }
+  return project;
+}
+
 export function isProject(input: any): input is Project {
   return (
     typeof input.version == "string" &&

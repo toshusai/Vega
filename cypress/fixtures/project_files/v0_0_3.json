@@ -1,0 +1,26 @@
+{
+    "name": "Title",
+    "width": 720,
+    "height": 1200,
+    "fps": 30,
+    "duration": 10,
+    "version": "v0.0.3",
+    "assets": [],
+    "strips": [
+        {
+            "type": "Text",
+            "start": 1,
+            "length": 2,
+            "layer": 1,
+            "text": "Test Text",
+            "fontSize": 100,
+            "color": "red",
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "fontAssetId": "gentilis_bold"
+        }
+    ]
+}
