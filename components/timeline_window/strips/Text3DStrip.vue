@@ -18,11 +18,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { TextStrip } from "~/models";
+import { Text3DStrip } from "~/models";
 
 @Component({})
-export default class TextStripComp extends Vue {
+export default class Text3DStripComp extends Vue {
   @Prop({ default: () => undefined })
-  strip!: TextStrip;
+  strip!: Text3DStrip;
 }
 </script>

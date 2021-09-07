@@ -17,7 +17,7 @@
 import Vue from "vue";
 import { Component, Prop, Ref } from "vue-property-decorator";
 import * as THREE from "three";
-import { Strip, TextStrip, VideoStrip } from "~/models";
+import { Strip, Text3DStrip, VideoStrip } from "~/models";
 import { addDragEventOnce } from "~/plugins/mouse";
 import { IVector3 } from "~/models/math/Vector3";
 
@@ -35,7 +35,9 @@ export default class Gizmo extends Vue {
   style: Partial<CSSStyleDeclaration> = {};
 
   get visible() {
-    return this.strip instanceof VideoStrip || this.strip instanceof TextStrip;
+    return (
+      this.strip instanceof VideoStrip || this.strip instanceof Text3DStrip
+    );
   }
 
   get ratio() {
@@ -60,7 +62,7 @@ export default class Gizmo extends Vue {
         addDragEventOnce((e) => {
           if (
             this.strip instanceof VideoStrip ||
-            this.strip instanceof TextStrip
+            this.strip instanceof Text3DStrip
           ) {
             const iface = this.strip.toInterface();
             const x = iface.position.x + e.movementX / this.scale;
@@ -73,7 +75,7 @@ export default class Gizmo extends Vue {
   }
 
   getStyle(): Partial<CSSStyleDeclaration> {
-    if (this.strip instanceof VideoStrip || this.strip instanceof TextStrip) {
+    if (this.strip instanceof VideoStrip || this.strip instanceof Text3DStrip) {
       const px = this.strip.position.x;
       const py = this.height - this.strip.position.y;
 
@@ -94,7 +96,7 @@ export default class Gizmo extends Vue {
         height = this.strip.video.videoHeight * this.scale;
         top = py * this.scale - height / 2 - 1; // for content-box
         left = px * this.scale - width / 2 - 1;
-      } else if (this.strip instanceof TextStrip) {
+      } else if (this.strip instanceof Text3DStrip) {
         const box = new THREE.Box3().setFromObject(this.strip.obj);
         const r = new THREE.Vector3();
         box.getSize(r);

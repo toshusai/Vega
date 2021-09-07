@@ -61,7 +61,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import TextStrip from "./TextStrip.vue";
+import Text3DStrip from "./Text3DStrip.vue";
 import VideoStrip from "./VideoStrip.vue";
 import AudioStrip from "./AudioStrip.vue";
 import { Strip } from "~/models";
@@ -69,7 +69,7 @@ import { addDragEventOnce } from "~/plugins/mouse";
 
 @Component({
   components: {
-    TextStrip,
+    Text3DStrip,
     AudioStrip,
     VideoStrip,
   },

@@ -53,7 +53,7 @@
         />
       </div>
       <ContextMenu ref="contextMenu">
-        <MenuButton @click="addTextStrip">Add Text</MenuButton>
+        <MenuButton @click="addText3DStrip">Add Text</MenuButton>
         <MenuButton @click="addVideoStrip">Add Video</MenuButton>
         <MenuButton @click="addAudioStrip">Add Audio</MenuButton>
         <MenuButton v-if="hasSelectedStrip" @click="split"> Split </MenuButton>
@@ -112,7 +112,7 @@ import {
   AudioAsset,
   AudioStrip,
   Strip,
-  TextStrip,
+  Text3DStrip,
   VideoAsset,
   VideoStrip,
 } from "~/models";
@@ -217,8 +217,8 @@ export default class Timeline extends Vue {
     this.addStripEmit(strip);
   }
 
-  addTextStrip() {
-    const newStrip = new TextStrip(TextStrip.defaultFont);
+  addText3DStrip() {
+    const newStrip = new Text3DStrip(Text3DStrip.defaultFont);
     newStrip.start = this.currentTime;
     newStrip.length = 5;
     newStrip.text = "New Text";

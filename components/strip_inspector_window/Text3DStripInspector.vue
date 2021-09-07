@@ -72,8 +72,8 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import VegaInput from "../vega/VegaInput.vue";
 import VegaSelect from "../vega/VegaSelect.vue";
-import { Asset, FontAsset, TextStrip } from "~/models";
-import { ITextStrip } from "~/models/strips";
+import { Asset, FontAsset, Text3DStrip } from "~/models";
+import { IText3DStrip } from "~/models/strips";
 
 @Component({
   components: {
@@ -81,9 +81,9 @@ import { ITextStrip } from "~/models/strips";
     VegaSelect,
   },
 })
-export default class TextStripInspector extends Vue {
+export default class Text3DStripInspector extends Vue {
   @Prop({})
-  strip!: TextStrip;
+  strip!: Text3DStrip;
 
   @Prop({ default: () => [] })
   assets!: Asset[];
@@ -106,7 +106,7 @@ export default class TextStripInspector extends Vue {
       });
   }
 
-  changeEmit(strip: TextStrip) {
+  changeEmit(strip: Text3DStrip) {
     this.$emit("change", strip);
   }
 
@@ -114,10 +114,10 @@ export default class TextStripInspector extends Vue {
     this.$emit("changeProperty", name, value);
   }
 
-  change(update: (iface: ITextStrip) => void) {
+  change(update: (iface: IText3DStrip) => void) {
     const iface = this.strip.toInterface();
     update(iface);
-    const ts = TextStrip.create(iface, this.strip.font);
+    const ts = Text3DStrip.create(iface, this.strip.font);
     this.changeEmit(ts);
   }
 
