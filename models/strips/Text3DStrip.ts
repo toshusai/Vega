@@ -17,6 +17,12 @@ export interface IText3DStrip {
   type: string;
 }
 
+/**
+ * The strip of text.
+ * Render by text geometry (text mesh).
+ * This class has been replaced by TextStrip.
+ * However, Vega may process 3D text in the future. Therefore, it stays as 3DText.
+ */
 export class Text3DStrip extends Strip implements IText3DStrip {
   public static defaultFont: T.Font;
   text: string = "";
