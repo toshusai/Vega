@@ -73,7 +73,7 @@
 <script lang="ts">
 import Vue from "vue";
 import * as T from "three";
-import { Component, Prop, Ref } from "vue-property-decorator";
+import { Component, Prop, Ref, Watch } from "vue-property-decorator";
 import { OptionKeyValue } from "./vega/VegaSelect.vue";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
 import Gizmo from "~/components/Gizmo.vue";
@@ -213,6 +213,8 @@ export default class PreviewWindow extends Vue {
     this.$emit("changeStripPos", pos);
   }
 
+  @Watch("width")
+  @Watch("height")
   resize() {
     this.renderer?.setSize(
       this.width * this.previewScale,
