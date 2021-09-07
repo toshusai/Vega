@@ -407,6 +407,8 @@ export default class IndexPage extends Vue {
     this.fps = project.fps;
     this.duration = project.duration;
     this.name = project.name;
+
+    this.previewWindow?.resize();
   }
 
   change() {
