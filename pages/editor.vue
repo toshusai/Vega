@@ -124,7 +124,7 @@ import { IVector3 } from "~/models/math/Vector3";
 import Snakbar from "~/components/Snakbar.vue";
 import { VegaError } from "~/plugins/error";
 import { PlayMode, PLAY_EVERY_FRAME, SYNC_TO_AUDIO } from "~/plugins/config";
-import { isProject } from "~/models/Project";
+import { isProject, migrationProject } from "~/models/Project";
 
 @Component({
   components: {
@@ -389,6 +389,7 @@ export default class IndexPage extends Vue {
   openProject(project: Project) {
     if (!isProject(project))
       throw new VegaError("Invalid Project file format.");
+    project = migrationProject(project);
     this.assets = this.assets.concat(
       AssetUtil.interfacesToInstances(project.assets)
     );

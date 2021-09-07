@@ -25,3 +25,6 @@ It works this time!
 - Fix can not create empty audio strip.
 - Add more cypress tests.
 - Fixed some bugs.
+
+# v0.0.4
+- Change TextStrip to Text3DStrip.
