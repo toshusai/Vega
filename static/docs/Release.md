@@ -1,5 +1,9 @@
 # Releases
 
+# v0.0.5
+- Add TextStrip that render by HTMLCanvasElement and Three.js
+  - **Support Any Language and Emoji that can render in browser!!**
+
 # v0.0.4
 - Change TextStrip to Text3DStrip.
 - Reverse version order in this file.

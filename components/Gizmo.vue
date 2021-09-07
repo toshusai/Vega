@@ -17,7 +17,7 @@
 import Vue from "vue";
 import { Component, Prop, Ref } from "vue-property-decorator";
 import * as THREE from "three";
-import { Strip, Text3DStrip, VideoStrip } from "~/models";
+import { Strip, Text3DStrip, TextStrip, VideoStrip } from "~/models";
 import { addDragEventOnce } from "~/plugins/mouse";
 import { IVector3 } from "~/models/math/Vector3";
 
@@ -35,9 +35,7 @@ export default class Gizmo extends Vue {
   style: Partial<CSSStyleDeclaration> = {};
 
   get visible() {
-    return (
-      this.strip instanceof VideoStrip || this.strip instanceof Text3DStrip
-    );
+    return this.canDrawStrip(this.strip);
   }
 
   get ratio() {
@@ -52,6 +50,18 @@ export default class Gizmo extends Vue {
     return (rect.height / this.height) * this.scale;
   }
 
+  /**
+   * Check the strip can draw gizmo.
+   * @param strip The target to check.
+   */
+  canDrawStrip(strip: Strip): strip is VideoStrip | TextStrip | Text3DStrip {
+    return (
+      strip instanceof VideoStrip ||
+      strip instanceof Text3DStrip ||
+      strip instanceof TextStrip
+    );
+  }
+
   changeStripPosEmit(vec: IVector3) {
     this.$emit("changeStripPos", vec);
   }
@@ -60,10 +70,7 @@ export default class Gizmo extends Vue {
     if (this.gizmo) {
       this.gizmo.addEventListener("mousedown", () => {
         addDragEventOnce((e) => {
-          if (
-            this.strip instanceof VideoStrip ||
-            this.strip instanceof Text3DStrip
-          ) {
+          if (this.canDrawStrip(this.strip)) {
             const iface = this.strip.toInterface();
             const x = iface.position.x + e.movementX / this.scale;
             const y = iface.position.y - e.movementY / this.scale;
@@ -75,7 +82,7 @@ export default class Gizmo extends Vue {
   }
 
   getStyle(): Partial<CSSStyleDeclaration> {
-    if (this.strip instanceof VideoStrip || this.strip instanceof Text3DStrip) {
+    if (this.canDrawStrip(this.strip)) {
       const px = this.strip.position.x;
       const py = this.height - this.strip.position.y;
 
@@ -105,6 +112,11 @@ export default class Gizmo extends Vue {
         width = r.x * this.scale;
         height = r.y * this.scale;
         top -= height;
+      } else if (this.strip instanceof TextStrip) {
+        width = this.strip.canvas.width * this.scale;
+        height = this.strip.canvas.height * this.scale;
+        top = py * this.scale - height / 2;
+        left = px * this.scale - width / 2;
       }
 
       return {

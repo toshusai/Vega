@@ -27,11 +27,13 @@ import { Component, Prop } from "vue-property-decorator";
 import VideoStripInspector from "./VideoStripInspector.vue";
 import Text3DStripInspector from "./Text3DStripInspector.vue";
 import AudioStripInspector from "./AudioStripInspector.vue";
+import TextStripInspector from "./TextStripInspector.vue";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
 import { Asset, Strip } from "~/models";
 
 @Component({
   components: {
+    TextStripInspector,
     VideoStripInspector,
     Text3DStripInspector,
     AudioStripInspector,

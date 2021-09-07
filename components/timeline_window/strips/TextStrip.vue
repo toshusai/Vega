@@ -1,5 +1,5 @@
 <template>
-  <div data-vega-text-3d-strip class="text-strip">
+  <div data-vega-text-strip class="text-strip">
     {{ strip.text }}
   </div>
 </template>
@@ -18,11 +18,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { Text3DStrip } from "~/models";
+import { TextStrip } from "~/models";
 
 @Component({})
-export default class Text3DStripComp extends Vue {
+export default class TextStripComp extends Vue {
   @Prop({ default: () => undefined })
-  strip!: Text3DStrip;
+  strip!: TextStrip;
 }
 </script>
