@@ -7,6 +7,8 @@ import type { ITextStrip } from "./TextStrip";
 import { AudioStrip } from "./AudioStrip";
 import { VideoStrip } from "./VideoStrip";
 import type { IVideoStrip } from "./VideoStrip";
+import { ImageStrip } from "./ImageStrip";
+import type { IImageStrip } from "./ImageStrip";
 
 export {
   Strip,
@@ -18,4 +20,6 @@ export {
   VideoStrip,
   IVideoStrip,
   AudioStrip,
+  ImageStrip,
+  IImageStrip,
 };

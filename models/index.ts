@@ -1,10 +1,11 @@
-import { Asset, AudioAsset, FontAsset, VideoAsset } from "./assets";
+import { Asset, AudioAsset, FontAsset, VideoAsset, ImageAsset } from "./assets";
 import {
   Strip,
   Text3DStrip,
   AudioStrip,
   VideoStrip,
   TextStrip,
+  ImageStrip,
 } from "./strips";
 import type { Project } from "./Project";
 
@@ -21,5 +22,7 @@ export {
   FontAsset,
   VideoAsset,
   Project,
+  ImageStrip,
+  ImageAsset,
   VEGA_VERSION,
 };

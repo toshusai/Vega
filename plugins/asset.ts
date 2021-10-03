@@ -1,4 +1,10 @@
-import { AudioAsset, FontAsset, IAsset, VideoAsset } from "~/models/assets";
+import {
+  AudioAsset,
+  FontAsset,
+  IAsset,
+  VideoAsset,
+  ImageAsset,
+} from "~/models/assets";
 
 export class AssetUtil {
   public static interfacesToInstances(assets: IAsset[]) {
@@ -10,6 +16,8 @@ export class AssetUtil {
           return new VideoAsset(a.id, a.name, "");
         case "Font":
           return new FontAsset(a.id, a.name, "");
+        case "Image":
+          return new ImageAsset(a.id, a.name, "");
         default:
           throw new Error("Error Undefined Asset Type: " + a.type);
       }
