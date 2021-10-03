@@ -3,7 +3,13 @@
     <div class="container">
       <div class="title">
         <h2>Vega is a open source browser based video editor.</h2>
-        <h3 class="note">[NOTE] This project is experimental.</h3>
+        <h3 class="note">
+          <div>⚠ Warning ⚠</div>
+          <div>️This project is experimental.</div>
+          <div>There may be many bugs.</div>
+          <div>Encoding requires a lot of CPU resources.</div>
+          <div>Please use at your own risk.</div>
+        </h3>
         <div class="buttons">
           <VegaButton @click="goEditor">Editor</VegaButton>
           <VegaButton @click="goDocuments">Documents</VegaButton>
@@ -40,7 +46,7 @@
 
 .note {
   margin: 8px;
-  color: var(--orange-200);
+  color: var(--yellow);
 }
 
 .buttons {
