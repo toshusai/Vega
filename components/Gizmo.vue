@@ -17,7 +17,13 @@
 import Vue from "vue";
 import { Component, Prop, Ref } from "vue-property-decorator";
 import * as THREE from "three";
-import { Strip, Text3DStrip, TextStrip, VideoStrip } from "~/models";
+import {
+  ImageStrip,
+  Strip,
+  Text3DStrip,
+  TextStrip,
+  VideoStrip,
+} from "~/models";
 import { addDragEventOnce } from "~/plugins/mouse";
 import { IVector3 } from "~/models/math/Vector3";
 
@@ -54,11 +60,14 @@ export default class Gizmo extends Vue {
    * Check the strip can draw gizmo.
    * @param strip The target to check.
    */
-  canDrawStrip(strip: Strip): strip is VideoStrip | TextStrip | Text3DStrip {
+  canDrawStrip(
+    strip: Strip
+  ): strip is VideoStrip | TextStrip | Text3DStrip | ImageStrip {
     return (
       strip instanceof VideoStrip ||
       strip instanceof Text3DStrip ||
-      strip instanceof TextStrip
+      strip instanceof TextStrip ||
+      strip instanceof ImageStrip
     );
   }
 
@@ -115,6 +124,11 @@ export default class Gizmo extends Vue {
       } else if (this.strip instanceof TextStrip) {
         width = this.strip.canvas.width * this.scale;
         height = this.strip.canvas.height * this.scale;
+        top = py * this.scale - height / 2;
+        left = px * this.scale - width / 2;
+      } else if (this.strip instanceof ImageStrip) {
+        width = this.strip.width * this.scale;
+        height = this.strip.height * this.scale;
         top = py * this.scale - height / 2;
         left = px * this.scale - width / 2;
       }

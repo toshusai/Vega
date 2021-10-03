@@ -69,7 +69,8 @@ import Vue from "vue";
 import { Component, Emit, Prop } from "vue-property-decorator";
 import VegaButton from "../vega/VegaButton.vue";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
-import { Asset, VideoAsset } from "~/models";
+import { Asset, ImageAsset, VideoAsset } from "~/models";
+import { VegaError } from "~/plugins/error";
 
 @Component({
   components: { WindowNameTag, VegaButton },
@@ -97,7 +98,14 @@ export default class AssetInspectorWindow extends Vue {
       if (this.asset instanceof VideoAsset) {
         const newAsset = new VideoAsset(this.asset.id, this.asset.name, path);
         this.changeAssetEmit(newAsset);
+      } else if (this.asset instanceof ImageAsset) {
+        const newAsset = new ImageAsset(this.asset.id, this.asset.name, path);
+        this.changeAssetEmit(newAsset);
+      } else {
+        return new VegaError("Sorry under implementation.");
       }
+      // TODO Fix render update.
+      // Look like the asset does not updated in view.
     }
   }
 

@@ -1,5 +1,11 @@
-import { IAsset, IAudioAsset, IFontAsset, IVideoAsset } from "./assets";
-import { IStrip, IText3DStrip, IVideoStrip } from "./strips";
+import {
+  IAsset,
+  IAudioAsset,
+  IFontAsset,
+  IImageAsset,
+  IVideoAsset,
+} from "./assets";
+import { IImageStrip, IStrip, IText3DStrip, IVideoStrip } from "./strips";
 
 export interface Project {
   version: string;
@@ -9,8 +15,8 @@ export interface Project {
   fps: number;
   duration: number;
 
-  assets: (IAsset | IAudioAsset | IVideoAsset | IFontAsset)[];
-  strips: (IStrip | IVideoStrip | IText3DStrip)[];
+  assets: (IAsset | IAudioAsset | IVideoAsset | IFontAsset | IImageAsset)[];
+  strips: (IStrip | IVideoStrip | IText3DStrip | IImageStrip)[];
 }
 
 export function migrationProject(project: Project) {

@@ -1,6 +1,7 @@
 <template>
   <div class="asset-list-item" :class="itemClass" @click="click">
     <svg class="asset-icon" viewBox="0 0 24 24">
+      <!-- https://materialdesignicons.com/ -->
       <path
         v-if="asset.type == 'Video'"
         fill="currentColor"
@@ -15,6 +16,11 @@
         v-else-if="asset.type == 'Audio'"
         fill="currentColor"
         d="M21,3V15.5A3.5,3.5 0 0,1 17.5,19A3.5,3.5 0 0,1 14,15.5A3.5,3.5 0 0,1 17.5,12C18.04,12 18.55,12.12 19,12.34V6.47L9,8.6V17.5A3.5,3.5 0 0,1 5.5,21A3.5,3.5 0 0,1 2,17.5A3.5,3.5 0 0,1 5.5,14C6.04,14 6.55,14.12 7,14.34V6L21,3Z"
+      />
+      <path
+        v-else-if="asset.type == 'Image'"
+        fill="currentColor"
+        d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z"
       />
     </svg>
     <div class="asset-name">

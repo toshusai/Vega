@@ -63,6 +63,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import Text3DStrip from "./Text3DStrip.vue";
 import TextStrip from "./TextStrip.vue";
+import ImageStrip from "./ImageStrip.vue";
 import VideoStrip from "./VideoStrip.vue";
 import AudioStrip from "./AudioStrip.vue";
 import { Strip } from "~/models";
@@ -74,6 +75,7 @@ import { addDragEventOnce } from "~/plugins/mouse";
     Text3DStrip,
     AudioStrip,
     VideoStrip,
+    ImageStrip,
   },
 })
 export default class TimelineStrip extends Vue {
