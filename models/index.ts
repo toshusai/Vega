@@ -9,7 +9,7 @@ import {
 } from "./strips";
 import type { Project } from "./Project";
 
-const VEGA_VERSION = "v0.0.5";
+const VEGA_VERSION = "v0.0.6";
 
 export {
   Strip,

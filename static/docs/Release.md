@@ -1,5 +1,12 @@
 # Releases
 
+# v0.0.6
+- Add ImageStrip.
+- Fix not be able to open project file includes assets and strips.
+- Support drop audio file in AssetWindow.
+- Add warning to top page.
+- Add the display version to the about modal.
+
 # v0.0.5
 - Add TextStrip that render by HTMLCanvasElement and Three.js
   - **Support Any Language and Emoji that can render in browser!!**
