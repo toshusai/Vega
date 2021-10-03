@@ -2,6 +2,7 @@
   <modal ref="modal">
     <div class="card">
       <div class="buttons">
+        <div>Version: {{ version }}</div>
         <div>
           <a class="link" href="/">Top</a>
         </div>
@@ -43,12 +44,18 @@
 import Vue from "vue";
 import { Component, Ref } from "vue-property-decorator";
 import Modal from "../vega/Modal.vue";
+import { VEGA_VERSION } from "~/models";
 
 @Component({
   components: { Modal },
 })
 export default class AboutModal extends Vue {
   @Ref() modal?: Modal;
+
+  get version() {
+    return VEGA_VERSION;
+  }
+
   open() {
     this.modal?.open();
   }
