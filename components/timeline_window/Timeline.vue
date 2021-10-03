@@ -266,7 +266,6 @@ export default class Timeline extends Vue {
       id: "",
       type: "Image",
       assetId: "",
-      videoOffset: 0,
     });
     this.addStrip(newStrip);
     this.contextMenu.close();
