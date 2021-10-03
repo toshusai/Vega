@@ -64,7 +64,7 @@ import { Component, Prop } from "vue-property-decorator";
 import { v4 } from "uuid";
 import AssetListItem from "./AssetWindowListItem.vue";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
-import { Asset, VideoAsset } from "~/models";
+import { Asset, AudioAsset, ImageAsset, VideoAsset } from "~/models";
 import { VegaError } from "~/plugins/error";
 
 @Component({
@@ -102,6 +102,18 @@ export default class AssetWindow extends Vue {
     if (file.type == "video/mp4") {
       const src = window.URL.createObjectURL(file);
       const asset = new VideoAsset(v4(), file.name, src);
+      this.$emit("addAsset", asset);
+    } else if (
+      file.type == "audio/wav" ||
+      file.type == "audio/mp3" ||
+      file.type == "audio/mpeg"
+    ) {
+      const src = window.URL.createObjectURL(file);
+      const asset = new AudioAsset(v4(), file.name, src);
+      this.$emit("addAsset", asset);
+    } else if (file.type == "image/png") {
+      const src = window.URL.createObjectURL(file);
+      const asset = new ImageAsset(v4(), file.name, src);
       this.$emit("addAsset", asset);
     } else {
       throw new VegaError("Unsupported file type" + file.type);

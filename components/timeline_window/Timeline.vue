@@ -55,6 +55,7 @@
       <ContextMenu ref="contextMenu">
         <MenuButton @click="addTextStrip">Add Text</MenuButton>
         <MenuButton @click="addVideoStrip">Add Video</MenuButton>
+        <MenuButton @click="addImageStrip">Add Image</MenuButton>
         <MenuButton @click="addAudioStrip">Add Audio</MenuButton>
         <MenuButton v-if="hasSelectedStrip" @click="split"> Split </MenuButton>
         <MenuButton v-if="hasSelectedStrip" @click="deleteStrip">
@@ -116,6 +117,8 @@ import {
   TextStrip,
   VideoAsset,
   VideoStrip,
+  ImageStrip,
+  ImageAsset,
 } from "~/models";
 import ContextMenu from "~/components/vega/contextmenu/ContextMenu.vue";
 import MenuButton from "~/components/vega/MenuButton.vue";
@@ -246,6 +249,22 @@ export default class Timeline extends Vue {
       src: "",
       id: "",
       type: "Video",
+      assetId: "",
+      videoOffset: 0,
+    });
+    this.addStrip(newStrip);
+    this.contextMenu.close();
+  }
+
+  addImageStrip() {
+    const newStrip = new ImageStrip({
+      start: this.currentTime,
+      length: 5,
+      layer: 0,
+      position: { x: 200, y: 200, z: 0 },
+      src: "",
+      id: "",
+      type: "Image",
       assetId: "",
       videoOffset: 0,
     });
@@ -434,6 +453,23 @@ export default class Timeline extends Vue {
             layer: 0,
             id: "",
             type: "Video",
+          },
+          asset
+        );
+        this.addStrip(newStrip);
+      } else if (file.type == "image/png") {
+        const asset = new ImageAsset(v4(), file.name, src);
+        this.$emit("addAsset", asset);
+        const newStrip = new ImageStrip(
+          {
+            start: this.currentTime,
+            length: 5,
+            layer: 0,
+            position: { x: 0, y: 0, z: 0 },
+            src: "",
+            id: "",
+            type: "Image",
+            assetId: asset.id,
           },
           asset
         );

@@ -106,6 +106,7 @@ import PreviewWindow from "~/components/PreviewWindow.vue";
 import {
   Asset,
   FontAsset,
+  ImageStrip,
   Project,
   Strip,
   Text3DStrip,
@@ -228,6 +229,7 @@ export default class IndexPage extends Vue {
         if (
           target instanceof VideoStrip ||
           target instanceof Text3DStrip ||
+          target instanceof ImageStrip ||
           target instanceof TextStrip
         ) {
           target.position.x = value;
@@ -237,6 +239,7 @@ export default class IndexPage extends Vue {
         if (
           target instanceof VideoStrip ||
           target instanceof Text3DStrip ||
+          target instanceof ImageStrip ||
           target instanceof TextStrip
         ) {
           target.position.y = value;
@@ -273,6 +276,7 @@ export default class IndexPage extends Vue {
     if (
       this.selectedStrip instanceof VideoStrip ||
       this.selectedStrip instanceof TextStrip ||
+      this.selectedStrip instanceof ImageStrip ||
       this.selectedStrip instanceof Text3DStrip
     ) {
       this.selectedStrip.position.set(pos.x, pos.y, pos.z);
@@ -376,6 +380,7 @@ export default class IndexPage extends Vue {
     if (
       ts instanceof Text3DStrip ||
       ts instanceof VideoStrip ||
+      ts instanceof ImageStrip ||
       ts instanceof TextStrip
     ) {
       this.scene?.add(ts.obj);
@@ -416,7 +421,11 @@ export default class IndexPage extends Vue {
     this.strips = StripUtil.interfacesToInstances(project.strips, this.assets);
 
     this.strips.forEach((s) => {
-      if (s instanceof Text3DStrip || s instanceof VideoStrip) {
+      if (
+        s instanceof Text3DStrip ||
+        s instanceof VideoStrip ||
+        s instanceof ImageStrip
+      ) {
         this.scene?.add(s.obj);
       }
     });
