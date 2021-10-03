@@ -70,8 +70,8 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import VegaInput from "../vega/VegaInput.vue";
-import VegaSelect from "../vega/VegaSelect.vue";
-import { Asset, IImageStrip, ImageStrip, ImageAsset } from "~/models";
+import VegaSelect, { OptionKeyValue } from "../vega/VegaSelect.vue";
+import { Asset, ImageStrip, ImageAsset } from "~/models";
 
 @Component({
   components: {
@@ -112,13 +112,6 @@ export default class ImageStripInspector extends Vue {
 
   changePropertyEmit(name: string, value: any) {
     this.$emit("changeProperty", name, value);
-  }
-
-  change(update: (iface: IImageStrip) => void) {
-    const iface = this.strip.toInterface();
-    update(iface);
-    const ts = new ImageStrip(iface.text);
-    this.changeEmit(ts);
   }
 
   changeStripText(text: string) {
