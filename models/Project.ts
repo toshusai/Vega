@@ -37,7 +37,7 @@ export function isProject(input: any): input is Project {
     Array.isArray(input.assets) &&
     input.assets.every((v: any) => isAsset(v)) &&
     Array.isArray(input.strips) &&
-    input.assets.every((v: any) => isStrip(v))
+    input.strips.every((v: any) => isStrip(v))
   );
 }
 
