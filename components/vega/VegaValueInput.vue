@@ -1,17 +1,20 @@
 <template>
-  <vega-input
+  <VegaInput
     data-cy="vega-value-input"
     :type="type"
     :value="value"
     @change="change"
-  ></vega-input>
+  ></VegaInput>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import VegaInput from "~/components/vega/VegaInput.vue";
 
-@Component({})
+@Component({
+  components: { VegaInput },
+})
 export default class VegaValueInput extends Vue {
   @Prop({ default: "" })
   value!: number | string;
