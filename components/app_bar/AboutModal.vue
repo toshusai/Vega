@@ -45,9 +45,13 @@ import Vue from "vue";
 import { Component, Ref } from "vue-property-decorator";
 import Modal from "../vega/Modal.vue";
 import { VEGA_VERSION } from "~/models";
+import VegaButton from "~/components/vega/VegaButton.vue";
 
 @Component({
-  components: { Modal },
+  components: {
+    Modal,
+    VegaButton,
+  },
 })
 export default class AboutModal extends Vue {
   @Ref() modal?: Modal;

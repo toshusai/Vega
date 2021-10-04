@@ -79,12 +79,14 @@ import WindowNameTag from "~/components/vega/WindowNameTag.vue";
 import Gizmo from "~/components/Gizmo.vue";
 import { Strip } from "~/models";
 import { IVector3 } from "~/models/math/Vector3";
+import VegaSelect from "~/components/vega/VegaSelect.vue";
 
 const FPS_UPDATE_INTERVAL = 1000;
 
 @Component({
   components: {
     WindowNameTag,
+    VegaSelect,
     Gizmo,
   },
 })

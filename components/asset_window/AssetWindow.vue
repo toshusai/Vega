@@ -66,9 +66,10 @@ import AssetListItem from "./AssetWindowListItem.vue";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
 import { Asset, AudioAsset, ImageAsset, VideoAsset } from "~/models";
 import { VegaError } from "~/plugins/error";
+import VegaFileButton from "~/components/vega/VegaFileButton.vue";
 
 @Component({
-  components: { AssetListItem, WindowNameTag },
+  components: { AssetListItem, WindowNameTag, VegaFileButton },
 })
 export default class AssetWindow extends Vue {
   @Prop({

@@ -37,11 +37,13 @@ import AppBarMenuButton from "./AppBarMenuButton.vue";
 import AboutModal from "./AboutModal.vue";
 import { Project } from "~/models";
 import { VegaError } from "~/plugins/error";
+import AppBarMenuItem from "~/components/app_bar/AppBarMenuItem.vue";
 
 @Component({
   components: {
     AppBarMenu,
     AppBarMenuButton,
+    AppBarMenuItem,
     AboutModal,
   },
 })

@@ -102,6 +102,7 @@ import Vue from "vue";
 import * as T from "three";
 import { Component, Ref } from "vue-property-decorator";
 import RendererWindow from "@/components/RendererWindow.vue";
+import AppBar from "@/components/app_bar/AppBar.vue";
 import PreviewWindow from "~/components/PreviewWindow.vue";
 import {
   Asset,
@@ -127,9 +128,15 @@ import Snakbar from "~/components/Snakbar.vue";
 import { VegaError } from "~/plugins/error";
 import { PlayMode, PLAY_EVERY_FRAME, SYNC_TO_AUDIO } from "~/plugins/config";
 import { isProject, migrationProject } from "~/models/Project";
+import ProjectWindow from "~/components/ProjectWindow.vue";
+import ControllerWindow from "~/components/ControllerWindow.vue";
 
 @Component({
   components: {
+    ProjectWindow,
+    RendererWindow,
+    ControllerWindow,
+    AppBar,
     PreviewWindow,
     AssetWindow,
     AssetInspectorWindow,

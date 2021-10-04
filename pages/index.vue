@@ -57,8 +57,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+import VegaButton from "~/components/vega/VegaButton.vue";
 
-@Component({})
+@Component({
+  components: { VegaButton },
+})
 export default class IndexPage extends Vue {
   goEditor() {
     this.$router.push("/editor");
