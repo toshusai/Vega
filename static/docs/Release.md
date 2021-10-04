@@ -1,5 +1,11 @@
 # Releases
 
+# v0.0.7
+- Refactoring
+  - Update docs.
+  - Disable global components.
+  - Add dependency-cruiser config.
+
 # v0.0.6
 - Add ImageStrip.
 - Fix not be able to open project file includes assets and strips.
