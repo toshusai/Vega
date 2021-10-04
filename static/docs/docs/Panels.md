@@ -1,7 +1,3 @@
-
-
-# Turorial
-
 ## Project Panel
 set project information.
 
@@ -27,9 +23,3 @@ Change `PlayMode`
 ## Strip Inspector
 Selected strip information.
 You can edit data like start/length.
-
-# Create a new Strip
-Left-click on the timeline.
-The context menu is displayed.
-Then click `Add Text`.
-The text is added to the timeline.
