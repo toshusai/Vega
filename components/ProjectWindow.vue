@@ -51,11 +51,15 @@ import VegaInput from "./vega/VegaInput.vue";
 import { OptionKeyValue } from "./vega/VegaSelect.vue";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
 import { Strip } from "~/models";
+import VegaValueInput from "~/components/vega/VegaValueInput.vue";
+import VegaSelect from "~/components/vega/VegaSelect.vue";
 
 @Component({
   components: {
     WindowNameTag,
+    VegaSelect,
     VegaInput,
+    VegaValueInput,
   },
 })
 export default class ProjectWindow extends Vue {

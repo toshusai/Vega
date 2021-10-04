@@ -67,9 +67,10 @@ import { Component, Prop } from "vue-property-decorator";
 import { OptionKeyValue } from "./vega/VegaSelect.vue";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
 import { PlayMode, SYNC_TO_AUDIO, PLAY_EVERY_FRAME } from "~/plugins/config";
+import VegaSelect from "~/components/vega/VegaSelect.vue";
 
 @Component({
-  components: { WindowNameTag },
+  components: { WindowNameTag, VegaSelect },
 })
 export default class ControllerWindow extends Vue {
   @Prop({ default: false })

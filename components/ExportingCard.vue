@@ -61,10 +61,12 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import VegaProgress from "@/components/vega/VegaProgress.vue";
+import VegaButton from "@/components/vega/VegaButton.vue";
 
 @Component({
   components: {
     VegaProgress,
+    VegaButton,
   },
 })
 export default class ExportingCard extends Vue {

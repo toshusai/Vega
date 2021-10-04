@@ -9,8 +9,11 @@
 import Vue from "vue";
 import { Component, Prop, Ref } from "vue-property-decorator";
 import { VegaError } from "~/plugins/error";
+import VegaButton from "~/components/vega/VegaButton.vue";
 
-@Component({})
+@Component({
+  components: { VegaButton },
+})
 export default class VegaFileButton extends Vue {
   @Ref() input!: HTMLInputElement;
 

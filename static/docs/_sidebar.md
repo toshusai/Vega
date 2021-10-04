@@ -1,8 +1,13 @@
 - [Home](/)
-- [Usage](/Usage)
-- [Preview](/Preview)
 - [Release](/Release)
+- Documents
+  - [Usage](/docs/Usage)
+  - [Panels](/docs/Panels)
+  - [Preview](/docs/Preview)
 - Development
+  - [README](/dev/README)
+  - [TODO](/dev/TODO)
   - [CodingGuideline](/dev/CodingGuideline)
+  - [DependencyGraph](/dev/DependencyGraph)
   - Notes
     - [SharedArrayBuffuer](/dev/notes/SharedArrayBuffuer)

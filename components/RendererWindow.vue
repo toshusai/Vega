@@ -51,9 +51,10 @@ import Modal from "./vega/Modal.vue";
 import Renderer from "~/models/Renderer";
 import Recorder from "~/models/Recorder";
 import { Strip } from "~/models";
+import ExportingCard from "~/components/ExportingCard.vue";
 
 @Component({
-  components: { Modal },
+  components: { Modal, ExportingCard },
 })
 export default class Encoder extends Vue {
   @Ref() modal!: Modal;
