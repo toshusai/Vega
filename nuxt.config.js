@@ -27,7 +27,7 @@ export default {
 
   css: ["~/assets/reset.css", "~/assets/global.css"],
 
-  components: true,
+  // components: true,
 
   buildModules: ["@nuxt/typescript-build"],
 
