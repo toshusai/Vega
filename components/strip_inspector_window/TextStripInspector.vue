@@ -71,9 +71,11 @@ import VegaInput from "../vega/VegaInput.vue";
 import VegaSelect from "../vega/VegaSelect.vue";
 import { Asset } from "~/models";
 import { ITextStrip, TextStrip } from "~/models/strips";
+import VegaValueInput from "~/components/vega/VegaValueInput.vue";
 
 @Component({
   components: {
+    VegaValueInput,
     VegaInput,
     VegaSelect,
   },
