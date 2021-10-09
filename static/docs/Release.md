@@ -1,5 +1,9 @@
 # Releases
 
+# v0.0.8
+- Fix not work StripInspector.
+- Fix tests.
+
 # v0.0.7
 - Refactoring
   - Update docs.
