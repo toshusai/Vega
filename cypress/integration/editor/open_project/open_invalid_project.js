@@ -5,6 +5,6 @@ describe("Open Invalid Project File", () => {
     cy.contains("Open Project").click();
     cy.get("input").attachFile("project_files/not_json");
 
-    cy.contains("Invalid project file format.");
+    cy.contains("Project file is not JSON format.");
   });
 });

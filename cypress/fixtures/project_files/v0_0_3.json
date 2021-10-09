@@ -8,6 +8,7 @@
     "assets": [],
     "strips": [
         {
+            "id": "1",
             "type": "Text",
             "start": 1,
             "length": 2,

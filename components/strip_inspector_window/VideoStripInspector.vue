@@ -79,8 +79,15 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { OptionKeyValue } from "../vega/VegaSelect.vue";
 import { Asset, VideoAsset, VideoStrip } from "~/models";
+import VegaValueInput from "~/components/vega/VegaValueInput.vue";
+import VegaSelect from "~/components/vega/VegaSelect.vue";
 
-@Component({})
+@Component({
+  components: {
+    VegaValueInput,
+    VegaSelect,
+  },
+})
 export default class VideoStripInspector extends Vue {
   @Prop({})
   strip!: VideoStrip;
