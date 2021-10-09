@@ -1,13 +1,16 @@
 <template>
   <div style="padding: 4px">
     <div class="label">Start</div>
-    <div>{{ strip.start.toFixed(2) }}</div>
+    <div>WIP</div>
 
     <div class="label">Length</div>
-    <div>{{ strip.length.toFixed(2) }}</div>
+    <div>WIP</div>
 
     <div class="label">Src</div>
-    <div>{{ strip.src }}</div>
+    <div>WIP</div>
+
+    <div class="label">Asset</div>
+    <div>WIP</div>
   </div>
 </template>
 

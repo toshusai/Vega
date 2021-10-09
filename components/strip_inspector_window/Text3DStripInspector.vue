@@ -74,11 +74,13 @@ import VegaInput from "../vega/VegaInput.vue";
 import VegaSelect from "../vega/VegaSelect.vue";
 import { Asset, FontAsset, Text3DStrip } from "~/models";
 import { IText3DStrip } from "~/models/strips";
+import VegaValueInput from "~/components/vega/VegaValueInput.vue";
 
 @Component({
   components: {
     VegaInput,
     VegaSelect,
+    VegaValueInput,
   },
 })
 export default class Text3DStripInspector extends Vue {
