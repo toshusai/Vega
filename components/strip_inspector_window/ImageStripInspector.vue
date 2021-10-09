@@ -72,11 +72,13 @@ import { Component, Prop } from "vue-property-decorator";
 import VegaInput from "../vega/VegaInput.vue";
 import VegaSelect, { OptionKeyValue } from "../vega/VegaSelect.vue";
 import { Asset, ImageStrip, ImageAsset } from "~/models";
+import VegaValueInput from "~/components/vega/VegaValueInput.vue";
 
 @Component({
   components: {
     VegaInput,
     VegaSelect,
+    VegaValueInput,
   },
 })
 export default class ImageStripInspector extends Vue {
