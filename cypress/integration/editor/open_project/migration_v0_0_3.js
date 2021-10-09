@@ -5,6 +5,6 @@ describe("Open v0.0.3 Project File", () => {
     cy.contains("Open Project").click();
     cy.get("input").attachFile("project_files/v0_0_3.json");
 
-    cy.get("[data-vega-text-strip]");
+    cy.get("[data-vega-text-3d-strip]");
   });
 });
