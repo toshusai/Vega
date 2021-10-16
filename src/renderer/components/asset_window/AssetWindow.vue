@@ -100,19 +100,15 @@ export default class AssetWindow extends Vue {
   }
 
   addAsset(file: File) {
-    if (file.type == "video/mp4") {
+    if (VideoAsset.isSupportType(file.type)) {
       const src = window.URL.createObjectURL(file);
       const asset = new VideoAsset(v4(), file.name, src);
       this.$emit("addAsset", asset);
-    } else if (
-      file.type == "audio/wav" ||
-      file.type == "audio/mp3" ||
-      file.type == "audio/mpeg"
-    ) {
+    } else if (AudioAsset.isSupportType(file.type)) {
       const src = window.URL.createObjectURL(file);
       const asset = new AudioAsset(v4(), file.name, src);
       this.$emit("addAsset", asset);
-    } else if (file.type == "image/png") {
+    } else if (ImageAsset.isSupportType(file.type)) {
       const src = window.URL.createObjectURL(file);
       const asset = new ImageAsset(v4(), file.name, src);
       this.$emit("addAsset", asset);

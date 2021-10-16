@@ -444,7 +444,7 @@ export default class Timeline extends Vue {
     if (files && files.length == 1) {
       const file = files[0];
       const src = window.URL.createObjectURL(file);
-      if (file.type == "video/mp4" || file.type == "video/webm") {
+      if (VideoAsset.isSupportType(file.type)) {
         const asset = new VideoAsset(v4(), file.name, src);
         this.$emit("addAsset", asset);
         const newStrip = new VideoStrip(
@@ -462,11 +462,7 @@ export default class Timeline extends Vue {
           asset
         );
         this.addStrip(newStrip);
-      } else if (
-        file.type == "audio/wav" ||
-        file.type == "audio/mp3" ||
-        file.type == "audio/mpeg"
-      ) {
+      } else if (AudioAsset.isSupportType(file.type)) {
         const asset = new AudioAsset(v4(), file.name, src);
         this.$emit("addAsset", asset);
         const newStrip = new AudioStrip(
@@ -480,7 +476,7 @@ export default class Timeline extends Vue {
           asset
         );
         this.addStrip(newStrip);
-      } else if (file.type == "image/png") {
+      } else if (ImageAsset.isSupportType(file.type)) {
         const asset = new ImageAsset(v4(), file.name, src);
         this.$emit("addAsset", asset);
         const newStrip = new ImageStrip(
