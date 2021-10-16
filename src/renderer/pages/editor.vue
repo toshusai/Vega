@@ -287,6 +287,7 @@ export default class IndexPage extends Vue {
       }
 
       this.strips.splice(i, 1);
+      this.selectedStrips = [];
     }
   }
 
