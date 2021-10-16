@@ -281,6 +281,11 @@ export default class IndexPage extends Vue {
   deleteStrip(strip: Strip) {
     const i = this.strips.findIndex((s) => s == strip);
     if (i != -1) {
+      const strip = this.strips[i];
+      if (StripUtil.isThreeJsStrip(strip)) {
+        strip.obj.removeFromParent();
+      }
+
       this.strips.splice(i, 1);
     }
   }
