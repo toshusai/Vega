@@ -120,7 +120,9 @@ import {
   ImageStrip,
   ImageAsset,
 } from "~/models";
-import ContextMenu from "~/components/vega/contextmenu/ContextMenu.vue";
+import ContextMenu, {
+  ContextMenuItem,
+} from "~/components/vega/contextmenu/ContextMenu.vue";
 import MenuButton from "~/components/vega/MenuButton.vue";
 import { VegaError } from "~/plugins/error";
 
@@ -295,7 +297,18 @@ export default class Timeline extends Vue {
   }
 
   openContextMenu(e: MouseEvent) {
-    this.contextMenu.open(e);
+    const items: ContextMenuItem[] = [
+      { name: "Add Text", action: this.addTextStrip },
+      { name: "Add Video", action: this.addVideoStrip },
+      { name: "Add Image", action: this.addImageStrip },
+      { name: "Add Audio", action: this.addAudioStrip },
+    ];
+    if (this.hasSelectedStrip) {
+      items.push({ name: "Split", action: this.split });
+      items.push({ name: "Delete", action: this.deleteStrip });
+    }
+    this.contextMenu.open(e, items);
+
     e.preventDefault();
   }
 
