@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="editor">
     <AppBar
       @renderVideo="renderVideo"
       @openProject="openProject"
@@ -97,6 +97,17 @@
   </div>
 </template>
 
+<style scoped>
+.editor {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+</style>
+
 <script lang="ts">
 import Vue from "vue";
 import * as T from "three";
@@ -129,6 +140,7 @@ import { PlayMode, PLAY_EVERY_FRAME, SYNC_TO_AUDIO } from "~/plugins/config";
 import { isProject, migrationProject } from "~/models/Project";
 import ProjectWindow from "~/components/ProjectWindow.vue";
 import ControllerWindow from "~/components/ControllerWindow.vue";
+import { DragAndDrop } from "~/plugins/dragAndDrop";
 
 @Component({
   components: {
@@ -183,6 +195,7 @@ export default class IndexPage extends Vue {
   }
 
   async mounted() {
+    DragAndDrop.init();
     this.scene = new T.Scene();
     this.camera = new T.OrthographicCamera(0, this.width, this.height, 0);
     this.camera.position.set(0, 0, 10);
