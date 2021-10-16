@@ -29,12 +29,17 @@ if (isDev) {
   indexUrl = `http://localhost:${PROXY_PORT}`;
 } else {
   const server = http.createServer(function (req, res) {
-    setHeaders(res);
     const baseDir = path.resolve(__dirname, "../../dist/renderer");
-    // redirect to index.html
-    if (!req.url?.match(/^\/_nuxt|\/static/)) req.url = "/index.html";
-    const r = fs.readFileSync(baseDir + req.url);
-    res.write(r);
+    // redirect Docs to docs (for docsify)
+    if (!req.url?.match(/^\/docs/)) {
+      req.url = "/static/docs/index.html";
+    }
+    // redirect Nuxt pages to index.html
+    if (!req.url?.match(/^\/_nuxt|\/static/)) {
+      req.url = "/index.html";
+    }
+    const responseContent = fs.readFileSync(baseDir + req.url);
+    res.write(responseContent);
     res.end();
   });
 
@@ -48,12 +53,16 @@ let win: any = null;
 const app = electron.app;
 const newWin = () => {
   win = new electron.BrowserWindow({
-    width: 1400,
-    height: 1000,
+    width: 1280,
+    height: 720,
+    webPreferences: {
+      webSecurity: false,
+    },
   });
   win.on("closed", () => (win = null));
   win.loadURL(indexUrl);
 };
+
 app.on("ready", newWin);
 app.on("window-all-closed", () => app.quit());
 app.on("activate", () => win === null && newWin());
