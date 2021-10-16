@@ -24,7 +24,7 @@ import {
   TextStrip,
   VideoStrip,
 } from "~/models";
-import { addDragEventOnce } from "~/plugins/mouse";
+import { addDragEventOnce, LEFT } from "~/plugins/mouse";
 import { IVector3 } from "~/models/math/Vector3";
 
 @Component({})
@@ -77,8 +77,10 @@ export default class Gizmo extends Vue {
 
   mounted() {
     if (this.gizmo) {
-      this.gizmo.addEventListener("mousedown", () => {
+      this.gizmo.addEventListener("mousedown", (e) => {
+        if (e.button != LEFT) return;
         addDragEventOnce((e) => {
+          if (e.button != LEFT) return;
           if (this.canDrawStrip(this.strip)) {
             const iface = this.strip.toInterface();
             const x = iface.position.x + e.movementX / this.scale;
