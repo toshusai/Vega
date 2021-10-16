@@ -107,7 +107,6 @@ import PreviewWindow from "~/components/PreviewWindow.vue";
 import {
   Asset,
   FontAsset,
-  ImageStrip,
   Project,
   Strip,
   Text3DStrip,
@@ -233,22 +232,12 @@ export default class IndexPage extends Vue {
         }
         break;
       case "position.x":
-        if (
-          target instanceof VideoStrip ||
-          target instanceof Text3DStrip ||
-          target instanceof ImageStrip ||
-          target instanceof TextStrip
-        ) {
+        if (StripUtil.isThreeJsStrip(target)) {
           target.position.x = value;
         }
         break;
       case "position.y":
-        if (
-          target instanceof VideoStrip ||
-          target instanceof Text3DStrip ||
-          target instanceof ImageStrip ||
-          target instanceof TextStrip
-        ) {
+        if (StripUtil.isThreeJsStrip(target)) {
           target.position.y = value;
         }
         break;
@@ -280,12 +269,7 @@ export default class IndexPage extends Vue {
   }
 
   changeStripPos(pos: IVector3) {
-    if (
-      this.selectedStrip instanceof VideoStrip ||
-      this.selectedStrip instanceof TextStrip ||
-      this.selectedStrip instanceof ImageStrip ||
-      this.selectedStrip instanceof Text3DStrip
-    ) {
+    if (this.selectedStrip && StripUtil.isThreeJsStrip(this.selectedStrip)) {
       this.selectedStrip.position.set(pos.x, pos.y, pos.z);
     }
   }
@@ -384,12 +368,7 @@ export default class IndexPage extends Vue {
 
   addStrip(ts: Strip) {
     this.strips.push(ts);
-    if (
-      ts instanceof Text3DStrip ||
-      ts instanceof VideoStrip ||
-      ts instanceof ImageStrip ||
-      ts instanceof TextStrip
-    ) {
+    if (StripUtil.isThreeJsStrip(ts)) {
       this.scene?.add(ts.obj);
     }
   }
@@ -428,12 +407,7 @@ export default class IndexPage extends Vue {
     this.strips = StripUtil.interfacesToInstances(project.strips, this.assets);
 
     this.strips.forEach((s) => {
-      if (
-        s instanceof Text3DStrip ||
-        s instanceof VideoStrip ||
-        s instanceof ImageStrip ||
-        s instanceof TextStrip
-      ) {
+      if (StripUtil.isThreeJsStrip(s)) {
         this.scene?.add(s.obj);
       }
     });
