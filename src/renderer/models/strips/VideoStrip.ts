@@ -39,7 +39,7 @@ export class VideoStrip extends Strip {
 
   event: EventTarget = new EventTarget();
 
-  readonly videoAsset?: VideoAsset;
+  videoAsset?: VideoAsset;
 
   get src() {
     return this.video.src;
@@ -114,6 +114,7 @@ export class VideoStrip extends Strip {
       this.loaded = false;
       return;
     }
+    this.videoAsset = asset;
     this.loaded = false;
     this.video.src = asset.path;
     asset.valid = false;
