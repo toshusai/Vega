@@ -1,3 +1,4 @@
+import { VegaError } from "./error";
 import { Asset, AudioAsset, ImageAsset, VideoAsset } from "~/models";
 import {
   AudioStrip,
@@ -5,6 +6,8 @@ import {
   ImageStrip,
   IStrip,
   IText3DStrip,
+  ITextStrip,
+  TextStrip,
   IVideoStrip,
   Text3DStrip,
   VideoStrip,
@@ -31,8 +34,11 @@ export class StripUtil {
         const is = JSON.parse(JSON.stringify(s)) as IImageStrip;
         const aa = getAssetById(is.assetId) as ImageAsset | undefined;
         return new ImageStrip(is, aa);
+      } else if (s.type == "Text") {
+        const is = JSON.parse(JSON.stringify(s)) as ITextStrip;
+        return new TextStrip(is);
       } else {
-        throw new Error("Error Undefined Strip Type: " + s.type);
+        throw new VegaError("Error Undefined Strip Type: " + s.type);
       }
     });
   }

@@ -1,5 +1,10 @@
 # Releases
 
+# v0.0.9
+- Add Electron support.
+  - Work in progress more...
+- Fix fail load TextStrip from a project file.
+
 # v0.0.8
 - Fix not work StripInspector.
 - Fix tests.

@@ -94,3 +94,9 @@ sw.*
 # static/static/js/ffmpeg/ffmpeg-core.wasm
 # static/static/js/ffmpeg/ffmpeg-core.worker.js
 # static/static/js/webm-writer-0.2.0.js
+
+
+build
+.firebaserc
+firebase.json
+.firebase

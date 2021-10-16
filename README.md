@@ -8,13 +8,13 @@ Editor - https://vega.toshusai.net
 
 Documents - https://vega.toshusai.net/docs
 
-<img src="static/static/img/vega_screenshot.png" width="100%">
+<img src="src/renderer/static/static/img/vega_screenshot.png" width="100%">
 
 # Support Browsers
 - Google Chrome 92
 
 # Develop
-Check [static/docs/dev/README.md](static/docs/dev/README.md)
+Check [static/docs/dev/README.md](src/renderer/static/docs/dev/README.md)
 
 # Thanks Open Source Softwares/Libraries
 

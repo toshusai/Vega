@@ -20,7 +20,7 @@ sh scripts/copy-static-js.sh
 
 ### 3. Run Nuxt dev server.
 ```
-yarn dev
+yarn dev:renderer
 ```
 
 ### 4. Run up proxy server

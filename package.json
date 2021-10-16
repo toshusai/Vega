@@ -1,14 +1,40 @@
 {
   "name": "vega",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "license": "MIT",
   "author": "toshusai",
+  "main": "dist/main/index.js",
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt generate",
+    "dev:main": "npm-run-all -s dev:main:tsc dev:main:electron",
+    "dev:main:tsc": "cross-env NODE_ENV=development tsc -p src/main/tsconfig.json",
+    "dev:main:electron": "cross-env NODE_ENV=development electron .",
+    "dev:renderer": "cross-env NODE_ENV=development nuxt src/renderer",
+    "dev": "npm-run-all -p dev:renderer dev:main",
+    "build": "npm-run-all -s build:renderer build:main -- {@}",
+    "build:renderer": "nuxt generate src/renderer",
+    "build:main": "npm-run-all -s build:main:tsc build:main:electron -- {@}",
+    "build:main:tsc": "tsc -p src/main/tsconfig.json",
+    "build:main:electron": "electron-builder",
+    "build:mac": "npm-run-all build -- --mac",
     "lint": "eslint -c .eslintrc.json --ext \".ts,.vue\" --ignore-path .gitignore . --fix",
     "cypress:run": "cypress run",
     "cypress:open": "cypress open"
+  },
+  "build": {
+    "appId": "com.toshusai.vega",
+    "asar": true,
+    "directories": {
+      "output": "build/"
+    },
+    "mac": {
+      "category": "your.app.category.type",
+      "target": {
+        "target": "default",
+        "arch": [
+          "arm64"
+        ]
+      }
+    }
   },
   "description": "Browser-based video editing software.",
   "keywords": [
@@ -21,6 +47,7 @@
     "@ffmpeg/ffmpeg": "^0.10.1",
     "ccapture.js": "^1.1.0",
     "core-js": "^3.15.1",
+    "http-proxy": "^1.18.1",
     "nuxt": "^2.15.7",
     "three": "^0.131.3",
     "uuid": "^8.3.2",
@@ -38,13 +65,18 @@
     "@types/uuid": "^8.3.1",
     "@types/wavesurfer.js": "^5.1.0",
     "@vue/eslint-config-prettier": "^6.0.0",
+    "cross-env": "^7.0.3",
     "cypress": "^8.5.0",
     "cypress-file-upload": "^5.0.8",
+    "electron": "^15.2.0",
+    "electron-builder": "^22.13.1",
+    "electron-devtools-installer": "^3.2.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-prettier-vue": "^3.1.0",
     "eslint-plugin-vue": "^7.15.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.3.2",
     "vue-class-component": "^7.2.6"
   }
