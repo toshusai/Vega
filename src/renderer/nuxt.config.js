@@ -31,6 +31,10 @@ export default {
 
   buildModules: ["@nuxt/typescript-build"],
 
+  generate: {
+    dir: "../../dist/renderer",
+  },
+
   // https://github.com/nuxt/nuxt.js/issues/9224#issuecomment-893289291
   build: {
     babel: {
