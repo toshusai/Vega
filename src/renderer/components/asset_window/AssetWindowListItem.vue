@@ -1,5 +1,10 @@
 <template>
-  <div class="asset-list-item" :class="itemClass" @click="click">
+  <div
+    class="asset-list-item"
+    :class="itemClass"
+    @click="click"
+    @mousedown="mousedown"
+  >
     <svg class="asset-icon" viewBox="0 0 24 24">
       <!-- https://materialdesignicons.com/ -->
       <path
@@ -60,6 +65,7 @@
 import Vue from "vue";
 import { Component, Emit, Prop } from "vue-property-decorator";
 import { Asset } from "~/models";
+import dragAndDrop from "~/plugins/dragAndDrop";
 
 @Component({})
 export default class AssetWindowListItem extends Vue {
@@ -80,6 +86,10 @@ export default class AssetWindowListItem extends Vue {
 
   click(e: Event) {
     this.clickEmit(e);
+  }
+
+  mousedown(_: MouseEvent) {
+    dragAndDrop(this.$el as HTMLElement, this.asset);
   }
 }
 </script>
