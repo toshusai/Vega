@@ -3,7 +3,8 @@
 https://github.com/sverweij/dependency-cruiser
 
 ```
-depcruise --config .dependency-cruiser.js --output-type dot . | dot -T png -Gdpi=200  > dependencygraph.png
+cd src/renderer
+depcruise --config .dependency-cruiser.js --output-type dot . | dot -T png -Gdpi=200  > static/docs/dev/dependencygraph.png
 ```
 
 ![dependencygraph.png](dependencygraph.png)
