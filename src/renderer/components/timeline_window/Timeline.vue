@@ -232,7 +232,18 @@ export default class Timeline extends Vue {
   }
 
   addTextStrip() {
-    const newStrip = new TextStrip("New Text");
+    const newStrip = new TextStrip({
+      id: v4(),
+      start: this.currentTime,
+      length: 5,
+      layer: 0,
+      text: "New Text",
+      fontSize: 14,
+      fontFamily: "serif",
+      color: "white",
+      position: { x: 0, y: 0, z: 0 },
+      type: "Text",
+    });
     newStrip.start = this.currentTime;
     newStrip.length = 5;
     newStrip.position.set(500, 500, -10);
