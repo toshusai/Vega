@@ -91,11 +91,11 @@ export class TextStrip extends Strip implements ITextStrip {
 
   /**
    * Create new TextStrip
-   * @param text The text to show.
+   * @param itext The text strip interface.
    */
-  constructor(text: string) {
+  constructor(itext: ITextStrip) {
     super();
-    this.text = text;
+    this.text = itext.text;
     this.canvas = document.createElement("canvas");
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
     this.texture = new CanvasTexture(this.canvas);
@@ -105,6 +105,13 @@ export class TextStrip extends Strip implements ITextStrip {
     });
     this.geometry = new PlaneBufferGeometry(1, 1, 1, 1);
     this.obj = new T.Mesh(this.geometry, this.material);
+    this.obj.uuid = itext.id;
+    this.position.setX(itext.position.x);
+    this.position.setY(itext.position.y);
+    this.position.setZ(itext.position.z);
+    this.start = itext.start;
+    this.length = itext.length;
+    this.layer = itext.layer;
     this.id = this.obj.uuid;
 
     this.updateFont();

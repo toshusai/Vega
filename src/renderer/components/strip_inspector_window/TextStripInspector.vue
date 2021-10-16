@@ -98,7 +98,7 @@ export default class TextStripInspector extends Vue {
   change(update: (iface: ITextStrip) => void) {
     const iface = this.strip.toInterface();
     update(iface);
-    const ts = new TextStrip(iface.text);
+    const ts = new TextStrip(iface);
     this.changeEmit(ts);
   }
 
