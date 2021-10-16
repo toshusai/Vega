@@ -431,7 +431,8 @@ export default class IndexPage extends Vue {
       if (
         s instanceof Text3DStrip ||
         s instanceof VideoStrip ||
-        s instanceof ImageStrip
+        s instanceof ImageStrip ||
+        s instanceof TextStrip
       ) {
         this.scene?.add(s.obj);
       }
