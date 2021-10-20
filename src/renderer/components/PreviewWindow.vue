@@ -6,6 +6,7 @@
       class="preview-window"
       @mousewheel="onWheel"
       @mousedown="down"
+      @contextmenu="stop"
     >
       <div class="canvas" :style="canvasContainerStyle">
         <canvas ref="renderCanvas" class="render-canvas" />
@@ -186,11 +187,17 @@ export default class PreviewWindow extends Vue {
     this.canvas = this.renderCanvas;
   }
 
+  stop(e: MouseEvent) {
+    e.preventDefault();
+  }
+
   down(e: MouseEvent) {
     if (e.button != 2) return;
+    e.preventDefault();
     addDragEventOnce((e) => {
       this.top += e.movementY;
       this.left += e.movementX;
+      e.preventDefault();
     });
   }
 
