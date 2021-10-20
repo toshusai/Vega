@@ -1,14 +1,14 @@
 <template>
-  <span>
+  <div class="spectrum-Textfield">
     <input
       data-cy="vega-input"
-      class="vega-input"
+      class="spectrum-Textfield-input"
       :type="type"
       :step="step"
       :value="value"
       @change="(e) => $emit('change', e)"
     />
-  </span>
+  </div>
 </template>
 
 <style scoped>

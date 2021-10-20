@@ -2,30 +2,51 @@
   <div class="root">
     <WindowNameTag name="Project" />
     <div style="padding: 4px">
-      <div class="label">name</div>
-      <VegaValueInput :value="name" @change="changeName" />
+      <label class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">name</label>
+      <VegaValueInput class="w100" :value="name" @change="changeName" />
 
-      <hr class="hr" />
-
-      <div class="label">duration</div>
+      <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">duration</div>
       <VegaValueInput
+        class="w100"
         type="number"
         :value="duration"
         @change="changeDuration"
       />
 
-      <hr class="hr" />
+      <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">fps</div>
+      <VegaSelect
+        class="w100"
+        :value="fps"
+        :items="fpsItems"
+        @change="changeFps"
+      />
 
-      <div class="label">fps</div>
-      <VegaSelect :value="fps" :items="fpsItems" @change="changeFps" />
-
-      <hr class="hr" />
-
-      <div class="label">resolution</div>
+      <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">
+        resolution
+      </div>
       <div style="display: flex">
-        <VegaValueInput type="number" :value="width" @change="changeWidth" />
-        x
-        <VegaValueInput type="number" :value="height" @change="changeHeight" />
+        <div>
+          <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">
+            width
+          </div>
+          <VegaValueInput
+            class="w100"
+            type="number"
+            :value="width"
+            @change="changeWidth"
+          />
+        </div>
+        <div>
+          <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">
+            height
+          </div>
+          <VegaValueInput
+            class="w100"
+            type="number"
+            :value="height"
+            @change="changeHeight"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -41,6 +62,9 @@
 .hr {
   height: 1px;
   margin: 4px 0;
+}
+.w100 {
+  width: 100%;
 }
 </style>
 

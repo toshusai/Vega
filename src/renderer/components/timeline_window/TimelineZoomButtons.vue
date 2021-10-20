@@ -32,7 +32,6 @@
 }
 
 .button {
-  z-index: 10;
   padding: 0;
   height: 20px;
   width: 20px;

@@ -15,7 +15,7 @@
     <div v-if="end" class="note2">Rendering Completed !</div>
 
     <div class="content">
-      <VegaButton @click="close">Close</VegaButton>
+      <VegaButton :primary="true" @click="close">Close</VegaButton>
       <div style="margin: auto"></div>
       <VegaButton v-if="!isEncoding" @click="start">Start</VegaButton>
       <VegaButton v-if="end" @click="download">Download</VegaButton>
@@ -38,6 +38,7 @@
 
 .content {
   margin: 12px;
+  margin-top: 16px;
   text-align: center;
   display: flex;
 }
@@ -50,7 +51,6 @@
 
 .card {
   margin: auto;
-  background-color: var(--vc-d-4);
   padding: 16px;
   border-radius: 2px;
   z-index: 1;

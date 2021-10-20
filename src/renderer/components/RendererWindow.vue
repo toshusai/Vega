@@ -1,20 +1,23 @@
 <template>
   <Modal ref="modal">
-    <div class="center">
-      <div class="render-view">
-        <div class="canvas-wrap" :style="canvasWrapStyle">
-          <canvas ref="canvas" :style="canvasStyle" />
+    <div>
+      <div>
+        <div class="render-view">
+          <div class="canvas-wrap" :style="canvasWrapStyle">
+            <canvas ref="canvas" :style="canvasStyle" />
+          </div>
         </div>
       </div>
-      <ExportingCard
-        :ffmpegProgress="ffmpegProgress"
-        :ccaptureProgress="ccaptureProgress"
-        :isEncoding="isEncoding"
-        style="width: 100%"
-        @start="encode"
-        @close="cancel"
-        @download="download"
-      />
+      <div>
+        <ExportingCard
+          :ffmpegProgress="ffmpegProgress"
+          :ccaptureProgress="ccaptureProgress"
+          :isEncoding="isEncoding"
+          @start="encode"
+          @close="cancel"
+          @download="download"
+        />
+      </div>
     </div>
   </Modal>
 </template>
@@ -23,20 +26,14 @@
 .center {
   margin: auto;
   width: 100%;
-  max-width: 600px;
-  /* height: 400px; */
 }
 
 .render-view {
-  background-color: var(--vc-d-4);
-  width: 100%;
   display: flex;
   padding: 16px;
 }
 
 .canvas-wrap {
-  width: 300px;
-  height: 400px;
   background-color: gray;
   margin: auto;
 }

@@ -1,6 +1,8 @@
 <template>
-  <button type="button" class="vega-button" @click="(e) => $emit('click', e)">
-    <slot />
+  <button type="button" :class="cssClass" @click="(e) => $emit('click', e)">
+    <span class="spectrum-Button-label">
+      <slot />
+    </span>
   </button>
 </template>
 
@@ -29,8 +31,23 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 
 @Component({})
-export default class TimelineLayer extends Vue {}
+export default class TimelineLayer extends Vue {
+  @Prop({ default: false })
+  primary!: boolean;
+
+  @Prop({ default: false })
+  quiet!: boolean;
+
+  get cssClass() {
+    return [
+      "spectrum-Button",
+      "spectrum-Button--" + (this.primary ? "primary" : "cta"),
+      this.quiet ? "spectrum-Button--quiet" : "",
+      "spectrum-Button--sizeS",
+    ];
+  }
+}
 </script>

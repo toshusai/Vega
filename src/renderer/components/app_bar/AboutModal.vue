@@ -1,6 +1,6 @@
 <template>
   <modal ref="modal">
-    <div class="card">
+    <div style="width: 100%">
       <div class="buttons">
         <div>Version: {{ version }}</div>
         <div>
@@ -13,8 +13,10 @@
           <a class="link" href="https://github.com/toshusai/vega">GitHub</a>
         </div>
       </div>
-      <div class="buttons">
-        <VegaButton @click="close"> Close </VegaButton>
+      <div class="buttons" style="display: flex">
+        <VegaButton style="margin-left: auto" @click="close">
+          Close
+        </VegaButton>
       </div>
     </div>
   </modal>

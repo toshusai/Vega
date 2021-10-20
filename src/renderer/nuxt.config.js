@@ -25,7 +25,22 @@ export default {
     },
   },
 
-  css: ["~/assets/reset.css", "~/assets/global.css"],
+  css: [
+    "~/assets/reset.css",
+    "~/assets/global.css",
+    "@spectrum-css/button/dist/index-vars.css",
+    "@spectrum-css/vars/dist/spectrum-global.css",
+    "@spectrum-css/vars/dist/spectrum-medium.css",
+    "@spectrum-css/vars/dist/spectrum-light.css",
+    "@spectrum-css/vars/dist/spectrum-dark.css",
+    "@spectrum-css/page/dist/index-vars.css",
+    "@spectrum-css/typography",
+    "@spectrum-css/textfield",
+    "@spectrum-css/fieldlabel",
+    "@spectrum-css/dialog",
+    "@spectrum-css/modal",
+    "@spectrum-css/underlay",
+  ],
 
   // components: true,
 

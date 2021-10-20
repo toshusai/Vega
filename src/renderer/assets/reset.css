@@ -4,6 +4,7 @@
  * github.com/filipelinhares/ress
  */
 
+/* 
 html {
     box-sizing: border-box;
     -webkit-text-size-adjust: 100%;
@@ -209,4 +210,4 @@ progress {
 
 [aria-disabled=true] {
     cursor: default
-}
+} */

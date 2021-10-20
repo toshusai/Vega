@@ -1,9 +1,16 @@
 <template>
-  <select data-vega-select class="vega-select" :value="value" @change="change">
-    <option v-for="(item, i) in items" :key="i" :value="item.value">
-      {{ item.text }}
-    </option>
-  </select>
+  <div class="spectrum-Textfield">
+    <select
+      data-vega-select
+      class="spectrum-Textfield-input"
+      :value="value"
+      @change="change"
+    >
+      <option v-for="(item, i) in items" :key="i" :value="item.value">
+        {{ item.text }}
+      </option>
+    </select>
+  </div>
 </template>
 
 <style scoped>
