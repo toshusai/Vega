@@ -1,55 +1,63 @@
 <template>
   <div style="padding: 4px">
-    <div class="label">Start</div>
+    <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Text</div>
     <VegaValueInput
+      class="w100"
+      :value="strip.text"
+      @change="changeStripText"
+    />
+
+    <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Start</div>
+    <VegaValueInput
+      class="w100"
       type="number"
       :step="0.01"
       :value="strip.start.toFixed(3)"
       @change="changeStart"
     />
 
-    <hr class="hr" />
-
-    <div class="label">Length</div>
+    <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Length</div>
     <VegaValueInput
+      class="w100"
       type="number"
       :step="0.01"
       :value="strip.length.toFixed(3)"
       @change="changeLength"
     />
 
-    <hr class="hr" />
-
-    <div class="label">Position</div>
+    <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Position</div>
     <div class="position">
-      x:<VegaValueInput
-        type="number"
-        :step="0.01"
-        :value="strip.position.x"
-        @change="changeX"
-      />
+      <div>
+        <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Y</div>
+        <VegaValueInput
+          type="number"
+          class="w100"
+          :step="0.01"
+          :value="strip.position.x"
+          @change="changeX"
+        />
+      </div>
+      <div>
+        <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">X</div>
+        <VegaValueInput
+          class="w100"
+          type="number"
+          :step="0.01"
+          :value="strip.position.y"
+          @change="changeY"
+        />
+      </div>
     </div>
-    <div class="position">
-      y:<VegaValueInput
-        type="number"
-        :step="0.01"
-        :value="strip.position.y"
-        @change="changeY"
-      />
-    </div>
-
-    <hr class="hr" />
-
-    <div class="label">Text</div>
-    <VegaValueInput :value="strip.text" @change="changeStripText" />
-
-    <hr class="hr" />
   </div>
 </template>
 
 <style scoped>
 .label {
   font-weight: bold;
+}
+
+.w100 {
+  width: 100%;
 }
 
 .position {

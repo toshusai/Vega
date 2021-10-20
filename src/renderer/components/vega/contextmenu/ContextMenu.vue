@@ -12,6 +12,10 @@
 
 <style scoped>
 .contextmenu {
+  background-color: var(
+    --spectrum-alias-background-color-default,
+    var(--spectrum-global-color-gray-100)
+  );
   position: fixed;
   z-index: 10;
 }

@@ -1489,6 +1489,53 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
   integrity sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==
 
+"@spectrum-css/button@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/button/-/button-4.0.0.tgz#9941da416e23ff8a986207d3b4c59401d5f5f9cc"
+  integrity sha512-NRiJoXHjiGLgBMvGzwNiyHZmdMU27ukn76jIjL5LHjbrPDB7KjfDm27sODcT0GiP05KIfwVun/DHoXih7NV24A==
+
+"@spectrum-css/dialog@^3.0.5":
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/dialog/-/dialog-3.0.5.tgz#1733b45ae8f43b9395b9038001e6ae1607d625cd"
+  integrity sha512-zBtmAdrKtnUC4ZW9VybhTLA014/fCRF6COc4LwJMBA9AC0aN7Bqs/e1NXizaUzbxLEkPgHiGe8KjBhx10OZSBw==
+
+"@spectrum-css/fieldlabel@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/fieldlabel/-/fieldlabel-4.0.0.tgz#651bab8fd79ef043f82a6e8282057ee873ec3751"
+  integrity sha512-z+xU3jQQt8qDvmq1YYH0SwZq271u07RUm4V8P5Q8zwfbogvZKONjJzLtNkgTboAyf4eogtLGlDcdA9Tus+2Yyg==
+
+"@spectrum-css/modal@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/modal/-/modal-3.0.3.tgz#22671e3d3fa6c99cfd0f85dabb0e1ffd808beece"
+  integrity sha512-GtqvEXE7JGIHgEZXSa+40jTCp5jwugcWobXxM1DYMGJUdV0z1NHb26/sa2ZShFrbuIUMAg3tdZoswYJAyWOoOw==
+
+"@spectrum-css/page@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/page/-/page-3.0.3.tgz#32322020a3c1b60827b5083c10bf74234ad206e2"
+  integrity sha512-xWKb0saiIxQX3vCEC7o6Qx1c7g+jxsm40jA89HLW0DFMd8EQwQHBooa9mU7VwhmlkMe3vAUaphl7WKDQoHP3/g==
+  dependencies:
+    "@spectrum-css/vars" "^4.0.0"
+
+"@spectrum-css/textfield@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/textfield/-/textfield-3.0.3.tgz#0ea8d56ce58790586ef3433a2bcee31d22b976a8"
+  integrity sha512-HHKGFlWtr/8bpJ0RmeyILHSQ+kUC0hPL/tlhcvCI5aTG1yMydvEJZ0mVe/uGKJPWKvV2sRr7X8Tmof3Yk7vTIA==
+
+"@spectrum-css/typography@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/typography/-/typography-4.0.0.tgz#9cfc7ce71374cf2d44341c2e62907645109f98cb"
+  integrity sha512-yTJj95Rndrc35KR/iDDn206AIix35uTGN2c0zV4pMhoUo57dNmuNB//HJ4uOtVKoMztTel9Ki7E15M5QHt7B5A==
+
+"@spectrum-css/underlay@^2.0.12":
+  version "2.0.12"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/underlay/-/underlay-2.0.12.tgz#d7735dc1de1d8b4e881e49f68b3095f2984cf7af"
+  integrity sha512-eWeRQFy2MDJZFwzyMXwU8/sgpQaCLSzB3/18PIr4NcC/ixbJ+DjcCoRjKvL4sSYVDVFlQ2ssjnz1tOGn29Qm+g==
+
+"@spectrum-css/vars@^4.0.0", "@spectrum-css/vars@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/vars/-/vars-4.0.1.tgz#ddc281316800db305856c5eeaebbed480a5ccf8d"
+  integrity sha512-zEQCWk4+UlXGha0xz4iQQu0T8C2fFWAWfbXWtcHPNsb7DsUZLsJIqMpxJIbS0nQ9A832923e/jBn2l+03ikR5Q==
+
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-1.1.2.tgz#b1665e2c461a2cd92f4c1bbf50d5454de0d4b421"

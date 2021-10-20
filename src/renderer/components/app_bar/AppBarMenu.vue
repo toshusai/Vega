@@ -14,14 +14,15 @@
   text-align: left;
   border: none;
   font-family: Ricty;
-  background-color: var(--vc-d-3);
+  background-color: var(
+    --spectrum-alias-background-color-default,
+    var(--spectrum-global-color-gray-100)
+  );
   color: white;
   border: 1px solid var(--black);
 }
 
-.app-bar-menu:hover {
-  background-color: var(--vc-d-2);
-}
+/* .app-bar-menu:hover { } */
 </style>
 
 <script lang="ts">
