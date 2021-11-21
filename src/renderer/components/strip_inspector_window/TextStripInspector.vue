@@ -1,14 +1,10 @@
 <template>
   <div style="padding: 4px">
     <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Text</div>
-    <VegaValueInput
-      class="w100"
-      :value="strip.text"
-      @change="changeStripText"
-    />
+    <sp-textfield class="w100" :value="strip.text" @change="changeStripText" />
 
     <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Start</div>
-    <VegaValueInput
+    <sp-textfield
       class="w100"
       type="number"
       :step="0.01"
@@ -17,7 +13,7 @@
     />
 
     <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Length</div>
-    <VegaValueInput
+    <sp-textfield
       class="w100"
       type="number"
       :step="0.01"
@@ -29,7 +25,7 @@
     <div class="position">
       <div>
         <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Y</div>
-        <VegaValueInput
+        <sp-textfield
           type="number"
           class="w100"
           :step="0.01"
@@ -39,7 +35,7 @@
       </div>
       <div>
         <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">X</div>
-        <VegaValueInput
+        <sp-textfield
           class="w100"
           type="number"
           :step="0.01"
@@ -75,16 +71,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import VegaInput from "../vega/VegaInput.vue";
 import VegaSelect from "../vega/VegaSelect.vue";
 import { Asset } from "~/models";
 import { ITextStrip, TextStrip } from "~/models/strips";
-import VegaValueInput from "~/components/vega/VegaValueInput.vue";
 
 @Component({
   components: {
-    VegaValueInput,
-    VegaInput,
     VegaSelect,
   },
 })
