@@ -22,18 +22,13 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import MenuButton from "~/components/vega/MenuButton.vue";
 
 export class ContextMenuItem {
   text: string = "";
   action: (e: Event) => void = () => {};
 }
 
-@Component({
-  components: {
-    MenuButton,
-  },
-})
+@Component({})
 export default class ContextMenu extends Vue {
   x: number = 0;
   y: number = 0;
@@ -51,7 +46,6 @@ export default class ContextMenu extends Vue {
   click(e: Event, item: ContextMenuItem) {
     item.action(e);
     this.close();
-    console.log("cl;ick");
   }
 
   close() {
