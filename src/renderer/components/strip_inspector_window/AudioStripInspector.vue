@@ -48,7 +48,7 @@ export default class AudioStripInspector extends Vue {
   @Prop({ default: () => [] }) assets!: Asset[];
 
   get currentAssetId() {
-    return this.strip.videoAsset?.id;
+    return this.strip.asset?.id;
   }
 
   get audioAssets(): AudioAsset[] {
