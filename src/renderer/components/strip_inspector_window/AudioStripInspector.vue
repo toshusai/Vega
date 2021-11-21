@@ -1,16 +1,38 @@
 <template>
   <div style="padding: 4px">
-    <div class="label">Start</div>
-    <div>WIP</div>
+    <sp-field-label> Start </sp-field-label>
+    <sp-textfield
+      size="S"
+      type="number"
+      :step="0.01"
+      :value="strip.start"
+      @change="changeStart"
+    />
 
-    <div class="label">Length</div>
-    <div>WIP</div>
+    <sp-field-label> Offset </sp-field-label>
+    <sp-textfield
+      size="S"
+      type="number"
+      :step="0.01"
+      :value="strip.videoOffset"
+      @change="changeVideoOffset"
+    />
 
-    <div class="label">Src</div>
-    <div>WIP</div>
+    <sp-field-label>Length</sp-field-label>
+    <sp-textfield
+      size="S"
+      type="number"
+      :step="0.01"
+      :value="strip.length"
+      @change="changeLength"
+    />
 
-    <div class="label">Asset</div>
-    <div>WIP</div>
+    <sp-field-label>Video</sp-field-label>
+    <VegaSelect
+      :items="selectItems"
+      :value="currentAssetId"
+      @change="changeSrc"
+    />
   </div>
 </template>
 
