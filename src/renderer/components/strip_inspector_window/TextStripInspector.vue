@@ -1,10 +1,16 @@
 <template>
   <div style="padding: 4px">
-    <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Text</div>
-    <sp-textfield class="w100" :value="strip.text" @change="changeStripText" />
-
-    <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Start</div>
+    <sp-field-label> Text </sp-field-label>
     <sp-textfield
+      size="S"
+      class="w100"
+      :value="strip.text"
+      @change="changeStripText"
+    />
+
+    <sp-field-label> Start</sp-field-label>
+    <sp-textfield
+      size="S"
       class="w100"
       type="number"
       :step="0.01"
@@ -12,8 +18,9 @@
       @change="changeStart"
     />
 
-    <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Length</div>
+    <sp-field-label>Length</sp-field-label>
     <sp-textfield
+      size="S"
       class="w100"
       type="number"
       :step="0.01"
@@ -21,11 +28,12 @@
       @change="changeLength"
     />
 
-    <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Position</div>
+    <sp-field-label>Position</sp-field-label>
     <div class="position">
       <div>
-        <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">Y</div>
+        <sp-field-label>X</sp-field-label>
         <sp-textfield
+          size="S"
           type="number"
           class="w100"
           :step="0.01"
@@ -34,8 +42,9 @@
         />
       </div>
       <div>
-        <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">X</div>
+        <sp-field-label>Y</sp-field-label>
         <sp-textfield
+          size="S"
           class="w100"
           type="number"
           :step="0.01"

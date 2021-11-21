@@ -1,5 +1,5 @@
 <template>
-  <sp-button @click="clickInput">
+  <sp-button size="S" type="secondary" @click="clickInput">
     <slot />
     <input ref="input" type="file" style="display: none" @change="change" />
   </sp-button>

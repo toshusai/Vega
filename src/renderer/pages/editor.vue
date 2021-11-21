@@ -5,7 +5,85 @@
       @openProject="openProject"
       @downloadProject="downloadProject"
     />
-    <div style="display: flex; height: 70vh">
+    <sp-split-view style="height: calc(100vh - 32px)">
+      <sp-split-view-pane>
+        <sp-split-view :vertical="true" style="height: 100%">
+          <sp-split-view-pane>
+            <sp-split-view>
+              <sp-split-view-pane style="width: 200px">
+                <AssetWindow
+                  :assets="assets"
+                  @changeSelectedAsset="changeSelectedAsset"
+                  @addAsset="addAsset"
+                />
+              </sp-split-view-pane>
+              <sp-split-view-splitter
+                class="gripper-horizontal splitter-horizontal"
+              ></sp-split-view-splitter>
+              <sp-split-view-pane
+                :style="`height: ${abobeTimeline}px; width: 500px`"
+              >
+                <PreviewWindow
+                  ref="previewWindow"
+                  :currentTime="currentTime"
+                  :selectedStrip="selectedStrip"
+                  :fps="fps"
+                  :width="width"
+                  :height="height"
+                  @changeStripPos="changeStripPos"
+                />
+              </sp-split-view-pane>
+            </sp-split-view>
+          </sp-split-view-pane>
+          <sp-split-view-splitter
+            class="gripper-vertical"
+            :gripper="true"
+            @change="(v) => (abobeTimeline += v)"
+          ></sp-split-view-splitter>
+          <sp-split-view-pane
+            :style="`height: 100%; width: ${timelineWidth}px; overflow-y: scroll`"
+          >
+            <TimelineWindow
+              :currentTime="currentTime"
+              :strips="strips"
+              :selectedStrips="selectedStrips"
+              :duration="duration"
+              @addAsset="addAsset"
+              @addStrip="addStrip"
+              @changeCurrentTime="changeCurrentTime"
+              @changeSelectedStrips="changeSelectedStrips"
+              @changeStrip="
+                (i, name, value) => changeStripPropery(i, name, value)
+              "
+              @deleteStrip="deleteStrip"
+            />
+          </sp-split-view-pane>
+        </sp-split-view>
+      </sp-split-view-pane>
+      <sp-split-view-splitter
+        class="gripper-horizontal"
+      ></sp-split-view-splitter>
+      <sp-split-view-pane style="width: 100%">
+        <!-- <PreviewWindow
+          ref="previewWindow"
+          :currentTime="currentTime"
+          :selectedStrip="selectedStrip"
+          :fps="fps"
+          :width="width"
+          :height="height"
+          @changeStripPos="changeStripPos"
+        /> -->
+        <StripInspector
+          :strip="selectedStrip"
+          :assets="assets"
+          @change="changeStrip"
+          @changeProperty="
+            (name, value) => changeStripPropery(selectedStripIndex, name, value)
+          "
+        />
+      </sp-split-view-pane>
+    </sp-split-view>
+    <!-- <div style="display: flex; height: 70vh">
       <div style="display: flex; width: 30%">
         <div style="width: 50%; display: flex; flex-flow: column">
           <ProjectWindow
@@ -21,11 +99,6 @@
             @changeWidth="changeWidth"
             @changeHeight="changeHeight"
             @changeFps="changeFps"
-          />
-          <AssetWindow
-            :assets="assets"
-            @changeSelectedAsset="changeSelectedAsset"
-            @addAsset="addAsset"
           />
         </div>
         <div style="width: 50%">
@@ -52,35 +125,7 @@
           @togglePlay="play"
         />
       </div>
-    </div>
-
-    <div style="display: flex; height: calc(30vh - 18px)">
-      <div style="width: 80%">
-        <TimelineWindow
-          :currentTime="currentTime"
-          :strips="strips"
-          :selectedStrips="selectedStrips"
-          :duration="duration"
-          @addAsset="addAsset"
-          @addStrip="addStrip"
-          @changeCurrentTime="changeCurrentTime"
-          @changeSelectedStrips="changeSelectedStrips"
-          @changeStrip="(i, name, value) => changeStripPropery(i, name, value)"
-          @deleteStrip="deleteStrip"
-        />
-      </div>
-      <div style="width: 20%">
-        <StripInspector
-          :strip="selectedStrip"
-          :assets="assets"
-          @change="changeStrip"
-          @changeProperty="
-            (name, value) => changeStripPropery(selectedStripIndex, name, value)
-          "
-        />
-      </div>
-    </div>
-
+    </div> -->
     <Snakbar ref="snakbar" />
 
     <RendererWindow
@@ -105,6 +150,62 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+</style>
+
+<style>
+/* Nested SplitView is not working. So override force. */
+.gripper-vertical > .spectrum-SplitView-gripper {
+  left: 50% !important;
+}
+.gripper-horizontal {
+  height: auto !important;
+  min-height: auto !important;
+  width: 2px !important;
+  min-width: 2px !important;
+}
+.gripper-horizontal > .spectrum-SplitView-gripper {
+  /* override props */
+  left: -4px !important;
+  /* default horizontal */
+  content: "";
+  display: block;
+  position: absolute;
+  border-style: solid;
+  border-radius: var(--spectrum-alias-border-radius-small);
+  border-radius: var(
+    --spectrum-dragbar-gripper-border-radius,
+    var(--spectrum-alias-border-radius-small)
+  );
+  top: 50%;
+  transform: translate(0, -50%);
+  width: var(--spectrum-global-dimension-static-size-50);
+  width: var(
+    --spectrum-dragbar-gripper-width,
+    var(--spectrum-global-dimension-static-size-50)
+  );
+  height: var(--spectrum-global-dimension-static-size-200);
+  height: var(
+    --spectrum-dragbar-gripper-height,
+    var(--spectrum-global-dimension-static-size-200)
+  );
+  border-top-width: 4 px;
+  border-top-width: var(--spectrum-dragbar-gripper-border-width-vertical, 4px);
+  border-bottom-width: 4 px;
+  border-bottom-width: var(
+    --spectrum-dragbar-gripper-border-width-vertical,
+    4px
+  );
+  border-left-width: 3 px;
+  border-left-width: var(
+    --spectrum-dragbar-gripper-border-width-horizontal,
+    3px
+  );
+  border-right-width: 3 px;
+  border-right-width: var(
+    --spectrum-dragbar-gripper-border-width-horizontal,
+    3px
+  );
 }
 </style>
 
@@ -182,6 +283,9 @@ export default class IndexPage extends Vue {
   playMode: PlayMode = PLAY_EVERY_FRAME;
 
   lastUpdate: number = 0;
+
+  abobeTimeline: number = 400;
+  timelineWidth: number = 700;
 
   get selectedStrip() {
     if (this.selectedStrips.length > 0) {

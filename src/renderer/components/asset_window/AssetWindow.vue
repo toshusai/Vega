@@ -37,7 +37,7 @@
 }
 
 .upload-button {
-  margin: auto;
+  margin: 8px auto 8px auto;
   display: flex;
 }
 

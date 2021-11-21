@@ -24,7 +24,7 @@
 
 <style scoped>
 .app-bar {
-  height: 18px;
+  height: 32px;
   display: flex;
 }
 </style>
