@@ -279,8 +279,8 @@ export default class IndexPage extends Vue {
   selectedStrips: Strip[] = [];
   canvas: HTMLCanvasElement | null = null;
 
-  width: number = 1920;
-  height: number = 1080;
+  width: number = 1280;
+  height: number = 720;
   fps: number = 60;
   name: string = "untitled";
 
