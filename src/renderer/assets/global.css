@@ -306,6 +306,10 @@
   /* White / Black */
   --white: #ffffff;
   --black: #000000;
+  --sp-blue-400: #2680eb;
+  --sp-blue-500: #378ef0;
+  --sp-blue-600: #4b9cf5;
+  --sp-blue-700: #5aa9fa;
 }
 
 html, body {
