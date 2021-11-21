@@ -1,6 +1,5 @@
 <template>
   <div data-vega-strip-inspector-window class="strip-inspector">
-    <window-name-tag name="Strip Inspector" />
     <component
       :is="comp"
       v-if="strip"
@@ -14,10 +13,9 @@
 
 <style scoped>
 .strip-inspector {
-  border: 1px solid var(--black);
   box-sizing: border-box;
   height: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 </style>
 

@@ -5,6 +5,7 @@
       @openProject="openProject"
       @downloadProject="downloadProject"
     />
+    <sp-divider style="margin: 0" />
     <sp-split-view style="height: calc(100vh - 32px)">
       <sp-split-view-pane>
         <sp-split-view :vertical="true" style="height: 100%">
