@@ -2,7 +2,12 @@
   <div class="root" data-vega-timeline>
     <div style="display: flex; height: 32px">
       <div style="margin: auto">
-        <sp-action-button size="S" :quiet="true" @click="$emit('togglePlay')">
+        <sp-action-button
+          data-vega-play-button
+          size="S"
+          :quiet="true"
+          @click="$emit('togglePlay')"
+        >
           <sp-icon
             :name="!isPlay ? 'Play' : 'Pause'"
             style="width: 12px"
