@@ -1,17 +1,16 @@
 <template>
   <div style="padding: 4px">
-    <sp-field-label>Image</sp-field-label>
-    <VegaSelect v-model="currentAssetId" :items="selectItems" />
+    <sp-field-label>
+      Image
+      <sp-icon name="Image" style="width: 12px" />
+    </sp-field-label>
+    <VegaSelect
+      v-model="currentAssetId"
+      :items="selectItems"
+      @change="changeSrc"
+    />
     <sp-field-label> Start </sp-field-label>
     <sp-textfield v-model="strip.start" size="S" type="number" :step="0.01" />
-
-    <sp-field-label> Offset </sp-field-label>
-    <sp-textfield
-      v-model="strip.videoOffset"
-      size="S"
-      type="number"
-      :step="0.01"
-    />
 
     <sp-field-label>Length</sp-field-label>
     <sp-textfield v-model="strip.length" size="S" type="number" :step="0.01" />
@@ -67,7 +66,9 @@ export default class ImageStripInspector extends Vue {
   }
 
   get selectItems() {
-    const items: OptionKeyValue[] = [{ value: "", text: "" }];
+    const items: OptionKeyValue[] = [
+      { value: "", text: "No selected", disabled: true },
+    ];
     return items.concat(
       this.videoAssets.map((va: ImageAsset) => {
         return {
@@ -76,34 +77,6 @@ export default class ImageStripInspector extends Vue {
         };
       })
     );
-  }
-
-  changeEmit(strip: ImageStrip) {
-    this.$emit("change", strip);
-  }
-
-  changePropertyEmit(name: string, value: any) {
-    this.$emit("changeProperty", name, value);
-  }
-
-  changeStripText(text: string) {
-    this.changePropertyEmit("text", text);
-  }
-
-  changeStart(start: number) {
-    this.changePropertyEmit("start", start);
-  }
-
-  changeLength(length: number) {
-    this.changePropertyEmit("length", length);
-  }
-
-  changeX(x: number) {
-    this.changePropertyEmit("position.x", x);
-  }
-
-  changeY(y: number) {
-    this.changePropertyEmit("position.y", y);
   }
 
   changeSrc(e: OptionKeyValue) {

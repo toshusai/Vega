@@ -1,5 +1,15 @@
 <template>
   <div style="padding: 4px">
+    <sp-field-label>
+      Video
+      <sp-icon name="VideoOutline" style="width: 12px" />
+    </sp-field-label>
+    <VegaSelect
+      v-model="currentAssetId"
+      :items="selectItems"
+      @change="changeSrc"
+    />
+
     <sp-field-label> Start </sp-field-label>
     <sp-textfield v-model="strip.start" size="S" type="number" :step="0.01" />
 
@@ -35,13 +45,6 @@
         />
       </div>
     </div>
-
-    <sp-field-label>Video</sp-field-label>
-    <VegaSelect
-      v-model="currentAssetId"
-      :items="selectItems"
-      @change="changeSrc"
-    />
   </div>
 </template>
 

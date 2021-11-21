@@ -1,25 +1,28 @@
 <template>
   <div style="padding: 4px">
-    <sp-field-label> Start </sp-field-label>
-    <sp-textfield v-model="strip.start" size="S" type="number" :step="0.01" />
-
-    <sp-field-label> Offset </sp-field-label>
-    <sp-textfield
-      v-model="strip.videoOffset"
-      size="S"
-      type="number"
-      :step="0.01"
-    />
-
-    <sp-field-label>Length</sp-field-label>
-    <sp-textfield v-model="strip.length" size="S" type="number" :step="0.01" />
-
-    <sp-field-label>Audio</sp-field-label>
+    <sp-field-label>
+      Audio
+      <sp-icon name="Audio" style="width: 12px" />
+    </sp-field-label>
     <VegaSelect
       :items="selectItems"
       :value="currentAssetId"
       @change="changeSrc"
     />
+
+    <sp-field-label> Start </sp-field-label>
+    <sp-textfield v-model="strip.start" size="S" type="number" :step="0.01" />
+
+    <!-- <sp-field-label> Offset </sp-field-label>
+    <sp-textfield
+      v-model="strip.videoOffset"
+      size="S"
+      type="number"
+      :step="0.01"
+    /> -->
+
+    <sp-field-label>Length</sp-field-label>
+    <sp-textfield v-model="strip.length" size="S" type="number" :step="0.01" />
   </div>
 </template>
 

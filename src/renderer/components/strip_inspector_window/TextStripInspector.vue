@@ -1,6 +1,9 @@
 <template>
   <div style="padding: 4px">
-    <sp-field-label> Text </sp-field-label>
+    <sp-field-label>
+      Text
+      <sp-icon name="Text" style="width: 12px" />
+    </sp-field-label>
     <sp-textfield v-model="strip.text" size="S" class="w100" />
 
     <sp-field-label> Start</sp-field-label>
