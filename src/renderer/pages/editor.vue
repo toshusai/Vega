@@ -8,7 +8,7 @@
     <sp-divider style="margin: 0" />
     <sp-split-view style="height: calc(100vh - 32px)">
       <sp-split-view-pane>
-        <sp-split-view :vertical="true" style="height: 100%">
+        <sp-split-view :vertical="true" style="height: 100%; width: 80vw">
           <sp-split-view-pane>
             <sp-split-view>
               <sp-split-view-pane style="width: 200px">
@@ -42,7 +42,7 @@
             @change="(v) => (abobeTimeline += v)"
           ></sp-split-view-splitter>
           <sp-split-view-pane
-            :style="`height: 100%; width: ${timelineWidth}px; overflow-y: scroll`"
+            :style="`height: 100%; width: 100%; overflow-y: scroll`"
           >
             <TimelineWindow
               :currentTime="currentTime"
@@ -289,7 +289,6 @@ export default class IndexPage extends Vue {
   lastUpdate: number = 0;
 
   abobeTimeline: number = 400;
-  timelineWidth: number = 700;
 
   get selectedStrip() {
     if (this.selectedStrips.length > 0) {

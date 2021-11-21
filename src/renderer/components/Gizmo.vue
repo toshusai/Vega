@@ -4,7 +4,7 @@
 
 <style scoped>
 .frame {
-  border: 1px solid var(--blue);
+  border: 2px solid var(--sp-blue-400);
   cursor: move;
   position: absolute;
   box-sizing: content-box;
