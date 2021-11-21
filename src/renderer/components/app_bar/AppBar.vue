@@ -1,6 +1,7 @@
 <template>
   <div class="app-bar">
     <sp-action-menu
+      data-project-action-menu
       style="height: 24px"
       :items="[
         {
@@ -28,6 +29,7 @@
       <sp-action-button
         :quiet="true"
         size="S"
+        data-vega-settings-button
         @click="isOpenProjectSettings = true"
       >
         <sp-icon name="Settings" style="width: 12px" />
