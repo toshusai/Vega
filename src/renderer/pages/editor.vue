@@ -13,11 +13,22 @@
           <sp-split-view-pane>
             <sp-split-view>
               <sp-split-view-pane style="width: 200px">
-                <AssetWindow
-                  :assets="project.assets"
-                  @changeSelectedAsset="changeSelectedAsset"
-                  @addAsset="addAsset"
-                />
+                <sp-split-view :vertical="true" style="height: 100%">
+                  <sp-split-view-pane>
+                    <AssetWindow
+                      :assets="project.assets"
+                      @changeSelectedAsset="changeSelectedAsset"
+                      @addAsset="addAsset"
+                    />
+                  </sp-split-view-pane>
+                  <sp-split-view-splitter />
+                  <sp-split-view-pane>
+                    <asset-inspector-window
+                      :asset="selectedAsset"
+                      @changeAsset="changeAsset"
+                    />
+                  </sp-split-view-pane>
+                </sp-split-view>
               </sp-split-view-pane>
               <sp-split-view-splitter
                 class="gripper-horizontal splitter-horizontal"
@@ -199,6 +210,8 @@ import {
   VEGA_VERSION,
   VideoAsset,
   VideoStrip,
+  ImageStrip,
+  ImageAsset,
 } from "~/models";
 import AssetWindow from "~/components/asset_window/AssetWindow.vue";
 import AssetInspectorWindow from "~/components/asset_inspector/AssetInspectorWindow.vue";
@@ -302,8 +315,11 @@ export default class IndexPage extends Vue {
         if (s.videoAsset == oldAsset) {
           s.updateAsset(newAsset);
         }
+      } else if (s instanceof ImageStrip && newAsset instanceof ImageAsset) {
+        s.updateAsset(newAsset);
       }
     });
+    this.selectedAsset = newAsset;
   }
 
   changeStripPropery(index: number, name: string, value: any) {
@@ -509,7 +525,7 @@ export default class IndexPage extends Vue {
 
   change() {
     this.project.strips.forEach((s: Strip) => {
-      s.update(this.currentTime, 0, false, SYNC_TO_AUDIO, this.fps);
+      s.update(this.currentTime, 0, false, SYNC_TO_AUDIO, this.project.fps);
     });
   }
 
