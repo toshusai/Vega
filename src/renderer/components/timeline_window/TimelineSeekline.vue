@@ -8,7 +8,7 @@
   >
     <div v-for="(s, i) in array" :key="i" :style="timesStyle[i]">
       <div class="text">
-        {{ s }}
+        {{ timeView(s) }}
         <div class="time-bar"></div>
       </div>
     </div>
@@ -45,7 +45,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import Seekbar from "./TimelineSeekbar.vue";
 
-const TIME_TEXT_INTERVAL_RATE = 50;
+const TIME_TEXT_INTERVAL_RATE = 100;
 
 @Component({
   components: {
@@ -87,6 +87,13 @@ export default class TimelineSeekline extends Vue {
       return s % this.interval == 0;
     });
     return result;
+  }
+
+  timeView(s) {
+    if (s < 0) {
+      return "-" + new Date(-s * 1000).toISOString().substr(11, 8);
+    }
+    return new Date(s * 1000).toISOString().substr(11, 8);
   }
 
   get timesStyle(): Partial<CSSStyleDeclaration>[] {
