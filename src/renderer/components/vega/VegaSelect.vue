@@ -7,7 +7,13 @@
       :value="value"
       @change="change"
     >
-      <option v-for="(item, i) in items" :key="i" :value="item.value">
+      <option
+        v-for="(item, i) in items"
+        :key="i"
+        :value="item.value"
+        :disabled="item.disabled"
+        :selected="item.value == value"
+      >
         {{ item.text }}
       </option>
     </select>
@@ -21,6 +27,7 @@ import { Component, Prop } from "vue-property-decorator";
 export interface OptionKeyValue {
   value: number | string;
   text: string;
+  disabled?: boolean;
 }
 
 @Component({})
