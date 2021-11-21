@@ -50,9 +50,5 @@ export default class AboutModal extends Vue {
   close() {
     this.isOpen = false;
   }
-
-  toDoc() {
-    this.modal?.close();
-  }
 }
 </script>
