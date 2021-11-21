@@ -10,7 +10,7 @@ const ASSET_SEEK_TIMEOUT_MS = 10000;
 export class AudioStrip extends Strip {
   readonly audio!: HTMLAudioElement;
   readonly type: string = "Audio";
-  readonly asset: AudioAsset | null = null;
+  asset: AudioAsset | null = null;
 
   playRequests: number[] = [];
 
@@ -44,6 +44,7 @@ export class AudioStrip extends Strip {
       this.loaded = false;
       return;
     }
+    this.asset = asset;
     this.loaded = false;
     this.audio.src = asset.path;
     this.audio.onloadedmetadata = () => {
