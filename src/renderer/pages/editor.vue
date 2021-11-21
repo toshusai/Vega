@@ -34,7 +34,7 @@
                 class="gripper-horizontal splitter-horizontal"
               ></sp-split-view-splitter>
               <sp-split-view-pane
-                :style="`height: ${abobeTimeline}px; width: 500px`"
+                :style="`height: ${abobeTimeline}px; max-width: 80%`"
               >
                 <PreviewWindow
                   ref="previewWindow"
@@ -89,32 +89,6 @@
         />
       </sp-split-view-pane>
     </sp-split-view>
-    <!-- <div style="display: flex; height: 70vh">
-      <div style="display: flex; width: 30%">
-        <div style="width: 50%; display: flex; flex-flow: column">
-          <ProjectWindow
-            :duration="duration"
-            :strips="strips"
-            :currentTime="currentTime"
-            :canvas="canvas"
-            :fps="fps"
-            :width="width"
-            :height="height"
-            :name="name"
-            @changeDuration="(v) => (duration = v)"
-            @changeWidth="changeWidth"
-            @changeHeight="changeHeight"
-            @changeFps="changeFps"
-          />
-        </div>
-        <div style="width: 50%">
-          <AssetInspectorWindow
-            :asset="selectedAsset"
-            @changeAsset="changeAsset"
-          />
-        </div>
-      </div>
-    </div> -->
     <Snakbar ref="snakbar" />
 
     <RendererWindow
