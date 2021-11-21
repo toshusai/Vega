@@ -1,5 +1,5 @@
 <template>
-  <div class="error">
+  <div data-vega-strip-error class="error">
     <sp-icon
       name="Alert"
       style="min-width: 12px; width: 12px; margin: auto 2px auto 2px"
