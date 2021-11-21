@@ -97,10 +97,10 @@ export default class Gizmo extends Vue {
       const px = this.strip.position.x;
       const py = this.height - this.strip.position.y;
 
-      let width;
-      let height;
-      let top;
-      let left;
+      let width = 0;
+      let height = 0;
+      let top = 0;
+      let left = 0;
 
       top = py * this.scale;
       left = px * this.scale;
@@ -112,8 +112,8 @@ export default class Gizmo extends Vue {
       if (this.strip instanceof VideoStrip) {
         width = this.strip.video.videoWidth * this.scale;
         height = this.strip.video.videoHeight * this.scale;
-        top = py * this.scale - height / 2 - 1; // for content-box
-        left = px * this.scale - width / 2 - 1;
+        top = py * this.scale - height / 2; // for content-box
+        left = px * this.scale - width / 2;
       } else if (this.strip instanceof Text3DStrip) {
         const box = new THREE.Box3().setFromObject(this.strip.obj);
         const r = new THREE.Vector3();
@@ -136,10 +136,10 @@ export default class Gizmo extends Vue {
       }
 
       return {
-        top: top + "px",
-        left: left + "px",
-        width: width + "px",
-        height: height + "px",
+        top: top - 1 + "px",
+        left: left - 1 + "px",
+        width: width - 2 + "px",
+        height: height - 2 + "px",
       };
     }
     return {};
