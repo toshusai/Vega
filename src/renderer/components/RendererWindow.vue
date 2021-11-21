@@ -1,6 +1,6 @@
 <template>
-  <Modal ref="modal">
-    <div>
+  <sp-dialog :isOpen="isOpen">
+    <div style="overflow: hidden">
       <div>
         <div class="render-view">
           <div class="canvas-wrap" :style="canvasWrapStyle">
@@ -19,7 +19,7 @@
         />
       </div>
     </div>
-  </Modal>
+  </sp-dialog>
 </template>
 
 <style scoped>
@@ -54,8 +54,9 @@ import { Project } from "~/models/Project";
   components: { Modal, ExportingCard },
 })
 export default class Encoder extends Vue {
-  @Ref() modal!: Modal;
   @Ref() canvas!: HTMLCanvasElement;
+
+  isOpen = false;
 
   @Prop() project!: Project;
 
@@ -113,7 +114,7 @@ export default class Encoder extends Vue {
   }
 
   async cancel() {
-    this.modal.close();
+    this.isOpen = false;
     await this.recorder?.cancel();
     await this.videoEenderer?.cancel();
     this.isEncoding = false;
@@ -122,7 +123,7 @@ export default class Encoder extends Vue {
   }
 
   open() {
-    this.modal.open();
+    this.isOpen = true;
   }
 
   async encode() {

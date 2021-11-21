@@ -16,8 +16,10 @@
       </AppBarMenuItem>
     </AppBarMenu>
 
-    <AppBarMenuButton @click="renderVideo"> Render </AppBarMenuButton>
     <div style="margin: auto 4px auto auto">
+      <sp-action-button :quiet="true" size="S" @click="renderVideo">
+        <sp-icon name="BoxExport" style="width: 12px" />
+      </sp-action-button>
       <sp-action-button
         :quiet="true"
         size="S"
