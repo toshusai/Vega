@@ -17,54 +17,23 @@
     </AppBarMenu>
 
     <AppBarMenuButton @click="renderVideo"> Render </AppBarMenuButton>
-    <AppBarMenuButton @click="goAbout"> About</AppBarMenuButton>
-    <sp-action-button
-      :quiet="true"
-      size="S"
-      style="margin: auto 4px auto auto"
-      @click="isOpenProjectSettings = true"
-    >
-      <sp-icon name="Settings" style="width: 12px" />
-    </sp-action-button>
-    <AboutModal ref="aboutModal" />
-    <sp-dialog :isOpen="isOpenProjectSettings" header="Project Settings">
-      <div style="width: min-content">
-        <sp-field-label>Project Name</sp-field-label>
-        <sp-textfield size="S" />
-        <sp-field-label>Fps</sp-field-label>
-        <sp-textfield size="S" />
-        <sp-field-label>Resolution</sp-field-label>
-        <div style="display: flex">
-          <div>
-            <sp-field-label>Width</sp-field-label>
-            <sp-textfield size="S" style="width: 100%" />
-          </div>
-          <div>
-            <sp-field-label>Height</sp-field-label>
-            <sp-textfield size="S" style="width: 100%" />
-          </div>
-        </div>
-        <sp-field-label>Duration</sp-field-label>
-        <sp-textfield size="S" />
-      </div>
-      <template #footer>
-        <div
-          class="
-            spectrum-ButtonGroup
-            spectrum-Dialog-buttonGroup
-            spectrum-Dialog-buttonGroup--noFooter
-          "
-        >
-          <sp-button
-            type="primary"
-            :group="true"
-            @click="isOpenProjectSettings = false"
-          >
-            OK
-          </sp-button>
-        </div>
-      </template>
-    </sp-dialog>
+    <div style="margin: auto 4px auto auto">
+      <sp-action-button
+        :quiet="true"
+        size="S"
+        @click="isOpenProjectSettings = true"
+      >
+        <sp-icon name="Settings" style="width: 12px" />
+      </sp-action-button>
+      <sp-action-button :quiet="true" size="S" @click="goAbout">
+        <sp-icon name="Info" style="width: 12px" />
+      </sp-action-button>
+    </div>
+    <about-modal ref="aboutModal" />
+    <project-setting-modal
+      :isOpenSync.sync="isOpenProjectSettings"
+      :projectSync.sync="project"
+    />
   </div>
 </template>
 
@@ -77,16 +46,18 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Ref } from "vue-property-decorator";
+import { Component, PropSync, Ref } from "vue-property-decorator";
 import AppBarMenu from "./AppBarMenu.vue";
 import AppBarMenuButton from "./AppBarMenuButton.vue";
 import AboutModal from "./AboutModal.vue";
+import ProjectSettingModal from "./ProjectSettingModal.vue";
 import { VegaError } from "~/plugins/error";
 import AppBarMenuItem from "~/components/app_bar/AppBarMenuItem.vue";
 import { isProject, Project } from "~/models/Project";
 
 @Component({
   components: {
+    ProjectSettingModal,
     AppBarMenu,
     AppBarMenuButton,
     AppBarMenuItem,
@@ -95,6 +66,8 @@ import { isProject, Project } from "~/models/Project";
 })
 export default class AppBar extends Vue {
   @Ref() aboutModal?: AboutModal;
+
+  @PropSync("projectSync") project!: Project;
 
   isOpenProjectSettings: boolean = false;
 

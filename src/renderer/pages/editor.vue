@@ -1,6 +1,7 @@
 <template>
   <div class="editor">
     <AppBar
+      :projectSync="project"
       @renderVideo="renderVideo"
       @openProject="openProject"
       @downloadProject="downloadProject"
@@ -28,9 +29,9 @@
                   ref="previewWindow"
                   :currentTime="currentTime"
                   :selectedStrip="selectedStrip"
-                  :fps="fps"
-                  :width="width"
-                  :height="height"
+                  :fps="project.fps"
+                  :width="project.width"
+                  :height="project.height"
                   @changeStripPos="changeStripPos"
                 />
               </sp-split-view-pane>
@@ -48,7 +49,7 @@
               :currentTime="currentTime"
               :strips="project.strips"
               :selectedStrips="selectedStrips"
-              :duration="duration"
+              :duration="project.duration"
               :isPlay="isPlay"
               @addAsset="addAsset"
               @addStrip="addStrip"
