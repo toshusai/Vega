@@ -47,8 +47,8 @@ import { Camera, Scene } from "three";
 import Modal from "./vega/Modal.vue";
 import Renderer from "~/models/Renderer";
 import Recorder from "~/models/Recorder";
-import { Strip } from "~/models";
 import ExportingCard from "~/components/ExportingCard.vue";
+import { Project } from "~/models/Project";
 
 @Component({
   components: { Modal, ExportingCard },
@@ -57,19 +57,7 @@ export default class Encoder extends Vue {
   @Ref() modal!: Modal;
   @Ref() canvas!: HTMLCanvasElement;
 
-  @Prop() width!: number;
-  @Prop() height!: number;
-  @Prop({ default: 0 })
-  currentTime!: number;
-
-  @Prop()
-  strips!: Strip[];
-
-  @Prop({ default: 30 })
-  duration!: number;
-
-  @Prop({ default: 60 })
-  fps!: number;
+  @Prop() project!: Project;
 
   @Prop({})
   scene!: Scene;
@@ -92,19 +80,19 @@ export default class Encoder extends Vue {
   }
 
   get scale() {
-    if (this.height > this.width) {
-      return 400 / this.height;
+    if (this.project.height > this.project.width) {
+      return 400 / this.project.height;
     }
-    return 400 / this.width;
+    return 400 / this.project.width;
   }
 
   get canvasWrapStyle(): Partial<CSSStyleDeclaration> {
     let width = 400;
     let height = 400;
-    if (this.height > this.width) {
-      width = (width * this.width) / this.height;
+    if (this.project.height > this.project.width) {
+      width = (width * this.project.width) / this.project.height;
     } else {
-      height = (height * this.height) / this.width;
+      height = (height * this.project.height) / this.project.width;
     }
     return {
       width: width + "px",
@@ -121,7 +109,7 @@ export default class Encoder extends Vue {
   }
 
   resize() {
-    this.renderer?.setSize(this.width, this.height);
+    this.renderer?.setSize(this.project.width, this.project.height);
   }
 
   async cancel() {
@@ -142,11 +130,11 @@ export default class Encoder extends Vue {
     if (!this.renderer) return;
     if (!this.videoEenderer) {
       this.videoEenderer = new Renderer(
-        this.width,
-        this.height,
-        this.fps,
-        this.strips,
-        this.duration,
+        this.project.width,
+        this.project.height,
+        this.project.fps,
+        this.project.strips,
+        this.project.duration,
         (ratio) => {
           this.ffmpegProgress = ratio;
         }
@@ -157,9 +145,9 @@ export default class Encoder extends Vue {
       this.scene,
       this.camera,
       this.renderer,
-      this.fps,
-      Math.ceil(this.duration * this.fps),
-      this.strips,
+      this.project.fps,
+      Math.ceil(this.project.duration * this.project.fps),
+      this.project.strips,
       (r) => {
         this.ccaptureProgress = r;
       },

@@ -81,9 +81,9 @@ import { Component, Ref } from "vue-property-decorator";
 import AppBarMenu from "./AppBarMenu.vue";
 import AppBarMenuButton from "./AppBarMenuButton.vue";
 import AboutModal from "./AboutModal.vue";
-import { Project } from "~/models";
 import { VegaError } from "~/plugins/error";
 import AppBarMenuItem from "~/components/app_bar/AppBarMenuItem.vue";
+import { isProject, Project } from "~/models/Project";
 
 @Component({
   components: {
@@ -136,7 +136,12 @@ export default class AppBar extends Vue {
       try {
         const file = target.files[0];
         const text = await file.text();
-        this.openProjectEmit(JSON.parse(text));
+        const iproject = JSON.parse(text);
+        if (isProject(iproject)) {
+          this.openProjectEmit(new Project(iproject));
+        } else {
+          throw new VegaError("Invalid Project file.");
+        }
       } catch {
         throw new VegaError("Project file is not JSON format.");
       }

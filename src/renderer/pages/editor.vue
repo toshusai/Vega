@@ -13,7 +13,7 @@
             <sp-split-view>
               <sp-split-view-pane style="width: 200px">
                 <AssetWindow
-                  :assets="assets"
+                  :assets="project.assets"
                   @changeSelectedAsset="changeSelectedAsset"
                   @addAsset="addAsset"
                 />
@@ -46,7 +46,7 @@
           >
             <TimelineWindow
               :currentTime="currentTime"
-              :strips="strips"
+              :strips="project.strips"
               :selectedStrips="selectedStrips"
               :duration="duration"
               :isPlay="isPlay"
@@ -67,18 +67,9 @@
         class="gripper-horizontal"
       ></sp-split-view-splitter>
       <sp-split-view-pane style="width: 100%">
-        <!-- <PreviewWindow
-          ref="previewWindow"
-          :currentTime="currentTime"
-          :selectedStrip="selectedStrip"
-          :fps="fps"
-          :width="width"
-          :height="height"
-          @changeStripPos="changeStripPos"
-        /> -->
         <StripInspector
           :strip="selectedStrip"
-          :assets="assets"
+          :assets="project.assets"
           @change="changeStrip"
           @changeProperty="
             (name, value) => changeStripPropery(selectedStripIndex, name, value)
@@ -111,34 +102,12 @@
           />
         </div>
       </div>
-      <div style="width: 70%; display: flex; flex-flow: column">
-        <PreviewWindow
-          ref="previewWindow"
-          :currentTime="currentTime"
-          :selectedStrip="selectedStrip"
-          :fps="fps"
-          :width="width"
-          :height="height"
-          @changeStripPos="changeStripPos"
-        />
-        <ControllerWindow
-          :isPlay="isPlay"
-          :playMode="playMode"
-          @changePlayMode="changePlayMode"
-          @togglePlay="play"
-        />
-      </div>
     </div> -->
     <Snakbar ref="snakbar" />
 
     <RendererWindow
       ref="rendererWindow"
-      :currentTime="currentTime"
-      :fps="fps"
-      :strips="strips"
-      :duration="duration"
-      :width="width"
-      :height="height"
+      :project="project"
       :scene="scene"
       :camera="camera"
     />
@@ -223,7 +192,6 @@ import PreviewWindow from "~/components/PreviewWindow.vue";
 import {
   Asset,
   FontAsset,
-  Project,
   Strip,
   Text3DStrip,
   TextStrip,
@@ -236,13 +204,12 @@ import AssetInspectorWindow from "~/components/asset_inspector/AssetInspectorWin
 import StripInspector from "~/components/strip_inspector_window/StripInspectorWindow.vue";
 import TimelineWindow from "~/components/timeline_window/Timeline.vue";
 import { download } from "~/plugins/download";
-import { AssetUtil } from "~/plugins/asset";
 import { StripUtil } from "~/plugins/strip";
 import { IVector3 } from "~/models/math/Vector3";
 import Snakbar from "~/components/Snakbar.vue";
 import { VegaError } from "~/plugins/error";
 import { PlayMode, PLAY_EVERY_FRAME, SYNC_TO_AUDIO } from "~/plugins/config";
-import { isProject, migrationProject } from "~/models/Project";
+import { isProject, Project } from "~/models/Project";
 import ProjectWindow from "~/components/ProjectWindow.vue";
 import ControllerWindow from "~/components/ControllerWindow.vue";
 import { DragAndDrop } from "~/plugins/dragAndDrop";
@@ -269,20 +236,23 @@ export default class IndexPage extends Vue {
   camera: T.OrthographicCamera | null = null;
   scene: T.Scene | null = null;
   isPlay: boolean = false;
-  duration: number = 15;
   currentTime: number = 0;
-  strips: Strip[] = [];
   lastAnimationTime: number = 0;
   playRequests: number[] = [];
-  assets: Asset[] = [];
   selectedAsset: Asset | null = null;
   selectedStrips: Strip[] = [];
   canvas: HTMLCanvasElement | null = null;
 
-  width: number = 1280;
-  height: number = 720;
-  fps: number = 60;
-  name: string = "untitled";
+  project: Project = new Project({
+    version: VEGA_VERSION,
+    name: "untitled",
+    width: 1280,
+    height: 720,
+    fps: 60,
+    duration: 10,
+    assets: [],
+    strips: [],
+  });
 
   playMode: PlayMode = PLAY_EVERY_FRAME;
 
@@ -298,7 +268,7 @@ export default class IndexPage extends Vue {
   }
 
   get selectedStripIndex() {
-    return this.strips.findIndex((s) => s == this.selectedStrip);
+    return this.project.strips.findIndex((s) => s == this.selectedStrip);
   }
 
   async mounted() {
@@ -306,7 +276,12 @@ export default class IndexPage extends Vue {
     loadicons("/static/svg/spectrum-css-icons.svg", () => {});
     loadicons("/static/svg/spectrum-icons.svg", () => {});
     this.scene = new T.Scene();
-    this.camera = new T.OrthographicCamera(0, this.width, this.height, 0);
+    this.camera = new T.OrthographicCamera(
+      0,
+      this.project.width,
+      this.project.height,
+      0
+    );
     this.camera.position.set(0, 0, 10);
     this.canvas = this.previewWindow?.renderCanvas || null;
     await FontAsset.init();
@@ -314,14 +289,14 @@ export default class IndexPage extends Vue {
   }
 
   addAsset(asset: Asset) {
-    this.assets.push(asset);
+    this.project.assets.push(asset);
   }
 
   changeAsset(newAsset: Asset) {
-    const i = this.assets.findIndex((a) => a == this.selectedAsset);
-    const oldAsset = this.assets[i];
-    this.assets.splice(i, 1, newAsset);
-    this.strips.forEach((s) => {
+    const i = this.project.assets.findIndex((a) => a == this.selectedAsset);
+    const oldAsset = this.project.assets[i];
+    this.project.assets.splice(i, 1, newAsset);
+    this.project.strips.forEach((s) => {
       if (s instanceof VideoStrip && newAsset instanceof VideoAsset) {
         if (s.videoAsset == oldAsset) {
           s.updateAsset(newAsset);
@@ -331,8 +306,8 @@ export default class IndexPage extends Vue {
   }
 
   changeStripPropery(index: number, name: string, value: any) {
-    if (index < 0 || this.strips.length <= index) return;
-    const target = this.strips[index];
+    if (index < 0 || this.project.strips.length <= index) return;
+    const target = this.project.strips[index];
     switch (name) {
       case "layer":
         target.layer = value;
@@ -381,13 +356,13 @@ export default class IndexPage extends Vue {
       return;
     }
 
-    const i = this.strips.findIndex((_s) => _s.id == s.id);
-    if (this.selectedStrips.includes(this.strips[i])) {
+    const i = this.project.strips.findIndex((_s) => _s.id == s.id);
+    if (this.selectedStrips.includes(this.project.strips[i])) {
       this.selectedStrips = [s];
     } else {
       this.selectedStrips = [];
     }
-    this.strips.splice(i, 1, s);
+    this.project.strips.splice(i, 1, s);
   }
 
   changeStripPos(pos: IVector3) {
@@ -397,39 +372,39 @@ export default class IndexPage extends Vue {
   }
 
   changeStrips(strips: Strip[]) {
-    this.strips = strips;
+    this.project.strips = strips;
   }
 
   deleteStrip(strip: Strip) {
-    const i = this.strips.findIndex((s) => s == strip);
+    const i = this.project.strips.findIndex((s) => s == strip);
     if (i != -1) {
-      const strip = this.strips[i];
+      const strip = this.project.strips[i];
       if (StripUtil.isThreeJsStrip(strip)) {
         strip.obj.removeFromParent();
       }
 
-      this.strips.splice(i, 1);
+      this.project.strips.splice(i, 1);
       this.selectedStrips = [];
     }
   }
 
   changeWidth(width: number) {
-    this.width = width;
+    this.project.width = width;
     if (this.camera) {
-      this.camera.right = this.width;
+      this.camera.right = this.project.width;
       this.camera.updateProjectionMatrix();
       this.previewWindow?.resize();
     }
   }
 
   changeFps(fps: number) {
-    this.fps = fps;
+    this.project.fps = fps;
   }
 
   changeHeight(height: number) {
-    this.height = height;
+    this.project.height = height;
     if (this.camera) {
-      this.camera.top = this.height;
+      this.camera.top = this.project.height;
       this.camera.updateProjectionMatrix();
       this.previewWindow?.resize();
     }
@@ -457,7 +432,7 @@ export default class IndexPage extends Vue {
       window.requestAnimationFrame(this.update);
       return;
     }
-    if (time - this.lastUpdate + 0.02 <= 1000 / this.fps) {
+    if (time - this.lastUpdate + 0.02 <= 1000 / this.project.fps) {
       window.requestAnimationFrame(this.update);
       return;
     }
@@ -467,21 +442,21 @@ export default class IndexPage extends Vue {
     this.lastAnimationTime = time;
 
     if (this.playMode == PLAY_EVERY_FRAME) {
-      delta = 1000 / this.fps;
+      delta = 1000 / this.project.fps;
     }
 
     if (this.isPlay) {
       this.currentTime += delta / 1000;
     }
 
-    for (let i = 0; i < this.strips.length; i++) {
-      const s = this.strips[i];
+    for (let i = 0; i < this.project.strips.length; i++) {
+      const s = this.project.strips[i];
       await s.update(
         this.currentTime,
         delta,
         this.isPlay,
         this.playMode,
-        this.fps
+        this.project.fps
       );
     }
 
@@ -495,7 +470,7 @@ export default class IndexPage extends Vue {
   }
 
   addStrip(ts: Strip) {
-    this.strips.push(ts);
+    this.project.strips.push(ts);
     if (StripUtil.isThreeJsStrip(ts)) {
       this.scene?.add(ts.obj);
     }
@@ -507,50 +482,32 @@ export default class IndexPage extends Vue {
   }
 
   downloadProject() {
-    const project: Project = {
-      name: this.name,
-      width: this.width,
-      height: this.height,
-      fps: this.fps,
-      duration: this.duration,
-      version: VEGA_VERSION,
-      assets: this.assets.map((a) => a.toInterface()),
-      strips: this.strips.map((s) => s.toInterface()),
-    };
-    download(new Blob([JSON.stringify(project)]), project.name + ".json");
+    download(
+      new Blob([JSON.stringify(this.project.toJSON())]),
+      this.project.name + ".json"
+    );
   }
 
   getAssetById(id: string) {
-    return this.assets.find((a) => a.id == id);
+    return this.project.assets.find((a) => a.id == id);
   }
 
   openProject(project: Project) {
     if (!isProject(project))
       throw new VegaError("Invalid Project file format.");
-    project = migrationProject(project);
-    this.assets = this.assets.concat(
-      AssetUtil.interfacesToInstances(project.assets)
-    );
+    this.project = project;
 
-    this.strips = StripUtil.interfacesToInstances(project.strips, this.assets);
-
-    this.strips.forEach((s) => {
+    this.project.strips.forEach((s) => {
       if (StripUtil.isThreeJsStrip(s)) {
         this.scene?.add(s.obj);
       }
     });
 
-    this.width = project.width;
-    this.height = project.height;
-    this.fps = project.fps;
-    this.duration = project.duration;
-    this.name = project.name;
-
     this.previewWindow?.resize();
   }
 
   change() {
-    this.strips.forEach((s: Strip) => {
+    this.project.strips.forEach((s: Strip) => {
       s.update(this.currentTime, 0, false, SYNC_TO_AUDIO, this.fps);
     });
   }
