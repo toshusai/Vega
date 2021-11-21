@@ -480,7 +480,7 @@ export default class Timeline extends Vue {
             length: 5,
             layer: 0,
             id: "",
-            type: "Video",
+            type: "Audio",
           },
           asset
         );
