@@ -1,13 +1,11 @@
 <template>
-  <div v-if="isOpen" ref="el" class="contextmenu" :style="style">
-    <MenuButton
-      v-for="(item, i) in items"
-      :key="i"
-      @click="() => item.action()"
-    >
-      {{ item.name }}
-    </MenuButton>
-  </div>
+  <sp-menu v-if="isOpen" ref="el" class="contextmenu" :style="style">
+    <div v-for="(item, i) in items" :key="i">
+      <sp-action-button size="S" :quiet="true" @click="(e) => click(e, item)">
+        {{ item.text }}
+      </sp-action-button>
+    </div>
+  </sp-menu>
 </template>
 
 <style scoped>
@@ -27,8 +25,8 @@ import { Component } from "vue-property-decorator";
 import MenuButton from "~/components/vega/MenuButton.vue";
 
 export class ContextMenuItem {
-  name: string = "";
-  action: () => void = () => {};
+  text: string = "";
+  action: (e: Event) => void = () => {};
 }
 
 @Component({
@@ -50,6 +48,12 @@ export default class ContextMenu extends Vue {
     };
   }
 
+  click(e: Event, item: ContextMenuItem) {
+    item.action(e);
+    this.close();
+    console.log("cl;ick");
+  }
+
   close() {
     this.isOpen = false;
     window.removeEventListener("mousedown", this.mouseDownInWindow);
@@ -57,7 +61,8 @@ export default class ContextMenu extends Vue {
 
   mouseDownInWindow(e: MouseEvent) {
     const target = e.target as HTMLElement;
-    const el = this.$refs.el as HTMLElement;
+    // @ts-ignore
+    const el = this.$refs.el.$el as HTMLElement;
     if (el.contains(target)) {
       return;
     }
