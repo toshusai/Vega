@@ -18,7 +18,53 @@
 
     <AppBarMenuButton @click="renderVideo"> Render </AppBarMenuButton>
     <AppBarMenuButton @click="goAbout"> About</AppBarMenuButton>
+    <sp-action-button
+      :quiet="true"
+      size="S"
+      style="margin: auto 4px auto auto"
+      @click="isOpenProjectSettings = true"
+    >
+      <sp-icon name="Settings" style="width: 12px" />
+    </sp-action-button>
     <AboutModal ref="aboutModal" />
+    <sp-dialog :isOpen="isOpenProjectSettings" header="Project Settings">
+      <div style="width: min-content">
+        <sp-field-label>Project Name</sp-field-label>
+        <sp-textfield size="S" />
+        <sp-field-label>Fps</sp-field-label>
+        <sp-textfield size="S" />
+        <sp-field-label>Resolution</sp-field-label>
+        <div style="display: flex">
+          <div>
+            <sp-field-label>Width</sp-field-label>
+            <sp-textfield size="S" style="width: 100%" />
+          </div>
+          <div>
+            <sp-field-label>Height</sp-field-label>
+            <sp-textfield size="S" style="width: 100%" />
+          </div>
+        </div>
+        <sp-field-label>Duration</sp-field-label>
+        <sp-textfield size="S" />
+      </div>
+      <template #footer>
+        <div
+          class="
+            spectrum-ButtonGroup
+            spectrum-Dialog-buttonGroup
+            spectrum-Dialog-buttonGroup--noFooter
+          "
+        >
+          <sp-button
+            type="primary"
+            :group="true"
+            @click="isOpenProjectSettings = false"
+          >
+            OK
+          </sp-button>
+        </div>
+      </template>
+    </sp-dialog>
   </div>
 </template>
 
@@ -49,6 +95,9 @@ import AppBarMenuItem from "~/components/app_bar/AppBarMenuItem.vue";
 })
 export default class AppBar extends Vue {
   @Ref() aboutModal?: AboutModal;
+
+  isOpenProjectSettings: boolean = false;
+
   get fileMneu(): any {
     return (this.$refs as any).fileMenu;
   }
