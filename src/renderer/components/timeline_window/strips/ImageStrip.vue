@@ -1,22 +1,36 @@
 <template>
   <div data-vega-text-strip class="text-strip">
     <span v-if="strip.imageAsset">
-      {{ strip.imageAsset.name }}
+      <img class="image-preview" :src="strip.imageAsset.path" />
+      <div class="preview-name">
+        {{ strip.imageAsset.name }}
+      </div>
     </span>
-    <div v-if="!strip.imageAsset" class="error">
-      [Error] Image Resouce Not Found
-    </div>
+    <strip-error v-if="!strip.imageAsset" />
   </div>
 </template>
 
 <style scoped>
-.text-strip {
-  background-color: var(--lime-700);
+.image-strip {
+  background-color: var(--strip-image);
   width: 100%;
   height: 100%;
   user-select: none;
   /* for left handle */
   padding-left: 4px;
+}
+
+.image-preview {
+  pointer-events: none;
+  height: 24px;
+  position: absolute;
+  left: 5px;
+  top: 1px;
+}
+
+.preview-name {
+  pointer-events: none;
+  margin-left: 26px;
 }
 </style>
 
