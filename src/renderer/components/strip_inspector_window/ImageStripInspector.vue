@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 4px">
     <div class="label">Start</div>
-    <VegaValueInput
+    <sp-textfield
       type="number"
       :step="0.01"
       :value="strip.start.toFixed(3)"
@@ -11,7 +11,7 @@
     <hr class="hr" />
 
     <div class="label">Length</div>
-    <VegaValueInput
+    <sp-textfield
       type="number"
       :step="0.01"
       :value="strip.length.toFixed(3)"
@@ -22,7 +22,7 @@
 
     <div class="label">Position</div>
     <div class="position">
-      x:<VegaValueInput
+      x:<sp-textfield
         type="number"
         :step="0.01"
         :value="strip.position.x"
@@ -30,7 +30,7 @@
       />
     </div>
     <div class="position">
-      y:<VegaValueInput
+      y:<sp-textfield
         type="number"
         :step="0.01"
         :value="strip.position.y"
@@ -69,16 +69,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import VegaInput from "../vega/VegaInput.vue";
 import VegaSelect, { OptionKeyValue } from "../vega/VegaSelect.vue";
 import { Asset, ImageStrip, ImageAsset } from "~/models";
-import VegaValueInput from "~/components/vega/VegaValueInput.vue";
 
 @Component({
   components: {
-    VegaInput,
     VegaSelect,
-    VegaValueInput,
   },
 })
 export default class ImageStripInspector extends Vue {

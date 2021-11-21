@@ -3,10 +3,10 @@
     <WindowNameTag name="Project" />
     <div style="padding: 4px">
       <label class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">name</label>
-      <VegaValueInput class="w100" :value="name" @change="changeName" />
+      <sp-textfield class="w100" :value="name" @change="changeName" />
 
       <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">duration</div>
-      <VegaValueInput
+      <sp-textfield
         class="w100"
         type="number"
         :value="duration"
@@ -29,7 +29,7 @@
           <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">
             width
           </div>
-          <VegaValueInput
+          <sp-textfield
             class="w100"
             type="number"
             :value="width"
@@ -40,7 +40,7 @@
           <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">
             height
           </div>
-          <VegaValueInput
+          <sp-textfield
             class="w100"
             type="number"
             :value="height"
@@ -71,19 +71,15 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import VegaInput from "./vega/VegaInput.vue";
 import { OptionKeyValue } from "./vega/VegaSelect.vue";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
 import { Strip } from "~/models";
-import VegaValueInput from "~/components/vega/VegaValueInput.vue";
 import VegaSelect from "~/components/vega/VegaSelect.vue";
 
 @Component({
   components: {
     WindowNameTag,
     VegaSelect,
-    VegaInput,
-    VegaValueInput,
   },
 })
 export default class ProjectWindow extends Vue {

@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 4px">
     <div class="label">Start</div>
-    <VegaValueInput
+    <sp-textfield
       type="number"
       :step="0.01"
       :value="strip.start"
@@ -11,7 +11,7 @@
     <hr class="hr" />
 
     <div class="label">Offset</div>
-    <VegaValueInput
+    <sp-textfield
       type="number"
       :step="0.01"
       :value="strip.videoOffset"
@@ -21,7 +21,7 @@
     <hr class="hr" />
 
     <div class="label">Length</div>
-    <VegaValueInput
+    <sp-textfield
       type="number"
       :step="0.01"
       :value="strip.length"
@@ -32,14 +32,14 @@
 
     <div class="label">Position</div>
     <div class="position">
-      x:<VegaValueInput
+      x:<sp-textfield
         type="number"
         :value="strip.position.x"
         @change="changeX"
       />
     </div>
     <div class="position">
-      y:<VegaValueInput
+      y:<sp-textfield
         type="number"
         :value="strip.position.y"
         @change="changeY"
@@ -79,12 +79,10 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { OptionKeyValue } from "../vega/VegaSelect.vue";
 import { Asset, VideoAsset, VideoStrip } from "~/models";
-import VegaValueInput from "~/components/vega/VegaValueInput.vue";
 import VegaSelect from "~/components/vega/VegaSelect.vue";
 
 @Component({
   components: {
-    VegaValueInput,
     VegaSelect,
   },
 })
