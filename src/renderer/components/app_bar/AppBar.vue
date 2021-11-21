@@ -1,20 +1,25 @@
 <template>
   <div class="app-bar">
-    <AppBarMenuButton @click="openProjectMenu"> Project </AppBarMenuButton>
-    <AppBarMenu ref="fileMenu">
-      <AppBarMenuItem @click="openProject">
-        Open Project
-        <input
-          ref="input"
-          type="file"
-          style="display: none"
-          @change="changeOpenProject"
-        />
-      </AppBarMenuItem>
-      <AppBarMenuItem @click="downloadProjectEmit">
-        Save Project
-      </AppBarMenuItem>
-    </AppBarMenu>
+    <sp-action-menu
+      style="height: 24px"
+      :items="[
+        {
+          text: `Open Project`,
+          action: openProject,
+        },
+        {
+          text: `Download Project`,
+          action: downloadProjectEmit,
+        },
+      ]"
+    >
+      <input
+        ref="input"
+        type="file"
+        style="display: none"
+        @change="changeOpenProject"
+      />
+    </sp-action-menu>
 
     <div style="margin: auto 4px auto auto">
       <sp-action-button :quiet="true" size="S" @click="renderVideo">
@@ -68,18 +73,11 @@ import { isProject, Project } from "~/models/Project";
 })
 export default class AppBar extends Vue {
   @Ref() aboutModal?: AboutModal;
+  @Ref() input!: HTMLInputElement;
 
   @PropSync("projectSync") project!: Project;
 
   isOpenProjectSettings: boolean = false;
-
-  get fileMneu(): any {
-    return (this.$refs as any).fileMenu;
-  }
-
-  get input(): any {
-    return (this.$refs as any).input;
-  }
 
   downloadProjectEmit() {
     this.$emit("downloadProject");
@@ -121,11 +119,6 @@ export default class AppBar extends Vue {
         throw new VegaError("Project file is not JSON format.");
       }
     }
-    this.fileMneu.close();
-  }
-
-  openProjectMenu(e: MouseEvent) {
-    this.fileMneu.open(e);
   }
 }
 </script>
