@@ -7,7 +7,7 @@ import {
   TextStrip,
   ImageStrip,
 } from "./strips";
-import type { Project } from "./Project";
+import type { IProject } from "./Project";
 
 const VEGA_VERSION = "v0.0.9";
 
@@ -21,7 +21,7 @@ export {
   AudioAsset,
   FontAsset,
   VideoAsset,
-  Project,
+  IProject,
   ImageStrip,
   ImageAsset,
   VEGA_VERSION,
