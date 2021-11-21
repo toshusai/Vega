@@ -25,7 +25,18 @@ export default {
     },
   },
 
-  css: ["~/assets/reset.css", "~/assets/global.css"],
+  css: [
+    "~/assets/reset.css",
+    "~/assets/global.css",
+    "@spectrum-css/vars/dist/spectrum-global.css",
+    "@spectrum-css/vars/dist/spectrum-medium.css",
+    "@spectrum-css/vars/dist/spectrum-light.css",
+    "@spectrum-css/vars/dist/spectrum-dark.css",
+    "@spectrum-css/page/dist/index-vars.css",
+    "@toshusai/spectrum-vue/dist/index.css",
+  ],
+
+  plugins: ["~/plugins/register"],
 
   // components: true,
 

@@ -306,14 +306,22 @@
   /* White / Black */
   --white: #ffffff;
   --black: #000000;
+  --sp-blue-400: #2680eb;
+  --sp-blue-500: #378ef0;
+  --sp-blue-600: #4b9cf5;
+  --sp-blue-700: #5aa9fa;
+  --strip-video: var(--blue-800);
+  --strip-audio: var(--teal-800);
+  --strip-text: var(--light-green-800);
+  --strip-image: var(--amber-800);
 }
 
 html, body {
   margin: 0;
   padding: 0;
-  font-family: Ricty;
-  background-color: var(--vc-d-4);
-  color: white;
+  /* font-family: Ricty; */
+  /* background-color: var(--vc-d-4); */
+  /* color: white; */
 }
 
 @font-face {

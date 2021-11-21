@@ -4,10 +4,20 @@ import {
   IFontAsset,
   IImageAsset,
   IVideoAsset,
+  Asset,
 } from "./assets";
-import { IImageStrip, IStrip, IText3DStrip, IVideoStrip } from "./strips";
+import {
+  Strip,
+  IImageStrip,
+  IStrip,
+  IText3DStrip,
+  IVideoStrip,
+} from "./strips";
+import { VEGA_VERSION } from ".";
+import { AssetUtil } from "~/plugins/asset";
+import { StripUtil } from "~/plugins/strip";
 
-export interface Project {
+export interface IProject {
   version: string;
   name: string;
   width: number;
@@ -19,7 +29,42 @@ export interface Project {
   strips: (IStrip | IVideoStrip | IText3DStrip | IImageStrip)[];
 }
 
-export function migrationProject(project: Project) {
+export class Project implements IProject {
+  version: string;
+  name: string;
+  width: number;
+  height: number;
+  fps: number;
+  duration: number;
+  assets: Asset[];
+  strips: Strip[];
+  constructor(i: IProject) {
+    i = migrationProject(i);
+    this.version = i.version;
+    this.name = i.name;
+    this.width = i.width;
+    this.height = i.height;
+    this.fps = i.fps;
+    this.duration = i.duration;
+    this.assets = AssetUtil.interfacesToInstances(i.assets);
+    this.strips = StripUtil.interfacesToInstances(i.strips, this.assets);
+  }
+
+  toJSON(): IProject {
+    return {
+      name: this.name,
+      width: this.width,
+      height: this.height,
+      fps: this.fps,
+      duration: this.duration,
+      version: VEGA_VERSION,
+      assets: this.assets.map((a) => a.toInterface()),
+      strips: this.strips.map((s) => s.toInterface()),
+    };
+  }
+}
+
+export function migrationProject(project: IProject) {
   if (project.version < "v0.0.4") {
     project.strips.forEach((s) => {
       if (s.type == "Text") {
@@ -32,7 +77,7 @@ export function migrationProject(project: Project) {
   return project;
 }
 
-export function isProject(input: any): input is Project {
+export function isProject(input: any): input is IProject {
   return (
     typeof input.version == "string" &&
     typeof input.name == "string" &&

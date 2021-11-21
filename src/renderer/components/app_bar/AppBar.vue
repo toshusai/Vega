@@ -1,46 +1,72 @@
 <template>
   <div class="app-bar">
-    <AppBarMenuButton @click="openProjectMenu"> Project </AppBarMenuButton>
-    <AppBarMenu ref="fileMenu">
-      <AppBarMenuItem @click="openProject">
-        Open Project
-        <input
-          ref="input"
-          type="file"
-          style="display: none"
-          @change="changeOpenProject"
-        />
-      </AppBarMenuItem>
-      <AppBarMenuItem @click="downloadProjectEmit">
-        Save Project
-      </AppBarMenuItem>
-    </AppBarMenu>
+    <sp-action-menu
+      data-project-action-menu
+      style="height: 24px"
+      :items="[
+        {
+          text: `Open Project`,
+          action: openProject,
+        },
+        {
+          text: `Download Project`,
+          action: downloadProjectEmit,
+        },
+      ]"
+    >
+      <input
+        ref="input"
+        type="file"
+        style="display: none"
+        @change="changeOpenProject"
+      />
+    </sp-action-menu>
 
-    <AppBarMenuButton @click="renderVideo"> Render </AppBarMenuButton>
-    <AppBarMenuButton @click="goAbout"> About</AppBarMenuButton>
-    <AboutModal ref="aboutModal" />
+    <div style="margin: auto 4px auto auto">
+      <sp-action-button :quiet="true" size="S" @click="renderVideo">
+        <sp-icon name="BoxExport" style="width: 12px" />
+      </sp-action-button>
+      <sp-action-button
+        :quiet="true"
+        size="S"
+        data-vega-settings-button
+        @click="isOpenProjectSettings = true"
+      >
+        <sp-icon name="Settings" style="width: 12px" />
+      </sp-action-button>
+      <sp-action-button :quiet="true" size="S" @click="goAbout">
+        <sp-icon name="Info" style="width: 12px" />
+      </sp-action-button>
+    </div>
+    <about-modal ref="aboutModal" />
+    <project-setting-modal
+      :isOpenSync.sync="isOpenProjectSettings"
+      :projectSync.sync="project"
+    />
   </div>
 </template>
 
 <style scoped>
 .app-bar {
-  height: 18px;
+  height: 30px;
   display: flex;
 }
 </style>
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Ref } from "vue-property-decorator";
+import { Component, PropSync, Ref } from "vue-property-decorator";
 import AppBarMenu from "./AppBarMenu.vue";
 import AppBarMenuButton from "./AppBarMenuButton.vue";
 import AboutModal from "./AboutModal.vue";
-import { Project } from "~/models";
+import ProjectSettingModal from "./ProjectSettingModal.vue";
 import { VegaError } from "~/plugins/error";
 import AppBarMenuItem from "~/components/app_bar/AppBarMenuItem.vue";
+import { isProject, Project } from "~/models/Project";
 
 @Component({
   components: {
+    ProjectSettingModal,
     AppBarMenu,
     AppBarMenuButton,
     AppBarMenuItem,
@@ -49,13 +75,11 @@ import AppBarMenuItem from "~/components/app_bar/AppBarMenuItem.vue";
 })
 export default class AppBar extends Vue {
   @Ref() aboutModal?: AboutModal;
-  get fileMneu(): any {
-    return (this.$refs as any).fileMenu;
-  }
+  @Ref() input!: HTMLInputElement;
 
-  get input(): any {
-    return (this.$refs as any).input;
-  }
+  @PropSync("projectSync") project!: Project;
+
+  isOpenProjectSettings: boolean = false;
 
   downloadProjectEmit() {
     this.$emit("downloadProject");
@@ -87,16 +111,16 @@ export default class AppBar extends Vue {
       try {
         const file = target.files[0];
         const text = await file.text();
-        this.openProjectEmit(JSON.parse(text));
+        const iproject = JSON.parse(text);
+        if (isProject(iproject)) {
+          this.openProjectEmit(new Project(iproject));
+        } else {
+          throw new VegaError("Invalid Project file.");
+        }
       } catch {
         throw new VegaError("Project file is not JSON format.");
       }
     }
-    this.fileMneu.close();
-  }
-
-  openProjectMenu(e: MouseEvent) {
-    this.fileMneu.open(e);
   }
 }
 </script>

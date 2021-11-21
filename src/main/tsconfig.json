@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "resolveJsonModule": true,
     "module": "commonjs",
     "outDir": "../../dist",
     "moduleResolution": "Node",

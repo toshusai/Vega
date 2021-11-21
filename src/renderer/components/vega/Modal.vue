@@ -1,6 +1,12 @@
 <template>
-  <div v-show="isOpen" ref="modal" class="modal">
-    <slot />
+  <div v-show="isOpen" ref="modal" class="spectrum-Modal-wrapper">
+    <div class="spectrum-Underlay is-open"></div>
+
+    <div class="spectrum-Modal is-open">
+      <div class="spectrum-Dialog">
+        <slot />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -12,7 +18,6 @@
   height: 100vh;
   background-color: rgba(0 0 0 / 0.5);
   display: flex;
-  z-index: 10;
 }
 </style>
 <script lang="ts">

@@ -1,135 +1,206 @@
 <template>
-  <div>
+  <div class="editor">
     <AppBar
+      :projectSync="project"
       @renderVideo="renderVideo"
       @openProject="openProject"
       @downloadProject="downloadProject"
     />
-    <div style="display: flex; height: 70vh">
-      <div style="display: flex; width: 30%">
-        <div style="width: 50%; display: flex; flex-flow: column">
-          <ProjectWindow
-            :duration="duration"
-            :strips="strips"
-            :currentTime="currentTime"
-            :canvas="canvas"
-            :fps="fps"
-            :width="width"
-            :height="height"
-            :name="name"
-            @changeDuration="(v) => (duration = v)"
-            @changeWidth="changeWidth"
-            @changeHeight="changeHeight"
-            @changeFps="changeFps"
-          />
-          <AssetWindow
-            :assets="assets"
-            @changeSelectedAsset="changeSelectedAsset"
-            @addAsset="addAsset"
-          />
-        </div>
-        <div style="width: 50%">
-          <AssetInspectorWindow
-            :asset="selectedAsset"
-            @changeAsset="changeAsset"
-          />
-        </div>
-      </div>
-      <div style="width: 70%; display: flex; flex-flow: column">
-        <PreviewWindow
-          ref="previewWindow"
-          :currentTime="currentTime"
-          :selectedStrip="selectedStrip"
-          :fps="fps"
-          :width="width"
-          :height="height"
-          @changeStripPos="changeStripPos"
-        />
-        <ControllerWindow
-          :isPlay="isPlay"
-          :playMode="playMode"
-          @changePlayMode="changePlayMode"
-          @togglePlay="play"
-        />
-      </div>
-    </div>
-
-    <div style="display: flex; height: calc(30vh - 18px)">
-      <div style="width: 80%">
-        <TimelineWindow
-          :currentTime="currentTime"
-          :strips="strips"
-          :selectedStrips="selectedStrips"
-          :duration="duration"
-          @addAsset="addAsset"
-          @addStrip="addStrip"
-          @changeCurrentTime="changeCurrentTime"
-          @changeSelectedStrips="changeSelectedStrips"
-          @changeStrip="(i, name, value) => changeStripPropery(i, name, value)"
-          @deleteStrip="deleteStrip"
-        />
-      </div>
-      <div style="width: 20%">
+    <sp-divider style="margin: 0" />
+    <sp-split-view style="height: calc(100vh - 32px)">
+      <sp-split-view-pane>
+        <sp-split-view :vertical="true" style="height: 100%; width: 80vw">
+          <sp-split-view-pane>
+            <sp-split-view>
+              <sp-split-view-pane style="width: 200px">
+                <sp-split-view :vertical="true" style="height: 100%">
+                  <sp-split-view-pane>
+                    <AssetWindow
+                      :assets="project.assets"
+                      @changeSelectedAsset="changeSelectedAsset"
+                      @addAsset="addAsset"
+                    />
+                  </sp-split-view-pane>
+                  <sp-split-view-splitter />
+                  <sp-split-view-pane>
+                    <asset-inspector-window
+                      :asset="selectedAsset"
+                      @changeAsset="changeAsset"
+                    />
+                  </sp-split-view-pane>
+                </sp-split-view>
+              </sp-split-view-pane>
+              <sp-split-view-splitter
+                class="gripper-horizontal splitter-horizontal"
+              ></sp-split-view-splitter>
+              <sp-split-view-pane
+                :style="`height: ${abobeTimeline}px; max-width: 80%`"
+              >
+                <PreviewWindow
+                  ref="previewWindow"
+                  :currentTime="currentTime"
+                  :selectedStrip="selectedStrip"
+                  :fps="project.fps"
+                  :width="project.width"
+                  :height="project.height"
+                  @changeStripPos="changeStripPos"
+                />
+              </sp-split-view-pane>
+            </sp-split-view>
+          </sp-split-view-pane>
+          <sp-split-view-splitter
+            class="gripper-vertical"
+            :gripper="true"
+            @change="(v) => (abobeTimeline += v)"
+          ></sp-split-view-splitter>
+          <sp-split-view-pane
+            :style="`height: 100%; width: 100%; overflow-y: scroll`"
+          >
+            <TimelineWindow
+              :currentTime="currentTime"
+              :strips="project.strips"
+              :selectedStrips="selectedStrips"
+              :duration="project.duration"
+              :isPlay="isPlay"
+              @addAsset="addAsset"
+              @addStrip="addStrip"
+              @changeCurrentTime="changeCurrentTime"
+              @changeSelectedStrips="changeSelectedStrips"
+              @changeStrip="
+                (i, name, value) => changeStripPropery(i, name, value)
+              "
+              @deleteStrip="deleteStrip"
+              @togglePlay="play"
+            />
+          </sp-split-view-pane>
+        </sp-split-view>
+      </sp-split-view-pane>
+      <sp-split-view-splitter
+        class="gripper-horizontal"
+      ></sp-split-view-splitter>
+      <sp-split-view-pane style="width: 100%">
         <StripInspector
-          :strip="selectedStrip"
-          :assets="assets"
+          :stripSync.sync="selectedStrip"
+          :assets="project.assets"
           @change="changeStrip"
           @changeProperty="
             (name, value) => changeStripPropery(selectedStripIndex, name, value)
           "
         />
-      </div>
-    </div>
-
+      </sp-split-view-pane>
+    </sp-split-view>
     <Snakbar ref="snakbar" />
 
     <RendererWindow
       ref="rendererWindow"
-      :currentTime="currentTime"
-      :fps="fps"
-      :strips="strips"
-      :duration="duration"
-      :width="width"
-      :height="height"
+      :project="project"
       :scene="scene"
       :camera="camera"
     />
   </div>
 </template>
 
+<style scoped>
+.editor {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+</style>
+
+<style>
+/* Nested SplitView is not working. So override force. */
+.gripper-vertical > .spectrum-SplitView-gripper {
+  left: 50% !important;
+}
+.gripper-horizontal {
+  height: auto !important;
+  min-height: auto !important;
+  width: 2px !important;
+  min-width: 2px !important;
+}
+.gripper-horizontal > .spectrum-SplitView-gripper {
+  /* override props */
+  left: -4px !important;
+  /* default horizontal */
+  content: "";
+  display: block;
+  position: absolute;
+  border-style: solid;
+  border-radius: var(--spectrum-alias-border-radius-small);
+  border-radius: var(
+    --spectrum-dragbar-gripper-border-radius,
+    var(--spectrum-alias-border-radius-small)
+  );
+  top: 50%;
+  transform: translate(0, -50%);
+  width: var(--spectrum-global-dimension-static-size-50);
+  width: var(
+    --spectrum-dragbar-gripper-width,
+    var(--spectrum-global-dimension-static-size-50)
+  );
+  height: var(--spectrum-global-dimension-static-size-200);
+  height: var(
+    --spectrum-dragbar-gripper-height,
+    var(--spectrum-global-dimension-static-size-200)
+  );
+  border-top-width: 4 px;
+  border-top-width: var(--spectrum-dragbar-gripper-border-width-vertical, 4px);
+  border-bottom-width: 4 px;
+  border-bottom-width: var(
+    --spectrum-dragbar-gripper-border-width-vertical,
+    4px
+  );
+  border-left-width: 3 px;
+  border-left-width: var(
+    --spectrum-dragbar-gripper-border-width-horizontal,
+    3px
+  );
+  border-right-width: 3 px;
+  border-right-width: var(
+    --spectrum-dragbar-gripper-border-width-horizontal,
+    3px
+  );
+}
+</style>
+
 <script lang="ts">
 import Vue from "vue";
 import * as T from "three";
 import { Component, Ref } from "vue-property-decorator";
+import loadicons from "loadicons";
 import RendererWindow from "@/components/RendererWindow.vue";
 import AppBar from "@/components/app_bar/AppBar.vue";
 import PreviewWindow from "~/components/PreviewWindow.vue";
 import {
   Asset,
   FontAsset,
-  ImageStrip,
-  Project,
   Strip,
   Text3DStrip,
   TextStrip,
   VEGA_VERSION,
   VideoAsset,
   VideoStrip,
+  ImageStrip,
+  ImageAsset,
 } from "~/models";
 import AssetWindow from "~/components/asset_window/AssetWindow.vue";
 import AssetInspectorWindow from "~/components/asset_inspector/AssetInspectorWindow.vue";
 import StripInspector from "~/components/strip_inspector_window/StripInspectorWindow.vue";
 import TimelineWindow from "~/components/timeline_window/Timeline.vue";
 import { download } from "~/plugins/download";
-import { AssetUtil } from "~/plugins/asset";
 import { StripUtil } from "~/plugins/strip";
 import { IVector3 } from "~/models/math/Vector3";
 import Snakbar from "~/components/Snakbar.vue";
 import { VegaError } from "~/plugins/error";
 import { PlayMode, PLAY_EVERY_FRAME, SYNC_TO_AUDIO } from "~/plugins/config";
-import { isProject, migrationProject } from "~/models/Project";
+import { isProject, Project } from "~/models/Project";
 import ProjectWindow from "~/components/ProjectWindow.vue";
 import ControllerWindow from "~/components/ControllerWindow.vue";
+import { DragAndDrop } from "~/plugins/dragAndDrop";
 
 @Component({
   components: {
@@ -153,24 +224,29 @@ export default class IndexPage extends Vue {
   camera: T.OrthographicCamera | null = null;
   scene: T.Scene | null = null;
   isPlay: boolean = false;
-  duration: number = 15;
   currentTime: number = 0;
-  strips: Strip[] = [];
   lastAnimationTime: number = 0;
   playRequests: number[] = [];
-  assets: Asset[] = [];
   selectedAsset: Asset | null = null;
   selectedStrips: Strip[] = [];
   canvas: HTMLCanvasElement | null = null;
 
-  width: number = 1920;
-  height: number = 1080;
-  fps: number = 60;
-  name: string = "untitled";
+  project: Project = new Project({
+    version: VEGA_VERSION,
+    name: "untitled",
+    width: 1280,
+    height: 720,
+    fps: 60,
+    duration: 10,
+    assets: [],
+    strips: [],
+  });
 
-  playMode: PlayMode = PLAY_EVERY_FRAME;
+  playMode: PlayMode = SYNC_TO_AUDIO;
 
   lastUpdate: number = 0;
+
+  abobeTimeline: number = 400;
 
   get selectedStrip() {
     if (this.selectedStrips.length > 0) {
@@ -180,12 +256,20 @@ export default class IndexPage extends Vue {
   }
 
   get selectedStripIndex() {
-    return this.strips.findIndex((s) => s == this.selectedStrip);
+    return this.project.strips.findIndex((s) => s == this.selectedStrip);
   }
 
   async mounted() {
+    DragAndDrop.init();
+    loadicons("/static/svg/spectrum-css-icons.svg", () => {});
+    loadicons("/static/svg/spectrum-icons.svg", () => {});
     this.scene = new T.Scene();
-    this.camera = new T.OrthographicCamera(0, this.width, this.height, 0);
+    this.camera = new T.OrthographicCamera(
+      0,
+      this.project.width,
+      this.project.height,
+      0
+    );
     this.camera.position.set(0, 0, 10);
     this.canvas = this.previewWindow?.renderCanvas || null;
     await FontAsset.init();
@@ -193,25 +277,28 @@ export default class IndexPage extends Vue {
   }
 
   addAsset(asset: Asset) {
-    this.assets.push(asset);
+    this.project.assets.push(asset);
   }
 
   changeAsset(newAsset: Asset) {
-    const i = this.assets.findIndex((a) => a == this.selectedAsset);
-    const oldAsset = this.assets[i];
-    this.assets.splice(i, 1, newAsset);
-    this.strips.forEach((s) => {
+    const i = this.project.assets.findIndex((a) => a == this.selectedAsset);
+    const oldAsset = this.project.assets[i];
+    this.project.assets.splice(i, 1, newAsset);
+    this.project.strips.forEach((s) => {
       if (s instanceof VideoStrip && newAsset instanceof VideoAsset) {
         if (s.videoAsset == oldAsset) {
           s.updateAsset(newAsset);
         }
+      } else if (s instanceof ImageStrip && newAsset instanceof ImageAsset) {
+        s.updateAsset(newAsset);
       }
     });
+    this.selectedAsset = newAsset;
   }
 
   changeStripPropery(index: number, name: string, value: any) {
-    if (index < 0 || this.strips.length <= index) return;
-    const target = this.strips[index];
+    if (index < 0 || this.project.strips.length <= index) return;
+    const target = this.project.strips[index];
     switch (name) {
       case "layer":
         target.layer = value;
@@ -233,22 +320,12 @@ export default class IndexPage extends Vue {
         }
         break;
       case "position.x":
-        if (
-          target instanceof VideoStrip ||
-          target instanceof Text3DStrip ||
-          target instanceof ImageStrip ||
-          target instanceof TextStrip
-        ) {
+        if (StripUtil.isThreeJsStrip(target)) {
           target.position.x = value;
         }
         break;
       case "position.y":
-        if (
-          target instanceof VideoStrip ||
-          target instanceof Text3DStrip ||
-          target instanceof ImageStrip ||
-          target instanceof TextStrip
-        ) {
+        if (StripUtil.isThreeJsStrip(target)) {
           target.position.y = value;
         }
         break;
@@ -270,56 +347,35 @@ export default class IndexPage extends Vue {
       return;
     }
 
-    const i = this.strips.findIndex((_s) => _s.id == s.id);
-    if (this.selectedStrips.includes(this.strips[i])) {
+    const i = this.project.strips.findIndex((_s) => _s.id == s.id);
+    if (this.selectedStrips.includes(this.project.strips[i])) {
       this.selectedStrips = [s];
     } else {
       this.selectedStrips = [];
     }
-    this.strips.splice(i, 1, s);
+    this.project.strips.splice(i, 1, s);
   }
 
   changeStripPos(pos: IVector3) {
-    if (
-      this.selectedStrip instanceof VideoStrip ||
-      this.selectedStrip instanceof TextStrip ||
-      this.selectedStrip instanceof ImageStrip ||
-      this.selectedStrip instanceof Text3DStrip
-    ) {
+    if (this.selectedStrip && StripUtil.isThreeJsStrip(this.selectedStrip)) {
       this.selectedStrip.position.set(pos.x, pos.y, pos.z);
     }
   }
 
   changeStrips(strips: Strip[]) {
-    this.strips = strips;
+    this.project.strips = strips;
   }
 
   deleteStrip(strip: Strip) {
-    const i = this.strips.findIndex((s) => s == strip);
+    const i = this.project.strips.findIndex((s) => s == strip);
     if (i != -1) {
-      this.strips.splice(i, 1);
-    }
-  }
+      const strip = this.project.strips[i];
+      if (StripUtil.isThreeJsStrip(strip)) {
+        strip.obj.removeFromParent();
+      }
 
-  changeWidth(width: number) {
-    this.width = width;
-    if (this.camera) {
-      this.camera.right = this.width;
-      this.camera.updateProjectionMatrix();
-      this.previewWindow?.resize();
-    }
-  }
-
-  changeFps(fps: number) {
-    this.fps = fps;
-  }
-
-  changeHeight(height: number) {
-    this.height = height;
-    if (this.camera) {
-      this.camera.top = this.height;
-      this.camera.updateProjectionMatrix();
-      this.previewWindow?.resize();
+      this.project.strips.splice(i, 1);
+      this.selectedStrips = [];
     }
   }
 
@@ -345,7 +401,7 @@ export default class IndexPage extends Vue {
       window.requestAnimationFrame(this.update);
       return;
     }
-    if (time - this.lastUpdate + 0.02 <= 1000 / this.fps) {
+    if (time - this.lastUpdate + 0.02 <= 1000 / this.project.fps) {
       window.requestAnimationFrame(this.update);
       return;
     }
@@ -355,26 +411,30 @@ export default class IndexPage extends Vue {
     this.lastAnimationTime = time;
 
     if (this.playMode == PLAY_EVERY_FRAME) {
-      delta = 1000 / this.fps;
+      delta = 1000 / this.project.fps;
     }
 
     if (this.isPlay) {
       this.currentTime += delta / 1000;
     }
 
-    for (let i = 0; i < this.strips.length; i++) {
-      const s = this.strips[i];
+    for (let i = 0; i < this.project.strips.length; i++) {
+      const s = this.project.strips[i];
       await s.update(
         this.currentTime,
         delta,
         this.isPlay,
         this.playMode,
-        this.fps
+        this.project.fps
       );
     }
 
     if (this.previewWindow && this.scene && this.camera) {
       this.previewWindow.renderPreview(this.scene, this.camera);
+      this.camera.top = this.project.height;
+      this.camera.right = this.project.width;
+      this.camera.updateProjectionMatrix();
+      this.previewWindow.resize();
     }
 
     if (this.previewWindow) this.previewWindow.end();
@@ -383,13 +443,8 @@ export default class IndexPage extends Vue {
   }
 
   addStrip(ts: Strip) {
-    this.strips.push(ts);
-    if (
-      ts instanceof Text3DStrip ||
-      ts instanceof VideoStrip ||
-      ts instanceof ImageStrip ||
-      ts instanceof TextStrip
-    ) {
+    this.project.strips.push(ts);
+    if (StripUtil.isThreeJsStrip(ts)) {
       this.scene?.add(ts.obj);
     }
   }
@@ -400,56 +455,33 @@ export default class IndexPage extends Vue {
   }
 
   downloadProject() {
-    const project: Project = {
-      name: this.name,
-      width: this.width,
-      height: this.height,
-      fps: this.fps,
-      duration: this.duration,
-      version: VEGA_VERSION,
-      assets: this.assets.map((a) => a.toInterface()),
-      strips: this.strips.map((s) => s.toInterface()),
-    };
-    download(new Blob([JSON.stringify(project)]), project.name + ".json");
+    download(
+      new Blob([JSON.stringify(this.project.toJSON())]),
+      this.project.name + ".json"
+    );
   }
 
   getAssetById(id: string) {
-    return this.assets.find((a) => a.id == id);
+    return this.project.assets.find((a) => a.id == id);
   }
 
   openProject(project: Project) {
     if (!isProject(project))
       throw new VegaError("Invalid Project file format.");
-    project = migrationProject(project);
-    this.assets = this.assets.concat(
-      AssetUtil.interfacesToInstances(project.assets)
-    );
+    this.project = project;
 
-    this.strips = StripUtil.interfacesToInstances(project.strips, this.assets);
-
-    this.strips.forEach((s) => {
-      if (
-        s instanceof Text3DStrip ||
-        s instanceof VideoStrip ||
-        s instanceof ImageStrip ||
-        s instanceof TextStrip
-      ) {
+    this.project.strips.forEach((s) => {
+      if (StripUtil.isThreeJsStrip(s)) {
         this.scene?.add(s.obj);
       }
     });
-
-    this.width = project.width;
-    this.height = project.height;
-    this.fps = project.fps;
-    this.duration = project.duration;
-    this.name = project.name;
 
     this.previewWindow?.resize();
   }
 
   change() {
-    this.strips.forEach((s: Strip) => {
-      s.update(this.currentTime, 0, false, SYNC_TO_AUDIO, this.fps);
+    this.project.strips.forEach((s: Strip) => {
+      s.update(this.currentTime, 0, false, SYNC_TO_AUDIO, this.project.fps);
     });
   }
 

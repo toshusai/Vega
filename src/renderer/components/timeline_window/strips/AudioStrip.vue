@@ -4,9 +4,7 @@
     <span v-if="strip.asset">
       {{ strip.asset.name }}
     </span>
-    <div v-if="!strip.loaded" class="error">
-      [Error] Audio Resouce Not Found
-    </div>
+    <strip-error v-if="!strip.loaded" />
   </div>
 </template>
 
@@ -14,7 +12,7 @@
 .audio-strip {
   width: 100%;
   height: 100%;
-  background: var(--teal);
+  background: var(--strip-audio);
   font-size: 12px;
 }
 
@@ -36,9 +34,14 @@
 import Vue from "vue";
 import WaveSufer from "wavesurfer.js";
 import { Component, Prop, Watch } from "vue-property-decorator";
+import StripError from "./StripError.vue";
 import { AudioStrip } from "~/models";
 
-@Component({})
+@Component({
+  components: {
+    StripError,
+  },
+})
 export default class AudioStripComp extends Vue {
   @Prop({ default: () => null })
   strip!: AudioStrip;

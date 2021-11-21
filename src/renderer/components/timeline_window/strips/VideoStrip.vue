@@ -4,9 +4,7 @@
     <span v-if="strip.videoAsset">
       {{ strip.videoAsset.name }}
     </span>
-    <div v-if="!strip.loaded" class="error">
-      [Error] Video Resouce Not Found
-    </div>
+    <strip-error v-if="!strip.loaded" />
   </div>
 </template>
 
@@ -14,7 +12,7 @@
 .video-strip {
   width: 100%;
   height: 100%;
-  background: var(--blue-100);
+  background: var(--strip-video);
   font-size: 12px;
 }
 
@@ -24,16 +22,6 @@
   background-color: var(--blue);
   top: 0;
   left: 0;
-}
-
-.error {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: black;
-  color: var(--red);
 }
 
 /* Override wavesurfer overflow because scroll bar is appeared */
@@ -47,10 +35,14 @@
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import WaveSufer from "wavesurfer.js";
+import StripError from "./StripError.vue";
 import { VideoStrip } from "~/models";
 
 @Component({
   name: "VideoStrip",
+  components: {
+    StripError,
+  },
 })
 export default class VideoStripComp extends Vue {
   @Prop({ default: () => null })

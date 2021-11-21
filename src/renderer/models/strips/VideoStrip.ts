@@ -39,7 +39,7 @@ export class VideoStrip extends Strip {
 
   event: EventTarget = new EventTarget();
 
-  readonly videoAsset?: VideoAsset;
+  videoAsset?: VideoAsset;
 
   get src() {
     return this.video.src;
@@ -63,10 +63,9 @@ export class VideoStrip extends Strip {
     this.canvas = document.createElement("canvas");
     this.canvas.width = this.video.videoWidth;
     this.canvas.height = this.video.videoHeight;
-    this.updateAsset(videoAsset);
 
     this.ctx = this.canvas.getContext("2d");
-    if (!this.ctx) return;
+    if (!this.ctx) throw new Error("context2d error");
     this.ctx.fillStyle = "#ffffff";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -88,6 +87,7 @@ export class VideoStrip extends Strip {
     }
     this.id = this.obj.uuid;
     this.obj.position.copy(this.position);
+    this.updateAsset(videoAsset);
   }
 
   public toInterface(): IVideoStrip {
@@ -114,14 +114,16 @@ export class VideoStrip extends Strip {
       this.loaded = false;
       return;
     }
+    this.videoAsset = asset;
     this.loaded = false;
-    this.video.src = asset.path;
     asset.valid = false;
-    this.video.onloadedmetadata = () => {
+    const onLoad = () => {
       if (!this.canvas) return;
+      if (this.loaded) return;
       this.videoDuration = this.video.duration;
       this.canvas.width = this.video.videoWidth;
       this.canvas.height = this.video.videoHeight;
+
       this.obj.geometry = new T.PlaneGeometry(
         this.canvas.width,
         this.canvas.height
@@ -130,6 +132,8 @@ export class VideoStrip extends Strip {
       asset.valid = true;
       this.event.dispatchEvent(new CustomEvent("update"));
     };
+    this.video.onloadedmetadata = () => onLoad();
+    this.video.src = asset.path;
     this.video.load();
   }
 

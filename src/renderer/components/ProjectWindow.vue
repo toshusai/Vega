@@ -2,30 +2,51 @@
   <div class="root">
     <WindowNameTag name="Project" />
     <div style="padding: 4px">
-      <div class="label">name</div>
-      <VegaValueInput :value="name" @change="changeName" />
+      <label class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">name</label>
+      <sp-textfield class="w100" :value="name" @change="changeName" />
 
-      <hr class="hr" />
-
-      <div class="label">duration</div>
-      <VegaValueInput
+      <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">duration</div>
+      <sp-textfield
+        class="w100"
         type="number"
         :value="duration"
         @change="changeDuration"
       />
 
-      <hr class="hr" />
+      <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">fps</div>
+      <VegaSelect
+        class="w100"
+        :value="fps"
+        :items="fpsItems"
+        @change="changeFps"
+      />
 
-      <div class="label">fps</div>
-      <VegaSelect :value="fps" :items="fpsItems" @change="changeFps" />
-
-      <hr class="hr" />
-
-      <div class="label">resolution</div>
+      <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">
+        resolution
+      </div>
       <div style="display: flex">
-        <VegaValueInput type="number" :value="width" @change="changeWidth" />
-        x
-        <VegaValueInput type="number" :value="height" @change="changeHeight" />
+        <div>
+          <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">
+            width
+          </div>
+          <sp-textfield
+            class="w100"
+            type="number"
+            :value="width"
+            @change="changeWidth"
+          />
+        </div>
+        <div>
+          <div class="spectrum-FieldLabel spectrum-FieldLabel--sizeM">
+            height
+          </div>
+          <sp-textfield
+            class="w100"
+            type="number"
+            :value="height"
+            @change="changeHeight"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -42,24 +63,23 @@
   height: 1px;
   margin: 4px 0;
 }
+.w100 {
+  width: 100%;
+}
 </style>
 
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import VegaInput from "./vega/VegaInput.vue";
 import { OptionKeyValue } from "./vega/VegaSelect.vue";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
 import { Strip } from "~/models";
-import VegaValueInput from "~/components/vega/VegaValueInput.vue";
 import VegaSelect from "~/components/vega/VegaSelect.vue";
 
 @Component({
   components: {
     WindowNameTag,
     VegaSelect,
-    VegaInput,
-    VegaValueInput,
   },
 })
 export default class ProjectWindow extends Vue {

@@ -91,7 +91,7 @@ export default class Encoder {
 
   private async initFFmpeg() {
     this.ffmpeg = FFmpeg.createFFmpeg({
-      log: false,
+      log: true,
       corePath: "/static/js/ffmpeg/ffmpeg-core.js",
       logger: (v) => this.log(v),
     });

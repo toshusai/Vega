@@ -5,7 +5,6 @@
     @dragover="dragover"
     @dragleave="dragleave"
   >
-    <window-name-tag name="Assets" />
     <asset-list-item
       v-for="(asset, i) in assets"
       :key="i"
@@ -30,14 +29,13 @@
 
 <style scoped>
 .asset-window {
-  border: 1px solid var(--black);
   height: 100%;
   box-sizing: border-box;
   position: relative;
 }
 
 .upload-button {
-  margin: auto;
+  margin: 16px auto 16px auto;
   display: flex;
 }
 
@@ -100,19 +98,15 @@ export default class AssetWindow extends Vue {
   }
 
   addAsset(file: File) {
-    if (file.type == "video/mp4") {
+    if (VideoAsset.isSupportType(file.type)) {
       const src = window.URL.createObjectURL(file);
       const asset = new VideoAsset(v4(), file.name, src);
       this.$emit("addAsset", asset);
-    } else if (
-      file.type == "audio/wav" ||
-      file.type == "audio/mp3" ||
-      file.type == "audio/mpeg"
-    ) {
+    } else if (AudioAsset.isSupportType(file.type)) {
       const src = window.URL.createObjectURL(file);
       const asset = new AudioAsset(v4(), file.name, src);
       this.$emit("addAsset", asset);
-    } else if (file.type == "image/png") {
+    } else if (ImageAsset.isSupportType(file.type)) {
       const src = window.URL.createObjectURL(file);
       const asset = new ImageAsset(v4(), file.name, src);
       this.$emit("addAsset", asset);
