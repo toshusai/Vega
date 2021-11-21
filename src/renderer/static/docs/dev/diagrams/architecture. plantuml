@@ -1,0 +1,38 @@
+@startuml
+rectangle Text
+rectangle Video
+rectangle Audio
+rectangle Image
+rectangle Text3D
+
+rectangle "Canvas WebGL (Three.js)" as Canvas_WebGL
+circle "FFmpeg.js" as FFmpeg
+
+rectangle "CanvasTexture" as TextCanvas
+Text --> TextCanvas 
+TextCanvas --> Canvas_WebGL 
+
+rectangle VideoTexture 
+Video --> VideoTexture 
+VideoTexture --> Canvas_WebGL 
+
+rectangle ImageTexture 
+Image --> ImageTexture
+ImageTexture --> Canvas_WebGL 
+
+rectangle TextGeometry
+Text3D --> TextGeometry
+TextGeometry --> Canvas_WebGL 
+
+Audio --> FFmpeg
+
+rectangle "WebM images" as WebM
+Canvas_WebGL --> WebM :CCapture.js
+
+WebM --> FFmpeg
+
+rectangle "Output.mp4" as Output
+FFmpeg --> Output
+
+
+@enduml
