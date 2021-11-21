@@ -1,69 +1,54 @@
 <template>
-  <modal ref="modal">
-    <div style="width: 100%">
-      <div class="buttons">
-        <div>Version: {{ version }}</div>
-        <div>
-          <a class="link" href="/">Top</a>
-        </div>
-        <div>
-          <a class="link" href="/docs" @click="toDoc">Documents</a>
-        </div>
-        <div>
-          <a class="link" href="https://github.com/toshusai/vega">GitHub</a>
-        </div>
-      </div>
-      <div class="buttons" style="display: flex">
-        <sp-button style="margin-left: auto" @click="close"> Close </sp-button>
-      </div>
+  <sp-dialog :isOpen="isOpen" header="About">
+    <div>
+      <h4>Version: {{ version }}</h4>
+      <h5>
+        <sp-link class="link" href="/">Top</sp-link>
+      </h5>
+      <h5>
+        <sp-link class="link" href="/docs" @click="toDoc">Documents</sp-link>
+      </h5>
+      <h5>
+        <sp-link class="link" href="https://github.com/toshusai/vega">
+          GitHub
+        </sp-link>
+      </h5>
     </div>
-  </modal>
+    <template #footer>
+      <div
+        class="
+          spectrum-ButtonGroup
+          spectrum-Dialog-buttonGroup
+          spectrum-Dialog-buttonGroup--noFooter
+        "
+      >
+        <sp-button type="secondary" style="margin-left: auto" @click="close">
+          Close
+        </sp-button>
+      </div>
+    </template>
+  </sp-dialog>
 </template>
-
-<style scoped>
-.card {
-  background-color: var(--vc-d-4);
-  padding: 12px;
-  margin: auto;
-}
-
-.link {
-  color: var(--blue-100);
-}
-
-.link:visited {
-  color: var(--blue);
-}
-
-.buttons {
-  margin: 12px;
-}
-</style>
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Ref } from "vue-property-decorator";
-import Modal from "../vega/Modal.vue";
+import { Component } from "vue-property-decorator";
 import { VEGA_VERSION } from "~/models";
 
-@Component({
-  components: {
-    Modal,
-  },
-})
+@Component({})
 export default class AboutModal extends Vue {
-  @Ref() modal?: Modal;
+  isOpen = false;
 
   get version() {
     return VEGA_VERSION;
   }
 
   open() {
-    this.modal?.open();
+    this.isOpen = true;
   }
 
   close() {
-    this.modal?.close();
+    this.isOpen = false;
   }
 
   toDoc() {
