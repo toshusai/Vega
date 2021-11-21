@@ -41,6 +41,11 @@ Check [static/docs/dev/README.md](src/renderer/static/docs/dev/README.md)
 
 - **Icons**
   - Material Design Icons - https://github.com/templarian/MaterialDesign
+  - Spectrum CSS Workflow Icons - https://github.com/adobe/spectrum-css-workflow-icons
+
+- **Design System**
+  - Spectrum Vue - https://github.com/toshusai/spectrum-vue
+    - Spectrum CSS - https://github.com/adobe/spectrum-css
 
 - **Documentation**
   - Docsify - https://github.com/docsifyjs/docsify/
