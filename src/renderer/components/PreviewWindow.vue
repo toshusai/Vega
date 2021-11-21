@@ -19,17 +19,14 @@
         />
       </div>
       <div class="info">
-        <div>TIME:{{ timeFormat }}</div>
-        <div :class="fpsClass">FPS : {{ previewFps }}</div>
-        <div>
-          RES :
-          <VegaSelect
-            style="width: auto"
-            :value="previewScale"
-            :items="scaleItems"
-            @change="changePreviewScale"
-          />
-        </div>
+        <div>{{ timeFormat }}</div>
+        <!-- <div style="height: 24px" :class="fpsClass">FPS : {{ previewFps }}</div> -->
+        <VegaSelect
+          style="width: auto; margin-left: auto; margin-right: 8px"
+          :value="previewScale"
+          :items="scaleItems"
+          @change="changePreviewScale"
+        />
       </div>
     </div>
   </div>
@@ -46,9 +43,7 @@
   background-color: #000;
   display: flex;
   box-sizing: border-box;
-  /* -20px for WindowNameTag */
-  /* WARN maybe cause unexpected style */
-  height: calc(100% - 20px);
+  height: 100%;
 }
 
 .render-canvas {
@@ -64,8 +59,11 @@
 
 .info {
   position: absolute;
-  left: 0;
-  top: 0;
+  width: calc(100% - 8px);
+  display: flex;
+  font-family: Ricty;
+  left: 8px;
+  bottom: 8px;
 }
 
 .fps-warn {
@@ -138,8 +136,8 @@ export default class PreviewWindow extends Vue {
   scale: number = 0.3;
   wheelScale: number = 0.0001;
   previewScale: number = 1;
-  top: number = 0;
-  left: number = 0;
+  top: number = 32;
+  left: number = 32;
 
   get valid() {
     return this.previewFps >= this.fps;
