@@ -18,16 +18,16 @@
           @changeStripPos="changeStripPos"
         />
       </div>
-      <div class="info">
-        <div>{{ timeFormat }}</div>
-        <!-- <div style="height: 24px" :class="fpsClass">FPS : {{ previewFps }}</div> -->
-        <VegaSelect
-          style="width: auto; margin-left: auto; margin-right: 8px"
-          :value="previewScale"
-          :items="scaleItems"
-          @change="changePreviewScale"
-        />
-      </div>
+    </div>
+    <div class="info">
+      <div>{{ timeFormat }}</div>
+      <!-- <div style="height: 24px" :class="fpsClass">FPS : {{ previewFps }}</div> -->
+      <VegaSelect
+        style="width: auto; margin-left: auto; margin-right: 8px"
+        :value="previewScale"
+        :items="scaleItems"
+        @change="changePreviewScale"
+      />
     </div>
   </div>
 </template>
@@ -58,12 +58,12 @@
 }
 
 .info {
-  position: absolute;
+  position: relative;
   width: calc(100% - 8px);
   display: flex;
   font-family: Ricty;
   left: 8px;
-  bottom: 8px;
+  bottom: 32px;
 }
 
 .fps-warn {
