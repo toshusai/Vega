@@ -103,7 +103,6 @@ export default class VideoStripInspector extends Vue {
     const targetAsset = this.assets.find((a) => a.id == e.value);
     if (!targetAsset || !(targetAsset instanceof VideoAsset)) return;
     this.strip.updateAsset(targetAsset);
-    console.log(targetAsset);
   }
 
   changeX(value: number) {
