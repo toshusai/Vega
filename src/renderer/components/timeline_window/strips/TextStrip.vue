@@ -11,7 +11,7 @@
   height: 100%;
   user-select: none;
   /* for left handle */
-  padding-left: 4px;
+  padding-left: 6px;
 }
 </style>
 

@@ -23,6 +23,8 @@
   height: 26px;
   overflow: hidden;
   white-space: nowrap;
+  color: white;
+  font-family: Ricty;
 }
 
 .timeline-strip--selected {

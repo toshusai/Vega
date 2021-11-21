@@ -1,5 +1,5 @@
 <template>
-  <div data-vega-text-strip class="text-strip">
+  <div data-vega-text-strip class="image-strip">
     <span v-if="strip.imageAsset">
       <img class="image-preview" :src="strip.imageAsset.path" />
       <div class="preview-name">
