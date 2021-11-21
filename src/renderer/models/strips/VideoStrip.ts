@@ -133,10 +133,8 @@ export class VideoStrip extends Strip {
       this.event.dispatchEvent(new CustomEvent("update"));
     };
     this.video.onloadedmetadata = () => onLoad();
-    this.video.onload = () => onLoad();
-    this.video.load();
     this.video.src = asset.path;
-    onLoad();
+    this.video.load();
   }
 
   public async update(
