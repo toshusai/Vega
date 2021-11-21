@@ -40,7 +40,6 @@
 }
 
 .asset-inspector {
-  border: 1px solid var(--black);
   height: 100%;
   box-sizing: border-box;
 }
