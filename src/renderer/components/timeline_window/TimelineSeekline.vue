@@ -89,7 +89,7 @@ export default class TimelineSeekline extends Vue {
     return result;
   }
 
-  timeView(s) {
+  timeView(s: number) {
     if (s < 0) {
       return "-" + new Date(-s * 1000).toISOString().substr(11, 8);
     }
