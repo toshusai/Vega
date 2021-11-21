@@ -1,6 +1,5 @@
 <template>
   <div class="root">
-    <WindowNameTag name="Preview" />
     <div
       ref="preview"
       class="preview-window"
@@ -40,7 +39,6 @@
 .root {
   height: 100%;
   overflow: hidden;
-  border: 1px solid var(--black);
 }
 
 .preview-window {
