@@ -1,3 +1,4 @@
+// @ts-ignore
 import packageJson from "../../../package.json";
 import { Asset, AudioAsset, FontAsset, VideoAsset, ImageAsset } from "./assets";
 import {

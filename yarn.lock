@@ -1780,10 +1780,10 @@
   dependencies:
     "defer-to-connect" "^1.0.1"
 
-"@toshusai/spectrum-vue@^0.1.0":
-  "integrity" "sha512-D2P8A9SH/BOncedlxo2I6HUDAX3WnvMWNXsRNmK2aqBPbvZi1UJzCO7Gdyumca08NsdCLZzayB232QELlTfrvA=="
-  "resolved" "https://registry.npmjs.org/@toshusai/spectrum-vue/-/spectrum-vue-0.1.0.tgz"
-  "version" "0.1.0"
+"@toshusai/spectrum-vue@^0.1.1":
+  "integrity" "sha512-j2RYQgD8LVRk1CkVyPfOjTwzVJUAzZlMuG8uRS+lA1atOduyDujrCloli6t1I2Qp8nnBy9JA9Fe9xqewaK3h5w=="
+  "resolved" "https://registry.npmjs.org/@toshusai/spectrum-vue/-/spectrum-vue-0.1.1.tgz"
+  "version" "0.1.1"
   dependencies:
     "@adobe/spectrum-css-workflow-icons" "^1.2.1"
     "@spectrum-css/accordion" "^3.0.9"
