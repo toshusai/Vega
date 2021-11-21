@@ -14,9 +14,7 @@
         </div>
       </div>
       <div class="buttons" style="display: flex">
-        <VegaButton style="margin-left: auto" @click="close">
-          Close
-        </VegaButton>
+        <sp-button style="margin-left: auto" @click="close"> Close </sp-button>
       </div>
     </div>
   </modal>
@@ -47,12 +45,10 @@ import Vue from "vue";
 import { Component, Ref } from "vue-property-decorator";
 import Modal from "../vega/Modal.vue";
 import { VEGA_VERSION } from "~/models";
-import VegaButton from "~/components/vega/VegaButton.vue";
 
 @Component({
   components: {
     Modal,
-    VegaButton,
   },
 })
 export default class AboutModal extends Vue {

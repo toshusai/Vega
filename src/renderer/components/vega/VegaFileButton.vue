@@ -1,19 +1,16 @@
 <template>
-  <VegaButton @click="clickInput">
+  <sp-button @click="clickInput">
     <slot />
     <input ref="input" type="file" style="display: none" @change="change" />
-  </VegaButton>
+  </sp-button>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Ref } from "vue-property-decorator";
 import { VegaError } from "~/plugins/error";
-import VegaButton from "~/components/vega/VegaButton.vue";
 
-@Component({
-  components: { VegaButton },
-})
+@Component({})
 export default class VegaFileButton extends Vue {
   @Ref() input!: HTMLInputElement;
 

@@ -15,10 +15,10 @@
     <div v-if="end" class="note2">Rendering Completed !</div>
 
     <div class="content">
-      <VegaButton :primary="true" @click="close">Close</VegaButton>
+      <sp-button :primary="true" @click="close">Close</sp-button>
       <div style="margin: auto"></div>
-      <VegaButton v-if="!isEncoding" @click="start">Start</VegaButton>
-      <VegaButton v-if="end" @click="download">Download</VegaButton>
+      <sp-button v-if="!isEncoding" @click="start">Start</sp-button>
+      <sp-button v-if="end" @click="download">Download</sp-button>
     </div>
   </div>
 </template>
@@ -61,12 +61,10 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import VegaProgress from "@/components/vega/VegaProgress.vue";
-import VegaButton from "@/components/vega/VegaButton.vue";
 
 @Component({
   components: {
     VegaProgress,
-    VegaButton,
   },
 })
 export default class ExportingCard extends Vue {

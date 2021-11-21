@@ -19,9 +19,9 @@
         <hr class="hr" />
 
         <div style="display: flex">
-          <VegaButton style="margin: auto" @click="uploadFile">
+          <sp-button style="margin: auto" @click="uploadFile">
             Link File
-          </VegaButton>
+          </sp-button>
           <input
             ref="fileInput"
             type="file"
@@ -67,13 +67,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Emit, Prop } from "vue-property-decorator";
-import VegaButton from "../vega/VegaButton.vue";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
 import { Asset, ImageAsset, VideoAsset } from "~/models";
 import { VegaError } from "~/plugins/error";
 
 @Component({
-  components: { WindowNameTag, VegaButton },
+  components: { WindowNameTag },
 })
 export default class AssetInspectorWindow extends Vue {
   @Prop({ default: () => undefined })
