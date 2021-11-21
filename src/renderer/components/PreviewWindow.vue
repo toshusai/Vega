@@ -1,7 +1,12 @@
 <template>
   <div class="root">
-    <WindowNameTag name="Preview" />
-    <div ref="preview" class="preview-window">
+    <div
+      ref="preview"
+      class="preview-window"
+      @mousewheel="onWheel"
+      @mousedown="down"
+      @contextmenu="stop"
+    >
       <div class="canvas" :style="canvasContainerStyle">
         <canvas ref="renderCanvas" class="render-canvas" />
         <Gizmo
@@ -13,19 +18,16 @@
           @changeStripPos="changeStripPos"
         />
       </div>
-      <div class="info">
-        <div>TIME:{{ timeFormat }}</div>
-        <div :class="fpsClass">FPS : {{ previewFps }}</div>
-        <div>
-          RES :
-          <VegaSelect
-            style="width: auto"
-            :value="previewScale"
-            :items="scaleItems"
-            @change="changePreviewScale"
-          />
-        </div>
-      </div>
+    </div>
+    <div class="info">
+      <div>{{ timeFormat }}</div>
+      <!-- <div style="height: 24px" :class="fpsClass">FPS : {{ previewFps }}</div> -->
+      <VegaSelect
+        style="width: auto; margin-left: auto; margin-right: 8px"
+        :value="previewScale"
+        :items="scaleItems"
+        @change="changePreviewScale"
+      />
     </div>
   </div>
 </template>
@@ -34,7 +36,6 @@
 .root {
   height: 100%;
   overflow: hidden;
-  border: 1px solid var(--black);
 }
 
 .preview-window {
@@ -42,9 +43,7 @@
   background-color: #000;
   display: flex;
   box-sizing: border-box;
-  /* -20px for WindowNameTag */
-  /* WARN maybe cause unexpected style */
-  height: calc(100% - 20px);
+  height: 100%;
 }
 
 .render-canvas {
@@ -55,14 +54,16 @@
 .canvas {
   border: 1px solid var(--white);
   position: relative;
-  margin: auto;
   box-sizing: content-box;
 }
 
 .info {
-  position: absolute;
-  left: 0;
-  top: 0;
+  position: relative;
+  width: calc(100% - 8px);
+  display: flex;
+  font-family: Ricty;
+  left: 8px;
+  bottom: 32px;
 }
 
 .fps-warn {
@@ -80,6 +81,7 @@ import Gizmo from "~/components/Gizmo.vue";
 import { Strip } from "~/models";
 import { IVector3 } from "~/models/math/Vector3";
 import VegaSelect from "~/components/vega/VegaSelect.vue";
+import { addDragEventOnce } from "~/plugins/mouse";
 
 const FPS_UPDATE_INTERVAL = 1000;
 
@@ -131,8 +133,11 @@ export default class PreviewWindow extends Vue {
   previewFps: number = 0;
   frames: number = 0;
   prevRect?: DOMRect;
-  scale: number = 0.2;
+  scale: number = 0.3;
+  wheelScale: number = 0.0001;
   previewScale: number = 1;
+  top: number = 32;
+  left: number = 32;
 
   get valid() {
     return this.previewFps >= this.fps;
@@ -147,7 +152,7 @@ export default class PreviewWindow extends Vue {
     const ms = sec.substr(sec.length - 4, 4);
     const hhmmss = new Date(s * 1000).toISOString().substr(11, 8);
 
-    let sign = " ";
+    let sign = "";
     if (this.currentTime < 0) sign = "-";
     return `${sign}${hhmmss}.${ms}`;
   }
@@ -165,6 +170,8 @@ export default class PreviewWindow extends Vue {
       // +2 for border
       width: this.width * this.scale + 2 + "px",
       height: this.height * this.scale + 2 + "px",
+      top: this.top + "px",
+      left: this.left + "px",
     };
   }
 
@@ -174,6 +181,32 @@ export default class PreviewWindow extends Vue {
     });
     window.addEventListener("resize", this.resize);
     this.canvas = this.renderCanvas;
+  }
+
+  stop(e: MouseEvent) {
+    e.preventDefault();
+  }
+
+  down(e: MouseEvent) {
+    if (e.button != 2) return;
+    e.preventDefault();
+    addDragEventOnce((e) => {
+      this.top += e.movementY;
+      this.left += e.movementX;
+      e.preventDefault();
+    });
+  }
+
+  onWheel(e: WheelEvent) {
+    // Just a quick way this is not good...
+    // Expected is the zoom with anchored preview window center.
+    // Also want restrict top offset depend by restriction of zoom.
+    this.top += e.deltaY * this.height * this.scale * this.wheelScale;
+    this.left += e.deltaY * this.width * this.scale * this.wheelScale;
+    this.scale += -e.deltaY * this.wheelScale;
+    if (this.scale < 0.1) this.scale = 0.1;
+    else if (this.scale > 1) this.scale = 1;
+    this.resize();
   }
 
   changePreviewScale(v: OptionKeyValue) {
@@ -222,6 +255,10 @@ export default class PreviewWindow extends Vue {
       this.width * this.previewScale,
       this.height * this.previewScale
     );
+    this.resizeCanvas();
+  }
+
+  resizeCanvas() {
     if (!this.renderCanvas) return;
     const transform = `scale(${this.scale / this.previewScale})`;
     this.renderCanvas.style.transform = transform;

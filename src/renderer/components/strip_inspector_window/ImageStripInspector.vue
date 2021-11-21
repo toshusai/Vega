@@ -1,89 +1,58 @@
 <template>
   <div style="padding: 4px">
-    <div class="label">Start</div>
-    <VegaValueInput
-      type="number"
-      :step="0.01"
-      :value="strip.start.toFixed(3)"
-      @change="changeStart"
-    />
-
-    <hr class="hr" />
-
-    <div class="label">Length</div>
-    <VegaValueInput
-      type="number"
-      :step="0.01"
-      :value="strip.length.toFixed(3)"
-      @change="changeLength"
-    />
-
-    <hr class="hr" />
-
-    <div class="label">Position</div>
-    <div class="position">
-      x:<VegaValueInput
-        type="number"
-        :step="0.01"
-        :value="strip.position.x"
-        @change="changeX"
-      />
-    </div>
-    <div class="position">
-      y:<VegaValueInput
-        type="number"
-        :step="0.01"
-        :value="strip.position.y"
-        @change="changeY"
-      />
-    </div>
-
-    <hr class="hr" />
-
-    <div class="label">Asset</div>
+    <sp-field-label>
+      Image
+      <sp-icon name="Image" style="width: 12px" />
+    </sp-field-label>
     <VegaSelect
+      v-model="currentAssetId"
       :items="selectItems"
-      :value="currentAssetId"
       @change="changeSrc"
     />
+    <sp-field-label> Start </sp-field-label>
+    <sp-textfield v-model="strip.start" size="S" type="number" :step="0.01" />
+
+    <sp-field-label>Length</sp-field-label>
+    <sp-textfield v-model="strip.length" size="S" type="number" :step="0.01" />
+
+    <sp-field-label>Position</sp-field-label>
+    <div style="display: flex">
+      <div>
+        <sp-field-label>X</sp-field-label>
+        <sp-textfield
+          v-model="strip.position.x"
+          size="S"
+          type="number"
+          style="width: 100%"
+        />
+      </div>
+      <div>
+        <sp-field-label>Y</sp-field-label>
+        <sp-textfield
+          v-model="strip.position.y"
+          size="S"
+          style="width: 100%"
+          type="number"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
-<style scoped>
-.label {
-  font-weight: bold;
-}
-
-.position {
-  display: flex;
-}
-
-.hr {
-  height: 1px;
-  box-sizing: border-box;
-  margin: 8px 0;
-  padding: 0;
-}
-</style>
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import VegaInput from "../vega/VegaInput.vue";
+import { Component, Prop, PropSync } from "vue-property-decorator";
 import VegaSelect, { OptionKeyValue } from "../vega/VegaSelect.vue";
 import { Asset, ImageStrip, ImageAsset } from "~/models";
-import VegaValueInput from "~/components/vega/VegaValueInput.vue";
 
 @Component({
   components: {
-    VegaInput,
     VegaSelect,
-    VegaValueInput,
   },
 })
 export default class ImageStripInspector extends Vue {
-  @Prop({})
-  strip!: ImageStrip;
+  @PropSync("stripSync") strip!: ImageStrip;
 
   @Prop({ default: () => [] })
   assets!: Asset[];
@@ -97,7 +66,9 @@ export default class ImageStripInspector extends Vue {
   }
 
   get selectItems() {
-    const items: OptionKeyValue[] = [{ value: "", text: "" }];
+    const items: OptionKeyValue[] = [
+      { value: "", text: "No selected", disabled: true },
+    ];
     return items.concat(
       this.videoAssets.map((va: ImageAsset) => {
         return {
@@ -106,34 +77,6 @@ export default class ImageStripInspector extends Vue {
         };
       })
     );
-  }
-
-  changeEmit(strip: ImageStrip) {
-    this.$emit("change", strip);
-  }
-
-  changePropertyEmit(name: string, value: any) {
-    this.$emit("changeProperty", name, value);
-  }
-
-  changeStripText(text: string) {
-    this.changePropertyEmit("text", text);
-  }
-
-  changeStart(start: number) {
-    this.changePropertyEmit("start", start);
-  }
-
-  changeLength(length: number) {
-    this.changePropertyEmit("length", length);
-  }
-
-  changeX(x: number) {
-    this.changePropertyEmit("position.x", x);
-  }
-
-  changeY(y: number) {
-    this.changePropertyEmit("position.y", y);
   }
 
   changeSrc(e: OptionKeyValue) {

@@ -1,99 +1,70 @@
 <template>
   <div style="padding: 4px">
-    <div class="label">Start</div>
-    <VegaValueInput
-      type="number"
-      :step="0.01"
-      :value="strip.start"
-      @change="changeStart"
-    />
-
-    <hr class="hr" />
-
-    <div class="label">Offset</div>
-    <VegaValueInput
-      type="number"
-      :step="0.01"
-      :value="strip.videoOffset"
-      @change="changeVideoOffset"
-    />
-
-    <hr class="hr" />
-
-    <div class="label">Length</div>
-    <VegaValueInput
-      type="number"
-      :step="0.01"
-      :value="strip.length"
-      @change="changeLength"
-    />
-
-    <hr class="hr" />
-
-    <div class="label">Position</div>
-    <div class="position">
-      x:<VegaValueInput
-        type="number"
-        :value="strip.position.x"
-        @change="changeX"
-      />
-    </div>
-    <div class="position">
-      y:<VegaValueInput
-        type="number"
-        :value="strip.position.y"
-        @change="changeY"
-      />
-    </div>
-
-    <hr class="hr" />
-
-    <div class="label">Asset</div>
+    <sp-field-label>
+      Video
+      <sp-icon name="VideoOutline" style="width: 12px" />
+    </sp-field-label>
     <VegaSelect
+      v-model="currentAssetId"
       :items="selectItems"
-      :value="currentAssetId"
       @change="changeSrc"
     />
+
+    <sp-field-label> Start </sp-field-label>
+    <sp-textfield v-model="strip.start" size="S" type="number" :step="0.01" />
+
+    <sp-field-label> Offset </sp-field-label>
+    <sp-textfield
+      v-model="strip.videoOffset"
+      size="S"
+      type="number"
+      :step="0.01"
+    />
+
+    <sp-field-label>Length</sp-field-label>
+    <sp-textfield v-model="strip.length" size="S" type="number" :step="0.01" />
+
+    <sp-field-label>Position</sp-field-label>
+    <div style="display: flex">
+      <div>
+        <sp-field-label>X</sp-field-label>
+        <sp-textfield
+          v-model="strip.position.x"
+          size="S"
+          type="number"
+          style="width: 100%"
+        />
+      </div>
+      <div>
+        <sp-field-label>Y</sp-field-label>
+        <sp-textfield
+          v-model="strip.position.y"
+          size="S"
+          style="width: 100%"
+          type="number"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
-<style scoped>
-.label {
-  font-weight: bold;
-}
-
-.position {
-  display: flex;
-}
-
-.hr {
-  height: 1px;
-  box-sizing: border-box;
-  margin: 2px 0;
-  padding: 0;
-}
-</style>
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, PropSync } from "vue-property-decorator";
 import { OptionKeyValue } from "../vega/VegaSelect.vue";
 import { Asset, VideoAsset, VideoStrip } from "~/models";
-import VegaValueInput from "~/components/vega/VegaValueInput.vue";
 import VegaSelect from "~/components/vega/VegaSelect.vue";
 
 @Component({
   components: {
-    VegaValueInput,
     VegaSelect,
   },
 })
 export default class VideoStripInspector extends Vue {
-  @Prop({})
-  strip!: VideoStrip;
+  @PropSync("stripSync") strip!: VideoStrip;
 
-  @Prop({ default: () => [] })
-  assets!: Asset[];
+  @Prop({ default: () => [] }) assets!: Asset[];
 
   get currentAssetId() {
     return this.strip.videoAsset?.id;

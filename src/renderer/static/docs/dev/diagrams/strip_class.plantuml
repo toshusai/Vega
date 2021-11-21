@@ -1,0 +1,19 @@
+@startuml
+class Strip{
+    +id: string;
+    +start: number
+    +length: number
+    +layer: number
+    +update()
+}
+class TextStrip
+class Text3DStrip
+class VideoStrip
+class ImageStrip
+class AudioStrip
+Strip <|-- TextStrip
+Strip <|-- Text3DStrip
+Strip <|-- VideoStrip
+Strip <|-- ImageStrip
+Strip <|-- AudioStrip
+@enduml

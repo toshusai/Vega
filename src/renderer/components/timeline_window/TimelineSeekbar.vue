@@ -1,23 +1,44 @@
 <template>
-  <div class="seekbar" :style="style">
+  <div class="root" :style="style">
+    <div class="seekbar" />
+    <div class="seekbar2" />
     <div class="line"></div>
   </div>
 </template>
 
 <style scoped>
+.root {
+  pointer-events: none;
+  position: absolute;
+}
 .seekbar {
   pointer-events: none;
   position: absolute;
   width: 10px;
   height: 10px;
-  background: red;
+  left: -4px;
+  background: var(--sp-blue-400);
+  z-index: 2;
+}
+.seekbar2 {
+  pointer-events: none;
+  transform-origin: center;
+  left: 0;
+  top: 0;
+  transform: translate(-2.7px, 6px) rotate(45deg);
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: var(--sp-blue-400);
   z-index: 2;
 }
 
 .line {
-  height: 140px;
-  width: 1px;
-  background: red;
+  position: absolute;
+  height: 1000px;
+  width: 2px;
+  background: var(--sp-blue-400);
+  z-index: 2;
 }
 </style>
 

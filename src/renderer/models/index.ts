@@ -1,3 +1,5 @@
+// @ts-ignore
+import packageJson from "../../../package.json";
 import { Asset, AudioAsset, FontAsset, VideoAsset, ImageAsset } from "./assets";
 import {
   Strip,
@@ -7,9 +9,9 @@ import {
   TextStrip,
   ImageStrip,
 } from "./strips";
-import type { Project } from "./Project";
+import type { IProject } from "./Project";
 
-const VEGA_VERSION = "v0.0.9";
+const VEGA_VERSION = packageJson.version;
 
 export {
   Strip,
@@ -21,7 +23,7 @@ export {
   AudioAsset,
   FontAsset,
   VideoAsset,
-  Project,
+  IProject,
   ImageStrip,
   ImageAsset,
   VEGA_VERSION,

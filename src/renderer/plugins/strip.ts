@@ -11,9 +11,21 @@ import {
   IVideoStrip,
   Text3DStrip,
   VideoStrip,
+  Strip,
 } from "~/models/strips";
 
 export class StripUtil {
+  public static isThreeJsStrip(
+    strip: Strip
+  ): strip is VideoStrip | TextStrip | ImageStrip | Text3DStrip {
+    return (
+      strip instanceof VideoStrip ||
+      strip instanceof TextStrip ||
+      strip instanceof ImageStrip ||
+      strip instanceof Text3DStrip
+    );
+  }
+
   public static interfacesToInstances(strips: IStrip[], assets: Asset[]) {
     const getAssetById = (id: string) => {
       return assets.find((a) => a.id == id);

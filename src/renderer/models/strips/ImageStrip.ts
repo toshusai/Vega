@@ -41,7 +41,7 @@ export class ImageStrip extends Strip {
    */
   material!: MeshBasicMaterial;
 
-  readonly imageAsset?: ImageAsset;
+  imageAsset?: ImageAsset;
 
   get width() {
     return this.tex?.image ? this.tex.image.width : 0;
@@ -104,16 +104,18 @@ export class ImageStrip extends Strip {
 
   updateAsset(imageAsset: ImageAsset) {
     this.tex?.dispose();
-    this.tex = new T.TextureLoader().load(imageAsset?.path, () => {
+    this.imageAsset = imageAsset;
+    new T.TextureLoader().load(imageAsset?.path, (tex) => {
       if (this.obj) {
-        this.obj.scale.set(this.tex?.image.width, this.tex?.image.height, 1);
+        this.obj.scale.set(tex.image.width, tex.image.height, 1);
       }
-      if (!this.tex) return;
-      this.tex.needsUpdate = true;
+      tex.needsUpdate = true;
+      tex.minFilter = T.LinearFilter;
+      tex.magFilter = T.LinearFilter;
+      this.tex = tex;
+      this.material.map = this.tex;
+      this.material.needsUpdate = true;
     });
-    this.tex.minFilter = T.LinearFilter;
-    this.tex.magFilter = T.LinearFilter;
-    this.material.map = this.tex;
   }
 
   public async update(

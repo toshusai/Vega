@@ -1,6 +1,6 @@
 {
   "name": "vega",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "license": "MIT",
   "author": "toshusai",
   "main": "dist/main/index.js",
@@ -27,7 +27,6 @@
       "output": "build/"
     },
     "mac": {
-      "category": "your.app.category.type",
       "target": {
         "target": "default",
         "arch": [
@@ -45,9 +44,20 @@
   "dependencies": {
     "@ffmpeg/core": "^0.10.0",
     "@ffmpeg/ffmpeg": "^0.10.1",
+    "@spectrum-css/button": "^4.0.0",
+    "@spectrum-css/dialog": "^3.0.5",
+    "@spectrum-css/fieldlabel": "^4.0.0",
+    "@spectrum-css/modal": "^3.0.3",
+    "@spectrum-css/page": "^3.0.3",
+    "@spectrum-css/textfield": "^3.0.3",
+    "@spectrum-css/typography": "^4.0.0",
+    "@spectrum-css/underlay": "^2.0.12",
+    "@spectrum-css/vars": "^4.0.1",
+    "@toshusai/spectrum-vue": "^0.1.1",
     "ccapture.js": "^1.1.0",
     "core-js": "^3.15.1",
     "http-proxy": "^1.18.1",
+    "loadicons": "^1.0.0",
     "nuxt": "^2.15.7",
     "three": "^0.131.3",
     "uuid": "^8.3.2",
@@ -60,6 +70,7 @@
     "@nuxtjs/eslint-config-typescript": "^6.0.1",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@types/ccapture.js": "^1.1.1",
+    "@types/loadicons": "^1.0.0",
     "@types/stats": "^0.16.30",
     "@types/three": "^0.130.1",
     "@types/uuid": "^8.3.1",

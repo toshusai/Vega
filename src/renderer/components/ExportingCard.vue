@@ -1,24 +1,34 @@
 <template>
   <div class="card">
-    <template v-if="step1">
-      <div class="content">STEP (1/2)</div>
-      <VegaProgress :rate="ccaptureProgress" />
-    </template>
-    <template v-if="step2">
-      <div class="content">STEP (2/2)</div>
-      <VegaProgress :rate="ffmpegProgress" />
-    </template>
+    <sp-progress-bar :value="progress" style="width: 100%">
+      {{ step1 ? "STEP (1/2)" : "STEP (2/2)" }}
+    </sp-progress-bar>
 
     <div v-if="!end" class="note">
       Do not change the tab until the rendering is complete.
     </div>
     <div v-if="end" class="note2">Rendering Completed !</div>
 
+    <div v-if="!isSupportBroeser" style="display: flex">
+      <h3 style="margin: auto; color: var(--red)">
+        <sp-icon name="Alert" />
+        Sorry Your Browser Not Supported Export
+      </h3>
+    </div>
+
     <div class="content">
-      <VegaButton @click="close">Close</VegaButton>
+      <sp-button :primary="true" @click="close">Close</sp-button>
       <div style="margin: auto"></div>
-      <VegaButton v-if="!isEncoding" @click="start">Start</VegaButton>
-      <VegaButton v-if="end" @click="download">Download</VegaButton>
+      <sp-button
+        v-if="!isEncoding"
+        :disabled="!isSupportBroeser"
+        @click="start"
+      >
+        Start
+      </sp-button>
+      <sp-button v-if="end" :disabled="!isSupportBroeser" @click="download">
+        Download
+      </sp-button>
     </div>
   </div>
 </template>
@@ -38,6 +48,7 @@
 
 .content {
   margin: 12px;
+  margin-top: 16px;
   text-align: center;
   display: flex;
 }
@@ -50,7 +61,6 @@
 
 .card {
   margin: auto;
-  background-color: var(--vc-d-4);
   padding: 16px;
   border-radius: 2px;
   z-index: 1;
@@ -61,12 +71,11 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import VegaProgress from "@/components/vega/VegaProgress.vue";
-import VegaButton from "@/components/vega/VegaButton.vue";
+import { isSupportBroeser } from "~/plugins/browser";
 
 @Component({
   components: {
     VegaProgress,
-    VegaButton,
   },
 })
 export default class ExportingCard extends Vue {
@@ -78,12 +87,21 @@ export default class ExportingCard extends Vue {
     return this.ffmpegProgress >= 1 && this.ccaptureProgress >= 1;
   }
 
+  get isSupportBroeser() {
+    return isSupportBroeser();
+  }
+
   get step1() {
     return this.ccaptureProgress < 1;
   }
 
   get step2() {
     return this.ccaptureProgress >= 1 && this.ffmpegProgress < 1;
+  }
+
+  get progress() {
+    if (this.step1) return Math.round(this.ccaptureProgress * 100);
+    return Math.round(this.ffmpegProgress * 100);
   }
 
   close() {

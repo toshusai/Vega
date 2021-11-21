@@ -9,7 +9,7 @@
   box-sizing: border-box;
   /* border: 1px solid var(--black); */
   padding: 1px 0px 1px 4px;
-  background-color: var(--vc-d-3);
+  /* background-color: var(--vc-d-3); */
   font-size: 14px;
   height: 20px;
   white-space: nowrap;
