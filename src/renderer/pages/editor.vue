@@ -405,28 +405,6 @@ export default class IndexPage extends Vue {
     }
   }
 
-  changeWidth(width: number) {
-    this.project.width = width;
-    if (this.camera) {
-      this.camera.right = this.project.width;
-      this.camera.updateProjectionMatrix();
-      this.previewWindow?.resize();
-    }
-  }
-
-  changeFps(fps: number) {
-    this.project.fps = fps;
-  }
-
-  changeHeight(height: number) {
-    this.project.height = height;
-    if (this.camera) {
-      this.camera.top = this.project.height;
-      this.camera.updateProjectionMatrix();
-      this.previewWindow?.resize();
-    }
-  }
-
   changeCurrentTime(time: number) {
     this.currentTime = time;
     this.change();
@@ -479,6 +457,10 @@ export default class IndexPage extends Vue {
 
     if (this.previewWindow && this.scene && this.camera) {
       this.previewWindow.renderPreview(this.scene, this.camera);
+      this.camera.top = this.project.height;
+      this.camera.right = this.project.width;
+      this.camera.updateProjectionMatrix();
+      this.previewWindow.resize();
     }
 
     if (this.previewWindow) this.previewWindow.end();
