@@ -1,3 +1,4 @@
+import packageJson from "../../../package.json";
 import { Asset, AudioAsset, FontAsset, VideoAsset, ImageAsset } from "./assets";
 import {
   Strip,
@@ -9,7 +10,7 @@ import {
 } from "./strips";
 import type { IProject } from "./Project";
 
-const VEGA_VERSION = "v0.0.9";
+const VEGA_VERSION = packageJson.version;
 
 export {
   Strip,
