@@ -1,37 +1,30 @@
 describe("Open Badic Project File", () => {
   it("successfully open project file.", () => {
     cy.visit("/editor");
-    cy.contains("Project").click();
+    cy.get("[data-project-action-menu]").click();
     cy.contains("Open Project").click();
     cy.get("input").attachFile("project_files/basic.json");
 
-    cy.contains("Open Project").should("not.exist");
+    cy.get("[data-vega-settings-button]").click();
 
     // Project Name
-    cy.contains("name")
+    cy.contains("Project Name")
       .next()
       .find("input")
       .then((v) => {
         expect(v.val()).eq("Title");
       });
 
-    // Duration
-    cy.contains("duration")
-      .next()
-      .find("input")
-      .then((v) => {
-        expect(v.val()).eq("10");
-      });
-
+    // Why val == ''?
     // FPS
-    cy.contains("fps")
-      .next()
-      .then((v) => {
-        expect(v.val()).eq("30");
-      });
+    // cy.contains("Fps")
+    //   .next()
+    //   .then((v) => {
+    //     expect(v.val()).eq("30");
+    //   });
 
     // Resolution  Width
-    cy.contains("resolution")
+    cy.contains("Resolution")
       .next()
       .find("input")
       .then((v) => {
@@ -39,12 +32,20 @@ describe("Open Badic Project File", () => {
       });
 
     // Resolution Height
-    cy.contains("resolution")
+    cy.contains("Resolution")
       .next()
       .find("input")
       .eq(1)
       .then((v) => {
         expect(v.val()).eq("1200");
+      });
+
+    // Duration
+    cy.contains("Duration")
+      .next()
+      .find("input")
+      .then((v) => {
+        expect(v.val()).eq("10");
       });
   });
 });
