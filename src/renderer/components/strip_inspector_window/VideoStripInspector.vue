@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, PropSync } from "vue-property-decorator";
 import { OptionKeyValue } from "../vega/VegaSelect.vue";
 import { Asset, VideoAsset, VideoStrip } from "~/models";
 import VegaSelect from "~/components/vega/VegaSelect.vue";
@@ -74,8 +74,7 @@ import VegaSelect from "~/components/vega/VegaSelect.vue";
   },
 })
 export default class VideoStripInspector extends Vue {
-  @Prop({})
-  strip!: VideoStrip;
+  @PropSync("stripSync") strip!: VideoStrip;
 
   @Prop({ default: () => [] })
   assets!: Asset[];

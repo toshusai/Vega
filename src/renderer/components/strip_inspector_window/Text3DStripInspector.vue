@@ -69,7 +69,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, PropSync } from "vue-property-decorator";
 import VegaSelect from "../vega/VegaSelect.vue";
 import { Asset, FontAsset, Text3DStrip } from "~/models";
 import { IText3DStrip } from "~/models/strips";
@@ -80,8 +80,7 @@ import { IText3DStrip } from "~/models/strips";
   },
 })
 export default class Text3DStripInspector extends Vue {
-  @Prop({})
-  strip!: Text3DStrip;
+  @PropSync("stripSync") strip!: Text3DStrip;
 
   @Prop({ default: () => [] })
   assets!: Asset[];

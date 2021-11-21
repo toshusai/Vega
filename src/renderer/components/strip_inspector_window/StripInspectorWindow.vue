@@ -3,7 +3,7 @@
     <component
       :is="comp"
       v-if="strip"
-      :strip="strip"
+      :stripSync.sync="strip"
       :assets="assets"
       @change="change"
       @changeProperty="changeProperty"
@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, PropSync } from "vue-property-decorator";
 import VideoStripInspector from "./VideoStripInspector.vue";
 import Text3DStripInspector from "./Text3DStripInspector.vue";
 import AudioStripInspector from "./AudioStripInspector.vue";
@@ -41,8 +41,7 @@ import { Asset, Strip } from "~/models";
   },
 })
 export default class StripInspectorWindow extends Vue {
-  @Prop({})
-  strip!: Strip;
+  @PropSync("stripSync") strip!: Strip;
 
   @Prop({ default: () => [] })
   assets!: Asset[];

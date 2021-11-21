@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, PropSync } from "vue-property-decorator";
 import VegaSelect, { OptionKeyValue } from "../vega/VegaSelect.vue";
 import { Asset, ImageStrip, ImageAsset } from "~/models";
 
@@ -72,8 +72,7 @@ import { Asset, ImageStrip, ImageAsset } from "~/models";
   },
 })
 export default class ImageStripInspector extends Vue {
-  @Prop({})
-  strip!: ImageStrip;
+  @PropSync("stripSync") strip!: ImageStrip;
 
   @Prop({ default: () => [] })
   assets!: Asset[];
