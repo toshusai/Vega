@@ -48,6 +48,7 @@
               :strips="strips"
               :selectedStrips="selectedStrips"
               :duration="duration"
+              :isPlay="isPlay"
               @addAsset="addAsset"
               @addStrip="addStrip"
               @changeCurrentTime="changeCurrentTime"
@@ -56,6 +57,7 @@
                 (i, name, value) => changeStripPropery(i, name, value)
               "
               @deleteStrip="deleteStrip"
+              @togglePlay="play"
             />
           </sp-split-view-pane>
         </sp-split-view>
@@ -213,6 +215,7 @@
 import Vue from "vue";
 import * as T from "three";
 import { Component, Ref } from "vue-property-decorator";
+import loadicons from "loadicons";
 import RendererWindow from "@/components/RendererWindow.vue";
 import AppBar from "@/components/app_bar/AppBar.vue";
 import PreviewWindow from "~/components/PreviewWindow.vue";
@@ -300,6 +303,8 @@ export default class IndexPage extends Vue {
 
   async mounted() {
     DragAndDrop.init();
+    loadicons("/static/svg/spectrum-css-icons.svg", () => {});
+    loadicons("/static/svg/spectrum-icons.svg", () => {});
     this.scene = new T.Scene();
     this.camera = new T.OrthographicCamera(0, this.width, this.height, 0);
     this.camera.position.set(0, 0, 10);

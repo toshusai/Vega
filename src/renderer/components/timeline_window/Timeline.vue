@@ -1,8 +1,27 @@
 <template>
   <div class="root" data-vega-timeline>
-    <WindowNameTag name="Timeline" />
-    <div>
-      <timeline-zoom-buttons @downScale="downScale" @upScale="upScale" />
+    <div style="display: flex; height: 32px">
+      <div style="margin: auto">
+        <sp-action-button size="S" :quiet="true" @click="$emit('togglePlay')">
+          <sp-icon
+            :name="!isPlay ? 'Play' : 'Pause'"
+            style="width: 12px"
+          ></sp-icon>
+        </sp-action-button>
+      </div>
+      <sp-action-group :compact="true" :quiet="true">
+        <sp-action-button
+          size="S"
+          :quiet="true"
+          :item="true"
+          @click="downScale"
+        >
+          <sp-icon name="ZoomOut" style="width: 12px" />
+        </sp-action-button>
+        <sp-action-button size="S" :quiet="true" :item="true" @click="upScale">
+          <sp-icon name="ZoomIn" style="width: 12px" />
+        </sp-action-button>
+      </sp-action-group>
     </div>
 
     <div
@@ -52,16 +71,8 @@
           :scale="scale"
         />
       </div>
-      <ContextMenu ref="contextMenu">
-        <MenuButton @click="addTextStrip">Add Text</MenuButton>
-        <MenuButton @click="addVideoStrip">Add Video</MenuButton>
-        <MenuButton @click="addImageStrip">Add Image</MenuButton>
-        <MenuButton @click="addAudioStrip">Add Audio</MenuButton>
-        <MenuButton v-if="hasSelectedStrip" @click="split"> Split </MenuButton>
-        <MenuButton v-if="hasSelectedStrip" @click="deleteStrip">
-          Delete
-        </MenuButton>
-      </ContextMenu>
+      <ContextMenu ref="contextMenu" />
+      <!-- <sp-context-menu ref="contextMenu" :items="items" /> -->
     </div>
   </div>
 </template>
@@ -70,9 +81,6 @@
 .root {
   position: relative;
   height: 100%;
-  border: 1px solid var(--black);
-  /* -20px for window tag name */
-  /* height: calc(100% - 20px); */
   height: 100%;
 }
 .timeline-container {
@@ -80,8 +88,9 @@
   width: 100%;
   position: relative;
   box-sizing: border-box;
-  height: calc(100% - 40px);
   overflow-y: hidden;
+  /* -32px for controll header */
+  height: calc(100% - 32px);
 }
 /* .timeline-container::-webkit-scrollbar {
   display: none;
@@ -230,7 +239,6 @@ export default class Timeline extends Vue {
     newStrip.text = "New Text";
     newStrip.position.set(100, 100, -10);
     this.addStrip(newStrip);
-    this.contextMenu.close();
   }
 
   addTextStrip() {
@@ -250,7 +258,6 @@ export default class Timeline extends Vue {
     newStrip.length = 5;
     newStrip.position.set(500, 500, -10);
     this.addStrip(newStrip);
-    this.contextMenu.close();
   }
 
   addVideoStrip() {
@@ -266,7 +273,6 @@ export default class Timeline extends Vue {
       videoOffset: 0,
     });
     this.addStrip(newStrip);
-    this.contextMenu.close();
   }
 
   addImageStrip() {
@@ -281,7 +287,6 @@ export default class Timeline extends Vue {
       assetId: "",
     });
     this.addStrip(newStrip);
-    this.contextMenu.close();
   }
 
   addAudioStrip() {
@@ -293,28 +298,29 @@ export default class Timeline extends Vue {
       type: "Audio",
     });
     this.addStrip(newStrip);
-    this.contextMenu.close();
   }
 
   openContextMenu(e: MouseEvent) {
+    this.contextMenu.open(e, this.items);
+    e.preventDefault();
+  }
+
+  get items() {
     const items: ContextMenuItem[] = [
-      { name: "Add Text", action: this.addTextStrip },
-      { name: "Add Video", action: this.addVideoStrip },
-      { name: "Add Image", action: this.addImageStrip },
-      { name: "Add Audio", action: this.addAudioStrip },
+      { text: "Add Text", action: this.addTextStrip },
+      { text: "Add Video", action: this.addVideoStrip },
+      { text: "Add Image", action: this.addImageStrip },
+      { text: "Add Audio", action: this.addAudioStrip },
     ];
     if (this.hasSelectedStrip) {
-      items.push({ name: "Split", action: this.split });
-      items.push({ name: "Delete", action: this.deleteStrip });
+      items.push({ text: "Split", action: this.split });
+      items.push({ text: "Delete", action: this.deleteStrip });
     }
-    this.contextMenu.open(e, items);
-
-    e.preventDefault();
+    return items;
   }
 
   changeCurrentTime(time: number) {
     this.$emit("changeCurrentTime", time - 10);
-    this.contextMenu.close();
   }
 
   upScale() {
@@ -428,14 +434,12 @@ export default class Timeline extends Vue {
         `Split operations are not supported in ${target.type}.`
       );
     }
-    this.contextMenu.close();
   }
 
   deleteStrip() {
     if (this.selectedStrips.length > 0) {
       this.deleteStripEmit(this.selectedStrips[0]);
     }
-    this.contextMenu.close();
   }
 
   drop(e: DragEvent) {

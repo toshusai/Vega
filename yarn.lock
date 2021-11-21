@@ -2042,6 +2042,11 @@
   "resolved" "https://registry.npmjs.org/@types/less/-/less-3.0.2.tgz"
   "version" "3.0.2"
 
+"@types/loadicons@^1.0.0":
+  "integrity" "sha512-V9+5IKKmsB3viDrCExyRY8Z35M9qAyyQiDOdhvI8zhsYhgagSLamIzX+/WOYE29lyPKviWhFU35wws/KUhQsiA=="
+  "resolved" "https://registry.npmjs.org/@types/loadicons/-/loadicons-1.0.0.tgz"
+  "version" "1.0.0"
+
 "@types/mime@^1":
   "integrity" "sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw=="
   "resolved" "https://registry.npmjs.org/@types/mime/-/mime-1.3.2.tgz"
@@ -7381,6 +7386,11 @@
     "big.js" "^5.2.2"
     "emojis-list" "^3.0.0"
     "json5" "^2.1.2"
+
+"loadicons@^1.0.0":
+  "integrity" "sha512-KSywiudfuOK5sTdhNMM8hwRpMxZ5TbQlU4ZijMxUFwRW7jpxUmb9YJoLIzDn7+xuxeLzCZWBmLJS2JDjDWCpsw=="
+  "resolved" "https://registry.npmjs.org/loadicons/-/loadicons-1.0.0.tgz"
+  "version" "1.0.0"
 
 "locate-path@^2.0.0":
   "integrity" "sha1-K1aLJl7slExtnA3pw9u7ygNUzY4="
