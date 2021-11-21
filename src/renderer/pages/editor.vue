@@ -69,7 +69,7 @@
       ></sp-split-view-splitter>
       <sp-split-view-pane style="width: 100%">
         <StripInspector
-          :strip="selectedStrip"
+          :stripSync.sync="selectedStrip"
           :assets="project.assets"
           @change="changeStrip"
           @changeProperty="

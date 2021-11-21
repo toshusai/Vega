@@ -79,10 +79,10 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, PropSync } from "vue-property-decorator";
 import VegaSelect from "../vega/VegaSelect.vue";
 import { Asset } from "~/models";
-import { ITextStrip, TextStrip } from "~/models/strips";
+import { TextStrip } from "~/models/strips";
 
 @Component({
   components: {
@@ -90,45 +90,30 @@ import { ITextStrip, TextStrip } from "~/models/strips";
   },
 })
 export default class TextStripInspector extends Vue {
-  @Prop({})
+  @PropSync("stripSync")
   strip!: TextStrip;
 
   @Prop({ default: () => [] })
   assets!: Asset[];
 
-  changeEmit(strip: TextStrip) {
-    this.$emit("change", strip);
-  }
-
-  changePropertyEmit(name: string, value: any) {
-    this.$emit("changeProperty", name, value);
-  }
-
-  change(update: (iface: ITextStrip) => void) {
-    const iface = this.strip.toInterface();
-    update(iface);
-    const ts = new TextStrip(iface);
-    this.changeEmit(ts);
-  }
-
   changeStripText(text: string) {
-    this.changePropertyEmit("text", text);
+    this.strip.text = text;
   }
 
   changeStart(start: number) {
-    this.changePropertyEmit("start", start);
+    this.strip.start = start;
   }
 
   changeLength(length: number) {
-    this.changePropertyEmit("length", length);
+    this.strip.length = length;
   }
 
   changeX(x: number) {
-    this.changePropertyEmit("position.x", x);
+    this.strip.position.x = x;
   }
 
   changeY(y: number) {
-    this.changePropertyEmit("position.y", y);
+    this.strip.position.y = y;
   }
 }
 </script>
