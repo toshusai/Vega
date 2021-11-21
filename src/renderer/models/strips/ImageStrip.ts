@@ -41,7 +41,7 @@ export class ImageStrip extends Strip {
    */
   material!: MeshBasicMaterial;
 
-  readonly imageAsset?: ImageAsset;
+  imageAsset?: ImageAsset;
 
   get width() {
     return this.tex?.image ? this.tex.image.width : 0;
@@ -104,6 +104,7 @@ export class ImageStrip extends Strip {
 
   updateAsset(imageAsset: ImageAsset) {
     this.tex?.dispose();
+    this.imageAsset = imageAsset;
     new T.TextureLoader().load(imageAsset?.path, (tex) => {
       if (this.obj) {
         this.obj.scale.set(tex.image.width, tex.image.height, 1);
