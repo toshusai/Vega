@@ -1,25 +1,25 @@
 <template>
   <div class="asset-inspector">
-    <WindowNameTag name="Asset Inspector" />
     <div class="container">
       <div v-if="asset">
-        <div class="label">Name</div>
+        <sp-field-label>Name</sp-field-label>
         <div class="name">
           {{ asset.name }}
         </div>
 
-        <hr class="hr" />
-
-        <div class="label">Path</div>
+        <sp-field-label>Path</sp-field-label>
         <span v-if="asset.path" class="path" :title="asset.path">
           {{ asset.path }}
         </span>
         <div v-else class="error">Not Found</div>
 
-        <hr class="hr" />
-
         <div style="display: flex">
-          <sp-button style="margin: auto" @click="uploadFile">
+          <sp-button
+            size="S"
+            type="secondary"
+            style="margin: 16px auto"
+            @click="uploadFile"
+          >
             Link File
           </sp-button>
           <input
