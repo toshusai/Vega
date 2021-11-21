@@ -5,7 +5,6 @@
     @dragover="dragover"
     @dragleave="dragleave"
   >
-    <window-name-tag name="Assets" />
     <asset-list-item
       v-for="(asset, i) in assets"
       :key="i"
@@ -36,7 +35,7 @@
 }
 
 .upload-button {
-  margin: 8px auto 8px auto;
+  margin: 16px auto 16px auto;
   display: flex;
 }
 
