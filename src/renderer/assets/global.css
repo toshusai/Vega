@@ -310,10 +310,10 @@
   --sp-blue-500: #378ef0;
   --sp-blue-600: #4b9cf5;
   --sp-blue-700: #5aa9fa;
-  --strip-video: var(--blue);
-  --strip-audio: var(--teal);
-  --strip-text: var(--light-green);
-  --strip-image: var(--amber-700);
+  --strip-video: var(--blue-800);
+  --strip-audio: var(--teal-800);
+  --strip-text: var(--light-green-800);
+  --strip-image: var(--amber-800);
 }
 
 html, body {
