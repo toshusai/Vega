@@ -242,7 +242,7 @@ export default class IndexPage extends Vue {
     strips: [],
   });
 
-  playMode: PlayMode = PLAY_EVERY_FRAME;
+  playMode: PlayMode = SYNC_TO_AUDIO;
 
   lastUpdate: number = 0;
 
