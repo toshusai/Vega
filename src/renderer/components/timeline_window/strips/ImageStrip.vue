@@ -37,9 +37,14 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import StripError from "./StripError.vue";
 import { ImageStrip } from "~/models";
 
-@Component({})
+@Component({
+  components: {
+    StripError,
+  },
+})
 export default class ImageStripComp extends Vue {
   @Prop({ default: () => undefined })
   strip!: ImageStrip;
