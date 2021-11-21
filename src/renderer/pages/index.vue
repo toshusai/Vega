@@ -11,9 +11,9 @@
           <div>Please use at your own risk.</div>
         </h3>
         <div class="buttons">
-          <VegaButton @click="goEditor">Editor</VegaButton>
-          <VegaButton @click="goDocuments">Documents</VegaButton>
-          <VegaButton @click="goGitHub">GitHub</VegaButton>
+          <sp-button @click="goEditor">Editor</sp-button>
+          <sp-button @click="goDocuments">Documents</sp-button>
+          <sp-button @click="goGitHub">GitHub</sp-button>
         </div>
       </div>
     </div>
@@ -57,11 +57,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import VegaButton from "~/components/vega/VegaButton.vue";
 
-@Component({
-  components: { VegaButton },
-})
+@Component({})
 export default class IndexPage extends Vue {
   goEditor() {
     this.$router.push("/editor");
