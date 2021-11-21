@@ -6,7 +6,7 @@
         <sp-link class="link" href="/">Top</sp-link>
       </h5>
       <h5>
-        <sp-link class="link" href="/docs" @click="toDoc">Documents</sp-link>
+        <sp-link class="link" href="/docs">Documents</sp-link>
       </h5>
       <h5>
         <sp-link class="link" href="https://github.com/toshusai/vega">
