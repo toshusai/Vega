@@ -1,58 +1,39 @@
 <template>
   <div style="padding: 4px">
     <sp-field-label>Image</sp-field-label>
-    <VegaSelect
-      :items="selectItems"
-      :value="currentAssetId"
-      @change="changeSrc"
-    />
+    <VegaSelect v-model="currentAssetId" :items="selectItems" />
     <sp-field-label> Start </sp-field-label>
-    <sp-textfield
-      size="S"
-      type="number"
-      :step="0.01"
-      :value="strip.start"
-      @change="changeStart"
-    />
+    <sp-textfield v-model="strip.start" size="S" type="number" :step="0.01" />
 
     <sp-field-label> Offset </sp-field-label>
     <sp-textfield
+      v-model="strip.videoOffset"
       size="S"
       type="number"
       :step="0.01"
-      :value="strip.videoOffset"
-      @change="changeVideoOffset"
     />
 
     <sp-field-label>Length</sp-field-label>
-    <sp-textfield
-      size="S"
-      type="number"
-      :step="0.01"
-      :value="strip.length"
-      @change="changeLength"
-    />
+    <sp-textfield v-model="strip.length" size="S" type="number" :step="0.01" />
 
     <sp-field-label>Position</sp-field-label>
     <div style="display: flex">
       <div>
         <sp-field-label>X</sp-field-label>
         <sp-textfield
+          v-model="strip.position.x"
           size="S"
           type="number"
           style="width: 100%"
-          :value="strip.position.x"
-          @change="changeX"
         />
       </div>
       <div>
         <sp-field-label>Y</sp-field-label>
         <sp-textfield
+          v-model="strip.position.y"
           size="S"
           style="width: 100%"
           type="number"
-          :value="strip.position.y"
-          @change="changeY"
         />
       </div>
     </div>
