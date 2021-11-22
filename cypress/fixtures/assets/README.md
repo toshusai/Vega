@@ -3,3 +3,6 @@
 - [2.ogg](https://www.kenney.nl/assets/voiceover-pack)
 - [3.ogg](https://www.kenney.nl/assets/voiceover-pack)
 - [rabbit.png](https://www.kenney.nl/assets/animal-pac)
+
+Voice: ondoku3.com
+Text: Hi everyone, this is a demo of the browser based video editor Vega.
