@@ -51,6 +51,7 @@
           <sp-split-view-splitter
             class="gripper-vertical"
             :gripper="true"
+            :vertical="true"
             @change="(v) => (abobeTimeline += v)"
           ></sp-split-view-splitter>
           <sp-split-view-pane
@@ -186,6 +187,8 @@ import {
   VideoStrip,
   ImageStrip,
   ImageAsset,
+  AudioStrip,
+  AudioAsset,
 } from "~/models";
 import AssetWindow from "~/components/asset_window/AssetWindow.vue";
 import AssetInspectorWindow from "~/components/asset_inspector/AssetInspectorWindow.vue";
@@ -290,6 +293,8 @@ export default class IndexPage extends Vue {
           s.updateAsset(newAsset);
         }
       } else if (s instanceof ImageStrip && newAsset instanceof ImageAsset) {
+        s.updateAsset(newAsset);
+      } else if (s instanceof AudioStrip && newAsset instanceof AudioAsset) {
         s.updateAsset(newAsset);
       }
     });
