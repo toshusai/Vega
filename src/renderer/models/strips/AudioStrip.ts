@@ -7,6 +7,16 @@ import { VegaError } from "~/plugins/error";
 const FPS_ERROR_TOLERANCE = 0.01;
 const ASSET_SEEK_TIMEOUT_MS = 10000;
 
+export type IAudioStrip = IStrip & {
+  id?: string;
+  start?: number;
+  length?: number;
+  layer?: number;
+  type?: string;
+  src: string;
+  readonly assetId: string;
+};
+
 export class AudioStrip extends Strip {
   readonly audio!: HTMLAudioElement;
   readonly type: string = "Audio";
@@ -44,13 +54,25 @@ export class AudioStrip extends Strip {
       this.loaded = false;
       return;
     }
-    this.asset = asset;
     this.loaded = false;
+    this.asset = asset;
     this.audio.src = asset.path;
     this.audio.onloadedmetadata = () => {
       this.loaded = true;
     };
     this.audio.load();
+  }
+
+  public toInterface(): IAudioStrip {
+    return {
+      id: this.id,
+      length: this.length,
+      start: this.start,
+      type: this.type,
+      layer: this.layer,
+      src: this.asset?.path || "",
+      assetId: this.asset?.id || "",
+    };
   }
 
   wait(time: number) {
