@@ -34,7 +34,7 @@
                 class="gripper-horizontal splitter-horizontal"
               ></sp-split-view-splitter>
               <sp-split-view-pane
-                :style="`height: ${abobeTimeline}px; max-width: 80%`"
+                :style="`height: ${aboveTimeline}px; max-width: 80%`"
               >
                 <PreviewWindow
                   ref="previewWindow"
@@ -52,7 +52,7 @@
             class="gripper-vertical"
             :gripper="true"
             :vertical="true"
-            @change="(v) => (abobeTimeline += v)"
+            @change="(v) => (aboveTimeline += v)"
           ></sp-split-view-splitter>
           <sp-split-view-pane
             :style="`height: 100%; width: 100%; overflow-y: scroll`"
@@ -249,7 +249,7 @@ export default class IndexPage extends Vue {
 
   lastUpdate: number = 0;
 
-  abobeTimeline: number = 400;
+  aboveTimeline: number = 400;
 
   get selectedStrip() {
     if (this.selectedStrips.length > 0) {
