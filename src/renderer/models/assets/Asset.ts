@@ -2,6 +2,7 @@ export type IAsset = {
   readonly id: string;
   readonly name: string;
   readonly type: string;
+  readonly path: string;
 };
 
 export class Asset implements IAsset {
@@ -21,6 +22,7 @@ export class Asset implements IAsset {
       id: this.id,
       name: this.name,
       type: this.type,
+      path: this.path,
     };
   }
 }

@@ -67,7 +67,7 @@
 import Vue from "vue";
 import { Component, Emit, Prop } from "vue-property-decorator";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
-import { Asset, ImageAsset, VideoAsset } from "~/models";
+import { Asset, ImageAsset, VideoAsset, AudioAsset } from "~/models";
 import { VegaError } from "~/plugins/error";
 
 @Component({
@@ -94,13 +94,25 @@ export default class AssetInspectorWindow extends Vue {
       const path = window.URL.createObjectURL(file);
 
       if (this.asset instanceof VideoAsset) {
+        if (!VideoAsset.isSupportType(file.type)) {
+          throw new VegaError(`Invalid file type ${file.type} to Video.`);
+        }
         const newAsset = new VideoAsset(this.asset.id, this.asset.name, path);
         this.changeAssetEmit(newAsset);
       } else if (this.asset instanceof ImageAsset) {
+        if (!ImageAsset.isSupportType(file.type)) {
+          throw new VegaError(`Invalid file type ${file.type} to Image.`);
+        }
         const newAsset = new ImageAsset(this.asset.id, this.asset.name, path);
         this.changeAssetEmit(newAsset);
+      } else if (this.asset instanceof AudioAsset) {
+        if (!AudioAsset.isSupportType(file.type)) {
+          throw new VegaError(`Invalid file type ${file.type} to Audio.`);
+        }
+        const newAsset = new AudioAsset(this.asset.id, this.asset.name, path);
+        this.changeAssetEmit(newAsset);
       } else {
-        return new VegaError("Sorry under implementation.");
+        throw new VegaError("Sorry under implementation.");
       }
       // TODO Fix render update.
       // Look like the asset does not updated in view.

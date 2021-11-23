@@ -1,5 +1,14 @@
 # Releases
 
+# v0.0.11
+- Fix AudioAsset behaviour
+  - Fix wave width
+
+# v0.0.10
+- Add Spectrum CSS.
+- Update Layout.
+- Fix some bugs.
+
 # v0.0.9
 - Add Electron support.
   - Work in progress more...

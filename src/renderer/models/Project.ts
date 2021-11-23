@@ -64,8 +64,29 @@ export class Project implements IProject {
   }
 }
 
+/**
+ * compare two version like v1.2.3
+ * @param a
+ * @param b
+ * @returns a > b
+ */
+function newVersion(a: string, b: string) {
+  a = a.replace("v", "");
+  b = b.replace("v", "");
+  return (
+    a
+      .split(".")
+      .map((x) => x.padStart(5, "0"))
+      .join("") >
+    b
+      .split(".")
+      .map((x) => x.padStart(5, "0"))
+      .join("")
+  );
+}
+
 export function migrationProject(project: IProject) {
-  if (project.version < "v0.0.4") {
+  if (newVersion("v0.0.4", project.version)) {
     project.strips.forEach((s) => {
       if (s.type == "Text") {
         // @ts-ignore

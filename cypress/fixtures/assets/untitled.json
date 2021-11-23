@@ -1,0 +1,179 @@
+{
+    "name": "untitled",
+    "width": 1280,
+    "height": 720,
+    "fps": 60,
+    "duration": 10,
+    "version": "0.0.10",
+    "assets": [
+        {
+            "id": "30cd838f-68b5-46a0-997c-3db7695d2ef9",
+            "name": "voice.mp3",
+            "path": "/static/example/voice.mp3",
+            "type": "Audio"
+        },
+        {
+            "id": "a55ee89c-0cd1-4a33-8def-69f53b464963",
+            "name": "bun33s.mp4",
+            "path": "/static/example/bun33s.mp4",
+            "type": "Video"
+        },
+        {
+            "id": "c3a10b99-1c55-4acd-9b18-eb814975740b",
+            "name": "rabbit.png",
+            "path": "/static/example/rabbit.png",
+            "type": "Image"
+        }
+    ],
+    "strips": [
+        {
+            "id": "935a18a4-d2bc-4598-b571-d544914ed8f2",
+            "layer": 0,
+            "length": 5,
+            "start": 0.26049097534687815,
+            "type": "Audio",
+            "assetId": "30cd838f-68b5-46a0-997c-3db7695d2ef9"
+        },
+        {
+            "id": "6841926a-100a-45a9-9d3f-07224a2a1ec1",
+            "color": "#ffffff",
+            "fontFamily": "serif",
+            "fontSize": 100,
+            "length": 1.1626610505450938,
+            "position": {
+                "x": 653.3333333333335,
+                "y": 413.33333333333354,
+                "z": -10
+            },
+            "start": 0.22828963159687773,
+            "text": "Hi",
+            "type": "Text",
+            "layer": 1
+        },
+        {
+            "id": "307c261a-2ae7-4ef8-b258-cb88c6f917e2",
+            "color": "#ffffff",
+            "fontFamily": "serif",
+            "fontSize": 100,
+            "length": 0.7289395441030726,
+            "position": {
+                "x": 663.3333333333339,
+                "y": 260,
+                "z": -10
+            },
+            "start": 0.6835244400706194,
+            "text": "Everyone",
+            "type": "Text",
+            "layer": 2
+        },
+        {
+            "id": "fbcf3aba-766c-4a6d-9447-f38bfe2e0f94",
+            "color": "#ffffff",
+            "fontFamily": "serif",
+            "fontSize": 100,
+            "length": 3.1417244796828534,
+            "position": {
+                "x": 663.3333333333336,
+                "y": 513.3333333333331,
+                "z": -10
+            },
+            "start": 1.4026036182172945,
+            "text": "This is a demo of the",
+            "type": "Text",
+            "layer": 1
+        },
+        {
+            "id": "da41c637-d818-4441-9dda-9df3ffd91309",
+            "color": "#ffffff",
+            "fontFamily": "serif",
+            "fontSize": 100,
+            "length": 2.070366699702675,
+            "position": {
+                "x": 656.6666666666674,
+                "y": 339.99999999999994,
+                "z": -10
+            },
+            "start": 2.4942606386273543,
+            "text": "the browser based",
+            "type": "Text",
+            "layer": 2
+        },
+        {
+            "id": "3c93086e-eecc-469c-8849-4b98ddb33ba3",
+            "color": "#ffffff",
+            "fontFamily": "serif",
+            "fontSize": 100,
+            "length": 1.2378592666005943,
+            "position": {
+                "x": 646.6666666666664,
+                "y": 160.00000000000009,
+                "z": -10
+            },
+            "start": 3.3143118186323086,
+            "text": "video editor Vega.",
+            "type": "Text",
+            "layer": 3
+        },
+        {
+            "id": "263C4DE0-92F5-48C2-8DBD-34854F0349EF",
+            "length": 4.345887016848366,
+            "position": {
+                "x": 290.0000000000005,
+                "y": 536.666666666667,
+                "z": 0
+            },
+            "start": 5.7150969703915155,
+            "videoOffset": 3,
+            "type": "Video",
+            "layer": 0,
+            "src": "blob:http://localhost:9000/8580578a-0dff-47eb-b7e4-c0c49238eddd",
+            "assetId": "a55ee89c-0cd1-4a33-8def-69f53b464963"
+        },
+        {
+            "id": "55FAE039-FAD3-45A3-91ED-B1727553D46B",
+            "length": 4.554013875123886,
+            "position": {
+                "x": 989.9999999999994,
+                "y": 223.33333333333343,
+                "z": 0
+            },
+            "start": 5.720489813676949,
+            "type": "Image",
+            "layer": 2,
+            "src": "blob:http://localhost:9000/51380867-4ca8-476f-b9ed-89dde47df1e9",
+            "assetId": "c3a10b99-1c55-4acd-9b18-eb814975740b"
+        },
+        {
+            "id": "2846642e-bf11-4124-ae9b-d4d7847279b7",
+            "color": "#ffffff",
+            "fontFamily": "serif",
+            "fontSize": 100,
+            "length": 5,
+            "position": {
+                "x": 910.0000000000002,
+                "y": 530.0000000000001,
+                "z": -10
+            },
+            "start": 5.647609018830526,
+            "text": "<- Video",
+            "type": "Text",
+            "layer": 1
+        },
+        {
+            "id": "3ca48b7c-62b4-4dce-ba18-af393a760ac8",
+            "color": "#ffffff",
+            "fontFamily": "serif",
+            "fontSize": 100,
+            "length": 5,
+            "position": {
+                "x": 413.33333333333337,
+                "y": 199.99999999999997,
+                "z": -10
+            },
+            "start": 5.642266476709613,
+            "text": "Image ->",
+            "type": "Text",
+            "layer": 3
+        }
+    ]
+}

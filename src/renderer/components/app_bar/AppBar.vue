@@ -14,13 +14,13 @@
         },
       ]"
     >
-      <input
-        ref="input"
-        type="file"
-        style="display: none"
-        @change="changeOpenProject"
-      />
     </sp-action-menu>
+    <input
+      ref="input"
+      type="file"
+      style="display: none"
+      @change="changeOpenProject"
+    />
 
     <div style="margin: auto 4px auto auto">
       <sp-action-button :quiet="true" size="S" @click="renderVideo">

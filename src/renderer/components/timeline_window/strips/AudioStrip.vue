@@ -1,6 +1,6 @@
 <template>
   <div class="audio-strip">
-    <div ref="wave" class="wave" />
+    <div ref="wave" class="wave" :style="style" />
     <span v-if="strip.asset">
       {{ strip.asset.name }}
     </span>
@@ -50,6 +50,12 @@ export default class AudioStripComp extends Vue {
   scale!: number;
 
   wave: any = null as WaveSufer | null;
+
+  get style(): Partial<CSSStyleDeclaration> {
+    return {
+      width: Math.round(this.strip.audio.duration * this.scale) + "px",
+    };
+  }
 
   @Watch("scale")
   watchScale(n: number) {
