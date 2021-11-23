@@ -9,16 +9,19 @@
         {
             "id": "30cd838f-68b5-46a0-997c-3db7695d2ef9",
             "name": "voice.mp3",
+            "path": "/static/example/voice.mp3",
             "type": "Audio"
         },
         {
             "id": "a55ee89c-0cd1-4a33-8def-69f53b464963",
             "name": "bun33s.mp4",
+            "path": "/static/example/bun33s.mp4",
             "type": "Video"
         },
         {
             "id": "c3a10b99-1c55-4acd-9b18-eb814975740b",
             "name": "rabbit.png",
+            "path": "/static/example/rabbit.png",
             "type": "Image"
         }
     ],
