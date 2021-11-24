@@ -98,5 +98,4 @@ sw.*
 
 build
 .firebaserc
-firebase.json
 .firebase
