@@ -45,7 +45,7 @@ import { Component, Prop, Ref } from "vue-property-decorator";
 import * as T from "three";
 import { Camera, Scene } from "three";
 import Modal from "./vega/Modal.vue";
-import Renderer from "~/models/Renderer";
+import Encoder from "~/models/Encoder";
 import Recorder from "~/models/Recorder";
 import ExportingCard from "~/components/ExportingCard.vue";
 import { Project } from "~/models/Project";
