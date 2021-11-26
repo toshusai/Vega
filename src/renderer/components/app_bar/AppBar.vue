@@ -113,7 +113,7 @@ export default class AppBar extends Vue {
         const text = await file.text();
         const iproject = JSON.parse(text);
         if (isProject(iproject)) {
-          this.openProjectEmit(new Project(iproject));
+          this.project = new Project(iproject);
         } else {
           throw new VegaError("Invalid Project file.");
         }
