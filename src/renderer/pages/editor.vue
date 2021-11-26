@@ -84,9 +84,6 @@
           :stripSync.sync="selectedStrip"
           :assets="project.assets"
           @change="changeStrip"
-          @changeProperty="
-            (name, value) => changeStripPropery(selectedStripIndex, name, value)
-          "
         />
       </sp-split-view-pane>
     </sp-split-view>

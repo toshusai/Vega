@@ -86,34 +86,10 @@ export default class VideoStripInspector extends Vue {
     );
   }
 
-  changePropertyEmit(name: string, value: any) {
-    this.$emit("changeProperty", name, value);
-  }
-
-  changeVideoOffset(v: number) {
-    this.changePropertyEmit("videoOffset", v);
-  }
-
-  changeStart(start: number) {
-    this.changePropertyEmit("start", start);
-  }
-
-  changeLength(length: number) {
-    this.changePropertyEmit("length", length);
-  }
-
   changeSrc(e: OptionKeyValue) {
     const targetAsset = this.assets.find((a) => a.id == e.value);
     if (!targetAsset || !(targetAsset instanceof VideoAsset)) return;
     this.strip.updateAsset(targetAsset);
-  }
-
-  changeX(value: number) {
-    this.changePropertyEmit("position.x", value);
-  }
-
-  changeY(value: number) {
-    this.changePropertyEmit("position.y", value);
   }
 }
 </script>
