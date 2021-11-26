@@ -1,6 +1,6 @@
 {
   "name": "vega",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "license": "MIT",
   "author": "toshusai",
   "main": "dist/main/index.js",
@@ -54,6 +54,7 @@
     "@spectrum-css/underlay": "^2.0.12",
     "@spectrum-css/vars": "^4.0.1",
     "@toshusai/spectrum-vue": "^0.1.1",
+    "axios": "^0.24.0",
     "ccapture.js": "^1.1.0",
     "core-js": "^3.15.1",
     "http-proxy": "^1.18.1",
