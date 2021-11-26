@@ -154,7 +154,7 @@ const RIGHT_MARGIN_SECONDS = 10;
     MenuButton,
   },
 })
-export default class Timeline extends Vue {
+export default class TimelinePanel extends Vue {
   @Prop({ default: () => [] })
   strips!: Strip[];
 
