@@ -191,7 +191,7 @@ import {
 import AssetWindow from "~/components/asset_window/AssetWindow.vue";
 import AssetInspectorWindow from "~/components/asset_inspector/AssetInspectorWindow.vue";
 import StripInspector from "~/components/strip_inspector_window/StripInspectorWindow.vue";
-import TimelinePanel from "~/components/timeline_window/TimelinePanel.vue";
+import TimelinePanel from "~/components/timeline_panel/TimelinePanel.vue";
 import { download } from "~/plugins/download";
 import { StripUtil } from "~/plugins/strip";
 import { IVector3 } from "~/models/math/Vector3";
