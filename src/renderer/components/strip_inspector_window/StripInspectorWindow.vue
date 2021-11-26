@@ -6,7 +6,6 @@
       :stripSync.sync="strip"
       :assets="assets"
       @change="change"
-      @changeProperty="changeProperty"
     />
   </div>
 </template>
@@ -52,10 +51,6 @@ export default class StripInspectorWindow extends Vue {
 
   change(strip: Strip) {
     this.$emit("change", strip);
-  }
-
-  changeProperty(name: string, value: any) {
-    this.$emit("changeProperty", name, value);
   }
 }
 </script>

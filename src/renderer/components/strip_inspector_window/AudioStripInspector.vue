@@ -13,14 +13,6 @@
     <sp-field-label> Start </sp-field-label>
     <sp-textfield v-model="strip.start" size="S" type="number" :step="0.01" />
 
-    <!-- <sp-field-label> Offset </sp-field-label>
-    <sp-textfield
-      v-model="strip.videoOffset"
-      size="S"
-      type="number"
-      :step="0.01"
-    /> -->
-
     <sp-field-label>Length</sp-field-label>
     <sp-textfield v-model="strip.length" size="S" type="number" :step="0.01" />
   </div>
