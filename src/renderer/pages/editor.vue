@@ -57,7 +57,7 @@
           <sp-split-view-pane
             :style="`height: 100%; width: 100%; overflow-y: scroll`"
           >
-            <TimelineWindow
+            <TimelinePanel
               :currentTime="currentTime"
               :strips="project.strips"
               :selectedStrips="selectedStrips"
@@ -191,7 +191,7 @@ import {
 import AssetWindow from "~/components/asset_window/AssetWindow.vue";
 import AssetInspectorWindow from "~/components/asset_inspector/AssetInspectorWindow.vue";
 import StripInspector from "~/components/strip_inspector_window/StripInspectorWindow.vue";
-import TimelineWindow from "~/components/timeline_window/Timeline.vue";
+import TimelinePanel from "~/components/timeline_window/TimelinePanel.vue";
 import { download } from "~/plugins/download";
 import { StripUtil } from "~/plugins/strip";
 import { IVector3 } from "~/models/math/Vector3";
@@ -213,7 +213,7 @@ import { DragAndDrop } from "~/plugins/dragAndDrop";
     AssetWindow,
     AssetInspectorWindow,
     StripInspector,
-    TimelineWindow,
+    TimelinePanel,
     Snakbar,
   },
 })
