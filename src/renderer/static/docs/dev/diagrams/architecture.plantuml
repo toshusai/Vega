@@ -1,0 +1,52 @@
+@startuml
+'left to right direction
+rectangle Text
+rectangle Video
+rectangle Audio
+rectangle Image
+'rectangle Text3D
+
+rectangle "Canvas WebGL (Three.js)" as Canvas_WebGL
+circle "FFmpeg.js" as FFmpeg
+circle "FFmpeg.js" as FFmpeg2
+circle "FFmpeg.js" as FFmpeg3
+circle "CCapture.js" as CCapture
+
+rectangle "CanvasTexture" as TextCanvas
+Text --> TextCanvas 
+TextCanvas --> Canvas_WebGL 
+
+rectangle VideoTexture 
+Video --> VideoTexture 
+VideoTexture --> Canvas_WebGL 
+
+rectangle ImageTexture 
+Image --> ImageTexture
+ImageTexture --> Canvas_WebGL 
+
+'rectangle TextGeometry
+'Text3D --> TextGeometry
+'TextGeometry --> Canvas_WebGL 
+
+rectangle "Audio of Video" as VideoAudio
+Video --> FFmpeg2
+FFmpeg2 --> VideoAudio
+VideoAudio--> FFmpeg
+
+rectangle "Cutted Audio" as CuttedAudio 
+Audio --> FFmpeg3
+FFmpeg3 -->CuttedAudio 
+
+CuttedAudio --> FFmpeg
+
+rectangle "WebM video" as WebM
+Canvas_WebGL --> CCapture
+CCapture --> WebM
+
+WebM --> FFmpeg
+
+rectangle "Output.mp4" as Output
+FFmpeg --> Output
+
+
+@enduml
