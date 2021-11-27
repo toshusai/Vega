@@ -97,8 +97,13 @@ export default class Encoder {
     });
     await this.ffmpeg.load();
     this.ffmpeg.setProgress((progress) => {
-      this.ffmpegProgress = progress.ratio;
-      this.onProgress(progress.ratio);
+      let ratio = progress.ratio;
+      if ("time" in progress) {
+        const p = progress as { time: number; ratio: number };
+        ratio = p.time / this.duration;
+      }
+      this.ffmpegProgress = ratio;
+      this.onProgress(ratio);
     });
   }
 

@@ -1,8 +1,13 @@
 <template>
   <div class="card">
-    <sp-progress-bar :value="progress" style="width: 100%">
-      {{ step1 ? "STEP (1/2)" : "STEP (2/2)" }}
-    </sp-progress-bar>
+    <div style="display: flex">
+      <sp-progress-bar :value="progress1" style="width: 45%">
+        STEP (1/2)
+      </sp-progress-bar>
+      <sp-progress-bar :value="progress2" style="width: 45%; margin-left: auto">
+        STEP (2/2)
+      </sp-progress-bar>
+    </div>
 
     <div v-if="!end" class="note">
       Do not change the tab until the rendering is complete.
@@ -91,16 +96,11 @@ export default class ExportingCard extends Vue {
     return isSupportBroeser();
   }
 
-  get step1() {
-    return this.ccaptureProgress < 1;
+  get progress1() {
+    return Math.round(this.ccaptureProgress * 100);
   }
 
-  get step2() {
-    return this.ccaptureProgress >= 1 && this.ffmpegProgress < 1;
-  }
-
-  get progress() {
-    if (this.step1) return Math.round(this.ccaptureProgress * 100);
+  get progress2() {
     return Math.round(this.ffmpegProgress * 100);
   }
 
