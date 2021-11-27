@@ -1,5 +1,10 @@
 # Releases
 
+# v0.0.13
+- Fix audio asset merge.
+- Update docs.
+- Add demo button.
+
 # v0.0.12
 - Fix file opening.
 - Update export dialog.
