@@ -4,54 +4,19 @@ Vega is a open source web based video editor.
 
 This is an experimental project.
 
-Editor - https://vega.toshusai.net
-
-Documents - https://vega.toshusai.net/docs
+__[Editor](https://vega.toshusai.net)__ /
+__[DEMO](https://vega.toshusai.net/editor?demo=true)__ /
+__[Documents](https://vega.toshusai.net/docs)__
 
 <img src="src/renderer/static/static/img/vega_screenshot.png" width="100%">
 
-# Support Browsers
+## Support Browsers
 - Google Chrome 92
 
-# Develop
+## Development
 Check [static/docs/dev/README.md](src/renderer/static/docs/dev/README.md)
 
-# Thanks Open Source Softwares/Libraries
-
-- **JavaScript Framework**
-  - [Nuxt.js](https://github.com/nuxt/nuxt.js)
-    - [Vue.js](https://github.com/vuejs/vue)
-
-- **Video/Audio Converter**
-  - [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm)
-    - [FFmpeg](https://www.ffmpeg.org/)
-
-- **Capture canvas**
-  - [CCapture.js](https://github.com/spite/ccapture.js/)
-    - [WebM video encoder](https://github.com/thenickdude/webm-writer-js/)
-
-- **3D library (as Renderer)**
-  - [three.js](https://github.com/mrdoob/three.js/)
-
-- **Audio visualization**
-  - [wavesufer.js](https://github.com/katspaugh/wavesurfer.js/)
-
-- **Monospace font**
-  - [RictyDimished](https://github.com/edihbrandon/RictyDiminished)
-
-- **Icons**
-  - [Material Design Icons](https://github.com/templarian/MaterialDesign)
-  - [Spectrum CSS Workflow Icons](https://github.com/adobe/spectrum-css-workflow-icons)
-
-- **Design System**
-  - [Spectrum Vue](https://github.com/toshusai/spectrum-vue)
-    - [Spectrum CSS](https://github.com/adobe/spectrum-css)
-
-- **Documentation**
-  - [Docsify](https://github.com/docsifyjs/docsify/)
-
-- **Test Video**
-  - [copyright 2008, Blender Foundation](https://www.bigbuckbunny.org)
-
-# License
+## License
 MIT License
+
+[Others](./src/renderer/static/docs/Thanks.md)
