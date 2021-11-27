@@ -2,7 +2,6 @@
   <div class="app-bar">
     <sp-action-menu
       data-project-action-menu
-      style="height: 24px"
       :items="[
         {
           text: `Open Project`,
@@ -23,18 +22,17 @@
     />
 
     <div style="margin: auto 4px auto auto">
-      <sp-action-button :quiet="true" size="S" @click="renderVideo">
+      <sp-action-button :quiet="true" @click="renderVideo">
         <sp-icon name="BoxExport" style="width: 12px" />
       </sp-action-button>
       <sp-action-button
         :quiet="true"
-        size="S"
         data-vega-settings-button
         @click="isOpenProjectSettings = true"
       >
         <sp-icon name="Settings" style="width: 12px" />
       </sp-action-button>
-      <sp-action-button :quiet="true" size="S" @click="goAbout">
+      <sp-action-button :quiet="true" @click="goAbout">
         <sp-icon name="Info" style="width: 12px" />
       </sp-action-button>
     </div>
@@ -113,7 +111,7 @@ export default class AppBar extends Vue {
         const text = await file.text();
         const iproject = JSON.parse(text);
         if (isProject(iproject)) {
-          this.openProjectEmit(new Project(iproject));
+          this.project = new Project(iproject);
         } else {
           throw new VegaError("Invalid Project file.");
         }
