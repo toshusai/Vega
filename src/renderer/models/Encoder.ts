@@ -154,7 +154,7 @@ export default class Encoder {
   async runFFmpeg() {
     if (!this.ffmpeg) return;
 
-    let args = ["-y", "-i", WEBM_FILE_NAME];
+    let args = ["-y", "-r", `${this.fps}`, "-i", WEBM_FILE_NAME];
 
     const mapOptions: string[] = [];
 
@@ -182,7 +182,7 @@ export default class Encoder {
           startMs = 0;
         }
         mapOptions.push(`[${i}:a]adelay=${startMs}|${startMs}[out${i}]`);
-        args = args.concat(["-i", s.videoAsset.id + getExt(s.videoAsset.name)]);
+        args = args.concat(["-i", s.id + getExt(s.videoAsset.name)]);
         i++;
       } else if (s instanceof AudioStrip && s.asset) {
         let startMs = Math.round(s.start * 1000);
