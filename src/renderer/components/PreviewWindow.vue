@@ -1,5 +1,5 @@
 <template>
-  <div class="root">
+  <div data-vega-preview-window class="root">
     <div
       ref="preview"
       class="preview-window"
