@@ -1,6 +1,6 @@
 {
   "name": "vega",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "license": "MIT",
   "author": "toshusai",
   "main": "dist/main/index.js",
