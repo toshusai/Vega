@@ -3,7 +3,7 @@ describe("Editor", () => {
     cy.visit("/editor");
     const play = cy.get("[data-vega-play-button]");
     play.click().wait(500).click();
-    const children = cy.get(".preview-window .info").children();
+    const children = cy.get("[data-vega-preview-window] .info").children();
 
     children
       .first()
