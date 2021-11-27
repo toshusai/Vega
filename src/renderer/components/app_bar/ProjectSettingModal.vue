@@ -10,8 +10,9 @@
       <sp-field-label>Fps</sp-field-label>
       <sp-textfield
         size="S"
+        type="number"
         :value="project.fps"
-        @change="(v) => (project.fps = Number.parseInt(v))"
+        @change="(v) => (project.fps = Number.parseInt(v) || 0)"
       />
       <sp-field-label>Resolution</sp-field-label>
       <div style="display: flex">
@@ -20,8 +21,9 @@
           <sp-textfield
             size="S"
             style="width: 100%"
+            type="number"
             :value="project.width"
-            @change="(v) => (project.width = Number.parseInt(v))"
+            @change="(v) => (project.width = Number.parseInt(v) || 0)"
           />
         </div>
         <div>
@@ -29,16 +31,18 @@
           <sp-textfield
             size="S"
             style="width: 100%"
+            type="number"
             :value="project.height"
-            @change="(v) => (project.height = Number.parseInt(v))"
+            @change="(v) => (project.height = Number.parseInt(v) || 0)"
           />
         </div>
       </div>
       <sp-field-label>Duration</sp-field-label>
       <sp-textfield
         size="S"
+        type="number"
         :value="project.duration"
-        @change="(v) => (project.duration = Number.parseInt(v))"
+        @change="(v) => (project.duration = Number.parseInt(v) || 0)"
       />
     </div>
     <template #footer>
