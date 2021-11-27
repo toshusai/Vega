@@ -115,6 +115,20 @@ export default class Encoder {
         const fileName = strip.videoAsset.id + getExt(strip.videoAsset.name);
         const fileData = await FFmpeg.fetchFile(strip.videoAsset.path);
         this.writeFile(fileName, fileData);
+        const stripFileName = strip.id + getExt(strip.videoAsset.name);
+        await this.ffmpeg.run(
+          ...[
+            "-y",
+            "-i",
+            fileName,
+            "-ss",
+            strip.start.toString(),
+            "-t",
+            strip.length.toString(),
+            stripFileName,
+          ]
+        );
+        this.removeFile(fileName);
       } else if (strip instanceof AudioStrip && strip.asset) {
         const fileName = strip.asset.id + getExt(strip.asset.name);
         const fileData = await FFmpeg.fetchFile(strip.asset.path);
@@ -132,6 +146,7 @@ export default class Encoder {
             stripFileName,
           ]
         );
+        this.removeFile(fileName);
       }
     }
   }
@@ -216,10 +231,10 @@ export default class Encoder {
     for (let i = 0; i < this.strips.length; i++) {
       const strip = this.strips[i];
       if (strip instanceof VideoStrip && strip.videoAsset) {
-        const fileName = strip.videoAsset.id + getExt(strip.videoAsset.name);
+        const fileName = strip.id + getExt(strip.videoAsset.name);
         this.removeFile(fileName);
       } else if (strip instanceof AudioStrip && strip.asset) {
-        const fileName = strip.asset.id + getExt(strip.asset.name);
+        const fileName = strip.id + getExt(strip.asset.name);
         this.removeFile(fileName);
       }
     }
