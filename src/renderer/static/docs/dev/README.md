@@ -9,7 +9,7 @@
 ### 1. Install npm dependencies.
 
 ```
-yarn
+npm install
 ```
 
 ### 2. Copy static JavaScript libraries.
@@ -20,29 +20,33 @@ sh scripts/copy-static-js.sh
 
 ### 3. Run Nuxt dev server.
 ```
-yarn dev:renderer
-```
-
-### 4. Run up proxy server
-
-You need proxy for `Cross-Origin-Embedder-Policy` and `Cross-Origin-Opener-Policy`
-
-You can use any proxy server you like(ex. Nginx).
-
-This is Node.js server example.
-
-```javascript
-const httpProxy = require("http-proxy");
-
-const proxy = httpProxy.createProxyServer({ target: "http://localhost:9999" });
-proxy.on("proxyReq", function (req, _, res) {
-  if (req.path.startsWith("/editor")) {
-    res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-  }
-});
-
-proxy.listen(9000);
+yarn dev
 ```
 
 ### 5. Develop
+
+### 6. Test
+```
+npm run cypress:run
+```
+
+
+
+
+
+```
+  -r 10
+  -i _vega_video.webm
+  -i 935a18a4-d2bc-4598-b571-d544914ed8f2.mp3
+  -i 263C4DE0-92F5-48C2-8DBD-34854F0349EF.mp4
+  -s 1280x720
+  -filter_complex [2:a]adelay=5715|5715[out2];[1:a]adelay=260|260[out1];[out1][out2]amix=inputs=2[out]
+  -map [out]:a
+  -c:a aac
+  -map 0:v
+  -t 10
+  -c:v libx264
+  -pix_fmt yuv420p
+  -s 1280x720
+  out.mp4
+```
