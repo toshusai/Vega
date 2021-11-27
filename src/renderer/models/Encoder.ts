@@ -25,6 +25,7 @@ export default class Encoder {
 
   linkFiles: Map<string, boolean> = new Map();
 
+  onProgressPreparationAssets: (rartio: number) => void;
   onProgress: (rartio: number) => void;
 
   get frames() {
@@ -37,7 +38,8 @@ export default class Encoder {
     fps: number,
     strips: Strip[],
     duration: number,
-    onProgress: (ratio: number) => void
+    onProgress: (ratio: number) => void,
+    onProgressPreparationAssets: (ratio: number) => void
   ) {
     this.width = width;
     this.height = height;
@@ -46,6 +48,7 @@ export default class Encoder {
 
     this.duration = duration;
     this.onProgress = onProgress;
+    this.onProgressPreparationAssets = onProgressPreparationAssets;
   }
 
   writeFile(fileName: string, binaryData: Uint8Array) {
@@ -85,7 +88,7 @@ export default class Encoder {
     this.i = 0;
     this.ffmpegProgress = 0;
     await this.writeAssets();
-    await this.runFFmpeg();
+    await this.runMainEncode();
     await this.unlinkAssets();
   }
 
@@ -96,19 +99,17 @@ export default class Encoder {
       logger: (v) => this.log(v),
     });
     await this.ffmpeg.load();
-    this.ffmpeg.setProgress((progress) => {
-      let ratio = progress.ratio;
-      if ("time" in progress) {
-        const p = progress as { time: number; ratio: number };
-        ratio = p.time / this.duration;
-      }
-      this.ffmpegProgress = ratio;
-      this.onProgress(ratio);
-    });
   }
 
   private async writeAssets() {
     if (!this.ffmpeg) return;
+    const length = this.strips.filter((s) => {
+      return (
+        (s instanceof VideoStrip && s.videoAsset) ||
+        (s instanceof AudioStrip && s.asset)
+      );
+    }).length;
+    let progressCount = 1;
     for (let i = 0; i < this.strips.length; i++) {
       const strip = this.strips[i];
       if (strip instanceof VideoStrip && strip.videoAsset) {
@@ -122,13 +123,14 @@ export default class Encoder {
             "-i",
             fileName,
             "-ss",
-            strip.start.toString(),
+            `${strip.videoOffset}`,
             "-t",
             strip.length.toString(),
             stripFileName,
           ]
         );
         this.removeFile(fileName);
+        this.onProgressPreparationAssets(progressCount++ / length);
       } else if (strip instanceof AudioStrip && strip.asset) {
         const fileName = strip.asset.id + getExt(strip.asset.name);
         const fileData = await FFmpeg.fetchFile(strip.asset.path);
@@ -139,20 +141,29 @@ export default class Encoder {
             "-y",
             "-i",
             fileName,
-            "-ss",
-            strip.start.toString(),
             "-t",
             strip.length.toString(),
             stripFileName,
           ]
         );
         this.removeFile(fileName);
+        this.onProgressPreparationAssets(progressCount++ / length);
       }
     }
   }
 
-  async runFFmpeg() {
+  private async runMainEncode() {
     if (!this.ffmpeg) return;
+    this.ffmpeg.setProgress((progress) => {
+      let ratio = progress.ratio;
+      if ("time" in progress) {
+        const p = progress as { time: number; ratio: number };
+        ratio = p.time / this.duration;
+        if (ratio < 0) return 0;
+      }
+      this.ffmpegProgress = ratio;
+      this.onProgress(ratio);
+    });
 
     let args = ["-y", "-r", `${this.fps}`, "-i", WEBM_FILE_NAME];
 
