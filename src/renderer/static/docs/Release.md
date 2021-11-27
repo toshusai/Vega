@@ -1,5 +1,9 @@
 # Releases
 
+# v0.0.12
+- Fix file opening.
+- Update export dialog.
+
 # v0.0.11
 - Fix AudioAsset behaviour
   - Fix wave width
