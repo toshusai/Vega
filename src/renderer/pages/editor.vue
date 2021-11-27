@@ -1,7 +1,7 @@
 <template>
   <div class="editor">
     <AppBar
-      :projectSync="project"
+      :projectSync.sync="project"
       @renderVideo="renderVideo"
       @openProject="openProject"
       @downloadProject="downloadProject"
@@ -57,7 +57,7 @@
           <sp-split-view-pane
             :style="`height: 100%; width: 100%; overflow-y: scroll`"
           >
-            <TimelineWindow
+            <TimelinePanel
               :currentTime="currentTime"
               :strips="project.strips"
               :selectedStrips="selectedStrips"
@@ -84,9 +84,6 @@
           :stripSync.sync="selectedStrip"
           :assets="project.assets"
           @change="changeStrip"
-          @changeProperty="
-            (name, value) => changeStripPropery(selectedStripIndex, name, value)
-          "
         />
       </sp-split-view-pane>
     </sp-split-view>
@@ -171,8 +168,9 @@
 <script lang="ts">
 import Vue from "vue";
 import * as T from "three";
-import { Component, Ref } from "vue-property-decorator";
+import { Component, Ref, Watch } from "vue-property-decorator";
 import loadicons from "loadicons";
+import axios from "axios";
 import RendererWindow from "@/components/RendererWindow.vue";
 import AppBar from "@/components/app_bar/AppBar.vue";
 import PreviewWindow from "~/components/PreviewWindow.vue";
@@ -193,7 +191,7 @@ import {
 import AssetWindow from "~/components/asset_window/AssetWindow.vue";
 import AssetInspectorWindow from "~/components/asset_inspector/AssetInspectorWindow.vue";
 import StripInspector from "~/components/strip_inspector_window/StripInspectorWindow.vue";
-import TimelineWindow from "~/components/timeline_window/Timeline.vue";
+import TimelinePanel from "~/components/timeline_panel/TimelinePanel.vue";
 import { download } from "~/plugins/download";
 import { StripUtil } from "~/plugins/strip";
 import { IVector3 } from "~/models/math/Vector3";
@@ -215,7 +213,7 @@ import { DragAndDrop } from "~/plugins/dragAndDrop";
     AssetWindow,
     AssetInspectorWindow,
     StripInspector,
-    TimelineWindow,
+    TimelinePanel,
     Snakbar,
   },
 })
@@ -266,6 +264,15 @@ export default class IndexPage extends Vue {
     DragAndDrop.init();
     loadicons("/static/svg/spectrum-css-icons.svg", () => {});
     loadicons("/static/svg/spectrum-icons.svg", () => {});
+    const demo = this.$route.query.demo;
+
+    if (demo === "true") {
+      const res = await axios.get("/static/example/demo.json");
+      if (isProject(res.data)) {
+        this.project = new Project(res.data);
+        this.openProject();
+      }
+    }
     this.scene = new T.Scene();
     this.camera = new T.OrthographicCamera(
       0,
@@ -277,6 +284,17 @@ export default class IndexPage extends Vue {
     this.canvas = this.previewWindow?.renderCanvas || null;
     await FontAsset.init();
     this.update(0);
+  }
+
+  @Watch("project")
+  openProject() {
+    this.project.strips.forEach((s) => {
+      if (StripUtil.isThreeJsStrip(s)) {
+        this.scene?.add(s.obj);
+      }
+    });
+
+    this.previewWindow?.resize();
   }
 
   addAsset(asset: Asset) {
@@ -468,20 +486,6 @@ export default class IndexPage extends Vue {
 
   getAssetById(id: string) {
     return this.project.assets.find((a) => a.id == id);
-  }
-
-  openProject(project: Project) {
-    if (!isProject(project))
-      throw new VegaError("Invalid Project file format.");
-    this.project = project;
-
-    this.project.strips.forEach((s) => {
-      if (StripUtil.isThreeJsStrip(s)) {
-        this.scene?.add(s.obj);
-      }
-    });
-
-    this.previewWindow?.resize();
   }
 
   change() {

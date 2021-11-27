@@ -1,5 +1,5 @@
 <template>
-  <sp-dialog :isOpen="isOpen">
+  <sp-dialog :isOpen="isOpen" header="Export" style="scroll: visible">
     <div style="overflow: hidden">
       <div>
         <div class="render-view">
@@ -19,6 +19,28 @@
         />
       </div>
     </div>
+
+    <sp-button-group :dialog="true">
+      <sp-button type="primary" :group="true" :primary="true" @click="cancel">
+        Close
+      </sp-button>
+      <sp-button
+        v-if="!isEncoding"
+        :group="true"
+        :disabled="!isSupportBroeser"
+        @click="encode"
+      >
+        Start
+      </sp-button>
+      <sp-button
+        v-if="end"
+        :group="true"
+        :disabled="!isSupportBroeser"
+        @click="download"
+      >
+        Download
+      </sp-button>
+    </sp-button-group>
   </sp-dialog>
 </template>
 
@@ -45,33 +67,38 @@ import { Component, Prop, Ref } from "vue-property-decorator";
 import * as T from "three";
 import { Camera, Scene } from "three";
 import Modal from "./vega/Modal.vue";
-import Renderer from "~/models/Renderer";
+import Encoder from "~/models/Encoder";
 import Recorder from "~/models/Recorder";
 import ExportingCard from "~/components/ExportingCard.vue";
 import { Project } from "~/models/Project";
+import { isSupportBroeser } from "~/plugins/browser";
 
 @Component({
   components: { Modal, ExportingCard },
 })
-export default class Encoder extends Vue {
+export default class RendererWindow extends Vue {
   @Ref() canvas!: HTMLCanvasElement;
+
+  @Prop() project!: Project;
+  @Prop({}) scene!: Scene;
+  @Prop({}) camera!: Camera;
 
   isOpen = false;
 
-  @Prop() project!: Project;
-
-  @Prop({})
-  scene!: Scene;
-
-  @Prop({})
-  camera!: Camera;
-
   renderer: T.WebGLRenderer | null = null;
-  videoEenderer?: Renderer;
+  videoEenderer?: Encoder;
   ccaptureProgress: number = 0;
   ffmpegProgress: number = 0;
   recorder?: Recorder;
   isEncoding: boolean = false;
+
+  get end() {
+    return this.ffmpegProgress >= 1 && this.ccaptureProgress >= 1;
+  }
+
+  get isSupportBroeser() {
+    return isSupportBroeser();
+  }
 
   get canvasStyle(): Partial<CSSStyleDeclaration> {
     return {
@@ -117,20 +144,20 @@ export default class Encoder extends Vue {
     this.isOpen = false;
     await this.recorder?.cancel();
     await this.videoEenderer?.cancel();
-    this.isEncoding = false;
-    this.ffmpegProgress = 0;
-    this.ccaptureProgress = 0;
   }
 
   open() {
     this.isOpen = true;
+    this.isEncoding = false;
+    this.ffmpegProgress = 0;
+    this.ccaptureProgress = 0;
   }
 
   async encode() {
     this.isEncoding = true;
     if (!this.renderer) return;
     if (!this.videoEenderer) {
-      this.videoEenderer = new Renderer(
+      this.videoEenderer = new Encoder(
         this.project.width,
         this.project.height,
         this.project.fps,
