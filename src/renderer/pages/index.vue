@@ -22,6 +22,9 @@
           <sp-button type="secondary" :group="true" @click="goGitHub">
             GitHub
           </sp-button>
+          <sp-button type="primary" :group="true" @click="goEditorDemo">
+            DEMO
+          </sp-button>
           <sp-button :group="true" @click="goEditor"> Editor </sp-button>
         </sp-button-group>
       </sp-dialog>
@@ -49,6 +52,10 @@ import { Component } from "vue-property-decorator";
 export default class IndexPage extends Vue {
   goEditor() {
     this.$router.push("/editor");
+  }
+
+  goEditorDemo() {
+    this.$router.push("/editor?demo=true");
   }
 
   goGitHub() {
