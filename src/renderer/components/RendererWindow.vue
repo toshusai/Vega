@@ -53,7 +53,7 @@ import { Project } from "~/models/Project";
 @Component({
   components: { Modal, ExportingCard },
 })
-export default class Encoder extends Vue {
+export default class RendererWindow extends Vue {
   @Ref() canvas!: HTMLCanvasElement;
 
   isOpen = false;
@@ -67,7 +67,7 @@ export default class Encoder extends Vue {
   camera!: Camera;
 
   renderer: T.WebGLRenderer | null = null;
-  videoEenderer?: Renderer;
+  videoEenderer?: Encoder;
   ccaptureProgress: number = 0;
   ffmpegProgress: number = 0;
   recorder?: Recorder;
@@ -130,7 +130,7 @@ export default class Encoder extends Vue {
     this.isEncoding = true;
     if (!this.renderer) return;
     if (!this.videoEenderer) {
-      this.videoEenderer = new Renderer(
+      this.videoEenderer = new Encoder(
         this.project.width,
         this.project.height,
         this.project.fps,
