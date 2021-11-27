@@ -1636,6 +1636,11 @@
   "resolved" "https://registry.npmjs.org/@spectrum-css/illustratedmessage/-/illustratedmessage-3.0.8.tgz"
   "version" "3.0.8"
 
+"@spectrum-css/inlinealert@^2.0.5":
+  "integrity" "sha512-Z37CDhoFX0cePjoyi5igRCi4/rIU7ETDpV8cwHjbTYj4IXpHmOCllxftncE8SJ3PZrQW2gB9mmXvfg+TBy3g2Q=="
+  "resolved" "https://registry.npmjs.org/@spectrum-css/inlinealert/-/inlinealert-2.0.5.tgz"
+  "version" "2.0.5"
+
 "@spectrum-css/inputgroup@^4.0.0":
   "integrity" "sha512-wAXPPJwgZd3AEzfS4Rr2+KpkdAnHKT2ACuxb6rwJZXbGRgiYeUYwsyAaa8N1fUMyLPTEYYlr2DO1f0MeWh0vwA=="
   "resolved" "https://registry.npmjs.org/@spectrum-css/inputgroup/-/inputgroup-4.0.0.tgz"
@@ -1780,10 +1785,10 @@
   dependencies:
     "defer-to-connect" "^1.0.1"
 
-"@toshusai/spectrum-vue@^0.1.1":
-  "integrity" "sha512-j2RYQgD8LVRk1CkVyPfOjTwzVJUAzZlMuG8uRS+lA1atOduyDujrCloli6t1I2Qp8nnBy9JA9Fe9xqewaK3h5w=="
-  "resolved" "https://registry.npmjs.org/@toshusai/spectrum-vue/-/spectrum-vue-0.1.1.tgz"
-  "version" "0.1.1"
+"@toshusai/spectrum-vue@^0.1.3":
+  "integrity" "sha512-4yLB8frPQ2YDrOlXuYXO21oVzPTeiz23R9nJbmOKBUYNMqIU7Z7DcjyJwOenANdPG4uYc8IkilqHQS7ZpBmluA=="
+  "resolved" "https://registry.npmjs.org/@toshusai/spectrum-vue/-/spectrum-vue-0.1.3.tgz"
+  "version" "0.1.3"
   dependencies:
     "@adobe/spectrum-css-workflow-icons" "^1.2.1"
     "@spectrum-css/accordion" "^3.0.9"
@@ -1814,6 +1819,7 @@
     "@spectrum-css/fieldlabel" "^4.0.0"
     "@spectrum-css/helptext" "^1.0.5"
     "@spectrum-css/icon" "^3.0.4"
+    "@spectrum-css/inlinealert" "^2.0.5"
     "@spectrum-css/inputgroup" "^4.0.0"
     "@spectrum-css/link" "^3.1.8"
     "@spectrum-css/menu" "^3.0.8"

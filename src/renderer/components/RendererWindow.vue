@@ -1,5 +1,5 @@
 <template>
-  <sp-dialog :isOpen="isOpen">
+  <sp-dialog :isOpen="isOpen" header="Export" style="scroll: visible">
     <div style="overflow: hidden">
       <div>
         <div class="render-view">
@@ -19,6 +19,28 @@
         />
       </div>
     </div>
+
+    <sp-button-group :dialog="true">
+      <sp-button type="primary" :group="true" :primary="true" @click="cancel">
+        Close
+      </sp-button>
+      <sp-button
+        v-if="!isEncoding"
+        :group="true"
+        :disabled="!isSupportBroeser"
+        @click="encode"
+      >
+        Start
+      </sp-button>
+      <sp-button
+        v-if="end"
+        :group="true"
+        :disabled="!isSupportBroeser"
+        @click="download"
+      >
+        Download
+      </sp-button>
+    </sp-button-group>
   </sp-dialog>
 </template>
 
@@ -49,6 +71,7 @@ import Encoder from "~/models/Encoder";
 import Recorder from "~/models/Recorder";
 import ExportingCard from "~/components/ExportingCard.vue";
 import { Project } from "~/models/Project";
+import { isSupportBroeser } from "~/plugins/browser";
 
 @Component({
   components: { Modal, ExportingCard },
@@ -56,15 +79,11 @@ import { Project } from "~/models/Project";
 export default class RendererWindow extends Vue {
   @Ref() canvas!: HTMLCanvasElement;
 
-  isOpen = false;
-
   @Prop() project!: Project;
+  @Prop({}) scene!: Scene;
+  @Prop({}) camera!: Camera;
 
-  @Prop({})
-  scene!: Scene;
-
-  @Prop({})
-  camera!: Camera;
+  isOpen = false;
 
   renderer: T.WebGLRenderer | null = null;
   videoEenderer?: Encoder;
@@ -72,6 +91,14 @@ export default class RendererWindow extends Vue {
   ffmpegProgress: number = 0;
   recorder?: Recorder;
   isEncoding: boolean = false;
+
+  get end() {
+    return this.ffmpegProgress >= 1 && this.ccaptureProgress >= 1;
+  }
+
+  get isSupportBroeser() {
+    return isSupportBroeser();
+  }
 
   get canvasStyle(): Partial<CSSStyleDeclaration> {
     return {
@@ -117,13 +144,13 @@ export default class RendererWindow extends Vue {
     this.isOpen = false;
     await this.recorder?.cancel();
     await this.videoEenderer?.cancel();
-    this.isEncoding = false;
-    this.ffmpegProgress = 0;
-    this.ccaptureProgress = 0;
   }
 
   open() {
     this.isOpen = true;
+    this.isEncoding = false;
+    this.ffmpegProgress = 0;
+    this.ccaptureProgress = 0;
   }
 
   async encode() {
