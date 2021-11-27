@@ -9,66 +9,30 @@
       </sp-progress-bar>
     </div>
 
-    <div v-if="!end" class="note">
-      Do not change the tab until the rendering is complete.
-    </div>
-    <div v-if="end" class="note2">Rendering Completed !</div>
-
-    <div v-if="!isSupportBroeser" style="display: flex">
-      <h3 style="margin: auto; color: var(--red)">
-        <sp-icon name="Alert" />
-        Sorry Your Browser Not Supported Export
-      </h3>
-    </div>
-
-    <div class="content">
-      <sp-button :primary="true" @click="close">Close</sp-button>
-      <div style="margin: auto"></div>
-      <sp-button
-        v-if="!isEncoding"
-        :disabled="!isSupportBroeser"
-        @click="start"
+    <div style="display: flex">
+      <sp-inline-alert v-if="showWarn" type="negative" class="inline-alert">
+        <template #header>Warning</template>
+        Do not change the tab until the rendering is complete.
+      </sp-inline-alert>
+      <sp-inline-alert v-if="end" type="success" class="inline-alert">
+        <template #header>Success</template>
+        Rendering Completed !
+      </sp-inline-alert>
+      <sp-inline-alert
+        v-if="!isSupportBroeser"
+        type="error"
+        class="inline-alert"
       >
-        Start
-      </sp-button>
-      <sp-button v-if="end" :disabled="!isSupportBroeser" @click="download">
-        Download
-      </sp-button>
+        <template #header>Error</template>
+        Rendering Completed ! Sorry Your Browser Not Supported Export
+      </sp-inline-alert>
     </div>
   </div>
 </template>
 
 <style scoped>
-.note {
-  margin: 12px;
-  color: var(--yellow);
-  text-align: center;
-}
-
-.note2 {
-  margin: 12px;
-  color: var(--green);
-  text-align: center;
-}
-
-.content {
-  margin: 12px;
-  margin-top: 16px;
-  text-align: center;
-  display: flex;
-}
-
-.title {
-  font-size: 20px;
-  text-align: center;
-  margin-bottom: 12px;
-}
-
-.card {
-  margin: auto;
-  padding: 16px;
-  border-radius: 2px;
-  z-index: 1;
+.inline-alert {
+  margin: 23px auto 0;
 }
 </style>
 
@@ -102,6 +66,14 @@ export default class ExportingCard extends Vue {
 
   get progress2() {
     return Math.round(this.ffmpegProgress * 100);
+  }
+
+  get inProgress() {
+    return this.ccaptureProgress > 0;
+  }
+
+  get showWarn() {
+    return !this.end && this.inProgress;
   }
 
   close() {
