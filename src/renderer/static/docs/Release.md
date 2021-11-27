@@ -1,5 +1,8 @@
 # Releases
 
+# v0.0.14
+- Add CrossOrigin headers to all path.
+
 # v0.0.13
 - Fix audio asset merge.
 - Update docs.

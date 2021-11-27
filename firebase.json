@@ -14,7 +14,7 @@
     ],
     "headers": [
       {
-        "source": "/editor",
+        "source": "/*",
         "headers": [
           {
             "key": "Cross-Origin-Embedder-Policy",
