@@ -71,6 +71,7 @@
     "@nuxtjs/eslint-config-typescript": "^6.0.1",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@types/ccapture.js": "^1.1.1",
+    "@types/jest": "^27.0.3",
     "@types/loadicons": "^1.0.0",
     "@types/stats": "^0.16.30",
     "@types/three": "^0.130.1",

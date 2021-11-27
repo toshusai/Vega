@@ -10,7 +10,7 @@ describe("Editor", () => {
       .invoke("text")
       .then((text) => {
         expect(text).satisfy(
-          (text) => text != "00:00:00.0000",
+          (text: string) => text != "00:00:00.0000",
           "[Timer is started]"
         );
       });
