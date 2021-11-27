@@ -11,6 +11,7 @@
       <div>
         <ExportingCard
           :ffmpegProgress="ffmpegProgress"
+          :ffmpegProgressPreparation="ffmpegProgressPreparation"
           :ccaptureProgress="ccaptureProgress"
           :isEncoding="isEncoding"
           @start="encode"
@@ -89,6 +90,7 @@ export default class RendererWindow extends Vue {
   videoEenderer?: Encoder;
   ccaptureProgress: number = 0;
   ffmpegProgress: number = 0;
+  ffmpegProgressPreparation: number = 0;
   recorder?: Recorder;
   isEncoding: boolean = false;
 
@@ -165,6 +167,9 @@ export default class RendererWindow extends Vue {
         this.project.duration,
         (ratio) => {
           this.ffmpegProgress = ratio;
+        },
+        (ratio) => {
+          this.ffmpegProgressPreparation = ratio;
         }
       );
     }

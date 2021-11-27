@@ -1,11 +1,14 @@
 <template>
   <div class="card">
     <div style="display: flex">
-      <sp-progress-bar :value="progress1" style="width: 45%">
-        STEP (1/2)
+      <sp-progress-bar :value="progress1" style="width: 30%; margin: auto">
+        STEP (1/3)
       </sp-progress-bar>
-      <sp-progress-bar :value="progress2" style="width: 45%; margin-left: auto">
-        STEP (2/2)
+      <sp-progress-bar :value="progress2" style="width: 30%; margin: auto">
+        STEP (2/3)
+      </sp-progress-bar>
+      <sp-progress-bar :value="progress3" style="width: 30%; margin: auto">
+        STEP (3/3)
       </sp-progress-bar>
     </div>
 
@@ -24,7 +27,7 @@
         class="inline-alert"
       >
         <template #header>Error</template>
-        Rendering Completed ! Sorry Your Browser Not Supported Export
+        Sorry Your Browser Not Supported Export
       </sp-inline-alert>
     </div>
   </div>
@@ -49,6 +52,7 @@ import { isSupportBroeser } from "~/plugins/browser";
 })
 export default class ExportingCard extends Vue {
   @Prop() ffmpegProgress: number = 0;
+  @Prop() ffmpegProgressPreparation: number = 0;
   @Prop() ccaptureProgress: number = 0;
   @Prop() isEncoding: boolean = false;
 
@@ -65,6 +69,10 @@ export default class ExportingCard extends Vue {
   }
 
   get progress2() {
+    return Math.round(this.ffmpegProgressPreparation * 100);
+  }
+
+  get progress3() {
     return Math.round(this.ffmpegProgress * 100);
   }
 
