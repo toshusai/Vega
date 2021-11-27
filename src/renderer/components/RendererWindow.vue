@@ -142,15 +142,15 @@ export default class RendererWindow extends Vue {
 
   async cancel() {
     this.isOpen = false;
+    this.isEncoding = false;
+    this.ffmpegProgress = 0;
+    this.ccaptureProgress = 0;
     await this.recorder?.cancel();
     await this.videoEenderer?.cancel();
   }
 
   open() {
     this.isOpen = true;
-    this.isEncoding = false;
-    this.ffmpegProgress = 0;
-    this.ccaptureProgress = 0;
   }
 
   async encode() {
