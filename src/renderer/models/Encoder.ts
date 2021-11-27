@@ -119,6 +119,19 @@ export default class Encoder {
         const fileName = strip.asset.id + getExt(strip.asset.name);
         const fileData = await FFmpeg.fetchFile(strip.asset.path);
         this.writeFile(fileName, fileData);
+        const stripFileName = strip.id + getExt(strip.asset.name);
+        await this.ffmpeg.run(
+          ...[
+            "-y",
+            "-i",
+            fileName,
+            "-ss",
+            strip.start.toString(),
+            "-t",
+            strip.length.toString(),
+            stripFileName,
+          ]
+        );
       }
     }
   }
@@ -163,7 +176,7 @@ export default class Encoder {
           startMs = 0;
         }
         mapOptions.push(`[${i}:a]adelay=${startMs}|${startMs}[out${i}]`);
-        args = args.concat(["-i", s.asset.id + getExt(s.asset.name)]);
+        args = args.concat(["-i", s.id + getExt(s.asset.name)]);
         i++;
       }
     });
