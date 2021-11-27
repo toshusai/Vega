@@ -1,7 +1,7 @@
 <template>
   <div class="editor">
     <AppBar
-      :projectSync="project"
+      :projectSync.sync="project"
       @renderVideo="renderVideo"
       @openProject="openProject"
       @downloadProject="downloadProject"
