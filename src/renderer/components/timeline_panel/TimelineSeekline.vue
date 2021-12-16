@@ -43,6 +43,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import { roundToFrame } from "../../plugins/utils/roundToFrame";
 import Seekbar from "./TimelineSeekbar.vue";
 
 const TIME_TEXT_INTERVAL_RATE = 100;
@@ -64,6 +65,9 @@ export default class TimelineSeekline extends Vue {
 
   @Prop({ default: 0 })
   offset!: number;
+
+  @Prop({ default: 60 })
+  fps!: number;
 
   isDrag: any = false;
 
@@ -89,6 +93,10 @@ export default class TimelineSeekline extends Vue {
     return result;
   }
 
+  get step() {
+    return 1 / this.fps;
+  }
+
   timeView(s: number) {
     if (s < 0) {
       return "-" + new Date(-s * 1000).toISOString().substr(11, 8);
@@ -108,13 +116,13 @@ export default class TimelineSeekline extends Vue {
   }
 
   movePos(e: MouseEvent) {
-    this.$emit("changePos", e.offsetX / this.scale);
+    this.$emit("changePos", roundToFrame(e.offsetX / this.scale, this.fps));
     this.isDrag = true;
   }
 
   mousemove(e: MouseEvent) {
     if (this.isDrag) {
-      this.$emit("changePos", e.offsetX / this.scale);
+      this.$emit("changePos", roundToFrame(e.offsetX / this.scale, this.fps));
     }
   }
 

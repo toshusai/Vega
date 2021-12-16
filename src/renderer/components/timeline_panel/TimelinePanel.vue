@@ -43,6 +43,7 @@
         :pos="currentTime"
         :offset="scale * 10"
         :style="seeklineStyle"
+        :fps="fps"
         @changePos="changeCurrentTime"
       />
       <div ref="timeline" class="timeline" :style="timelineStyle">
@@ -169,6 +170,9 @@ export default class TimelinePanel extends Vue {
 
   @Prop({ default: 0 })
   duration!: number;
+
+  @Prop({ default: 60 })
+  fps!: number;
 
   @Ref() scroll!: HTMLElement;
 
