@@ -68,6 +68,7 @@ import TextStrip from "./TextStrip.vue";
 import ImageStrip from "./ImageStrip.vue";
 import VideoStrip from "./VideoStrip.vue";
 import AudioStrip from "./AudioStrip.vue";
+import { roundToFrame } from "~/plugins/utils/roundToFrame";
 import { Strip } from "~/models";
 import { addDragEventOnce } from "~/plugins/mouse";
 
@@ -98,6 +99,9 @@ export default class TimelineStrip extends Vue {
 
   @Prop({ default: 0 })
   offset!: number;
+
+  @Prop({ default: 60 })
+  fps!: number;
 
   prev: any = { x: 0, y: 0 };
   start: any = { x: 0, y: 0 };
@@ -171,13 +175,11 @@ export default class TimelineStrip extends Vue {
   }
 
   drag(e: MouseEvent) {
-    const delta = {
-      x: e.pageX - this.prev.x,
-      y: e.pageY - this.prev.y,
-    };
     this.prev.x = e.pageX;
     this.prev.y = e.pageY;
-    this.$emit("changeStart", this.strip.start + delta.x / this.scale);
+    const t = this.tmpStart + (e.pageX - this.start.x) / this.scale;
+    const rt = roundToFrame(t, this.fps);
+    this.$emit("changeStart", rt);
   }
 
   update() {
@@ -210,18 +212,24 @@ export default class TimelineStrip extends Vue {
 
   pdLeftHandle(e: MouseEvent) {
     e.stopPropagation();
+    const startX = e.pageX;
+    const startL = this.strip.length;
+    const startS = this.strip.start;
     addDragEventOnce((e) => {
-      const d = e.movementX / this.scale;
-      this.$emit("changeStart", this.strip.start + d);
-      this.$emit("changeLength", this.strip.length - d);
+      const d = (e.pageX - startX) / this.scale;
+      this.$emit("changeStart", roundToFrame(startS + d, this.fps));
+      this.$emit("changeLength", roundToFrame(startL - d, this.fps));
     });
   }
 
   pdRightHandle(e: MouseEvent) {
     e.stopPropagation();
+    const startX = e.pageX;
+    const startL = this.strip.length;
     addDragEventOnce((e) => {
-      const d = e.movementX / this.scale;
-      this.$emit("changeLength", this.strip.length + d);
+      let newL = (e.pageX - startX) / this.scale;
+      newL += startL;
+      this.$emit("changeLength", roundToFrame(newL, this.fps));
     });
   }
 }

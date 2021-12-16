@@ -43,6 +43,7 @@
         :pos="currentTime"
         :offset="scale * 10"
         :style="seeklineStyle"
+        :fps="fps"
         @changePos="changeCurrentTime"
       />
       <div ref="timeline" class="timeline" :style="timelineStyle">
@@ -62,6 +63,7 @@
             :layers="$refs.layers"
             :valid="getValid(strip)"
             :offset="scale * 10"
+            :fps="fps"
             @click="selectStrip(strip)"
             @changeStart="(v) => changeStart(j, v)"
             @submitStart="(v) => submitStart(j, v)"
@@ -169,6 +171,9 @@ export default class TimelinePanel extends Vue {
 
   @Prop({ default: 0 })
   duration!: number;
+
+  @Prop({ default: 60 })
+  fps!: number;
 
   @Ref() scroll!: HTMLElement;
 
