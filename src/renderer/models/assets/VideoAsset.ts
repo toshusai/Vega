@@ -2,7 +2,7 @@ import { Asset, IAsset } from "./Asset";
 
 export type IVideoAsset = IAsset;
 
-const supportTypes = ["video/mp4", "video/webm"];
+const supportTypes = ["video/mp4", "video/webm", "video/quicktime"];
 
 export class VideoAsset extends Asset implements IVideoAsset {
   type: string = "Video";
