@@ -63,6 +63,7 @@
             :layers="$refs.layers"
             :valid="getValid(strip)"
             :offset="scale * 10"
+            :fps="fps"
             @click="selectStrip(strip)"
             @changeStart="(v) => changeStart(j, v)"
             @submitStart="(v) => submitStart(j, v)"
