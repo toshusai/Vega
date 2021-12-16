@@ -44,6 +44,7 @@ __[Documents](https://vega.toshusai.net/docs)__
     - scale :construction:
     - volume :construction:
     - speed :construction:
+    - opacity :construction:
   - Audio
     - position :white_check_mark:
     - length :white_check_mark:
@@ -55,6 +56,7 @@ __[Documents](https://vega.toshusai.net/docs)__
     - length :white_check_mark:
     - split :construction:
     - scale :construction:
+    - opacity :construction:
 - Settings
   - resolutions :white_check_mark:
   - fps :white_check_mark:
@@ -65,10 +67,10 @@ __[Documents](https://vega.toshusai.net/docs)__
   - gif :construction:
 - Others
   - layers :white_check_mark:
-  - save / load :white_check_mark:
+  - save / load project :white_check_mark:
   - Animations :construction:
   - Native FFmpeg integration :construction:
-
+  - Undo / Redo :construction:
 
 ## Development
 Check [static/docs/dev/README.md](src/renderer/static/docs/dev/README.md)
