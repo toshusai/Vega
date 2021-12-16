@@ -63,6 +63,7 @@
               :selectedStrips="selectedStrips"
               :duration="project.duration"
               :isPlay="isPlay"
+              :fps="project.fps"
               @addAsset="addAsset"
               @addStrip="addStrip"
               @changeCurrentTime="changeCurrentTime"

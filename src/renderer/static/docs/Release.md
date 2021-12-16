@@ -2,6 +2,9 @@
 
 # v0.0.14
 - Add CrossOrigin headers to all path.
+- Add roundToFrame
+- Update README.md
+- Support transparent text background
 
 # v0.0.13
 - Fix audio asset merge.

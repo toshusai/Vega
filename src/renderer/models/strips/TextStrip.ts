@@ -1,5 +1,13 @@
 import * as T from "three";
-import { CanvasTexture, MeshBasicMaterial, PlaneBufferGeometry } from "three";
+import {
+  AddEquation,
+  CanvasTexture,
+  CustomBlending,
+  MeshBasicMaterial,
+  OneFactor,
+  OneMinusSrcAlphaFactor,
+  PlaneBufferGeometry,
+} from "three";
 import { IVector3 } from "../math/Vector3";
 import { Strip } from "./Strip";
 import { PlayMode } from "~/plugins/config";
@@ -100,8 +108,18 @@ export class TextStrip extends Strip implements ITextStrip {
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
     this.texture = new CanvasTexture(this.canvas);
     this.texture.needsUpdate = true;
+    this.texture.premultiplyAlpha = true;
     this.material = new MeshBasicMaterial({
       map: this.texture,
+      // for transparent background
+      transparent: true,
+      depthTest: true,
+      depthWrite: false,
+      opacity: 1,
+      blending: CustomBlending,
+      blendSrc: OneFactor,
+      blendDst: OneMinusSrcAlphaFactor,
+      blendEquation: AddEquation,
     });
     this.geometry = new PlaneBufferGeometry(1, 1, 1, 1);
     this.obj = new T.Mesh(this.geometry, this.material);
