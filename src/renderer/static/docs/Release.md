@@ -1,5 +1,13 @@
 # Releases
 
+# v0.0.15
+- Fix seek to frame
+- Update text
+  - Add font family
+  - Add font style
+  - Add outline color/size
+  - Add shadow color/blur-size
+
 # v0.0.14
 - Add CrossOrigin headers to all path.
 - Add roundToFrame
