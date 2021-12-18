@@ -34,9 +34,13 @@ __[Documents](https://vega.toshusai.net/docs)__
   - Text
     - position :white_check_mark:
     - length :white_check_mark:
-    - font size :construction:
-    - color :construction:
-    - outline :construction:
+    - font
+      - size :white_check_mark:
+      - family :eight_spoked_asterisk:
+      - style :white_check_mark:
+      - color :white_check_mark:
+    - outline :white_check_mark:
+    - shadow :white_check_mark:
   - Video
     - position :white_check_mark:
     - length :white_check_mark:
