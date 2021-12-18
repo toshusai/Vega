@@ -12,7 +12,7 @@ __[Documents](https://vega.toshusai.net/docs)__
 
 ## Support Browsers
 - Google Chrome 92 or later
-- Electron (Windows / OSX)
+- Electron (Windows / OSX / Linux)
 
 ## Features
 - Assets
