@@ -116,13 +116,19 @@ export default class TimelineSeekline extends Vue {
   }
 
   movePos(e: MouseEvent) {
-    this.$emit("changePos", roundToFrame(e.offsetX / this.scale, this.fps));
+    this.$emit(
+      "changePos",
+      roundToFrame(e.offsetX / this.scale, this.fps) + 0.0001
+    );
     this.isDrag = true;
   }
 
   mousemove(e: MouseEvent) {
     if (this.isDrag) {
-      this.$emit("changePos", roundToFrame(e.offsetX / this.scale, this.fps));
+      this.$emit(
+        "changePos",
+        roundToFrame(e.offsetX / this.scale, this.fps) + 0.0001
+      );
     }
   }
 
