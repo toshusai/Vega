@@ -1,5 +1,8 @@
 # Development
 
+## How it work
+[./How_it_work.md](./How_it_work.md)
+
 ## Setup Environment
 
 ### 0. Basic dependency 
