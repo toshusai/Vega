@@ -200,7 +200,7 @@ export class TextStrip extends Strip implements ITextStrip {
     this.ctx.shadowBlur = this.shadowBlur;
     this.ctx.strokeStyle = this.outlineColor;
     this.ctx.lineWidth = this.outlineSize;
-    this.ctx.strokeText(this.text, 0, this.canvas.height, 1000);
+    this.ctx.strokeText(this.text, 0, this.canvas.height);
     this.ctx.shadowBlur = 0;
 
     this.ctx.fillStyle = this.color;
