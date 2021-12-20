@@ -59,7 +59,7 @@
           >
             <TimelinePanel
               :currentTime="currentTime"
-              :strips="project.strips"
+              :stripsSync.sync="project.strips"
               :selectedStrips="selectedStrips"
               :duration="project.duration"
               :isPlay="isPlay"

@@ -117,7 +117,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop, Ref, Watch } from "vue-property-decorator";
+import { Component, Prop, PropSync, Ref, Watch } from "vue-property-decorator";
 import { v4 } from "uuid";
 import TimelineOutArea from "./TimelineOutArea.vue";
 import TimelineLayer from "./TimelineLayer.vue";
@@ -141,6 +141,7 @@ import ContextMenu, {
 } from "~/components/vega/contextmenu/ContextMenu.vue";
 import MenuButton from "~/components/vega/MenuButton.vue";
 import { VegaError } from "~/plugins/error";
+import { roundToFrame } from "~/plugins/utils/roundToFrame";
 
 const RIGHT_MARGIN_SECONDS = 10;
 
@@ -157,7 +158,7 @@ const RIGHT_MARGIN_SECONDS = 10;
   },
 })
 export default class TimelinePanel extends Vue {
-  @Prop({ default: () => [] })
+  @PropSync("stripsSync")
   strips!: Strip[];
 
   @Prop({ default: 0 })
@@ -371,7 +372,11 @@ export default class TimelinePanel extends Vue {
       if (self == t) continue;
       const ts = t.start;
       const te = t.length + ts;
-      if (self.end > ts && self.start < te && self.layer == t.layer) {
+      if (
+        self.end > ts + 0.001 &&
+        self.start + 0.001 < te &&
+        self.layer == t.layer
+      ) {
         return false;
       }
     }
@@ -393,7 +398,25 @@ export default class TimelinePanel extends Vue {
   }
 
   changeStart(i: number, v: number) {
-    this.$emit("changeStrip", i, "start", v);
+    const target = this.strips[i];
+    target.start = v;
+    const valid = this.getValid(target);
+    if (!valid) {
+      this.strips.forEach((s) => {
+        if (s == target) return;
+        if (target.layer == s.layer) {
+          const center = s.start;
+          if (v > center && v < s.start + s.length) {
+            v = roundToFrame(s.start + s.length, this.fps);
+            target.start = v;
+          } else if (v < center && v + target.length > s.start) {
+            v = roundToFrame(s.start - target.length, this.fps);
+            target.start = v;
+          }
+        }
+      });
+    }
+    // this.$emit("changeStrip", i, "start", v);
   }
 
   submitStart(i: number) {
@@ -407,7 +430,28 @@ export default class TimelinePanel extends Vue {
   }
 
   changeLength(i: number, v: number) {
-    this.$emit("changeStrip", i, "length", v);
+    const target = this.strips[i];
+    target.length = v;
+    const valid = this.getValid(target);
+    if (!valid) {
+      this.strips.forEach((s) => {
+        if (s == target) return;
+        if (target.layer == s.layer) {
+          // contact back to forward
+          const center = s.start + s.length / 2;
+          if (v > center && v < s.start + s.length) {
+            v = roundToFrame(s.start + s.length, this.fps);
+            target.length = v;
+          } else if (
+            target.start < center &&
+            target.start + target.length > s.start
+          ) {
+            v = roundToFrame(s.start - target.start, this.fps);
+            target.length = v;
+          }
+        }
+      });
+    }
   }
 
   dragover(e: DragEvent) {
