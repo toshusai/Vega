@@ -81,12 +81,14 @@ export default class VideoStripComp extends Vue {
   }
 
   @Watch("strip")
-  stripWatch(n: VideoStrip) {
-    this.wave?.load(n.video);
+  stripWatch(_n: VideoStrip) {
+    // TODO fix
+    // this is too slow when many strips.
+    // this.wave?.load(n.video);
   }
 
   updateStrip() {
-    this.stripWatch(this.strip);
+    // this.stripWatch(this.strip);
   }
 
   mounted() {
@@ -97,7 +99,7 @@ export default class VideoStripComp extends Vue {
       interact: false,
     });
 
-    this.wave.load(this.strip.video);
+    // this.wave.load(this.strip.video);
 
     this.strip.event.addEventListener("update", this.updateStrip);
     this.watchViodeOffset();
