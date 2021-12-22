@@ -153,6 +153,7 @@ export default class RendererWindow extends Vue {
 
   open() {
     this.isOpen = true;
+    this.resize();
   }
 
   async encode() {
