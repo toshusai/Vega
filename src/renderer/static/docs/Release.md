@@ -7,6 +7,7 @@
   - Add font style
   - Add outline color/size
   - Add shadow color/blur-size
+- Add MediaRecorder mode
 
 # v0.0.14
 - Add CrossOrigin headers to all path.
