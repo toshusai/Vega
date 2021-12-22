@@ -1,4 +1,5 @@
 import { Camera, Scene, WebGLRenderer } from "three";
+import MediaElement from "wavesurfer.js/src/mediaelement";
 import { Strip } from "./strips";
 import { VideoStrip } from ".";
 import { PLAY_EVERY_FRAME, SYNC_TO_AUDIO } from "~/plugins/config";
@@ -20,12 +21,14 @@ export default class MediaRecorderRecorder {
   frames: number = 0;
   onProgress: (ratio: number) => void;
   onEnd: (blob: Blob) => void = () => {};
+  audioCtx: AudioContext = new AudioContext();
+  elNodeMap: WeakMap<HTMLMediaElement, AudioNode> = new WeakMap();
 
   // @ts-ignore
   recorder!: MediaRecorder;
   data: any[] = [];
 
-  audioNodes: MediaElementAudioSourceNode[] = [];
+  audioNodes: AudioNode[] = [];
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -50,16 +53,24 @@ export default class MediaRecorderRecorder {
   }
 
   async start() {
+    this.time = 0;
+    this.currentFrame = 0;
     this.isRecording = true;
-    const audioCtx = new AudioContext();
     // @ts-ignore
     const stream = this.canvas.captureStream();
-    const dst = audioCtx.createMediaStreamDestination();
+    const dst = this.audioCtx.createMediaStreamDestination();
+
+    this.audioNodes = [];
     this.strips.forEach((s) => {
       if (s instanceof VideoStrip) {
-        const node = audioCtx.createMediaElementSource(s.video);
+        let node = this.elNodeMap.get(s.video);
+        if (!node) {
+          node = this.audioCtx.createMediaElementSource(s.video);
+        }
         node.connect(dst);
+        node.connect(this.audioCtx.destination);
         this.audioNodes.push(node);
+        this.elNodeMap.set(s.video, node);
         const ts = dst.stream.getAudioTracks();
         ts.forEach((t) => {
           stream.addTrack(t);
@@ -109,24 +120,24 @@ export default class MediaRecorderRecorder {
       this.onEnd(new Blob(this.data));
     });
     this.recorder.stop();
+    this.stopStrips();
   }
 
   /**
    * back audio distination to speaker.
    */
   private backAudio() {
-    const ctx = new AudioContext();
     this.audioNodes.forEach((node) => {
-      node.connect(ctx.destination);
+      node.connect(this.audioCtx.destination);
     });
   }
 
   async cancel() {
     this.backAudio();
-    await this.stopStrips();
     if (this.recorder.state == "recording") {
       this.recorder.stop();
     }
     this.isRecording = false;
+    await this.stopStrips();
   }
 }

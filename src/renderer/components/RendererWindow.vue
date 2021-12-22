@@ -204,22 +204,24 @@ export default class RendererWindow extends Vue {
     this.isEncoding = true;
     if (!this.renderer) return;
     if (this.mode == "MediaRecorder") {
-      this.mediaRecorder = new MediaRecorderRecorder(
-        this.canvas,
-        this.scene,
-        this.camera,
-        this.renderer,
-        this.project.fps,
-        Math.ceil(this.project.duration * this.project.fps),
-        this.project.strips,
-        (r) => {
-          this.mediaRecorderProgress = r;
-        },
-        (blob) => {
-          this.mediaRecorderProgress = 1;
-          this.mediaRecorderResult = blob;
-        }
-      );
+      if (!this.mediaRecorder) {
+        this.mediaRecorder = new MediaRecorderRecorder(
+          this.canvas,
+          this.scene,
+          this.camera,
+          this.renderer,
+          this.project.fps,
+          Math.ceil(this.project.duration * this.project.fps),
+          this.project.strips,
+          (r) => {
+            this.mediaRecorderProgress = r;
+          },
+          (blob) => {
+            this.mediaRecorderProgress = 1;
+            this.mediaRecorderResult = blob;
+          }
+        );
+      }
       this.mediaRecorder.start();
       return;
     }
