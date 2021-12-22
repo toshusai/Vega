@@ -91,9 +91,10 @@ export default class AssetInspectorWindow extends Vue {
     const target = e.target as HTMLInputElement;
     if (target.files && target.files.length == 1) {
       const file = target.files[0];
-
+      // @ts-ignore
+      const p = file.path;
       const path = isElectron()
-        ? `file://` + file.path
+        ? `file://` + p
         : window.URL.createObjectURL(file);
 
       if (this.asset instanceof VideoAsset) {

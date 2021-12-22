@@ -5,6 +5,7 @@
       class="spectrum-Textfield-input"
       style="height: 24px; font-size: 12px"
       :value="value"
+      v-bind="$attrs"
       @change="change"
     >
       <option
