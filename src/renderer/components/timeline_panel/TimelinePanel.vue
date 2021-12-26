@@ -226,6 +226,7 @@ export default class TimelinePanel extends Vue {
   }
 
   onScroll(e: WheelEvent) {
+    e.preventDefault();
     this.start += e.deltaX / this.scale;
   }
 
