@@ -1,5 +1,9 @@
 # Releases
 
+# v0.0.16
+- Fix timeline time format
+- Fix timeline swipe back
+
 # v0.0.15
 - Fix seek to frame
 - Update text
