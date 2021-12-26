@@ -59,6 +59,11 @@ export default class VideoStripComp extends Vue {
 
   waveStyle: Partial<CSSStyleDeclaration> = {};
 
+  /**
+   * cancel for animation frame
+   */
+  cancel: number = 0;
+
   get canvasWidth() {
     return this.strip.length * this.scale;
   }
@@ -112,7 +117,13 @@ export default class VideoStripComp extends Vue {
         26
       );
     }
-    window.requestAnimationFrame(this.update);
+    this.cancel = window.requestAnimationFrame(this.update);
+  }
+
+  beforeDestroy() {
+    if (this.cancel !== 0) {
+      window.cancelAnimationFrame(this.cancel);
+    }
   }
 }
 </script>
