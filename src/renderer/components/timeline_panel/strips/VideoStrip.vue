@@ -1,6 +1,6 @@
 <template>
   <div data-vega-video-strip class="video-strip">
-    <div ref="wave" class="wave" :style="waveStyle" />
+    <canvas ref="waveCanvas" class="wave" :width="canvasWidth" height="26" />
     <span v-if="strip.videoAsset">
       {{ strip.videoAsset.name }}
     </span>
@@ -33,10 +33,10 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Ref, Watch } from "vue-property-decorator";
 import WaveSufer from "wavesurfer.js";
+import { VideoStrip } from "../../../models";
 import StripError from "./StripError.vue";
-import { VideoStrip } from "~/models";
 
 @Component({
   name: "VideoStrip",
@@ -51,9 +51,22 @@ export default class VideoStripComp extends Vue {
   @Prop({ default: 10 })
   scale!: number;
 
+  @Ref() waveCanvas!: HTMLCanvasElement;
+
+  ctx!: CanvasRenderingContext2D;
+
   wave: any = null as WaveSufer | null;
 
   waveStyle: Partial<CSSStyleDeclaration> = {};
+
+  /**
+   * cancel for animation frame
+   */
+  cancel: number = 0;
+
+  get canvasWidth() {
+    return this.strip.length * this.scale;
+  }
 
   @Watch("strip.videoOffset")
   @Watch("strip.videoDuration")
@@ -80,31 +93,37 @@ export default class VideoStripComp extends Vue {
     });
   }
 
-  @Watch("strip")
-  stripWatch(n: VideoStrip) {
-    this.wave?.load(n.video);
-  }
-
-  updateStrip() {
-    this.stripWatch(this.strip);
-  }
-
   mounted() {
-    this.wave = WaveSufer.create({
-      container: this.$refs.wave as HTMLElement,
-      height: 26,
-      waveColor: "#ff9800",
-      interact: false,
-    });
-
-    this.wave.load(this.strip.video);
-
-    this.strip.event.addEventListener("update", this.updateStrip);
+    this.ctx = this.waveCanvas.getContext("2d") as CanvasRenderingContext2D;
     this.watchViodeOffset();
+    this.update();
+  }
+
+  update() {
+    const srcX = this.strip.videoOffset * 10 * 2;
+    const c = this.strip.videoAsset?.getcanvas(srcX);
+
+    if (c) {
+      this.ctx.clearRect(0, 0, this.waveCanvas.width, this.waveCanvas.height);
+      this.ctx.drawImage(
+        c,
+        this.strip.videoAsset?.getSrcX(srcX) || 0,
+        0,
+        this.strip.length * 10 * 2,
+        26,
+        0,
+        0,
+        this.canvasWidth,
+        26
+      );
+    }
+    this.cancel = window.requestAnimationFrame(this.update);
   }
 
   beforeDestroy() {
-    this.strip.event.removeEventListener("update", this.updateStrip);
+    if (this.cancel !== 0) {
+      window.cancelAnimationFrame(this.cancel);
+    }
   }
 }
 </script>

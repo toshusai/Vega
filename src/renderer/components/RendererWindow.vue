@@ -10,6 +10,7 @@
       </div>
       <div>
         <ExportingCard
+          v-if="mode == 'ffmpeg'"
           :ffmpegProgress="ffmpegProgress"
           :ffmpegProgressPreparation="ffmpegProgressPreparation"
           :ccaptureProgress="ccaptureProgress"
@@ -18,8 +19,24 @@
           @close="cancel"
           @download="download"
         />
+        <sp-progress-bar
+          v-else
+          :value="mediaRecorderProgressView"
+          style="width: 100%; margin: auto"
+        >
+          Progress
+        </sp-progress-bar>
       </div>
     </div>
+
+    <sp-divider />
+    <sp-field-label>Mode</sp-field-label>
+    <vega-select
+      :value="mode"
+      :items="modeItems"
+      :disabled="isEncoding"
+      @change="(v) => (mode = v.value)"
+    />
 
     <sp-button-group :dialog="true">
       <sp-button type="primary" :group="true" :primary="true" @click="cancel">
@@ -67,15 +84,22 @@ import Vue from "vue";
 import { Component, Prop, Ref } from "vue-property-decorator";
 import * as T from "three";
 import { Camera, Scene } from "three";
+import { download } from "../plugins/download";
 import Modal from "./vega/Modal.vue";
 import Encoder from "~/models/Encoder";
 import Recorder from "~/models/Recorder";
+import MediaRecorderRecorder from "~/models/MediaRecorderRecorder";
 import ExportingCard from "~/components/ExportingCard.vue";
 import { Project } from "~/models/Project";
 import { isSupportBroeser } from "~/plugins/browser";
+import VegaSelect from "~/components/vega/VegaSelect.vue";
 
 @Component({
-  components: { Modal, ExportingCard },
+  components: {
+    Modal,
+    ExportingCard,
+    VegaSelect,
+  },
 })
 export default class RendererWindow extends Vue {
   @Ref() canvas!: HTMLCanvasElement;
@@ -91,11 +115,25 @@ export default class RendererWindow extends Vue {
   ccaptureProgress: number = 0;
   ffmpegProgress: number = 0;
   ffmpegProgressPreparation: number = 0;
+  mediaRecorderProgress: number = 0;
   recorder?: Recorder;
   isEncoding: boolean = false;
 
+  mediaRecorder?: MediaRecorderRecorder;
+  mediaRecorderResult: Blob | null = null;
+
+  mode: "ffmpeg" | "MediaRecorder" = "ffmpeg";
+
+  modeItems = [
+    { text: "ffmpeg", value: "ffmpeg" },
+    { text: "MediaRecorder", value: "MediaRecorder" },
+  ];
+
   get end() {
-    return this.ffmpegProgress >= 1 && this.ccaptureProgress >= 1;
+    return (
+      (this.ffmpegProgress >= 1 && this.ccaptureProgress >= 1) ||
+      this.mediaRecorderProgress >= 1
+    );
   }
 
   get isSupportBroeser() {
@@ -130,6 +168,10 @@ export default class RendererWindow extends Vue {
     };
   }
 
+  get mediaRecorderProgressView() {
+    return Math.round(this.mediaRecorderProgress * 100);
+  }
+
   mounted() {
     this.renderer = new T.WebGLRenderer({
       canvas: this.canvas,
@@ -147,17 +189,42 @@ export default class RendererWindow extends Vue {
     this.isEncoding = false;
     this.ffmpegProgress = 0;
     this.ccaptureProgress = 0;
+    this.mediaRecorderProgress = 0;
     await this.recorder?.cancel();
     await this.videoEenderer?.cancel();
+    await this.mediaRecorder?.cancel();
   }
 
   open() {
     this.isOpen = true;
+    this.resize();
   }
 
   async encode() {
     this.isEncoding = true;
     if (!this.renderer) return;
+    if (this.mode == "MediaRecorder") {
+      if (!this.mediaRecorder) {
+        this.mediaRecorder = new MediaRecorderRecorder(
+          this.canvas,
+          this.scene,
+          this.camera,
+          this.renderer,
+          this.project.fps,
+          Math.ceil(this.project.duration * this.project.fps),
+          this.project.strips,
+          (r) => {
+            this.mediaRecorderProgress = r;
+          },
+          (blob) => {
+            this.mediaRecorderProgress = 1;
+            this.mediaRecorderResult = blob;
+          }
+        );
+      }
+      this.mediaRecorder.start();
+      return;
+    }
     if (!this.videoEenderer) {
       this.videoEenderer = new Encoder(
         this.project.width,
@@ -192,7 +259,12 @@ export default class RendererWindow extends Vue {
   }
 
   download() {
-    this.videoEenderer?.downloadOutput();
+    if (this.mode == "ffmpeg") {
+      this.videoEenderer?.downloadOutput();
+    } else if (this.mode == "MediaRecorder") {
+      if (this.mediaRecorderResult)
+        download(this.mediaRecorderResult, this.project.name + ".webm");
+    }
   }
 }
 </script>

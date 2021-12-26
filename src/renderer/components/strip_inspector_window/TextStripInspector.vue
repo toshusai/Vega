@@ -24,6 +24,46 @@
       :step="0.01"
     />
 
+    <sp-field-label>Family</sp-field-label>
+    <sp-textfield v-model="strip.fontFamily" size="S" class="w100" />
+
+    <sp-field-label>Style</sp-field-label>
+    <sp-textfield v-model="strip.fontStyle" size="S" class="w100" />
+
+    <sp-field-label>Size</sp-field-label>
+    <sp-textfield
+      v-model="strip.fontSize"
+      size="S"
+      class="w100"
+      type="number"
+      @change="() => strip.updateFont()"
+    />
+
+    <sp-field-label>Color</sp-field-label>
+    <sp-textfield v-model="strip.color" size="S" class="w100" />
+
+    <sp-field-label>Shadow Color</sp-field-label>
+    <sp-textfield v-model="strip.shadowColor" size="S" class="w100" />
+
+    <sp-field-label>Shadow Blur</sp-field-label>
+    <sp-textfield
+      v-model="strip.shadowBlur"
+      size="S"
+      class="w100"
+      type="number"
+    />
+
+    <sp-field-label>Outline Color</sp-field-label>
+    <sp-textfield v-model="strip.outlineColor" size="S" class="w100" />
+
+    <sp-field-label>Outline Size</sp-field-label>
+    <sp-textfield
+      v-model="strip.outlineSize"
+      size="S"
+      class="w100"
+      type="number"
+    />
+
     <sp-field-label>Position</sp-field-label>
     <div class="position">
       <div>

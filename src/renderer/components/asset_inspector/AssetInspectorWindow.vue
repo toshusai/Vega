@@ -69,6 +69,7 @@ import { Component, Emit, Prop } from "vue-property-decorator";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
 import { Asset, ImageAsset, VideoAsset, AudioAsset } from "~/models";
 import { VegaError } from "~/plugins/error";
+import { isElectron } from "~/plugins/utils/isElectron";
 
 @Component({
   components: { WindowNameTag },
@@ -90,8 +91,11 @@ export default class AssetInspectorWindow extends Vue {
     const target = e.target as HTMLInputElement;
     if (target.files && target.files.length == 1) {
       const file = target.files[0];
-
-      const path = window.URL.createObjectURL(file);
+      // @ts-ignore
+      const p = file.path;
+      const path = isElectron()
+        ? `file://` + p
+        : window.URL.createObjectURL(file);
 
       if (this.asset instanceof VideoAsset) {
         if (!VideoAsset.isSupportType(file.type)) {
