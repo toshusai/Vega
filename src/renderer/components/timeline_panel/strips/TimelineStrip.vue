@@ -103,6 +103,9 @@ export default class TimelineStrip extends Vue {
   @Prop({ default: 60 })
   fps!: number;
 
+  @Prop({ default: 0 })
+  timelineStart!: number;
+
   prev: any = { x: 0, y: 0 };
   start: any = { x: 0, y: 0 };
   tmpStart: any = 0;
@@ -119,7 +122,7 @@ export default class TimelineStrip extends Vue {
   }
 
   get lineStyle(): Partial<CSSStyleDeclaration> {
-    const left = this.strip.start * this.scale;
+    const left = (this.strip.start - this.timelineStart) * this.scale;
     if (this.isDraging) {
       // left = this.tmpStart * 10;
     }

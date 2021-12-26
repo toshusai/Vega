@@ -1,18 +1,19 @@
 <template>
   <div
+    ref="root"
     class="seekline"
     @pointerdown="movePos"
     @pointerup="pointerUp"
     @pointermove="mousemove"
     @pointerleave="mouseleave"
   >
-    <div v-for="(s, i) in array" :key="i" :style="timesStyle[i]">
+    <div v-for="(s, i) in array" :key="i" :style="getTimesStyle(s)">
       <div class="text">
         {{ timeView(s) }}
         <div class="time-bar"></div>
       </div>
     </div>
-    <Seekbar :offset="offset" :pos="pos" :scale="scale" />
+    <Seekbar :offset="offset" :pos="pos - start" :scale="scale" />
   </div>
 </template>
 
@@ -42,11 +43,11 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Ref, Watch } from "vue-property-decorator";
 import { roundToFrame } from "../../plugins/utils/roundToFrame";
 import Seekbar from "./TimelineSeekbar.vue";
 
-const TIME_TEXT_INTERVAL_RATE = 100;
+const TIME_TEXT_MAX_WIDTH = 100;
 
 @Component({
   components: {
@@ -54,20 +55,13 @@ const TIME_TEXT_INTERVAL_RATE = 100;
   },
 })
 export default class TimelineSeekline extends Vue {
-  @Prop({ default: 100 })
-  scale!: number;
-
-  @Prop({ default: 0 })
-  pos!: number;
-
-  @Prop({ default: 1 })
-  length!: number;
-
-  @Prop({ default: 0 })
-  offset!: number;
-
-  @Prop({ default: 60 })
-  fps!: number;
+  @Prop({ default: 100 }) scale!: number;
+  @Prop({ default: 0 }) pos!: number;
+  @Prop({ default: 1 }) length!: number;
+  @Prop({ default: 0 }) offset!: number;
+  @Prop({ default: 60 }) fps!: number;
+  @Prop({ default: 0 }) start!: number;
+  @Ref() root!: HTMLElement;
 
   isDrag: any = false;
 
@@ -75,50 +69,62 @@ export default class TimelineSeekline extends Vue {
     return this.offset / this.scale;
   }
 
-  get interval() {
-    return Math.round(TIME_TEXT_INTERVAL_RATE / this.scale) || 1;
-  }
+  get array(): number[] {
+    const a = [];
+    const s = TIME_TEXT_MAX_WIDTH / this.scale;
+    const l = Math.floor(this.start / s);
+    const ss = s * l;
 
-  get secArray(): number[] {
-    const array = [
-      ...Array(Math.ceil(this.length + this.offset / this.scale + 1)),
-    ].map((_, i) => i + 1 - this.offsetSeconds);
-    return array;
-  }
-
-  get array() {
-    const result = this.secArray.filter((s: number) => {
-      return s % this.interval == 0;
-    });
-    return result;
+    for (
+      let x = 0;
+      x < this.showLength;
+      x += TIME_TEXT_MAX_WIDTH / this.scale
+    ) {
+      a.push(ss + x);
+    }
+    return a;
   }
 
   get step() {
     return 1 / this.fps;
   }
 
+  /**
+   * The length seconds to render
+   */
+  showLength = 0;
+
+  mounted() {
+    this.updateShowLength();
+  }
+
+  @Watch("scale")
+  updateShowLength() {
+    const rect = this.root.getBoundingClientRect();
+    const length = rect.width / this.scale;
+    this.showLength = length;
+  }
+
   timeView(s: number) {
     if (s < 0) {
       return "-" + new Date(-s * 1000).toISOString().substr(11, 8);
     }
-    return new Date(s * 1000).toISOString().substr(11, 8);
+    return new Date(s * 1000).toISOString().substr(11, 13);
   }
 
-  get timesStyle(): Partial<CSSStyleDeclaration>[] {
-    return this.array.map((s: number) => {
-      return {
-        left: this.scale * (s + this.offsetSeconds) + "px",
-        position: "absolute",
-        pointerEvents: "none",
-        fontSize: "10px",
-      };
-    });
+  getTimesStyle(s: number): Partial<CSSStyleDeclaration> {
+    return {
+      left: this.scale * (s - this.start) + "px",
+      position: "absolute",
+      pointerEvents: "none",
+      fontSize: "10px",
+    };
   }
 
   movePos(e: MouseEvent) {
     this.$emit(
       "changePos",
-      roundToFrame(e.offsetX / this.scale, this.fps) + 0.0001
+      roundToFrame(this.start + e.offsetX / this.scale, this.fps) + 0.0001
     );
     this.isDrag = true;
   }
@@ -127,7 +133,7 @@ export default class TimelineSeekline extends Vue {
     if (this.isDrag) {
       this.$emit(
         "changePos",
-        roundToFrame(e.offsetX / this.scale, this.fps) + 0.0001
+        roundToFrame(this.start + e.offsetX / this.scale, this.fps) + 0.0001
       );
     }
   }

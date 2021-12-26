@@ -36,17 +36,17 @@
       @drop="drop"
       @dragover="dragover"
       @contextmenu="openContextMenu"
+      @wheel="onScroll"
     >
       <Seekline
         :length="duration"
         :scale="scale"
         :pos="currentTime"
-        :offset="scale * 10"
-        :style="seeklineStyle"
+        :start="start"
         :fps="fps"
         @changePos="changeCurrentTime"
       />
-      <div ref="timeline" class="timeline" :style="timelineStyle">
+      <div ref="timeline" class="timeline">
         <div style="margin-top: 1px" />
         <div v-for="(_, i) in [...Array(4)]" ref="layers" :key="i">
           <timeline-layer />
@@ -54,15 +54,15 @@
         <!-- <div class="linehr" /> -->
         <div class="stips">
           <TimelineStrip
-            v-for="(strip, j) in strips"
+            v-for="(strip, j) in showStrips"
             ref="textLineComps"
             :key="j"
+            :timelineStart="start"
             :scale="scale"
             :strip="strip"
             :selected="isSelected(strip)"
             :layers="$refs.layers"
             :valid="getValid(strip)"
-            :offset="scale * 10"
             :fps="fps"
             @click="selectStrip(strip)"
             @changeStart="(v) => changeStart(j, v)"
@@ -71,12 +71,8 @@
             @changeLayer="(v) => changeLayer(j, v)"
           />
         </div>
-        <timeline-out-area :offset="10" :scale="scale" />
-        <timeline-out-area
-          style="right: 0; left: auto"
-          :offset="10"
-          :scale="scale"
-        />
+        <timeline-out-area :scale="scale" />
+        <timeline-out-area style="right: 0; left: auto" :scale="scale" />
       </div>
       <ContextMenu ref="contextMenu" />
       <!-- <sp-context-menu ref="contextMenu" :items="items" /> -->
@@ -91,7 +87,7 @@
   height: 100%;
 }
 .timeline-container {
-  overflow-x: scroll;
+  overflow-x: hidden;
   width: 100%;
   position: relative;
   box-sizing: border-box;
@@ -105,7 +101,7 @@
 
 .timeline {
   position: relative;
-  overflow-y: hidden;
+  overflow-x: hidden;
   height: calc(100% - 20px);
 }
 
@@ -142,8 +138,6 @@ import ContextMenu, {
 import MenuButton from "~/components/vega/MenuButton.vue";
 import { VegaError } from "~/plugins/error";
 import { roundToFrame } from "~/plugins/utils/roundToFrame";
-
-const RIGHT_MARGIN_SECONDS = 10;
 
 @Component({
   components: {
@@ -184,26 +178,32 @@ export default class TimelinePanel extends Vue {
   scale: number = 10;
   start: number = 0;
 
-  minScale: number = 0;
+  minScale: number = 1;
   maxScale: number = 1000;
 
   get timeline() {
     return this.$refs.timeline as HTMLElement;
   }
 
-  get seeklineStyle(): Partial<CSSStyleDeclaration> {
-    const w = (this.duration + 10 + RIGHT_MARGIN_SECONDS) * this.scale;
-    return {
-      width: w + "px",
-    };
+  /**
+   * The length seconds to render
+   */
+
+  showLength = 0;
+
+  updateShowLength() {
+    const rect = this.$el.getBoundingClientRect();
+    const length = rect.width / this.scale;
+    this.showLength = length;
   }
 
-  get timelineStyle(): Partial<CSSStyleDeclaration> {
-    const w = (this.duration + 10 + RIGHT_MARGIN_SECONDS) * this.scale;
-    return {
-      width: w + "px",
-      maxWidth: w + "px",
-    };
+  get showStrips() {
+    return this.strips.filter((s) => {
+      return (
+        s.start + s.length > this.start &&
+        s.start < this.start + this.showLength
+      );
+    });
   }
 
   get hasSelectedStrip() {
@@ -211,6 +211,7 @@ export default class TimelinePanel extends Vue {
   }
 
   mounted() {
+    this.updateShowLength();
     this.updateMinScale();
     window.addEventListener("resize", () => {
       this.updateMinScale();
@@ -219,11 +220,13 @@ export default class TimelinePanel extends Vue {
 
   @Watch("duration")
   updateMinScale() {
-    this.minScale =
-      this.$el.getBoundingClientRect().width / (this.duration + 20);
     if (this.scale < this.minScale) {
       this.scale = this.minScale;
     }
+  }
+
+  onScroll(e: WheelEvent) {
+    this.start += e.deltaX / this.scale;
   }
 
   addStripEmit(strip: Strip) {
@@ -331,17 +334,12 @@ export default class TimelinePanel extends Vue {
   }
 
   changeCurrentTime(time: number) {
-    this.$emit("changeCurrentTime", time - 10);
+    this.$emit("changeCurrentTime", time);
   }
 
   upScale() {
     if (this.scale * 2 < this.maxScale) {
       this.scale *= 2;
-      this.$nextTick(() => {
-        this.scroll.scrollTo({
-          left: this.scroll.scrollLeft + this.scroll.scrollWidth / 4,
-        });
-      });
     }
   }
 
@@ -350,11 +348,6 @@ export default class TimelinePanel extends Vue {
       this.scale = this.minScale;
     } else {
       this.scale *= 0.5;
-      this.$nextTick(() => {
-        this.scroll.scrollTo({
-          left: this.scroll.scrollLeft * 0.5,
-        });
-      });
     }
   }
 
