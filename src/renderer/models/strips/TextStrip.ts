@@ -55,9 +55,34 @@ export class TextStrip extends Strip implements ITextStrip {
   fontFamily = "serif";
 
   /**
+   * The font style like "bold", "italic", "normal"
+   */
+  fontStyle = "normal";
+
+  /**
    * The color of text. Format is css style ().
    */
   color: string = "#ffffff";
+
+  /**
+   * The text shadow color css string.
+   */
+  shadowColor: string = "#0000ff";
+
+  /**
+   * The shadow blur pixel size.
+   */
+  shadowBlur: number = 0;
+
+  /**
+   * The text outline color css string.
+   */
+  outlineColor: string = "#ff0000";
+
+  /**
+   * The text outline size pixel.
+   */
+  outlineSize: number = 0;
 
   /**
    * The position of text.
@@ -145,10 +170,12 @@ export class TextStrip extends Strip implements ITextStrip {
     span.innerHTML = this.text;
     span.style.fontFamily = this.fontFamily;
     span.style.fontSize = this.fontSize + "px";
+    span.style.fontStyle = this.fontStyle;
     span.style.whiteSpace = "nowrap";
     document.body.append(span);
     const r = span.getBoundingClientRect();
     this.canvas.height = r.height;
+
     span.remove();
   }
 
@@ -156,17 +183,27 @@ export class TextStrip extends Strip implements ITextStrip {
    * Draw text to canvas by ctx.fillText.
    */
   draw() {
-    this.ctx.font = `${this.fontSize}px '${this.fontFamily}'`;
+    // const font =
+    this.ctx.font = `${this.fontFamily} ${this.fontSize}px '${this.fontFamily}'`;
     const metrics = this.ctx.measureText(this.text);
     this.canvas.width = metrics.width;
 
     this.obj.scale.set(this.canvas.width, this.canvas.height, 1);
 
-    this.ctx.font = `${this.fontSize}px ${this.fontFamily}`;
+    this.ctx.font = `${this.fontStyle} ${this.fontSize}px ${this.fontFamily}`;
     this.ctx.textAlign = "left";
     this.ctx.textBaseline = "bottom";
-    this.ctx.fillStyle = this.color;
+
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    this.ctx.shadowColor = this.shadowColor;
+    this.ctx.shadowBlur = this.shadowBlur;
+    this.ctx.strokeStyle = this.outlineColor;
+    this.ctx.lineWidth = this.outlineSize;
+    this.ctx.strokeText(this.text, 0, this.canvas.height);
+    this.ctx.shadowBlur = 0;
+
+    this.ctx.fillStyle = this.color;
     this.ctx.fillText(this.text, 0, this.canvas.height);
     this.texture.needsUpdate = true;
   }
