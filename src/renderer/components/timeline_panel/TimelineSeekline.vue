@@ -109,7 +109,7 @@ export default class TimelineSeekline extends Vue {
     if (s < 0) {
       return "-" + new Date(-s * 1000).toISOString().substr(11, 8);
     }
-    return new Date(s * 1000).toISOString().substr(11, 13);
+    return new Date(s * 1000).toISOString().substr(11, 12);
   }
 
   getTimesStyle(s: number): Partial<CSSStyleDeclaration> {
