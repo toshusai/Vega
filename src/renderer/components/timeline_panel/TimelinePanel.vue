@@ -65,10 +65,10 @@
             :valid="getValid(strip)"
             :fps="fps"
             @click="selectStrip(strip)"
-            @changeStart="(v) => changeStart(j, v)"
-            @submitStart="(v) => submitStart(j, v)"
-            @changeLength="(v) => changeLength(j, v)"
-            @changeLayer="(v) => changeLayer(j, v)"
+            @changeStart="(v) => changeStart(strip, v)"
+            @submitStart="() => submitStart(j, strip)"
+            @changeLength="(v) => changeLength(strip, v)"
+            @changeLayer="(v) => changeLayer(strip, v)"
           />
         </div>
         <timeline-out-area :scale="scale" />
@@ -268,6 +268,10 @@ export default class TimelinePanel extends Vue {
       color: "white",
       position: { x: 0, y: 0, z: 0 },
       type: "Text",
+      shadowColor: "",
+      shadowBlur: 0,
+      outlineColor: "",
+      outlineSize: 0,
     });
     newStrip.start = this.currentTime;
     newStrip.length = 5;
@@ -338,17 +342,35 @@ export default class TimelinePanel extends Vue {
     this.$emit("changeCurrentTime", time);
   }
 
+  /**
+   * Zoom in timeline.
+   * Keep visual currentTime.
+   */
   upScale() {
     if (this.scale * 2 < this.maxScale) {
+      this.updateShowLength();
+      const leftLength = this.currentTime - this.start;
+      const rate = leftLength / this.showLength;
       this.scale *= 2;
+      this.updateShowLength();
+      this.start = this.currentTime - rate * this.showLength;
     }
   }
 
+  /**
+   * Zoom out timeline.
+   * Keep visual currentTime.
+   */
   downScale() {
     if (this.scale * 0.5 < this.minScale) {
       this.scale = this.minScale;
     } else {
+      this.updateShowLength();
+      const leftLength = this.currentTime - this.start;
+      const rate = leftLength / this.showLength;
       this.scale *= 0.5;
+      this.updateShowLength();
+      this.start = this.currentTime - rate * this.showLength;
     }
   }
 
@@ -391,8 +413,7 @@ export default class TimelinePanel extends Vue {
     }
   }
 
-  changeStart(i: number, v: number) {
-    const target = this.strips[i];
+  changeStart(target: Strip, v: number) {
     target.start = v;
     const valid = this.getValid(target);
     if (!valid) {
@@ -413,18 +434,13 @@ export default class TimelinePanel extends Vue {
     // this.$emit("changeStrip", i, "start", v);
   }
 
-  submitStart(i: number) {
-    if (!this.getValid(this.strips[i])) {
+  submitStart(i: number, target: Strip) {
+    if (!this.getValid(target)) {
       (this.$refs as any).textLineComps[i].rollback();
     }
   }
 
-  changeLayer(i: number, layer: number) {
-    this.$emit("changeStrip", i, "layer", layer);
-  }
-
-  changeLength(i: number, v: number) {
-    const target = this.strips[i];
+  changeLength(target: Strip, v: number) {
     target.length = v;
     const valid = this.getValid(target);
     if (!valid) {
@@ -475,7 +491,7 @@ export default class TimelinePanel extends Vue {
         target.videoAsset
       );
       const length = this.currentTime - target.start;
-      this.changeLength(i, length);
+      this.changeLength(target, length);
       this.addStrip(newStrip);
     } else {
       throw new VegaError(
