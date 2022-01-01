@@ -153,7 +153,7 @@ export default class TimelineStrip extends Vue {
       const tmp = i;
       const event = (_: MouseEvent) => {
         if (this.isDraging) {
-          this.$emit("changeLayer", tmp);
+          this.strip.layer = tmp;
         }
       };
       this.mouseEnterEvents.push(event);
@@ -209,7 +209,7 @@ export default class TimelineStrip extends Vue {
   }
 
   rollback() {
-    this.$emit("changeLayer", this.tmpLayer);
+    this.strip.layer = this.tmpLayer;
     this.$emit("changeStart", this.tmpStart);
   }
 

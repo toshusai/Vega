@@ -48,7 +48,7 @@
       />
       <div ref="timeline" class="timeline">
         <div style="margin-top: 1px" />
-        <div v-for="(_, i) in [...Array(4)]" ref="layers" :key="i">
+        <div v-for="(_, i) in [...Array(8)]" ref="layers" :key="i">
           <timeline-layer />
         </div>
         <!-- <div class="linehr" /> -->
@@ -68,7 +68,6 @@
             @changeStart="(v) => changeStart(strip, v)"
             @submitStart="() => submitStart(j, strip)"
             @changeLength="(v) => changeLength(strip, v)"
-            @changeLayer="(v) => changeLayer(strip, v)"
           />
         </div>
         <timeline-out-area :scale="scale" />
