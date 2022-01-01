@@ -27,6 +27,10 @@ export interface ITextStrip {
   color: string;
   position: IVector3;
   type: string;
+  shadowColor: string;
+  shadowBlur: number;
+  outlineColor: string;
+  outlineSize: number;
 }
 
 /**
@@ -156,6 +160,10 @@ export class TextStrip extends Strip implements ITextStrip {
     this.length = itext.length;
     this.layer = itext.layer;
     this.id = this.obj.uuid;
+    this.outlineColor = itext.outlineColor;
+    this.outlineSize = itext.outlineSize;
+    this.shadowBlur = itext.shadowBlur;
+    this.shadowColor = itext.shadowColor;
 
     this.updateFont();
     this.draw();
@@ -228,6 +236,10 @@ export class TextStrip extends Strip implements ITextStrip {
       text: this.text,
       type: this.type,
       layer: this.layer,
+      outlineColor: this.outlineColor,
+      outlineSize: this.outlineSize,
+      shadowBlur: this.shadowBlur,
+      shadowColor: this.shadowColor,
     };
   }
 
