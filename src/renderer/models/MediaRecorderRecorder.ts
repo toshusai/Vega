@@ -1,5 +1,4 @@
 import { Camera, Scene, WebGLRenderer } from "three";
-import MediaElement from "wavesurfer.js/src/mediaelement";
 import { Strip } from "./strips";
 import { VideoStrip } from ".";
 import { PLAY_EVERY_FRAME, SYNC_TO_AUDIO } from "~/plugins/config";
