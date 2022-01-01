@@ -13,6 +13,11 @@
         },
       ]"
     >
+      <template #item="{ item }">
+        <div class="menu-item">
+          {{ item.text }}
+        </div>
+      </template>
     </sp-action-menu>
     <input
       ref="input"
@@ -48,6 +53,9 @@
 .app-bar {
   height: 30px;
   display: flex;
+}
+.menu-item {
+  white-space: nowrap;
 }
 </style>
 
