@@ -133,6 +133,7 @@ export class TextStrip extends Strip implements ITextStrip {
   constructor(itext: ITextStrip) {
     super();
     this.text = itext.text;
+    this.fontFamily = itext.fontFamily;
     this.canvas = document.createElement("canvas");
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
     this.texture = new CanvasTexture(this.canvas);
