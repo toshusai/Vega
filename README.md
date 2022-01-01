@@ -66,9 +66,11 @@ __[Documents](https://vega.toshusai.net/docs)__
   - fps :white_check_mark:
   - duration :white_check_mark:
 - Export
-  - mp4 :white_check_mark:
-    - configs :construction:
-  - gif :construction:
+  - ffmpeg :eight_spoked_asterisk:
+    - mp4 :white_check_mark:
+      - configs :construction:
+    - gif :construction:
+  - MediaRecorder :eight_spoked_asterisk:
 - Others
   - layers :white_check_mark:
   - save / load project :white_check_mark:
