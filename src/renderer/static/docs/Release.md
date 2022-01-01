@@ -1,5 +1,9 @@
 # Releases
 
+# v0.0.17
+- Fix zoom and fix strip movement.
+- Fix text strip save/load
+
 # v0.0.16
 - Fix timeline time format
 - Fix timeline swipe back
