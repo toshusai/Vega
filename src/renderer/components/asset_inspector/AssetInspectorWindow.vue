@@ -29,6 +29,16 @@
             @change="change"
           />
         </div>
+        <div style="display: flex">
+          <sp-button
+            style="margin: auto"
+            size="S"
+            type="negative"
+            @click="deleteAsset"
+          >
+            delete
+          </sp-button>
+        </div>
       </div>
     </div>
   </div>
@@ -125,6 +135,10 @@ export default class AssetInspectorWindow extends Vue {
 
   uploadFile() {
     this.fileInput.click();
+  }
+
+  deleteAsset() {
+    this.$emit("deleteAsset");
   }
 }
 </script>

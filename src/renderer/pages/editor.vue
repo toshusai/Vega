@@ -26,6 +26,7 @@
                     <asset-inspector-window
                       :asset="selectedAsset"
                       @changeAsset="changeAsset"
+                      @deleteAsset="deleteAsset"
                     />
                   </sp-split-view-pane>
                 </sp-split-view>
@@ -418,6 +419,11 @@ export default class IndexPage extends Vue {
 
   changePlayMode(playMode: PlayMode) {
     this.playMode = playMode;
+  }
+
+  deleteAsset() {
+    const i = this.project.assets.findIndex((a) => a == this.selectedAsset);
+    this.project.assets.splice(i, 1);
   }
 
   async update(time: number = 0) {
