@@ -71,7 +71,13 @@ export default class ZoomSlider extends Vue {
       const sliderScale = sliderWidth / (this.duration + this.margin * 2);
       const currentXPx = e.pageX;
       const deltaPx = currentXPx - startXPx;
-      this.start = startSec + deltaPx / sliderScale;
+      let start = startSec + deltaPx / sliderScale;
+      if (start < -this.margin) {
+        start = -this.margin;
+      } else if (start + this.showLength > this.duration + this.margin) {
+        start = this.duration - this.showLength + this.margin;
+      }
+      this.start = start;
     });
   }
 }
