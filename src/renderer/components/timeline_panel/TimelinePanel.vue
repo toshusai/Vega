@@ -76,6 +76,12 @@
       <ContextMenu ref="contextMenu" />
       <!-- <sp-context-menu ref="contextMenu" :items="items" /> -->
     </div>
+    <zoom-slider
+      :startSync.sync="start"
+      :scaleSync.sync="scale"
+      :durationSync.sync="duration"
+      :showLengthSync.sync="showLength"
+    />
   </div>
 </template>
 
@@ -92,7 +98,7 @@
   box-sizing: border-box;
   overflow-y: hidden;
   /* -32px for controll header */
-  height: calc(100% - 32px);
+  height: calc(100% - 32px - 16px);
 }
 /* .timeline-container::-webkit-scrollbar {
   display: none;
@@ -120,6 +126,7 @@ import TimelineStrip from "./strips/TimelineStrip.vue";
 import Seekline from "./TimelineSeekline.vue";
 import TimelineZoomButtons from "./TimelineZoomButtons.vue";
 import WindowNameTag from "~/components/vega/WindowNameTag.vue";
+import ZoomSlider from "~/components/timeline_panel/ZoomSlider.vue";
 import {
   AudioAsset,
   AudioStrip,
@@ -142,6 +149,7 @@ import { roundToFrame } from "~/plugins/utils/roundToFrame";
   components: {
     TimelineStrip,
     Seekline,
+    ZoomSlider,
     ContextMenu,
     TimelineOutArea,
     TimelineLayer,
@@ -215,6 +223,10 @@ export default class TimelinePanel extends Vue {
     window.addEventListener("resize", () => {
       this.updateMinScale();
     });
+    if (this.showLength > this.duration) {
+      this.scale = this.showLength;
+      this.updateShowLength();
+    }
   }
 
   @Watch("duration")

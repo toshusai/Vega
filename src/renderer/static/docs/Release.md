@@ -1,5 +1,8 @@
 # Releases
 
+# v0.0.18
+- Add ZoomSlider
+
 # v0.0.17
 - Fix zoom and fix strip movement.
 - Fix text strip save/load
