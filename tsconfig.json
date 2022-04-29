@@ -1,36 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "resolveJsonModule": true,
-    "module": "commonjs",
-    "outDir": "./dist",
-    "moduleResolution": "Node",
-    "lib": [
-      "ESNext",
-      "ESNext.AsyncIterable",
-      "DOM"
-    ],
-    "esModuleInterop": true,
-    "allowJs": true,
-    "sourceMap": true,
-    "strict": true,
-    "experimentalDecorators": true,
-    "baseUrl": ".",
-    "paths": {},
-    "types": [
-      "@nuxt/types",
-      "@types/node",
-      "cypress",
-      "@types/jest",
-      "cypress-file-upload"
-    ]
-  },
-  "includes": [
-    "./*.(js|ts)",
-  ],
-  "exclude": [
-    "node_modules",
-    ".nuxt",
-    "dist"
-  ],
+  // https://v3.nuxtjs.org/concepts/typescript
+  "extends": "./.nuxt/tsconfig.json"
 }
