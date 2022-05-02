@@ -1,5 +1,15 @@
 <script setup lang="ts">
 const { container } = useContainer();
+
+const { update } = useUpdate();
+
+onMounted(() => {
+  const mainUpdate = () => {
+    update();
+    requestAnimationFrame(mainUpdate);
+  };
+  mainUpdate();
+});
 </script>
 
 <template>
