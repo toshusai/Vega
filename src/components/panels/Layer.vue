@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { Layer } from "~/core/Timeline";
 const props = defineProps<{ layer: Layer }>();
+
+const { selectStrip } = useTimeline();
 </script>
 
 <template>
-  <div class="layer">
+  <div class="layer" @click="() => selectStrip([])">
     <PanelsStrip
       v-for="(strip, i) in props.layer.strips"
       :key="i"

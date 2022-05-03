@@ -74,7 +74,7 @@ const initialContaerState: Container = {
           },
           align: "",
           panel: {
-            type: "panel",
+            type: "Asset",
           },
         },
       ],
@@ -97,6 +97,8 @@ const initialContaerState: Container = {
   align: "vertical",
   panel: null,
 };
+
+const event = new EventTarget();
 
 export default function useContainer() {
   const container = useState("counter", () => initialContaerState);
@@ -140,6 +142,8 @@ export default function useContainer() {
           width: current[i - 1].rect.width + delta.x,
         };
       }
+
+      event.dispatchEvent(new CustomEvent("resize", { detail: state.value }));
     };
   };
 
@@ -239,6 +243,11 @@ export default function useContainer() {
     container: readonly(container),
     resizeContainer: resizeContainer(container),
     changeLayout: changeLayout(container),
+    addEventListener: ((state: Ref<Container>) => {
+      return (type: string, listener: (event: CustomEvent) => void) => {
+        event.addEventListener(type, listener);
+      };
+    })(container),
   };
 }
 
