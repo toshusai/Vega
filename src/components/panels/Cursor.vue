@@ -14,7 +14,7 @@ const pixScale = computed(() => {
     ref="el"
     class="cursor"
     :style="{
-      left: timeline.curent * pixScale + 'px',
+      left: (timeline.curent - timeline.start) * pixScale + 'px',
     }"
   ></div>
 </template>
@@ -26,5 +26,6 @@ const pixScale = computed(() => {
   width: 1px;
   height: 100%;
   background: red;
+  z-index: 1;
 }
 </style>

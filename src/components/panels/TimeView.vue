@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { timeline } = useTimeline();
+const { timeline, update } = useTimeline();
 
 const el = ref<HTMLElement>(null);
 
@@ -21,11 +21,19 @@ const secs = computed(() => {
   }
   return times;
 });
+
+function setTime(e: MouseEvent) {
+  const x = e.clientX;
+  const width = el.value?.parentElement.getBoundingClientRect().width || 1;
+  const time = x / pixScale.value + timeline.value.start;
+  update(time, true);
+}
 </script>
 
 <template>
   <div
     ref="el"
+    class="view"
     style="
       height: 10px;
       font-size: 4px;
@@ -34,6 +42,7 @@ const secs = computed(() => {
       position: relative;
       overflow: hidden;
     "
+    @click="setTime"
   >
     <div
       v-for="(sec, i) in secs"
@@ -47,4 +56,9 @@ const secs = computed(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.view {
+  cursor: pointer;
+  user-select: none;
+}
+</style>

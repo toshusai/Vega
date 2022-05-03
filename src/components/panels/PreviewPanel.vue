@@ -121,7 +121,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="el" style="display: flex; height: 100%; width: 100%">
+  <div ref="el" style="display: flex; height: 90%; width: 90%">
     <canvas ref="canvas" style="width: 100%; height: 100%" />
   </div>
 </template>

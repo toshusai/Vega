@@ -6,6 +6,8 @@ const { timeline, changeView, play, update } = useTimeline();
 
 const { addUpdate } = useUpdate();
 
+const { addEventListener } = useContainer();
+
 onMounted(() => {
   addUpdate((d) => {
     if (timeline.value.isPlay) {
@@ -15,10 +17,20 @@ onMounted(() => {
     }
   });
   window.addEventListener("keydown", (e) => {
-    console.log(e.key.length);
+    if (document.activeElement.tagName == "INPUT") {
+      return;
+    }
     if (e.key === " ") {
       play(!timeline.value.isPlay);
     }
+  });
+
+  addEventListener("resize", () => {
+    // 強制的に更新するためEPSILONを足す
+    changeView(
+      timeline.value.start + Number.EPSILON,
+      timeline.value.end + Number.EPSILON
+    );
   });
 });
 </script>

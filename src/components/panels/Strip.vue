@@ -3,7 +3,7 @@ import { Strip } from "~/core/Timeline";
 import { onDragStart } from "~~/src/utils/onDragStart";
 const props = defineProps<{ strip: Strip }>();
 
-const { timeline, moveStrip } = useTimeline();
+const { timeline, moveStrip, selectStrip } = useTimeline();
 
 const el = ref<HTMLElement | null>(null);
 
@@ -58,7 +58,18 @@ function moveEnd(e: MouseEvent) {
 </script>
 
 <template>
-  <div ref="el" :style="style" class="strip" @mousedown="drag">
+  <div
+    ref="el"
+    :style="style"
+    class="strip"
+    :class="
+      timeline.selectedStrips.find((x) => x.id == props.strip.id)
+        ? 'strip-selected'
+        : ''
+    "
+    @mousedown="drag"
+    @click.stop="() => selectStrip([props.strip.id])"
+  >
     <div class="handle" @mousedown="moveStart"></div>
     <div class="handle" style="right: 0" @mousedown="moveEnd"></div>
   </div>
@@ -71,6 +82,11 @@ function moveEnd(e: MouseEvent) {
   box-sizing: border-box;
   cursor: pointer;
 }
+
+.strip-selected {
+  background-color: red;
+}
+
 .handle {
   position: absolute;
   width: 4px;
