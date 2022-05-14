@@ -42,9 +42,12 @@ function moveView(e: MouseEvent) {
 </script>
 
 <template>
-  <div ref="el" style="height: 12px; width: 100%; position: relative">
+  <div
+    ref="el"
+    style="height: 14px; width: 100%; position: relative; padding: 2px"
+  >
     <div
-      class="fill"
+      class="fill bg-surface2"
       :style="{
         left: props.start * 100 + '%',
         width: (props.end - props.start) * 100 + '%',
@@ -53,16 +56,16 @@ function moveView(e: MouseEvent) {
     ></div>
 
     <div
-      class="handle"
+      class="handle bg-surface2 rounded-8"
       :style="{
         left: props.start * 100 + '%',
       }"
       @mousedown="moveStart"
     ></div>
     <div
-      class="handle"
+      class="handle bg-surface2 rounded-8"
       :style="{
-        left: 'calc(' + props.end * 100 + '% - 8px)',
+        left: 'calc(' + props.end * 100 + '% - 12px)',
       }"
       @mousedown="moveEnd"
     ></div>
@@ -76,17 +79,14 @@ function moveView(e: MouseEvent) {
   left: 0;
   width: 12px;
   height: 12px;
-  background-color: gray;
-  border-radius: 6px;
   cursor: pointer;
-  border: 2px solid black;
   box-sizing: border-box;
 }
 .fill {
   position: absolute;
   top: 0;
   height: 12px;
-  background-color: black;
+  width: 12px;
   border-radius: 6px;
   cursor: pointer;
 }

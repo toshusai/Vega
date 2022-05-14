@@ -6,7 +6,7 @@ const { selectStrip } = useTimeline();
 </script>
 
 <template>
-  <div class="layer" @click="() => selectStrip([])">
+  <div class="layer border-default" @click="() => selectStrip([])">
     <PanelsStrip
       v-for="(strip, i) in props.layer.strips"
       :key="i"
@@ -20,7 +20,7 @@ const { selectStrip } = useTimeline();
   display: flex;
   position: relative;
   height: 20px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid;
   box-sizing: border-box;
 }
 </style>

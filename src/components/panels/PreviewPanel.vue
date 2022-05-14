@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import * as THREE from "three";
-import { Curve } from "three";
 import { view } from "~~/src/composables/useTimeline";
 
 const canvas = ref<HTMLCanvasElement>(null);
@@ -9,6 +8,9 @@ const el = ref<HTMLDivElement>(null);
 
 const { addUpdate } = useUpdate();
 const { timeline } = useTimeline();
+
+const scale = ref(0.2);
+
 onMounted(() => {
   if (!canvas.value) return;
   if (!el.value) return;
@@ -99,15 +101,21 @@ onMounted(() => {
     // cube.rotateY(0.01);
     // cube.rotateZ(0.01);
     canvas.value.style.margin = `auto`;
-    canvas.value.style.width = ``;
-    canvas.value.style.height = `300px`;
-    if (rect.width > rect.height) {
-      canvas.value.style.width = ``;
-      canvas.value.style.height = `300px`;
-    } else {
-      // canvas.value.style.width = `100%`;
-      // canvas.value.style.height = ``;
-    }
+
+    canvas.value.style.width = `${width * scale.value}px`;
+    canvas.value.style.height = ``;
+    // canvas.value.style.width = ``;
+    // canvas.value.style.height = rect.height + `px`;
+
+    // const rate = width / height;
+    // const elRate = rect.width / rect.height;
+    // if (rate < elRate) {
+    //   canvas.value.style.width = ``;
+    //   canvas.value.style.height = rect.height + `px`;
+    // } else {
+    //   canvas.value.style.width = rect.width + `px`;
+    //   canvas.value.style.height = ``;
+    // }
     // view.camera.updateMatrix();
     view.camera.updateProjectionMatrix();
     // console.log("render");
@@ -121,7 +129,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="el" style="display: flex; height: 90%; width: 90%">
-    <canvas ref="canvas" style="width: 100%; height: 100%" />
+  <div
+    ref="el"
+    style="height: calc(100% - 12px); width: 100%; overflow: hidden"
+  >
+    <div class="flex h-24">
+      <div>Zoom:</div>
+      <v-select :value="scale" @input="(v) => (scale = v.target.value)">
+        <option value="1">100%</option>
+        <option value="0.5">50%</option>
+        <option value="0.2">20%</option>
+      </v-select>
+    </div>
+    <div style="display: flex; height: calc(100% - 16px)">
+      <canvas ref="canvas" style="width: 100%; height: 100%; margin: auto" />
+    </div>
   </div>
 </template>

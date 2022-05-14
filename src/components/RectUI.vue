@@ -23,7 +23,6 @@ defineExpose({ el });
 <style scoped>
 .rect {
   position: relative;
-  border: 2px solid black;
   box-sizing: border-box;
   -webkit-user-drag: none;
 }

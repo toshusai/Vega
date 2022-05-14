@@ -38,7 +38,7 @@ const upTop = (e: MouseEvent, pos: Position) => {
     />
     <div>
       <div
-        class="name"
+        class="name border-default border-b"
         @mousedown="(e) => startDad(e, 'layout', props.containerId)"
       >
         {{ props.name }}
@@ -53,13 +53,13 @@ const upTop = (e: MouseEvent, pos: Position) => {
   display: block;
   width: 100%;
   height: 100%;
+  padding: 2px;
 }
 
 .name {
   font-size: 12px;
   line-height: 12px;
   cursor: pointer;
-  border: 1px solid black;
   box-sizing: border-box;
 }
 </style>

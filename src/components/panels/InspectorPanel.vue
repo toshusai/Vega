@@ -40,23 +40,30 @@ return effect
 </script>
 
 <template>
-  <div>
-    <input
-      v-if="isTextE"
-      :value="effect.text"
-      @input="(e) => changeText(e.target.value, 'text')"
-    />
-    <input
-      v-if="isTextE"
-      :value="effect.position.x"
-      @input="
-        (e) =>
-          changeText(
-            { ...effect.position, x: Number.parseFloat(e.target.value) },
-            'position'
-          )
-      "
-    />
-    <input v-if="isTextE" :value="effect.position.y" @input="changeY" />
+  <div v-if="isTextE">
+    <div class="flex mb-4 text-right">
+      <div class="w-full pr-8">text:</div>
+      <v-input
+        :value="effect.text"
+        @input="(e) => changeText(e.target.value, 'text')"
+      />
+    </div>
+    <div class="flex mb-4 text-right">
+      <div class="w-full pr-8">x:</div>
+      <v-input
+        :value="effect.position.x"
+        @input="
+          (e) =>
+            changeText(
+              { ...effect.position, x: Number.parseFloat(e.target.value) },
+              'position'
+            )
+        "
+      />
+    </div>
+    <div class="flex mb-4 text-right">
+      <div class="w-full pr-8">y:</div>
+      <v-input :value="effect.position.y" @input="changeY" />
+    </div>
   </div>
 </template>
