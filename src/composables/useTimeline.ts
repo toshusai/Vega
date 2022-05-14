@@ -32,7 +32,7 @@ const initialTimelineState: Timeline = {
                 y: -10,
                 z: 0,
               },
-              color: "#ff0000",
+              color: "#ff9999",
               size: 100,
             },
           ],

@@ -14,7 +14,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="root"
+    class="root text-white bg-background1"
     :style="{
       display: container.align == 'horizontal' ? 'flex' : 'block',
     }"

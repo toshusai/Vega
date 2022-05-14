@@ -38,7 +38,7 @@ function setTime(e: MouseEvent) {
       height: 10px;
       font-size: 4px;
       line-height: 10px;
-      border-bottom: 1px solid black;
+      border-bottom: 1px solid;
       position: relative;
       overflow: hidden;
     "
@@ -48,7 +48,7 @@ function setTime(e: MouseEvent) {
       v-for="(sec, i) in secs"
       :key="i"
       class="sec"
-      style="border-left: 1px solid black"
+      style="border-left: 1px solid; padding-left: 1px"
       :style="{ position: 'absolute', left: sec.left + 'px' }"
     >
       {{ sec.time }}
