@@ -107,8 +107,8 @@ export class TextStripEffectObject extends EffectObject {
     // this.ctx.shadowBlur = this.shadowBlur;
     // this.ctx.strokeStyle = this.outlineColor;
     // this.ctx.lineWidth = this.outlineSize;
-    this.ctx.strokeText(itext.text, 0, this.canvas.height);
-    this.ctx.shadowBlur = 0;
+    // this.ctx.strokeText(itext.text, 0, this.canvas.height);
+    // this.ctx.shadowBlur = 0;
 
     this.ctx.fillStyle = this.color;
     // this.ctx.fillRect(0, 0, 10000, 10000);
@@ -121,7 +121,7 @@ export class TextStripEffectObject extends EffectObject {
   }
 
   public async update(strip: Strip, itext: TextStripEffect, time: number) {
-    this.obj.position.set(itext.position.x, itext.position.y, itext.position.z);
+    this.obj.position.set(itext.position.x, itext.position.y, strip.layer);
 
     if (strip.start < time && time < strip.start + strip.length) {
       this.obj.visible = true;

@@ -33,17 +33,28 @@ onMounted(() => {
     );
   });
 });
+
+const layers = computed(() => {
+  const l = [[], [], [], []];
+  for (const strip of timeline.value.strips) {
+    if (l.length <= strip.layer) {
+      for (let i = l.length; i <= strip.layer; i++) {
+        l.push([]);
+      }
+    }
+    l[strip.layer].push(strip);
+  }
+  return l;
+});
 </script>
 
 <template>
   <div class="timeline-root">
     <Cursor />
     <TimeView />
-    <PanelsLayer
-      v-for="(layer, i) in timeline.layers"
-      :key="i"
-      :layer="layer"
-    />
+    <div>
+      <PanelsLayer v-for="(layer, i) in layers" :key="i" :strips="layer" />
+    </div>
     <ScaleScroll
       style="position: absolute; bottom: 0"
       :start="timeline.start / timeline.length"

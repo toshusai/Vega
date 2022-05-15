@@ -26,16 +26,18 @@ const style = computed(() => {
 function drag(e: MouseEvent) {
   e.preventDefault();
 
+  const layerHeight = 20;
+  const parent = el.value?.parentElement.parentElement;
+  const parentRect = parent?.getBoundingClientRect();
   onDragStart(e, (d, e) => {
-    const layerHeight = 20;
-    const parent = el.value?.parentElement;
-    const parentRect = parent?.getBoundingClientRect();
-    const layerIndex = e.clientY - parentRect.top;
+    const layerIndex = Math.floor((e.clientY - parentRect.top) / layerHeight);
+    if (layerIndex < 0) return;
 
     moveStrip(
       props.strip.id,
       props.strip.start + d.x / pixScale.value,
-      props.strip.length
+      props.strip.length,
+      layerIndex
     );
   });
 }
@@ -46,7 +48,8 @@ function moveStart(e: MouseEvent) {
     moveStrip(
       props.strip.id,
       props.strip.start + d.x / pixScale.value,
-      props.strip.length - d.x / pixScale.value
+      props.strip.length - d.x / pixScale.value,
+      props.strip.layer
     );
   });
 }
@@ -90,7 +93,7 @@ function moveEnd(e: MouseEvent) {
 }
 
 .strip-selected {
-  background-color: red;
+  background-color: rgb(148, 211, 250);
 }
 
 .handle {
