@@ -23,6 +23,11 @@ export class TextStripEffectObject extends EffectObject {
 
   fontStyle = "normal";
 
+  /**
+   * 計算したテキストの幅
+   */
+  mesureWidth = 0;
+
   constructor(itext: TextStripEffect) {
     super();
     this.text = itext.text;
@@ -82,13 +87,17 @@ export class TextStripEffectObject extends EffectObject {
    */
   draw(itext: TextStripEffect) {
     // const font =
-    this.ctx.font = `${this.fontStyle} ${this.fontSize}px '${this.fontFamily}'`;
+    // this.updateFont();
+    this.ctx.font = `${this.fontStyle} ${this.fontSize}px ${this.fontFamily}`;
     const metrics = this.ctx.measureText(itext.text);
-    // this.canvas.width = 128; //metrics.width;
+    this.mesureWidth = metrics.width;
+    // this.canvas.width = metrics.width;
+    // console.log(metrics.width, this.canvas.width, this.canvas.height);
+
     // this.canvas.height = 128; //this.canvas.width;
     this.obj.scale.set(this.canvas.width, this.canvas.height, 1);
 
-    this.ctx.font = `${this.fontStyle} ${this.fontSize}px ${this.fontFamily}`;
+    // this.ctx.font = `${this.fontStyle} ${this.fontSize}px ${this.fontFamily}`;
     this.ctx.textAlign = "left";
     this.ctx.textBaseline = "bottom";
 
@@ -102,10 +111,10 @@ export class TextStripEffectObject extends EffectObject {
     this.ctx.shadowBlur = 0;
 
     this.ctx.fillStyle = this.color;
-
+    // this.ctx.fillRect(0, 0, 10000, 10000);
     this.ctx.fillText(
       itext.text,
-      1024 / 2 - metrics.width / 2,
+      this.canvas.width / 2 - metrics.width / 2,
       this.canvas.height
     );
     this.texture.needsUpdate = true;
