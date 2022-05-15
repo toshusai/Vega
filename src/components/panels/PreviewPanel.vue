@@ -55,7 +55,7 @@ onMounted(() => {
       <div>Zoom:</div>
       <v-select
         :value="scale"
-        @input="(v) => Number.parseFloat((scale = v.target.value))"
+        @input="(v) => (scale = Number.parseFloat(v.target.value))"
       >
         <option value="1">100%</option>
         <option value="0.5">50%</option>
