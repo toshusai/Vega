@@ -6,5 +6,6 @@ export class Strip {
   id: string;
   start: number;
   length: number;
+  layer: number;
   effects: (StripEffect | TextStripEffect | VideoStripEffect)[];
 }

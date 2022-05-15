@@ -98,9 +98,8 @@ export class VideoStripEffectObject {
     if (this.ctx && this.video) this.ctx.drawImage(this.video, 0, 0);
 
     this.obj.position.copy(
-      new Vector3(effect.position.x, effect.position.y, effect.position.z)
+      new Vector3(effect.position.x, effect.position.y, strip.layer)
     );
-    this.obj.position.setZ(effect.position.z);
 
     if (!this.loaded) {
       this.obj.visible = false;

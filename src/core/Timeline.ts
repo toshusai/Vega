@@ -8,7 +8,7 @@ export interface Timeline {
   curent: number;
   width: number;
   height: number;
-  layers: Layer[];
+  strips: Strip[];
   start: number;
   end: number;
   scale: number;
