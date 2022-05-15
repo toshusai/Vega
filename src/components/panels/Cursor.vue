@@ -21,6 +21,7 @@ const pixScale = computed(() => {
 <style scoped>
 .cursor {
   position: absolute;
+  pointer-events: none;
   top: 0;
   left: 0;
   width: 1px;

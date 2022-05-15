@@ -63,7 +63,16 @@ return effect
     </div>
     <div class="flex mb-4 text-right">
       <div class="w-full pr-8">y:</div>
-      <v-input :value="effect.position.y" @input="changeY" />
+      <v-input
+        :value="effect.position.y"
+        @input="
+          (e) =>
+            changeText(
+              { ...effect.position, y: Number.parseFloat(e.target.value) },
+              'position'
+            )
+        "
+      />
     </div>
   </div>
 </template>

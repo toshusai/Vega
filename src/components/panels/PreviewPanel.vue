@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as THREE from "three";
 import { view } from "~~/src/composables/useTimeline";
+import Gizmo from "../Gizmo.vue";
 
 const canvas = ref<HTMLCanvasElement>(null);
 
@@ -142,7 +143,10 @@ onMounted(() => {
       </v-select>
     </div>
     <div style="display: flex; height: calc(100% - 16px)">
-      <canvas ref="canvas" style="width: 100%; height: 100%; margin: auto" />
+      <div class="m-auto relative">
+        <gizmo :scale="scale"></gizmo>
+        <canvas ref="canvas" style="width: 100%; height: 100%; margin: auto" />
+      </div>
     </div>
   </div>
 </template>

@@ -24,6 +24,8 @@ export class VideoStripEffectObject {
 
   event: EventTarget = new EventTarget();
 
+  inProgress = false;
+
   get src() {
     return this.video.src;
   }
@@ -106,21 +108,24 @@ export class VideoStripEffectObject {
     }
 
     if (strip.start < time && time < strip.start + strip.length) {
-      console.log("darw");
       this.obj.visible = true;
       this.video.volume = 1;
-      if ((isPlay && this.video.paused) || jump) {
-        console.log("play", this.video.paused);
-        this.video.play();
 
-        this.video.currentTime = time - strip.start + this.videoOffset;
+      if ((isPlay && this.video.paused) || jump) {
+        if (!this.inProgress) {
+          this.inProgress = true;
+          this.video.play().then(() => {
+            this.inProgress = false;
+          });
+          this.video.currentTime = time - strip.start + this.videoOffset;
+        }
       }
-      if (!isPlay) {
+      if (!isPlay && !this.inProgress) {
         this.video.pause();
       }
     } else {
       this.video.volume = 0;
-      if (!this.video.paused) {
+      if (!this.video.paused && !this.inProgress) {
         this.video.pause();
       }
       this.obj.visible = false;

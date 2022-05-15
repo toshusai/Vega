@@ -25,7 +25,13 @@ const style = computed(() => {
 
 function drag(e: MouseEvent) {
   e.preventDefault();
-  onDragStart(e, (d) => {
+
+  onDragStart(e, (d, e) => {
+    const layerHeight = 20;
+    const parent = el.value?.parentElement;
+    const parentRect = parent?.getBoundingClientRect();
+    const layerIndex = e.clientY - parentRect.top;
+
     moveStrip(
       props.strip.id,
       props.strip.start + d.x / pixScale.value,

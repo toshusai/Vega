@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onDragStart } from "~~/src/utils/onDragStart";
+
 const { timeline, update } = useTimeline();
 
 const el = ref<HTMLElement>(null);
@@ -28,6 +30,13 @@ function setTime(e: MouseEvent) {
   const time = x / pixScale.value + timeline.value.start;
   update(time, true);
 }
+
+function dragStart(e: MouseEvent) {
+  setTime(e);
+  onDragStart(e, (_, e) => {
+    setTime(e);
+  });
+}
 </script>
 
 <template>
@@ -42,7 +51,7 @@ function setTime(e: MouseEvent) {
       position: relative;
       overflow: hidden;
     "
-    @click="setTime"
+    @mousedown="dragStart"
   >
     <div
       v-for="(sec, i) in secs"
