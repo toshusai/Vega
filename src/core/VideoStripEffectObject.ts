@@ -53,6 +53,7 @@ export class VideoStripEffectObject {
     const mat = new T.MeshBasicMaterial({
       map: this.tex,
       side: T.DoubleSide,
+      // colorWrite: false,
     });
     const movieGeometry = new T.PlaneGeometry(
       this.canvas.width,
@@ -64,6 +65,17 @@ export class VideoStripEffectObject {
     }
     // this.video.src = "/BigBuckBunny.mp4";
     this.updateAsset("/BigBuckBunny.mp4");
+
+    // const cube = new T.Mesh(
+    //   new T.BoxGeometry(100, 100, 100),
+    //   new T.MeshBasicMaterial({
+    //     color: "red",
+    //     stencilWrite: true,
+    //     stencilWriteMask: 0x00,
+    //     // colorWrite: false,
+    //   })
+    // );
+    // this.obj.add(cube);
   }
 
   public updateAsset(src: string) {
@@ -116,7 +128,7 @@ export class VideoStripEffectObject {
           this.video.play().then(() => {
             this.inProgress = false;
           });
-          this.video.currentTime = time - strip.start + this.videoOffset;
+          this.video.currentTime = time - strip.start + effect.start;
         }
       }
       if (!isPlay && !this.inProgress) {

@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   ssr: false,
   modules: ["@nuxtjs/tailwindcss"],
   tailwindcss: {
-    cssPath: "~/assets/css/tailwind.css",
+    cssPath: "./src/assets/css/tailwind.css",
     exposeConfig: false,
     config: {},
     injectPosition: 0,

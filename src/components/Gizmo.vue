@@ -8,7 +8,8 @@ const props = defineProps<{ scale: 1 }>();
 
 const strip = computed(() => timeline.value.selectedStrips[0]);
 const effect = computed(() => strip.value && strip.value.effects[0]);
-const style = computed(() => {
+const style = ref({});
+function updateStyle() {
   if (!effect.value) return { display: "none" };
   if (!isText(effect.value)) return { display: "none" };
   const width = timeline.value.width;
@@ -25,12 +26,20 @@ const style = computed(() => {
         props.scale +
       "px",
     bottom:
-      (height / 2 + effect.value.position.y - obj.canvas.height / 2) *
+      (height / 2 + effect.value.position.y - obj.mesureHeight / 2) *
         props.scale +
       "px",
     width: obj.mesureWidth * props.scale + "px",
-    height: obj.canvas.height * props.scale + "px",
+    height: obj.mesureHeight * props.scale + "px",
   };
+}
+
+onMounted(() => {
+  const update = () => {
+    style.value = updateStyle();
+    window.requestAnimationFrame(update);
+  };
+  update();
 });
 
 function drag(e: MouseEvent) {

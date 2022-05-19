@@ -8,7 +8,31 @@ const { addUpdate } = useUpdate();
 
 const { addEventListener } = useContainer();
 
+const el = ref<HTMLDivElement>(null);
+
 onMounted(() => {
+  el.value.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    if (e.ctrlKey) {
+      const zoomSize = e.deltaY * 0.01;
+      const start = timeline.value.start - zoomSize;
+      const end = timeline.value.end + zoomSize;
+      changeView(start, end);
+    }
+
+    const scale = 0.01;
+    let start = timeline.value.start + e.deltaX * scale;
+    if (start < 0) {
+      changeView(0, timeline.value.end);
+      return;
+    }
+    let end = timeline.value.end + e.deltaX * scale;
+    if (end > timeline.value.length) {
+      changeView(timeline.value.start, timeline.value.length);
+      return;
+    }
+    changeView(start, end);
+  });
   addUpdate((d) => {
     if (timeline.value.isPlay) {
       update(timeline.value.curent + d / 1000);
@@ -49,11 +73,22 @@ const layers = computed(() => {
 </script>
 
 <template>
-  <div class="timeline-root">
+  <div ref="el" class="timeline-root">
     <Cursor />
     <TimeView />
-    <div>
-      <PanelsLayer v-for="(layer, i) in layers" :key="i" :strips="layer" />
+    <div style="display: flex; position: relative">
+      <div
+        v-for="(layer, i) in layers"
+        :key="i"
+        :strips="layer"
+        class="layer"
+        :style="`top: ${i * 50}px`"
+      />
+      <PanelsStripUI
+        v-for="(strip, i) in timeline.strips"
+        :key="i"
+        :strip="strip"
+      />
     </div>
     <ScaleScroll
       style="position: absolute; bottom: 0"
@@ -70,5 +105,13 @@ const layers = computed(() => {
   overflow: hidden;
   height: calc(100% - 12px);
   position: relative;
+}
+.layer {
+  display: flex;
+  width: 100%;
+  position: absolute;
+  height: 50px;
+  border-bottom: 1px solid;
+  box-sizing: content-box;
 }
 </style>

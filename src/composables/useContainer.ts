@@ -55,7 +55,7 @@ const initialContaerState: Container = {
           rect: {
             top: 0,
             left: 0,
-            width: 50,
+            width: 80,
             height: 100,
           },
           align: "",
@@ -69,7 +69,7 @@ const initialContaerState: Container = {
           rect: {
             top: 50,
             left: 0,
-            width: 50,
+            width: 20,
             height: 100,
           },
           align: "",

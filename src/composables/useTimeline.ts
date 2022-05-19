@@ -11,16 +11,16 @@ const initialTimelineState: Timeline = {
   width: 1920,
   height: 1080,
   length: 20,
-  curent: 1,
+  curent: 3,
   end: 15,
   scale: 20,
   start: 0,
   strips: [
     {
       id: "strip1",
-      start: 1,
-      length: 1,
-      layer: 0,
+      start: 2.5,
+      length: 4,
+      layer: 1,
       effects: [
         {
           id: "effect1",
@@ -31,8 +31,26 @@ const initialTimelineState: Timeline = {
             y: -10,
             z: 0,
           },
-          color: "#ff9999",
-          size: 100,
+          color: "#fff",
+          family: "Arial",
+          outlineColor: "#f00",
+          outlineWidth: 10,
+          shadowBlur: 20,
+          shadowColor: "#000000",
+          style: "normal",
+          size: 200,
+          animations: [
+            {
+              time: 3,
+              key: "position.x",
+              value: -100,
+            },
+            {
+              time: 5,
+              key: "position.x",
+              value: 100,
+            },
+          ],
         },
       ],
     },
@@ -45,6 +63,7 @@ const initialTimelineState: Timeline = {
         {
           id: "effect2",
           type: "Video",
+          start: 10,
           position: {
             x: 10,
             y: -10,
@@ -89,6 +108,9 @@ function moveStrip(timeline: Ref<Timeline>) {
 
 function changeView(timeline: Ref<Timeline>) {
   return (start: number, end: number) => {
+    if (start < 0) start = 0;
+    if (end > timeline.value.length) end = timeline.value.length;
+    if (end - start < 1) end = start + 1;
     timeline.value.start = start;
     timeline.value.end = end;
   };

@@ -6,4 +6,19 @@ export type TextStripEffect = StripEffect & {
   text: string;
   size: number;
   color: string;
+  style: string; // ex normal, bold, italic
+  family: string; // ex serif Arial impact Monaco Papyrus
+  shadowColor: string;
+  shadowBlur: number;
+
+  outlineColor: string;
+  outlineWidth: number;
+
+  animations: Animation[];
 };
+
+interface Animation {
+  time: number;
+  key: string;
+  value: number;
+}

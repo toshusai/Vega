@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { Strip } from "~/core/Timeline";
+import { Strip } from "~~/src/core/Strip";
 import { onDragStart } from "~~/src/utils/onDragStart";
 const props = defineProps<{ strip: Strip }>();
 
 const { timeline, moveStrip, selectStrip } = useTimeline();
 
+const layerHeight = 50;
 const el = ref<HTMLElement | null>(null);
 
 const pixScale = computed(() => {
@@ -17,8 +18,8 @@ const pixScale = computed(() => {
 const style = computed(() => {
   return {
     width: props.strip.length * pixScale.value + "px",
-    height: "100%",
     position: "absolute",
+    top: props.strip.layer * layerHeight + "px",
     left: (props.strip.start - timeline.value.start) * pixScale.value + "px",
   };
 });
@@ -26,19 +27,16 @@ const style = computed(() => {
 function drag(e: MouseEvent) {
   e.preventDefault();
 
-  const layerHeight = 20;
-  const parent = el.value?.parentElement.parentElement;
+  const parent = el.value?.parentElement;
   const parentRect = parent?.getBoundingClientRect();
+
+  const startProps = { ...props.strip };
+  let startStart = startProps.start;
   onDragStart(e, (d, e) => {
     const layerIndex = Math.floor((e.clientY - parentRect.top) / layerHeight);
     if (layerIndex < 0) return;
-
-    moveStrip(
-      props.strip.id,
-      props.strip.start + d.x / pixScale.value,
-      props.strip.length,
-      layerIndex
-    );
+    startStart += d.x / pixScale.value;
+    moveStrip(startProps.id, startStart, startProps.length, layerIndex);
   });
 }
 
@@ -64,6 +62,17 @@ function moveEnd(e: MouseEvent) {
     );
   });
 }
+
+function getComponentNameFromStrip(strip: Strip) {
+  for (let i = 0; i < strip.effects.length; i++) {
+    const effect = strip.effects[i];
+    if (effect.type == "Text") {
+      return "PanelsTextStripUI";
+    } else if (effect.type == "Video") {
+      return "PanelsVideoStripUI";
+    }
+  }
+}
 </script>
 
 <template>
@@ -80,6 +89,10 @@ function moveEnd(e: MouseEvent) {
     @click.stop="() => selectStrip([props.strip.id])"
   >
     <div class="handle" @mousedown="moveStart"></div>
+    <component
+      :is="getComponentNameFromStrip(props.strip)"
+      :strip="props.strip"
+    />
     <div class="handle" style="right: 0" @mousedown="moveEnd"></div>
   </div>
 </template>
@@ -90,6 +103,7 @@ function moveEnd(e: MouseEvent) {
   background-color: lightblue;
   box-sizing: border-box;
   cursor: pointer;
+  height: 50px;
 }
 
 .strip-selected {
@@ -98,6 +112,7 @@ function moveEnd(e: MouseEvent) {
 
 .handle {
   position: absolute;
+  top: 0;
   width: 4px;
   background-color: darkblue;
   height: 100%;
