@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as THREE from "three";
 import { view } from "~~/src/composables/useTimeline";
+import { timeFormat } from "~~/src/utils/formatTime";
 import Gizmo from "../Gizmo.vue";
 
 const canvas = ref<HTMLCanvasElement>(null);
@@ -44,6 +45,8 @@ onMounted(() => {
     renderer.render(view.scene, view.camera);
   });
 });
+
+const timestamp = computed(() => timeFormat(timeline.value.curent));
 </script>
 
 <template>
@@ -62,11 +65,14 @@ onMounted(() => {
         <option value="0.2">20%</option>
       </v-select>
     </div>
-    <div style="display: flex; height: calc(100% - 16px)">
+    <div style="display: flex; height: calc(100% - 24px - 12px - 4px)">
       <div class="m-auto relative">
         <gizmo :scale="scale"></gizmo>
         <canvas ref="canvas" style="width: 100%; height: 100%; margin: auto" />
       </div>
+    </div>
+    <div style="line-height: 12px; height: 12px">
+      {{ timestamp }}
     </div>
   </div>
 </template>
