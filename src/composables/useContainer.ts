@@ -1,6 +1,7 @@
 import { Vector2 } from "three";
 import type { Ref } from "vue";
 import { Container, Position } from "../core/Container";
+import { IVector2 } from "../core/IVector2";
 
 const initialContaerState: Container = {
   id: "root",
@@ -109,7 +110,7 @@ export default function useContainer() {
    * @returns
    */
   const resizeContainer = (state: Ref<Container>) => {
-    return (payload: { id: string; delta: Vector2 }) => {
+    return (payload: { id: string; delta: IVector2 }) => {
       const { id, delta } = payload;
 
       const container = findContainer(state.value, id);
@@ -244,7 +245,7 @@ export default function useContainer() {
     resizeContainer: resizeContainer(container),
     changeLayout: changeLayout(container),
     addEventListener: ((state: Ref<Container>) => {
-      return (type: string, listener: (event: CustomEvent) => void) => {
+      return (type: string, listener: EventListenerOrEventListenerObject) => {
         event.addEventListener(type, listener);
       };
     })(container),

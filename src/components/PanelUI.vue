@@ -15,7 +15,7 @@ const mouseleave = (_e: MouseEvent) => {
 const { changeLayout } = useContainer();
 const upTop = (e: MouseEvent, pos: Position) => {
   changeLayout({
-    from: dad.value.payload,
+    from: dad.value.payload || "",
     to: props.containerId,
     pos,
   });

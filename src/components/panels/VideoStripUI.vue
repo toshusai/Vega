@@ -8,7 +8,7 @@ const { timeline } = useTimeline();
 
 const videoEls = ref<HTMLVideoElement[]>([]);
 
-const videoArray = ref([]);
+const videoArray = ref<number[]>([]);
 
 const videoEffect = props.strip.effects.find(
   (e) => e.type === "Video"
@@ -20,7 +20,7 @@ const el = ref<HTMLElement | null>(null);
 
 const pixScale = computed(() => {
   const width =
-    el.value?.parentElement.parentElement.getBoundingClientRect().width || 1;
+    el.value?.parentElement?.parentElement?.getBoundingClientRect().width || 1;
   const viewScale =
     (timeline.value.end - timeline.value.start) / timeline.value.length;
   return width / timeline.value.scale / viewScale;
@@ -38,6 +38,7 @@ const effectObj = computed(() => {
 function updateVideoArray() {
   if (!el.value) return;
   const parentRect = el.value.getBoundingClientRect();
+  if (!effectObj.value) return;
   if (effectObj.value.video.videoHeight == 0) return;
   const ratio =
     effectObj.value.video.videoHeight / effectObj.value.video.videoWidth;
@@ -54,12 +55,14 @@ function updateVideoArray() {
 }
 
 onMounted(() => {
+  if (!effectObj.value) return;
   effectObj.value.video.addEventListener("loadedmetadata", () => {
     updateVideoArray();
   });
 });
 
 const updateVideoStart = () => {
+  if (!el.value) return;
   const parentRect = el.value.getBoundingClientRect();
   videoEls.value.forEach((videoEl) => {
     if (!videoEl) return;
@@ -90,8 +93,8 @@ watch(props.strip, () => {
       v-for="(_, i) in videoArray"
       :key="i"
       :ref="
-        (el: HTMLVideoElement) => {
-          videoEls[i] = el;
+        (el) => {
+          videoEls[i] = el as HTMLVideoElement;
         }
       "
       :src="videoSrc"

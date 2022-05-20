@@ -2,7 +2,7 @@ import { TextStripEffect } from "./TextStripEffect";
 import { StripEffect } from "./StripEffect";
 import { VideoStripEffect } from "./VideoStripEffect";
 
-export class Strip {
+export interface Strip {
   id: string;
   start: number;
   length: number;

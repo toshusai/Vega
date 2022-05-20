@@ -34,7 +34,9 @@ export function useScene() {
     })(scene),
     update: ((state: Ref<State>) => {
       return () => {
-        state.value.renderer.render(state.value.scene, state.value.camera);
+        if (state.value.renderer && state.value.scene && state.value.camera) {
+          state.value.renderer.render(state.value.scene, state.value.camera);
+        }
       };
     })(scene),
   };

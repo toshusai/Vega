@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { TextStripEffectObject } from "../core/TextStripEffectObject";
+import { calcAnimationValue } from "../utils/calcAnimationValue";
 import { onDragStart } from "../utils/onDragStart";
 
 const { timeline, updateEffect } = useTimeline();
 
-const props = defineProps<{ scale: 1 }>();
+const props = defineProps<{ scale: number }>();
 
 const strip = computed(() => timeline.value.selectedStrips[0]);
 const effect = computed(() => strip.value && strip.value.effects[0]);
@@ -18,17 +19,21 @@ function updateStyle() {
   const obj = effectObjectMap.get(effect.value.id);
   if (!(obj instanceof TextStripEffectObject)) return { display: "none" };
 
-  //   console.log(obj.canvas.width, props.scale, obj.canvas.);
+  const x = calcAnimationValue(
+    effect.value.animations,
+    timeline.value.curent,
+    "position.x"
+  );
+
+  const y = calcAnimationValue(
+    effect.value.animations,
+    timeline.value.curent,
+    "position.y"
+  );
 
   return {
-    left:
-      (width / 2 + effect.value.position.x - obj.mesureWidth / 2) *
-        props.scale +
-      "px",
-    bottom:
-      (height / 2 + effect.value.position.y - obj.mesureHeight / 2) *
-        props.scale +
-      "px",
+    left: (width / 2 + x - obj.mesureWidth / 2) * props.scale + "px",
+    bottom: (height / 2 + y - obj.mesureHeight / 2) * props.scale + "px",
     width: obj.mesureWidth * props.scale + "px",
     height: obj.mesureHeight * props.scale + "px",
   };

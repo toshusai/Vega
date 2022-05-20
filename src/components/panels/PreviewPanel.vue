@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import * as THREE from "three";
 import { view } from "~~/src/composables/useTimeline";
+import { eventToFloat } from "~~/src/utils/eventToFloat";
 import { timeFormat } from "~~/src/utils/formatTime";
-import Gizmo from "../Gizmo.vue";
 
-const canvas = ref<HTMLCanvasElement>(null);
+const canvas = ref<HTMLCanvasElement | null>(null);
 
-const el = ref<HTMLDivElement>(null);
+const el = ref<HTMLDivElement | null>(null);
 
 const { addUpdate } = useUpdate();
 const { timeline } = useTimeline();
@@ -34,7 +34,7 @@ onMounted(() => {
 
   addUpdate(() => {
     if (!canvas.value) return;
-    const rect = el.value.getBoundingClientRect();
+    // const rect = el.value?.getBoundingClientRect();
     renderer.setSize(width, height);
     canvas.value.style.margin = `auto`;
 
@@ -56,10 +56,7 @@ const timestamp = computed(() => timeFormat(timeline.value.curent));
   >
     <div class="flex h-24">
       <div>Zoom:</div>
-      <v-select
-        :value="scale"
-        @input="(v) => (scale = Number.parseFloat(v.target.value))"
-      >
+      <v-select :value="scale" @input="(e) => (scale = eventToFloat(e))">
         <option value="1">100%</option>
         <option value="0.5">50%</option>
         <option value="0.2">20%</option>
@@ -67,7 +64,7 @@ const timestamp = computed(() => timeFormat(timeline.value.curent));
     </div>
     <div style="display: flex; height: calc(100% - 24px - 12px - 4px)">
       <div class="m-auto relative">
-        <gizmo :scale="scale"></gizmo>
+        <preview-gizmo :scale="scale" />
         <canvas ref="canvas" style="width: 100%; height: 100%; margin: auto" />
       </div>
     </div>

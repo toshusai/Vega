@@ -2,13 +2,16 @@ import * as THREE from "three";
 import { EffectObject } from "./EffectObject";
 import { TextStripEffect } from "./TextStripEffect";
 import { Strip } from "./Strip";
+import { easeInOutCubic } from "../utils/easeInOutCubic";
+import { normalize } from "../utils/normalize";
+import { calcAnimationValue, findBetween } from "../utils/calcAnimationValue";
 
 export class TextStripEffectObject extends EffectObject {
-  id: string;
-  obj?: THREE.Mesh;
-  texture?: THREE.CanvasTexture;
-  canvas?: HTMLCanvasElement;
-  ctx?: CanvasRenderingContext2D;
+  // id: string;
+  obj: THREE.Mesh;
+  texture: THREE.CanvasTexture;
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
   geometry?: THREE.PlaneBufferGeometry;
   material?: THREE.MeshBasicMaterial;
 
@@ -86,6 +89,7 @@ export class TextStripEffectObject extends EffectObject {
    * Draw text to canvas by ctx.fillText.
    */
   draw(itext: TextStripEffect) {
+    if (!this.ctx || !this.obj || !this.canvas) return;
     this.updateFont(itext);
     // const font =
     // this.updateFont();
@@ -124,50 +128,9 @@ export class TextStripEffectObject extends EffectObject {
   }
 
   public async update(strip: Strip, itext: TextStripEffect, time: number) {
-    function findBetween(time: number) {
-      let prev = -1;
-      for (let i = 0; i < itext.animations.length; i++) {
-        if (itext.animations[i].time < time) {
-          prev = i;
-        }
-      }
-
-      const prevAnimation = prev !== -1 ? itext.animations[prev] : null;
-
-      let next = -1;
-      for (let i = itext.animations.length - 1; i >= 0; i--) {
-        if (itext.animations[i].time > time) {
-          next = i;
-        }
-      }
-
-      const nextAnimation = next !== -1 ? itext.animations[next] : null;
-      return [prevAnimation, nextAnimation];
-    }
-
-    const [prev, next] = findBetween(time);
-
-    function normalize(min: number, max: number, value: number) {
-      return (value - min) / (max - min);
-    }
-
-    function easeInOutCubic(x: number): number {
-      return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-    }
-
-    let v = 0;
-    if (prev && next) {
-      v =
-        prev.value +
-        easeInOutCubic(normalize(prev.time, next.time, time)) *
-          (next.value - prev.value);
-    } else if (prev && !next) {
-      v = prev.value;
-    } else if (next && !prev) {
-      v = next.value;
-    }
-
-    this.obj.position.set(v, itext.position.y, strip.layer);
+    const x = calcAnimationValue(itext.animations, time, "position.x");
+    const y = calcAnimationValue(itext.animations, time, "position.y");
+    this.obj.position.set(x, y, strip.layer);
 
     if (strip.start < time && time < strip.start + strip.length) {
       this.obj.visible = true;
@@ -176,7 +139,6 @@ export class TextStripEffectObject extends EffectObject {
       this.obj.visible = false;
     }
 
-    // Use await for """Async method 'update' has no 'await' expression""" (require-await)
     return await new Promise<void>((resolve, reject) => {
       try {
         return resolve();

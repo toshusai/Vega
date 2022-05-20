@@ -17,7 +17,7 @@ export type TextStripEffect = StripEffect & {
   animations: Animation[];
 };
 
-interface Animation {
+export interface Animation {
   time: number;
   key: string;
   value: number;
