@@ -1,29 +1,23 @@
 <script setup lang="ts">
-let fileHandle;
-async function getFile() {
-  // open file picker
-
-  if (fileHandle.kind === "file") {
-    // run file code
-  } else if (fileHandle.kind === "directory") {
-    // run directory code
-  }
-  console.log(fileHandle);
-}
-
-interface IAsset {
-  id: string;
-  path: string;
-  name: string;
-  type: string;
-}
-
-const assets: IAsset[] = [
-  { id: "1", path: "/BigBuckBunny.mp4", name: "Big Buck Bunny", type: "Video" },
-];
+const { assets } = useAssets();
 </script>
+
 <template>
-  <div v-for="(asset, i) in assets" :key="i">
-    {{ asset.name }}
+  <div v-for="(asset, i) in assets.assets" :key="i" class="asset-list-item">
+    <component :is="asset.type + 'AssetListItem'" :asset="asset" />
   </div>
 </template>
+
+<style scoped>
+.asset-list-item {
+  white-space: nowrap;
+  display: flex;
+  cursor: pointer;
+  height: 32px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-grey);
+}
+.asset-list-item:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+</style>

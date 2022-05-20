@@ -1,5 +1,6 @@
 import * as T from "three";
 import { Vector3 } from "three";
+import { firstInterfact } from "./Global";
 import { IAsset } from "./IAsset";
 import { Strip } from "./Strip";
 import { VideoStripEffect } from "./VideoStripEffect";
@@ -35,7 +36,7 @@ export class VideoStripEffectObject {
 
     this.video.controls = true;
     // document.body.append(this.video);
-    this.loaded = true;
+    // this.loaded = true;
 
     this.canvas = document.createElement("canvas");
     this.canvas.width = this.video.videoWidth;
@@ -99,6 +100,8 @@ export class VideoStripEffectObject {
     this.video.load();
   }
 
+  prevTime = 0;
+
   public async update(
     strip: Strip,
     effect: VideoStripEffect,
@@ -122,12 +125,20 @@ export class VideoStripEffectObject {
       this.obj.visible = true;
       this.video.volume = 1;
 
+      // When move strip and
+      if (this.prevTime !== strip.start) {
+        this.video.currentTime = time - strip.start + effect.start;
+      }
+
       if ((isPlay && this.video.paused) || jump) {
-        if (!this.inProgress) {
-          this.inProgress = true;
-          this.video.play().then(() => {
-            this.inProgress = false;
-          });
+        // cannot play without user interaction
+        if (firstInterfact) {
+          if (!this.inProgress) {
+            this.inProgress = true;
+            this.video.play().then(() => {
+              this.inProgress = false;
+            });
+          }
           this.video.currentTime = time - strip.start + effect.start;
         }
       }
@@ -141,5 +152,6 @@ export class VideoStripEffectObject {
       }
       this.obj.visible = false;
     }
+    this.prevTime = strip.start;
   }
 }

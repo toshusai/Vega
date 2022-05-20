@@ -3,10 +3,10 @@ import { onDragStart } from "~~/src/utils/onDragStart";
 
 const { timeline, update } = useTimeline();
 
-const el = ref<HTMLElement>(null);
+const el = ref<HTMLElement | null>(null);
 
 const pixScale = computed(() => {
-  const width = el.value?.parentElement.getBoundingClientRect().width || 1;
+  const width = el.value?.parentElement?.getBoundingClientRect().width || 1;
   const viewScale =
     (timeline.value.end - timeline.value.start) / timeline.value.length;
   return width / timeline.value.scale / viewScale;
@@ -26,8 +26,9 @@ const secs = computed(() => {
 
 function setTime(e: MouseEvent) {
   const x = e.clientX;
-  const width = el.value?.parentElement.getBoundingClientRect().width || 1;
-  const time = x / pixScale.value + timeline.value.start;
+  const left = el.value?.parentElement?.getBoundingClientRect().left || 1;
+
+  const time = (x - left) / pixScale.value + timeline.value.start;
   update(time, true);
 }
 
@@ -44,9 +45,9 @@ function dragStart(e: MouseEvent) {
     ref="el"
     class="view"
     style="
-      height: 10px;
+      height: 20px;
       font-size: 4px;
-      line-height: 10px;
+      line-height: 20px;
       border-bottom: 1px solid;
       position: relative;
       overflow: hidden;

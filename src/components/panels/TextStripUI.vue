@@ -16,7 +16,7 @@ const el = ref<HTMLElement | null>(null);
 
 const pixScale = computed(() => {
   const width =
-    el.value?.parentElement.parentElement.getBoundingClientRect().width || 1;
+    el.value?.parentElement?.parentElement?.getBoundingClientRect().width || 1;
   const viewScale =
     (timeline.value.end - timeline.value.start) / timeline.value.length;
   return width / timeline.value.scale / viewScale;
@@ -32,8 +32,10 @@ const effectObj = computed(() => {
 });
 
 function drawCanvas() {
+  if (!canvas.value) return;
   const ctx = canvas.value?.getContext("2d");
   if (!ctx) return;
+  if (!effectObj.value) return;
   const srcCanvas = effectObj.value.canvas;
   const srcCtx = srcCanvas.getContext("2d");
   // canvas.value.width = srcCanvas.width;
@@ -72,7 +74,7 @@ onMounted(() => {
   <div
     v-if="textEffect"
     ref="el"
-    style="height: 100%; display: flex; overflow: hidden; padding: 0 4px"
+    style="height: 100%; display: flex; overflow: hidden; padding: 0 12px"
   >
     <canvas ref="canvas" class="video" />
   </div>

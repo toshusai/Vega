@@ -1,9 +1,12 @@
 {
   "private": true,
+  "main": "dist/index.js",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
+    "dev:electron": "tsc -p ./src/main/tsconfig.json",
+    "dev:electron:run": "NODE_ENV='development' electron .",
     "preview": "nuxt preview"
   },
   "devDependencies": {
@@ -26,6 +29,9 @@
     "typescript-eslint": "^0.0.1-alpha.0"
   },
   "dependencies": {
+    "electron": "^18.2.4",
+    "electron-builder": "^23.0.3",
+    "electron-devtools-installer": "^3.2.0",
     "three": "^0.139.2"
   }
 }

@@ -179,6 +179,7 @@ export function isVideo(effect: StripEffect): effect is VideoStripEffect {
 import * as THREE from "three";
 import { VideoStripEffect } from "../core/VideoStripEffect";
 import { VideoStripEffectObject } from "../core/VideoStripEffectObject";
+import { Strip } from "../core/Strip";
 
 export const view: State = {
   scene: new THREE.Scene(),
@@ -229,7 +230,7 @@ export function useTimeline() {
           .map((id) => {
             return findStripById(id, state.value);
           })
-          .filter((strip) => strip);
+          .filter((strip) => strip) as Strip[];
         state.value.selectedStrips = strips;
       };
     })(timeline),

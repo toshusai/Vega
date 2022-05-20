@@ -1,7 +1,7 @@
 import { Ref } from "nuxt/dist/app/compat/capi";
 interface DD {
   key: string;
-  payload: string;
+  payload: string | null;
 }
 
 export default function () {

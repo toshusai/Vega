@@ -27,14 +27,33 @@ const bottom = (event: MouseEvent) => {
 
 <template>
   <div class="layout-change-area">
-    <div class="top" @mouseup="top"></div>
-    <div class="left" @mouseup="left"></div>
+    <div class="top">
+      <svg
+        style="left: -32px; width: 32px; height: 32px; position: absolute"
+        viewBox="0 0 32 32"
+        fill="var(--area-color)"
+        @mouseup="top"
+      >
+        <path d="M0 0 L32 0 L32 32 Z" />
+      </svg>
+      <svg
+        style="right: -32px; width: 32px; height: 32px; position: absolute"
+        viewBox="0 0 32 32"
+        fill="var(--area-color)"
+        @mouseup="top"
+      >
+        <path d="M0 0 L32 0 L0 32 Z" />
+      </svg>
+    </div>
+    <!-- <div class="left" @mouseup="left"></div>
     <div class="right" @mouseup="right"></div>
-    <div class="bottom" @mouseup="bottom"></div>
+    <div class="bottom" @mouseup="bottom"></div> -->
   </div>
 </template>
 
 <style scoped>
+:root {
+}
 .layout-change-area {
   position: absolute;
   left: 0;
@@ -44,12 +63,13 @@ const bottom = (event: MouseEvent) => {
 }
 
 .top {
+  --area-color: rgba(0, 0, 0, 0.5);
   position: absolute;
   top: 0;
   left: 32px;
   width: calc(100% - 64px);
   height: 32px;
-  background-color: gray;
+  background-color: var(--area-color);
 }
 
 .right {
