@@ -1,4 +1,4 @@
-# v2 is comming soon!
+# v2 is coming soon!
 
 WIP: https://github.com/toshusai/vega/tree/v2.0.0
 
