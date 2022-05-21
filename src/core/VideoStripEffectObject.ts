@@ -31,7 +31,7 @@ export class VideoStripEffectObject {
     return this.video.src;
   }
 
-  constructor(iface: VideoStripEffect) {
+  constructor(iface: VideoStripEffect, src: string) {
     this.video = document.createElement("video");
 
     this.video.controls = true;
@@ -64,8 +64,7 @@ export class VideoStripEffectObject {
     if (iface.id) {
       this.obj.uuid = iface.id;
     }
-    // this.video.src = "/BigBuckBunny.mp4";
-    this.updateAsset("/BigBuckBunny.mp4");
+    this.updateAsset(src);
 
     // const cube = new T.Mesh(
     //   new T.BoxGeometry(100, 100, 100),

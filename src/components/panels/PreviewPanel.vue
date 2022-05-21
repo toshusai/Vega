@@ -77,7 +77,7 @@ function pointerdown(e: MouseEvent) {
     style="height: calc(100% - 12px); width: 100%; overflow: hidden"
   >
     <div class="flex h-24">
-      <div>Zoom:</div>
+      <div>Zoom:{{ scale }}</div>
       <v-select :value="scale" @input="(e) => (scale = eventToFloat(e))">
         <option value="1">100%</option>
         <option value="0.5">50%</option>

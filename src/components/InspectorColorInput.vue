@@ -4,6 +4,6 @@ const props = defineProps<{ label: string; value: string | number }>();
 </script>
 <template>
   <inspector-input-base :label="label">
-    <v-input v-bind="$attrs" :value="value" />
+    <v-color-input v-bind="$attrs" :value="value" />
   </inspector-input-base>
 </template>

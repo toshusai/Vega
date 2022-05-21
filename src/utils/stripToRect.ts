@@ -26,14 +26,14 @@ export function stripToRect(
 
     const x = calcAnimationValue(
       effect.animations,
-      currentTime,
+      currentTime - strip.start,
       "position.x",
       effect.position.x
     );
 
     const y = calcAnimationValue(
       effect.animations,
-      currentTime,
+      currentTime - strip.start,
       "position.y",
       effect.position.y
     );

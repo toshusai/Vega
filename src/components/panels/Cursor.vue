@@ -31,6 +31,6 @@ const pixScale = computed(() => {
   width: 1px;
   height: calc(100% - 20px);
   background: red;
-  z-index: 1;
+  z-index: 2;
 }
 </style>

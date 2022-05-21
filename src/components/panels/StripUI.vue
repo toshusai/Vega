@@ -17,6 +17,9 @@ const pixScale = computed(() => {
 });
 
 const CUT_LEFT_PX = 50;
+const MIN_VISIBLE_WIDTH = 28; // border 4 * 2 + handle 8 * 2 + middle space 4
+
+const hiddenWidth = ref(0);
 const style = computed<CSSProperties>(() => {
   let left = (props.strip.start - timeline.value.start) * pixScale.value;
   let width = props.strip.length * pixScale.value;
@@ -24,6 +27,13 @@ const style = computed<CSSProperties>(() => {
   if (left < -CUT_LEFT_PX) {
     width += left + CUT_LEFT_PX;
     left = -CUT_LEFT_PX;
+  }
+
+  if (width <= MIN_VISIBLE_WIDTH) {
+    hiddenWidth.value = MIN_VISIBLE_WIDTH - width;
+    width = MIN_VISIBLE_WIDTH;
+  } else {
+    hiddenWidth.value = 0;
   }
 
   return {
@@ -53,10 +63,13 @@ function drag(e: MouseEvent) {
 
 function moveStart(e: MouseEvent) {
   e.stopPropagation();
+  const firstEnd = props.strip.start + props.strip.length;
   onDragStart(e, (d) => {
+    const start = props.strip.start + d.x / pixScale.value;
+    if (start > firstEnd) return;
     moveStrip(
       props.strip.id,
-      props.strip.start + d.x / pixScale.value,
+      start,
       props.strip.length - d.x / pixScale.value,
       props.strip.layer
     );
@@ -66,11 +79,9 @@ function moveStart(e: MouseEvent) {
 function moveEnd(e: MouseEvent) {
   e.stopPropagation();
   onDragStart(e, (d) => {
-    moveStrip(
-      props.strip.id,
-      props.strip.start,
-      props.strip.length + d.x / pixScale.value
-    );
+    const length = props.strip.length + d.x / pixScale.value;
+    if (length < 0) return;
+    moveStrip(props.strip.id, props.strip.start, length);
   });
 }
 
@@ -105,6 +116,13 @@ function getComponentNameFromStrip(strip: Strip) {
       :strip="props.strip"
     />
     <div class="handle" style="right: 0" @mousedown="moveEnd"></div>
+    <div
+      class="absolute -right-[4px] -top-[4px] h-[49px]"
+      style="background-color: rgba(0, 0, 0, 0.5)"
+      :style="{
+        width: hiddenWidth + 'px',
+      }"
+    ></div>
   </div>
 </template>
 
@@ -130,5 +148,7 @@ function getComponentNameFromStrip(strip: Strip) {
   background-color: var(--teal-300);
   height: 100%;
   cursor: ew-resize;
+  z-index: 1;
+  user-select: none;
 }
 </style>
