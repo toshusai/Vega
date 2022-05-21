@@ -79,9 +79,11 @@ function moveView(e: MouseEvent) {
   top: 1px;
   cursor: pointer;
   box-sizing: border-box;
+  user-select: none;
 }
 .fill {
   position: absolute;
+  user-select: none;
   border-radius: 6px;
   cursor: pointer;
 }

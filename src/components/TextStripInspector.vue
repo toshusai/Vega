@@ -6,7 +6,7 @@ import { isText } from "~/composables/useTimeline";
 import { eventToFloat } from "../utils/eventToFloat";
 import { eventToString } from "../utils/eventToString";
 import InspectorInput from "./InspectorInput.vue";
-
+// var colors = "#194d33";
 const { updateEffect } = useTimeline();
 const props = defineProps<{ strip: Strip }>();
 
@@ -34,6 +34,10 @@ return effect
       ...newNewE,
     });
   }
+}
+
+function u(x) {
+  console.log(x);
 }
 </script>
 
@@ -73,10 +77,10 @@ return effect
         :value="effect.size"
         @input="(e) => changeText(eventToFloat(e), 'size')"
       />
-      <inspector-input
+      <inspector-color-input
         label="color"
         :value="effect.color"
-        @input="(e) => changeText(eventToString(e), 'color')"
+        @update-color="(e) => changeText(e, 'color')"
       />
       <inspector-input
         label="style"

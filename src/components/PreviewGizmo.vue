@@ -25,14 +25,14 @@ function updateStyle(): CSSProperties {
 
     const x = calcAnimationValue(
       effect.value.animations,
-      timeline.value.curent,
+      timeline.value.curent - strip.value.start,
       "position.x",
       effect.value.position.x
     );
 
     const y = calcAnimationValue(
       effect.value.animations,
-      timeline.value.curent,
+      timeline.value.curent - strip.value.start,
       "position.y",
       effect.value.position.y
     );
@@ -103,7 +103,7 @@ function drag(e: MouseEvent) {
         p.x =
           calcAnimationValue(
             newE.animations,
-            timeline.value.curent,
+            timeline.value.curent - strip.value.start,
             "position.x"
           ) +
           delta.x / props.scale;
@@ -111,7 +111,7 @@ function drag(e: MouseEvent) {
           id: uuid(),
           key: "position.x",
           value: p.x,
-          time: timeline.value.curent - 0.01,
+          time: timeline.value.curent - strip.value.start - 0.01,
         });
         // setAnimation(newE.animations, {
         //   key: "position.y",

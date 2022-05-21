@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { react } from "@babel/types";
-import { rejects } from "assert";
 import { Strip } from "~~/src/core/Strip";
 import { VideoStripEffect } from "~~/src/core/VideoStripEffect";
 import { VideoStripEffectObject } from "~~/src/core/VideoStripEffectObject";
 
 const props = defineProps<{ strip: Strip }>();
 const { timeline } = useTimeline();
+const { assets } = useAssets();
 
 const imageEls = ref<HTMLImageElement[]>([]);
 
@@ -16,8 +15,13 @@ const videoEffect = props.strip.effects.find(
   (e) => e.type === "Video"
 ) as VideoStripEffect;
 
-const videoSrc = "./BigBuckBunny.mp4";
-
+const videoSrc = computed(() => {
+  return (
+    assets.value.assets.find((a) => {
+      return a.id == videoEffect.videoAssetId;
+    })?.path || ""
+  );
+});
 const el = ref<HTMLElement | null>(null);
 
 const pixScale = computed(() => {
@@ -65,6 +69,8 @@ let thumbnailVideo: HTMLVideoElement | null = null;
 var thumbnailCache = new Map<string, string>();
 
 function setCache(time: number, url: string) {
+  console.log(time.toFixed(1));
+
   thumbnailCache.set(time.toFixed(1), url);
 }
 function getCache(time: number) {
@@ -75,7 +81,7 @@ onMounted(() => {
   drawCanvas = document.createElement("canvas");
   drawCtx = drawCanvas.getContext("2d");
   thumbnailVideo = document.createElement("video");
-  thumbnailVideo.src = videoSrc;
+  thumbnailVideo.src = videoSrc.value;
   document.body.appendChild(thumbnailVideo);
   if (!effectObj.value) return;
   effectObj.value.video.addEventListener("loadedmetadata", () => {
@@ -86,7 +92,7 @@ onMounted(() => {
 const rootOffset = ref(0);
 const updateVideoStart = async () => {
   if (!el.value) return;
-  const parentRect = el.value.getBoundingClientRect();
+  // const parentRect = el.value.getBoundingClientRect();
   const promises: (() => Promise<void>)[] = [];
   let i = 0;
   imageEls.value.forEach((imageEl) => {
@@ -98,10 +104,13 @@ const updateVideoStart = async () => {
       // console.log(rect.left, startPx);
     }
 
-    const t = i;
     promises.push(
       () =>
-        new Promise((resolve, reject) => {
+        new Promise((resolve) => {
+          var i = setTimeout(() => {
+            clearTimeout(i);
+            resolve();
+          }, 1000);
           let currentTime = 0;
 
           if (!thumbnailVideo) return resolve();
@@ -182,7 +191,10 @@ watch(timeline.value, () => {
       width: 100%;
     "
   >
-    <div :style="`margin-left: ${rootOffset + 4}px`" class="flex">
+    <div
+      :style="`margin-left: ${rootOffset + 4}px`"
+      class="flex pointer-events-none"
+    >
       <img
         v-for="(_, i) in videoArray"
         :key="i"

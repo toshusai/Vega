@@ -130,13 +130,13 @@ export class TextStripEffectObject extends EffectObject {
   public async update(strip: Strip, itext: TextStripEffect, time: number) {
     const x = calcAnimationValue(
       itext.animations,
-      time,
+      time - strip.start,
       "position.x",
       itext.position.x
     );
     const y = calcAnimationValue(
       itext.animations,
-      time,
+      time - strip.start,
       "position.y",
       itext.position.y
     );

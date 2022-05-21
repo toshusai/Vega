@@ -7,7 +7,7 @@ export type TextStripEffect = StripEffect & {
   size: number;
   color: string;
   style: string; // ex normal, bold, italic
-  family: string; // ex serif Arial impact Monaco Papyrus
+  family: string; // ex serif Arial impact Monaco Papyrus ヒラギノ角ゴシック
   shadowColor: string;
   shadowBlur: number;
 

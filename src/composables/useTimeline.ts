@@ -72,7 +72,7 @@ const initialTimelineState: Timeline = {
             y: -10,
             z: 0,
           },
-          videoAssetId: "video1",
+          videoAssetId: "asset1",
           animations: [],
         },
       ],
@@ -198,6 +198,7 @@ export interface State {
 
 export function useTimeline() {
   const timeline = useState("timeline", () => initialTimelineState);
+  const assets = useAssets();
 
   onMounted(() => {
     for (const strip of timeline.value.strips) {
@@ -210,7 +211,12 @@ export function useTimeline() {
           }
         } else if (isVideo(effect)) {
           if (!effectObjectMap.has(effect.id)) {
-            const videoObj = new VideoStripEffectObject(effect);
+            const videoObj = new VideoStripEffectObject(
+              effect,
+              assets.assets.value.assets.find(
+                (a) => a.id == effect.videoAssetId
+              )?.path || ""
+            );
             effectObjectMap.set(effect.id, videoObj);
             view.scene.add(videoObj.obj);
           }
