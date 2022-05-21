@@ -131,7 +131,7 @@ const strips = computed<Strip[]>(() => {
 .timeline-root {
   display: flex;
   overflow: hidden;
-  height: calc(100% - 12px);
+  height: 100%;
   position: relative;
 }
 .layer {

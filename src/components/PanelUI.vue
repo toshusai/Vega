@@ -25,7 +25,7 @@ const upTop = (e: MouseEvent, pos: Position) => {
 <template>
   <div
     :id="containerId"
-    class="panel"
+    class="panel overflow-hidden"
     @mouseenter="mouseenter"
     @mouseleave="mouseleave"
   >
@@ -44,7 +44,9 @@ const upTop = (e: MouseEvent, pos: Position) => {
         {{ props.name }}
       </div>
     </div>
-    <component :is="'Panels' + props.name + 'Panel'" />
+    <div style="height: calc(100% - 12px)">
+      <component :is="'Panels' + props.name + 'Panel'" />
+    </div>
   </div>
 </template>
 

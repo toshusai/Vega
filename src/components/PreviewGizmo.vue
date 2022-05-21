@@ -5,6 +5,7 @@ import { VideoStripEffectObject } from "../core/VideoStripEffectObject";
 import { calcAnimationValue } from "../utils/calcAnimationValue";
 import { onDragStart } from "../utils/onDragStart";
 import { setAnimation } from "../utils/setAnimation";
+import { uuid } from "short-uuid";
 
 const { timeline, updateEffect } = useTimeline();
 
@@ -107,6 +108,7 @@ function drag(e: MouseEvent) {
           ) +
           delta.x / props.scale;
         setAnimation(newE.animations, {
+          id: uuid(),
           key: "position.x",
           value: p.x,
           time: timeline.value.curent - 0.01,
@@ -138,7 +140,8 @@ function drag(e: MouseEvent) {
 
 <style scoped>
 .gizmo {
-  border: 1px solid #0096fa;
-  box-sizing: border-box;
+  border: 1px solid red;
+  /* box-sizing: border-box; */
+  /* box-sizing: content-box; */
 }
 </style>

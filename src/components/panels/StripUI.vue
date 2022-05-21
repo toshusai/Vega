@@ -16,12 +16,19 @@ const pixScale = computed(() => {
   return width / timeline.value.scale / viewScale;
 });
 
+const CUT_LEFT_PX = 50;
 const style = computed<CSSProperties>(() => {
+  let left = (props.strip.start - timeline.value.start) * pixScale.value;
+  let width = props.strip.length * pixScale.value;
+  if (left < -CUT_LEFT_PX) {
+    width += left + CUT_LEFT_PX;
+    left = -CUT_LEFT_PX;
+  }
   return {
-    width: props.strip.length * pixScale.value + "px",
+    width: width + "px",
     position: "absolute",
     top: props.strip.layer * layerHeight + 1 + "px",
-    left: (props.strip.start - timeline.value.start) * pixScale.value + "px",
+    left: left + "px",
   };
 });
 

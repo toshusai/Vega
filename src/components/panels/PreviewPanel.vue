@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { time } from "console";
 import * as THREE from "three";
 import { view } from "~~/src/composables/useTimeline";
 import { eventToFloat } from "~~/src/utils/eventToFloat";
@@ -9,7 +10,7 @@ const canvas = ref<HTMLCanvasElement | null>(null);
 const el = ref<HTMLDivElement | null>(null);
 
 const { addUpdate } = useUpdate();
-const { timeline } = useTimeline();
+const { timeline, selectStrip } = useTimeline();
 
 const scale = ref(0.2);
 
@@ -47,6 +48,27 @@ onMounted(() => {
 });
 
 const timestamp = computed(() => timeFormat(timeline.value.curent));
+
+function pointerdown(e: MouseEvent) {
+  const { left, right, top, bottom } =
+    canvas.value?.getBoundingClientRect() || {
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+    };
+  const x = (e.clientX - left) / scale.value;
+  const y = (e.clientY - top) / scale.value;
+
+  timeline.value.strips.forEach((strip) => {
+    if (
+      strip.start < timeline.value.curent &&
+      strip.start + strip.length > timeline.value.curent
+    ) {
+      selectStrip([strip.id]);
+    }
+  });
+}
 </script>
 
 <template>
@@ -65,7 +87,11 @@ const timestamp = computed(() => timeFormat(timeline.value.curent));
     <div style="display: flex; height: calc(100% - 24px - 12px - 4px)">
       <div class="m-auto relative">
         <preview-gizmo :scale="scale" />
-        <canvas ref="canvas" style="width: 100%; height: 100%; margin: auto" />
+        <canvas
+          ref="canvas"
+          style="width: 100%; height: 100%; margin: auto"
+          @pointerdown="pointerdown"
+        />
       </div>
     </div>
     <div style="line-height: 12px; height: 12px">

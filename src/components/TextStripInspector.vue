@@ -49,6 +49,9 @@ return effect
       <inspector-input
         label="x"
         :value="effect.position.x"
+        @update-number="
+          (n) => changeText({ ...effect?.position, x: n }, 'position')
+        "
         @input="
           (e) =>
             changeText({ ...effect?.position, x: eventToFloat(e) }, 'position')
@@ -57,6 +60,9 @@ return effect
       <inspector-input
         label="y"
         :value="effect.position.y"
+        @update-number="
+          (n) => changeText({ ...effect?.position, y: n }, 'position')
+        "
         @input="
           (e) =>
             changeText({ ...effect?.position, y: eventToFloat(e) }, 'position')

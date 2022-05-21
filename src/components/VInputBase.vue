@@ -1,46 +1,6 @@
-<script setup lang="ts">
-import { onDragStart } from "../utils/onDragStart";
-
-const props = defineProps<{
-  value: number | string;
-}>();
-
-const emit = defineEmits<{
-  (e: "updateNumber", value: number): void;
-}>();
-
-function pointerdown(e: MouseEvent) {
-  onDragStart(e, (delta, e) => {
-    if (typeof props.value === "number") {
-      emit("updateNumber", props.value + e.movementX);
-    } else {
-    }
-  });
-}
-</script>
-
 <template>
-  <div class="flex cursor-ew-resize">
-    <svg
-      class="my-auto mx-4 rounded-4"
-      style="
-        border: 1px solid var(--border-grey);
-        width: 16px;
-        height: 16px;
-        user-select: none;
-      "
-      viewBox="0 0 24 24"
-      @pointerdown="pointerdown"
-    >
-      <path
-        fill="currentColor"
-        d="M8,14V18L2,12L8,6V10H16V6L22,12L16,18V14H8Z"
-      />
-    </svg>
-  </div>
   <input
     v-bind="$attrs"
-    :value="value"
     class="bg-transparent border-default border-2 rounded-4 pl-4 text-sm w-full"
   />
 </template>

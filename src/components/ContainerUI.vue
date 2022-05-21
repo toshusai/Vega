@@ -48,12 +48,12 @@ onMounted(() => {
       <template v-if="i !== 0">
         <ResizeTop
           v-if="props.container.align == 'vertical'"
-          @mousedown="(e) => onDragStart(e, move(i))"
+          @mousedown="(e:MouseEvent) => onDragStart(e, move(i))"
         >
         </ResizeTop>
         <ResizeLeft
           v-else
-          @mousedown="(e) => onDragStart(e, move(i))"
+          @mousedown="(e:MouseEvent) => onDragStart(e, move(i))"
         ></ResizeLeft>
       </template>
     </RectUI>

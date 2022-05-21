@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { react } from "@babel/types";
 import { Strip } from "~~/src/core/Strip";
 import { VideoStripEffect } from "~~/src/core/VideoStripEffect";
 import { VideoStripEffectObject } from "~~/src/core/VideoStripEffectObject";
@@ -26,8 +27,6 @@ const pixScale = computed(() => {
   return width / timeline.value.scale / viewScale;
 });
 
-const videoHeight = 50 - 2;
-
 const effectObj = computed(() => {
   const effectObj = effectObjectMap.get(
     videoEffect.id
@@ -51,38 +50,71 @@ function updateVideoArray() {
 
   if (newArray.length != videoArray.value.length) {
     videoArray.value = newArray;
+    console.log(videoArray.value.length);
   }
 }
 
+const videoHeight = 40;
+var drawCanvas: HTMLCanvasElement | null = null;
+var drawCtx: CanvasRenderingContext2D | null = null;
+
+var thumbnailCache = new Map<number, string>();
+
 onMounted(() => {
+  drawCanvas = document.createElement("canvas");
+  drawCtx = drawCanvas.getContext("2d");
   if (!effectObj.value) return;
   effectObj.value.video.addEventListener("loadedmetadata", () => {
     updateVideoArray();
   });
 });
 
+const rootOffset = ref(0);
 const updateVideoStart = () => {
   if (!el.value) return;
   const parentRect = el.value.getBoundingClientRect();
+  let i = 0;
   videoEls.value.forEach((videoEl) => {
     if (!videoEl) return;
     const rect = videoEl.getBoundingClientRect();
     const startPx = rect.left - parentRect.left;
 
+    videoEl.style.visibility = "hidden";
+    videoEl.onseeked = () => {
+      drawCtx?.drawImage(videoEl, 0, 0);
+      var url = drawCanvas?.toDataURL("image/jpeg", 0.5);
+      if (url) thumbnailCache.set(videoEl.currentTime, url);
+      videoEl.style.visibility = "visible";
+    };
     videoEl.currentTime = startPx / pixScale.value + videoEffect.start;
-
+    let left = (props.strip.start - timeline.value.start) * pixScale.value;
+    // if (i == 0) console.log(videoEl.currentTime);
+    if (left < -50) {
+      rootOffset.value = (left + 50) % rect.width;
+      const l = Math.floor((left + 50) / rect.width) + 1;
+      // 見えなくなった時、消された差分だけ時間を引くい
+      videoEl.currentTime -=
+        rootOffset.value / pixScale.value + l * (rect.width / pixScale.value);
+    }
+    if (i == 0) console.log(videoEl.currentTime);
+    const tmp = i;
     videoEl.addEventListener("loadedmetadata", () => {
       const rect = videoEl.getBoundingClientRect();
       const startPx = rect.left - parentRect.left;
-      videoEl.currentTime = startPx / pixScale.value + videoEffect.start;
+      // videoEl.currentTime = startPx / pixScale.value + videoEffect.start;
     });
+    i++;
   });
 };
 
 watch(videoEls.value, () => updateVideoStart());
 watch(props.strip, () => {
-  updateVideoStart();
   updateVideoArray();
+  updateVideoStart();
+});
+watch(timeline.value, () => {
+  updateVideoArray();
+  updateVideoStart();
 });
 </script>
 
@@ -90,19 +122,29 @@ watch(props.strip, () => {
   <div
     v-if="videoEffect"
     ref="el"
-    style="height: 100%; display: flex; overflow: hidden; padding: 0 4px"
+    style="
+      height: 100%;
+      display: flex;
+      overflow: hidden;
+      padding: 0 4px;
+      position: absolute;
+      width: 100%;
+    "
   >
-    <video
-      v-for="(_, i) in videoArray"
-      :key="i"
-      :ref="
+    <div :style="`margin-left: ${rootOffset + 4}px`" class="flex">
+      <video
+        v-for="(_, i) in videoArray"
+        :key="i"
+        :ref="
         (el) => {
           videoEls[i] = el as HTMLVideoElement;
         }
       "
-      :src="videoSrc"
-      class="video"
-    ></video>
+        :height="videoHeight"
+        :src="videoSrc"
+        class="video"
+      ></video>
+    </div>
   </div>
 </template>
 

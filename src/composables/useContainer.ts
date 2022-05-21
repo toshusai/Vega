@@ -11,17 +11,44 @@ const initialContaerState: Container = {
       children: [
         {
           id: "panel1-1",
-          children: [],
+          children: [
+            {
+              id: "panel1-1-1",
+              children: [],
+              rect: {
+                top: 0,
+                left: 0,
+                width: 100,
+                height: 50,
+              },
+              align: "",
+              panel: {
+                type: "Inspector",
+              },
+            },
+            {
+              id: "panel1-1-2",
+              children: [],
+              rect: {
+                top: 0,
+                left: 0,
+                width: 100,
+                height: 50,
+              },
+              align: "",
+              panel: {
+                type: "Keyframe",
+              },
+            },
+          ],
+          align: "vertical",
           rect: {
             top: 0,
             left: 0,
             width: 30,
             height: 100,
           },
-          align: "",
-          panel: {
-            type: "Inspector",
-          },
+          panel: null,
         },
         {
           id: "panel1-2",
