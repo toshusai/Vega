@@ -19,11 +19,11 @@ const effect: ComputedRef<TextStripEffect | null> = computed(() => {
 </script>
 
 <template>
-  <template v-if="strip">
+  <div v-if="strip" style="height: 100%; overflow-y: scroll">
     <text-strip-inspector v-if="getEffect(strip, 'Text')" :strip="strip" />
     <video-strip-inspector
       v-else-if="getEffect(strip, 'Video')"
       :strip="strip"
     />
-  </template>
+  </div>
 </template>

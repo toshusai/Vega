@@ -1,12 +1,13 @@
 import { Ref } from "nuxt/dist/app/compat/capi";
 import { Timeline } from "../core/Timeline";
 import { EffectObject } from "../core/EffectObject";
-import { TextStripEffect } from "../core/TextStripEffect";
+import { Animation, TextStripEffect } from "../core/TextStripEffect";
 import { StripEffect } from "../core/StripEffect";
 import { TextStripEffectObject } from "../core/TextStripEffectObject";
 
 const initialTimelineState: Timeline = {
   selectedStrips: [],
+  selectedKeyframes: [],
   isPlay: false,
   width: 1920,
   height: 1080,
@@ -41,11 +42,13 @@ const initialTimelineState: Timeline = {
           size: 200,
           animations: [
             {
+              id: "animation1",
               time: 3,
               key: "position.x",
               value: -100,
             },
             {
+              id: "animation2",
               time: 5,
               key: "position.x",
               value: 100,
@@ -243,6 +246,12 @@ export function useTimeline() {
         const index = strip.effects.findIndex((e) => e.id === effect.id);
         if (index === -1) return;
         strip.effects[index] = effect;
+      };
+    })(timeline),
+
+    selectKeyframe: ((state: Ref<Timeline>) => {
+      return (animations: Animation[]) => {
+        state.value.selectedKeyframes = animations;
       };
     })(timeline),
   };

@@ -11,7 +11,7 @@ const emit = defineEmits<{
   (e: "end", n: number): void;
 }>();
 
-const el = ref<HTMLElement>(null);
+const el = ref<HTMLElement | null>(null);
 
 function moveStart(e: MouseEvent) {
   e.stopPropagation();
@@ -44,49 +44,44 @@ function moveView(e: MouseEvent) {
 <template>
   <div
     ref="el"
-    style="height: 14px; width: 100%; position: relative; padding: 2px"
+    style="height: 20px; width: 100%; position: relative; padding: 4px 0"
+    class="bg-surface2"
   >
     <div
-      class="fill bg-surface2"
+      class="fill bg-surface3 top-[4px] absolute h-[12px]"
       :style="{
-        left: props.start * 100 + '%',
-        width: (props.end - props.start) * 100 + '%',
+        left: `calc(${props.start * 100}% + 2px)`,
+        width: `calc(${(props.end - props.start) * 100}% - 4px)`,
       }"
       @mousedown="moveView"
-    ></div>
-
-    <div
-      class="handle bg-surface2 rounded-8"
-      :style="{
-        left: props.start * 100 + '%',
-      }"
-      @mousedown="moveStart"
-    ></div>
-    <div
-      class="handle bg-surface2 rounded-8"
-      :style="{
-        left: 'calc(' + props.end * 100 + '% - 12px)',
-      }"
-      @mousedown="moveEnd"
-    ></div>
+    >
+      <div
+        class="handle bg-surface1 rounded-8 h-[10px] w-[10px]"
+        :style="{
+          left: `1px`,
+        }"
+        @mousedown="moveStart"
+      ></div>
+      <div
+        class="handle bg-surface1 rounded-8 h-[10px] w-[10px]"
+        :style="{
+          right: `1px`,
+        }"
+        @mousedown="moveEnd"
+      ></div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .handle {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 12px;
-  height: 12px;
+  top: 1px;
   cursor: pointer;
   box-sizing: border-box;
 }
 .fill {
   position: absolute;
-  top: 0;
-  height: 12px;
-  width: 12px;
   border-radius: 6px;
   cursor: pointer;
 }

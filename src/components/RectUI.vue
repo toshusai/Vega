@@ -10,7 +10,7 @@ const style = computed(() => ({
   display: props.align == "horizontal" ? "flex" : "block",
 }));
 
-const el = ref<HTMLDivElement>(null);
+const el = ref<HTMLDivElement | null>(null);
 defineExpose({ el });
 </script>
 

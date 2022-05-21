@@ -1,9 +1,11 @@
 import { Vector3 } from "three";
 import { Layer } from "./Layer";
 import { Strip } from "./Strip";
+import { Animation } from "./TextStripEffect";
 
 export interface Timeline {
   selectedStrips: Strip[];
+  selectedKeyframes: Animation[];
   isPlay: boolean;
   curent: number;
   width: number;

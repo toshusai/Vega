@@ -1,16 +1,27 @@
 <script setup lang="ts">
 import { Container } from "./core/Container";
+import "~/assets/css/main.css";
+import Stats from "stats.js";
 
 const { container } = useContainer();
 
 const { update } = useUpdate();
 
 onMounted(() => {
+  var stats = new Stats();
+  stats.showPanel(0);
   const mainUpdate = () => {
+    stats.begin();
     update();
+    stats.end();
     requestAnimationFrame(mainUpdate);
   };
   mainUpdate();
+
+  document.body.append(stats.dom);
+  stats.dom.childNodes.forEach((node: HTMLElement) => {
+    node.style.display = "";
+  });
 });
 
 const c = computed(() => container.value as Container);
