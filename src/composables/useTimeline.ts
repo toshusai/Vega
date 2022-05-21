@@ -70,6 +70,7 @@ const initialTimelineState: Timeline = {
             z: 0,
           },
           videoAssetId: "video1",
+          animations: [],
         },
       ],
     },

@@ -32,11 +32,13 @@ export function findBetween(
 export function calcAnimationValue(
   animations: Animation[],
   time: number,
-  key: string
+  key: string,
+  defaultValue = 0
 ) {
+  if (animations.filter((a) => a.key == key).length == 0) return defaultValue;
   const [prev, next] = findBetween(animations, time, key);
 
-  let v = 0;
+  let v = defaultValue;
   if (prev && next) {
     v =
       prev.value +

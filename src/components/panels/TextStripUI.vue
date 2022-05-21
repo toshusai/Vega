@@ -76,7 +76,9 @@ onMounted(() => {
     ref="el"
     style="height: 100%; display: flex; overflow: hidden; padding: 0 12px"
   >
-    <canvas ref="canvas" class="video" />
+    <div style="overflow: hidden">
+      <canvas ref="canvas" class="video" />
+    </div>
   </div>
 </template>
 
