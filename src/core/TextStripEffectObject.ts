@@ -128,8 +128,18 @@ export class TextStripEffectObject extends EffectObject {
   }
 
   public async update(strip: Strip, itext: TextStripEffect, time: number) {
-    const x = calcAnimationValue(itext.animations, time, "position.x");
-    const y = calcAnimationValue(itext.animations, time, "position.y");
+    const x = calcAnimationValue(
+      itext.animations,
+      time,
+      "position.x",
+      itext.position.x
+    );
+    const y = calcAnimationValue(
+      itext.animations,
+      time,
+      "position.y",
+      itext.position.y
+    );
     this.obj.position.set(x, y, strip.layer);
 
     if (strip.start < time && time < strip.start + strip.length) {

@@ -45,7 +45,7 @@ function updateVideoArray() {
 
   const videoWidth = videoHeight / ratio;
 
-  const newArray = Array(Math.ceil(parentRect.width / videoWidth)).map(
+  const newArray = Array(Math.ceil(parentRect.width / videoWidth) + 1).map(
     (_, i) => i
   );
 
@@ -68,9 +68,12 @@ const updateVideoStart = () => {
     if (!videoEl) return;
     const rect = videoEl.getBoundingClientRect();
     const startPx = rect.left - parentRect.left;
+
     videoEl.currentTime = startPx / pixScale.value + videoEffect.start;
 
     videoEl.addEventListener("loadedmetadata", () => {
+      const rect = videoEl.getBoundingClientRect();
+      const startPx = rect.left - parentRect.left;
       videoEl.currentTime = startPx / pixScale.value + videoEffect.start;
     });
   });
@@ -106,6 +109,7 @@ watch(props.strip, () => {
 <style scoped>
 .video {
   height: 100%;
+  max-width: none;
   pointer-events: none;
 }
 </style>

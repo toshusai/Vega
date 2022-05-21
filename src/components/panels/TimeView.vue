@@ -38,6 +38,11 @@ function dragStart(e: MouseEvent) {
     setTime(e);
   });
 }
+
+onMounted(() => {
+  // foce update first view
+  update(timeline.value.curent + Number.EPSILON * 2, true);
+});
 </script>
 
 <template>

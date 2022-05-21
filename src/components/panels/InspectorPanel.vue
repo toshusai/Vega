@@ -2,7 +2,8 @@
 import { ComputedRef } from "vue";
 import { Strip } from "~~/src/core/Strip";
 import { TextStripEffect } from "~~/src/core/TextStripEffect";
-import { isText } from "../../composables/useTimeline";
+import { getEffect } from "~~/src/utils/getEffect";
+import { isText, isVideo } from "../../composables/useTimeline";
 import TextStripInspector from "../TextStripInspector.vue";
 const { timeline, updateEffect } = useTimeline();
 
@@ -18,7 +19,11 @@ const effect: ComputedRef<TextStripEffect | null> = computed(() => {
 </script>
 
 <template>
-  <div v-if="strip && effect && isText(effect)">
-    <text-strip-inspector :strip="strip" />
-  </div>
+  <template v-if="strip">
+    <text-strip-inspector v-if="getEffect(strip, 'Text')" :strip="strip" />
+    <video-strip-inspector
+      v-else-if="getEffect(strip, 'Video')"
+      :strip="strip"
+    />
+  </template>
 </template>
