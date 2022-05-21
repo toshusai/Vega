@@ -20,10 +20,12 @@ const CUT_LEFT_PX = 50;
 const style = computed<CSSProperties>(() => {
   let left = (props.strip.start - timeline.value.start) * pixScale.value;
   let width = props.strip.length * pixScale.value;
+  // console.log(left);
   if (left < -CUT_LEFT_PX) {
     width += left + CUT_LEFT_PX;
     left = -CUT_LEFT_PX;
   }
+
   return {
     width: width + "px",
     position: "absolute",

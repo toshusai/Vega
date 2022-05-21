@@ -107,7 +107,7 @@ function drag(e: MouseEvent) {
             "position.x"
           ) +
           delta.x / props.scale;
-        setAnimation(newE.animations, {
+        newE.animations = setAnimation(newE.animations, {
           id: uuid(),
           key: "position.x",
           value: p.x,

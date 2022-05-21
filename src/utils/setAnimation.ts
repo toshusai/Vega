@@ -5,10 +5,10 @@ export function setAnimation(animations: Animation[], newAnimation: Animation) {
     // FIXME: change delta value
     if (Math.abs(animations[i].time - newAnimation.time) < 0.01) {
       animations[i] = { ...newAnimation, time: animations[i].time };
-      return;
+      return animations;
     }
   }
   animations.push(newAnimation);
   animations.sort((a, b) => a.time - b.time);
-  console.log(animations);
+  return animations;
 }

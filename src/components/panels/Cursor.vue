@@ -16,7 +16,11 @@ const pixScale = computed(() => {
     :style="{
       left: (timeline.curent - timeline.start) * pixScale + 'px',
     }"
-  ></div>
+  >
+    <svg fill="red">
+      <path d="M-8 0 L0 8 L8 0 Z" />
+    </svg>
+  </div>
 </template>
 <style scoped>
 .cursor {
@@ -25,7 +29,7 @@ const pixScale = computed(() => {
   top: 0;
   left: 0;
   width: 1px;
-  height: 100%;
+  height: calc(100% - 20px);
   background: red;
   z-index: 1;
 }
