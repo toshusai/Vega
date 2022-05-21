@@ -7,24 +7,60 @@ const { container } = useContainer();
 
 const { update } = useUpdate();
 
+let stats: Stats | null = null;
+
+function showStat() {
+  if (!stats) return;
+  stats.dom.style.visibility = "visible";
+}
+
+function hideStats() {
+  if (!stats) return;
+  stats.dom.style.visibility = "hidden";
+}
+
+function toggleStats() {
+  if (!stats) return;
+  if (stats.dom.style.visibility === "hidden") {
+    showStat();
+  } else {
+    hideStats();
+  }
+}
+
 onMounted(() => {
-  var stats = new Stats();
+  stats = new Stats();
   stats.showPanel(0);
   const mainUpdate = () => {
-    stats.begin();
+    stats?.begin();
     update();
-    stats.end();
+    stats?.end();
     requestAnimationFrame(mainUpdate);
   };
   mainUpdate();
 
   document.body.append(stats.dom);
+  stats.dom.style.left = "";
+  stats.dom.style.right = "0";
+  stats.dom.style.pointerEvents = "none";
   stats.dom.childNodes.forEach((node: HTMLElement) => {
     node.style.display = "";
   });
+  hideStats();
 });
 
 const c = computed(() => container.value as Container);
+
+const show = ref(false);
+function close() {
+  show.value = false;
+  window.removeEventListener("click", close);
+}
+function open(e: MouseEvent) {
+  show.value = true;
+  e.stopPropagation();
+  window.addEventListener("click", close);
+}
 </script>
 
 <template>
@@ -35,7 +71,16 @@ const c = computed(() => container.value as Container);
     }"
   >
     <div style="height: calc(100vh - 24px)">
-      <div class="header-menu">
+      <div class="header-menu flex">
+        <div class="header-button">
+          <button @click="open">Vega</button>
+          <div
+            v-if="show"
+            class="absolute top-24 left-0 bg-background1 border-default border-2 box-border z-10 px-8"
+          >
+            <button @click="toggleStats">Stats</button>
+          </div>
+        </div>
         <div class="header-button">File</div>
       </div>
       <ContainerUI :container="c" />

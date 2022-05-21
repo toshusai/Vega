@@ -8,7 +8,7 @@ const strip = computed(() => timeline.value.selectedStrips[0]);
 
 const keys = ref(new Map<string, Animation[]>());
 
-watch(strip, () => {
+function update() {
   keys.value.clear();
   strip.value?.effects.forEach((effect) => {
     if ("animations" in effect) {
@@ -20,7 +20,18 @@ watch(strip, () => {
       });
     }
   });
+}
+
+watch(strip, () => {
+  update();
 });
+
+watch(
+  () => [...(strip.value?.effects || [])],
+  () => {
+    update();
+  }
+);
 
 const times = [...Array(10)].map((_, i) => i);
 </script>
