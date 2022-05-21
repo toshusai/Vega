@@ -69,8 +69,6 @@ let thumbnailVideo: HTMLVideoElement | null = null;
 var thumbnailCache = new Map<string, string>();
 
 function setCache(time: number, url: string) {
-  console.log(time.toFixed(1));
-
   thumbnailCache.set(time.toFixed(1), url);
 }
 function getCache(time: number) {
