@@ -140,11 +140,11 @@ const updateVideoStart = async () => {
 
           const cache = getCache(currentTime);
           if (cache) {
-            console.log("HIT", currentTime.toFixed(1));
+            // console.log("HIT", currentTime.toFixed(1));
             imageEl.src = cache;
             resolve();
           } else {
-            console.log("notfound", currentTime.toFixed(1));
+            // console.log("notfound", currentTime.toFixed(1));
             thumbnailVideo.currentTime = currentTime;
           }
         })
