@@ -24,16 +24,35 @@ if (isDev) {
   indexUrl = `http://localhost:${PROXY_PORT}`;
 } else {
   const server = http.createServer(function (req, res) {
-    const baseDir = path.resolve(__dirname, "../../dist/renderer");
+    const baseDir = path.resolve(__dirname, "../.output/public");
     // redirect Docs to docs (for docsify)
-    if (!req.url?.match(/^\/docs/)) {
-      req.url = "/static/docs/index.html";
-    }
+    // if (!req.url?.match(/^\/docs/)) {
+    //   req.url = "/static/docs/index.html";
+    // }
     // redirect Nuxt pages to index.html
+    if (req.url == "/BigBuckBunny.mp4") {
+      req.url = "/BigBuckBunny.mp4";
+      if (req.url.match(/(\.mp4|\.webm)$/)) {
+        res.setHeader("Content-Type", "video/mp4");
+      }
+      const responseContent = fs.readFileSync(baseDir + req.url);
+      res.write(responseContent);
+      res.end();
+      return;
+    }
+
     if (!req.url?.match(/^\/_nuxt|\/static/)) {
       req.url = "/index.html";
     }
     const responseContent = fs.readFileSync(baseDir + req.url);
+    // set script header
+    if (req.url.match(/(\.js|\.mjs)$/)) {
+      res.setHeader("Content-Type", "text/javascript");
+    }
+    if (req.url.match(/(\.mp4|\.webm)$/)) {
+      res.setHeader("Content-Type", "video/mp4");
+    }
+
     res.write(responseContent);
     res.end();
   });
