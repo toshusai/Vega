@@ -1,3 +1,7 @@
+# v2 is comming soon!
+
+WIP: https://github.com/toshusai/vega/tree/v2.0.0
+
 # Vega
 
 Vega is a open source web based video editor. 
