@@ -7,6 +7,8 @@ const props = defineProps<{ strip: Strip }>();
 
 const { timeline, moveStrip, selectStrip } = useTimeline();
 
+const { pushHistory } = useOperation();
+
 const layerHeight = 50;
 const el = ref<HTMLElement | null>(null);
 
@@ -47,6 +49,8 @@ const style = computed<CSSProperties>(() => {
 
 function drag(e: MouseEvent) {
   e.preventDefault();
+  // block select rectangle
+  e.stopPropagation();
 
   const parent = el.value?.parentElement;
   const parentRect = parent?.getBoundingClientRect();
@@ -80,8 +84,10 @@ function drag(e: MouseEvent) {
       );
     },
     (e) => {
+      pushHistory(`MoveStrip: ${JSON.stringify(finalProps, null, 2)}`);
       undo.push(
         () => {
+          pushHistory(`Undo MoveStrip: ${JSON.stringify(startProps, null, 2)}`);
           moveStrip(
             startProps.id,
             startProps.start,
@@ -90,6 +96,7 @@ function drag(e: MouseEvent) {
           );
         },
         () => {
+          pushHistory(`Redo MoveStrip: ${JSON.stringify(finalProps, null, 2)}`);
           moveStrip(
             finalProps.id,
             finalProps.start,

@@ -141,6 +141,7 @@ function drag(e: MouseEvent) {
 <style scoped>
 .gizmo {
   border: 1px solid red;
+  user-select: none;
   /* box-sizing: border-box; */
   /* box-sizing: content-box; */
 }

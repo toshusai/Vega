@@ -1,48 +1,99 @@
 <script setup lang="ts">
+import { PropType } from "vue";
 import { onDragStart } from "../utils/onDragStart";
 
-const props = defineProps<{
-  value: number | string;
-}>();
+const props = defineProps({
+  value: {
+    default: 0,
+    type: Number,
+  },
+  scale: {
+    default: 1,
+    type: Number,
+  },
+  step: {
+    default: null,
+    type: Number,
+    requred: false,
+  },
+  min: {
+    default: null,
+    type: Number,
+    requred: false,
+  },
+  max: {
+    default: null,
+    type: Number,
+    requred: false,
+  },
+  view: {
+    defalut: null,
+    type: Function as PropType<(num: number) => string>,
+    requred: false,
+  },
+});
 
 const emit = defineEmits<{
-  (e: "updateNumber", value: number): void;
+  (e: "input", value: number): void;
 }>();
 
 function pointerdown(e: MouseEvent) {
   onDragStart(e, (delta, e) => {
     if (typeof props.value === "number") {
-      emit("updateNumber", props.value + e.movementX);
+      let plus = e.movementX * props.scale;
+      if (props.step) {
+        plus = Math.round(plus / props.step) * props.step;
+      }
+
+      // clamp
+      if (props.min !== null && props.value + plus < props.min) {
+        plus = props.min - props.value;
+      }
+      if (props.max !== null && props.value + plus > props.max) {
+        plus = props.max - props.value;
+      }
+
+      emit("input", props.value + plus);
     } else {
     }
   });
 }
+
+function inputByInputEvent(e: InputEvent) {
+  if (typeof props.value === "number") {
+    emit("input", parseFloat((e.target as HTMLInputElement).value));
+  } else {
+  }
+}
 </script>
 
 <template>
-  <div class="flex cursor-ew-resize">
-    <svg
-      class="my-auto mx-4 rounded-4"
-      style="
-        border: 1px solid var(--border-grey);
-        width: 16px;
-        height: 16px;
-        user-select: none;
-      "
-      viewBox="0 0 24 24"
-      @pointerdown="pointerdown"
-    >
-      <path
-        fill="currentColor"
-        d="M8,14V18L2,12L8,6V10H16V6L22,12L16,18V14H8Z"
-      />
-    </svg>
+  <div class="flex w-full">
+    <input
+      v-bind="$attrs"
+      :value="view ? view(value) : value"
+      class="bg-transparent border-default border-2 rounded-4 pl-4 text-sm w-full"
+      @input="inputByInputEvent"
+    />
+    <div class="flex cursor-ew-resize">
+      <svg
+        class="my-auto mx-4 rounded-4"
+        style="
+          border: 1px solid var(--border-grey);
+          width: 16px;
+          height: 16px;
+          user-select: none;
+        "
+        viewBox="0 0 24 24"
+        @pointerdown="pointerdown"
+      >
+        <path
+          fill="currentColor"
+          d="M8,14V18L2,12L8,6V10H16V6L22,12L16,18V14H8Z"
+        />
+      </svg>
+    </div>
   </div>
-  <input
-    v-bind="$attrs"
-    :value="value"
-    class="bg-transparent border-default border-2 rounded-4 pl-4 text-sm w-full"
-  />
 </template>
 
 <!-- 

@@ -45,25 +45,26 @@ function moveView(e: MouseEvent) {
   <div
     ref="el"
     style="height: 20px; width: 100%; position: relative; padding: 4px 0"
-    class="bg-surface2"
+    class="bg-[#111]"
+    @mousedown.stop="() => {}"
   >
     <div
-      class="fill bg-surface3 top-[4px] absolute h-[12px]"
+      class="fill bg-[#222] top-[4px] absolute h-[12px]"
       :style="{
-        left: `calc(${props.start * 100}% + 2px)`,
-        width: `calc(${(props.end - props.start) * 100}% - 4px)`,
+        left: `calc(${props.start * 100}% + 0px)`,
+        width: `calc(${(props.end - props.start) * 100}% - 0px)`,
       }"
       @mousedown="moveView"
     >
       <div
-        class="handle bg-surface1 rounded-8 h-[10px] w-[10px]"
+        class="handle bg-[#333] rounded-8 h-[10px] w-[10px]"
         :style="{
           left: `1px`,
         }"
         @mousedown="moveStart"
       ></div>
       <div
-        class="handle bg-surface1 rounded-8 h-[10px] w-[10px]"
+        class="handle bg-[#333] rounded-8 h-[10px] w-[10px]"
         :style="{
           right: `1px`,
         }"
@@ -80,6 +81,9 @@ function moveView(e: MouseEvent) {
   cursor: pointer;
   box-sizing: border-box;
   user-select: none;
+}
+.handle:hover {
+  background-color: var(--teal-800);
 }
 .fill {
   position: absolute;

@@ -45,7 +45,7 @@ function u(x) {
   <div v-if="effect && isText(effect)">
     <div class="p-4">
       <div>TextEffect</div>
-      <inspector-input
+      <inspector-string-input
         label="Text"
         :value="effect.text"
         @input="(e) => changeText(eventToString(e), 'text')"
@@ -53,64 +53,54 @@ function u(x) {
       <inspector-input
         label="x"
         :value="effect.position.x"
-        @update-number="
-          (n) => changeText({ ...effect?.position, x: n }, 'position')
-        "
         @input="
-          (e) =>
-            changeText({ ...effect?.position, x: eventToFloat(e) }, 'position')
+          (num) => changeText({ ...effect?.position, x: num }, 'position')
         "
       />
       <inspector-input
         label="y"
         :value="effect.position.y"
-        @update-number="
-          (n) => changeText({ ...effect?.position, y: n }, 'position')
-        "
-        @input="
-          (e) =>
-            changeText({ ...effect?.position, y: eventToFloat(e) }, 'position')
-        "
+        @input="(e) => changeText({ ...effect?.position, y: e }, 'position')"
       />
       <inspector-input
         label="fontSize"
         :value="effect.size"
-        @input="(e) => changeText(eventToFloat(e), 'size')"
+        @input="(n) => changeText(n, 'size')"
       />
       <inspector-color-input
         label="color"
         :value="effect.color"
         @update-color="(e) => changeText(e, 'color')"
       />
-      <inspector-input
+      <inspector-string-input
         label="style"
         :value="effect.style"
         @input="(e) => changeText(eventToString(e), 'style')"
       />
-      <inspector-input
+      <inspector-string-input
         label="Family"
         :value="effect.family"
         @input="(e) => changeText(eventToString(e), 'family')"
       />
-      <inspector-input
+      <inspector-color-input
         label="shadowColor"
         :value="effect.shadowColor"
-        @input="(e) => changeText(eventToString(e), 'shadowColor')"
+        @update-color="(e) => changeText(e, 'shadowColor')"
       />
       <inspector-input
         label="shadowBlur"
         :value="effect.shadowBlur"
-        @input="(e) => changeText(eventToString(e), 'shadowBlur')"
+        @input="(n) => changeText(n, 'shadowBlur')"
       />
-      <inspector-input
+      <inspector-color-input
         label="outlineColor"
         :value="effect.outlineColor"
-        @input="(e) => changeText(eventToString(e), 'outlineColor')"
+        @update-color="(e) => changeText(e, 'outlineColor')"
       />
       <inspector-input
         label="outlineWidth"
         :value="effect.outlineWidth"
-        @input="(e) => changeText(eventToString(e), 'outlineWidth')"
+        @input="(n) => changeText(n, 'outlineWidth')"
       />
     </div>
   </div>

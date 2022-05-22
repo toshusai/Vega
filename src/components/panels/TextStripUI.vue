@@ -114,7 +114,7 @@ const markerSize = 12;
           4 -
           markerSize / 2 +
           (overLeft < -50 ? overLeft + 50 : 0) // 4(strip border) + 6(half width)
-        }px; z-index: 10; bottom: ${0}px`"
+        }px; z-index: 1; bottom: ${0}px`"
         viewBox="0 0 24 24"
       >
         <path

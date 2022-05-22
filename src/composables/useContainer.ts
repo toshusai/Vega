@@ -128,6 +128,20 @@ const initialContaerState: Container = {
 
 const event = new EventTarget();
 
+const MIN_PIXEL = 50;
+
+const minPercent = 10;
+function calculateMinMaxPercent() {
+  // minPercent = (MIN_PIXEL / window.innerHeight) * 100;
+}
+
+window.addEventListener("resize", calculateMinMaxPercent);
+window.addEventListener("load", calculateMinMaxPercent);
+
+function minMax(value: number) {
+  return Math.max(Math.min(value, 100 - minPercent), minPercent);
+}
+
 export default function useContainer() {
   const container = useState("counter", () => initialContaerState);
 
@@ -152,22 +166,22 @@ export default function useContainer() {
         current[i].rect = {
           ...r,
           top: r.top + delta.y,
-          height: r.height - delta.y,
+          height: minMax(r.height - delta.y),
         };
         current[i - 1].rect = {
           ...current[i - 1].rect,
-          height: current[i - 1].rect.height + delta.y,
+          height: minMax(current[i - 1].rect.height + delta.y),
         };
       } else if (parent.align === "horizontal") {
         const r = current[i].rect;
         current[i].rect = {
           ...r,
           left: r.left + delta.x,
-          width: r.width - delta.x,
+          width: minMax(r.width - delta.x),
         };
         current[i - 1].rect = {
           ...current[i - 1].rect,
-          width: current[i - 1].rect.width + delta.x,
+          width: minMax(current[i - 1].rect.width + delta.x),
         };
       }
 

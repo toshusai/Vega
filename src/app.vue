@@ -3,6 +3,7 @@ import { Container } from "./core/Container";
 import "~/assets/css/main.css";
 import Stats from "stats.js";
 import undo from "./core/Undo";
+import OperationHIstoryPanel from "./components/panels/OperationHIstoryPanel.vue";
 
 const { container } = useContainer();
 
@@ -50,17 +51,22 @@ onMounted(() => {
   hideStats();
 
   window.addEventListener("keydown", (e) => {
-    // undo
-    // Shift + Ctrl + Z
-    if (e.keyCode === 90 && e.shiftKey && e.ctrlKey) {
+    // if mac ctrl = command
+    const ctrlKey = isOSX() ? e.metaKey : e.ctrlKey;
+    //  Shift + Command + Z
+    if (e.keyCode === 90 && e.shiftKey && ctrlKey) {
       console.log("redo");
       undo.redo();
-    } else if (e.keyCode === 90 && e.ctrlKey) {
+    } else if (e.keyCode === 90 && ctrlKey) {
       console.log("undo");
       undo.undo();
     }
   });
 });
+
+function isOSX() {
+  return navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+}
 
 const c = computed(() => container.value as Container);
 
@@ -83,7 +89,7 @@ function open(e: MouseEvent) {
       display: container.align == 'horizontal' ? 'flex' : 'block',
     }"
   >
-    <div style="height: calc(100vh - 24px)">
+    <div style="height: calc(100vh - 48px)">
       <div class="header-menu flex">
         <div class="header-button">
           <button @click="open">Vega</button>
@@ -97,6 +103,7 @@ function open(e: MouseEvent) {
         <div class="header-button">File</div>
       </div>
       <ContainerUI :container="c" />
+      <OperationHIstoryPanel></OperationHIstoryPanel>
     </div>
   </div>
   <!-- <div class="overlay">
