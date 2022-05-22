@@ -1,12 +1,8 @@
 import * as T from "three";
 import { Vector3 } from "three";
 import { firstInterfact } from "./Global";
-import { IAsset } from "./IAsset";
 import { Strip } from "./Strip";
 import { VideoStripEffect } from "./VideoStripEffect";
-
-const FPS_ERROR_TOLERANCE = 0.01;
-const ASSET_SEEK_TIMEOUT_MS = 10000;
 
 export class VideoStripEffectObject {
   type = "Video";

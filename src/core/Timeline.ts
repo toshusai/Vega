@@ -1,5 +1,3 @@
-import { Vector3 } from "three";
-import { Layer } from "./Layer";
 import { Strip } from "./Strip";
 import { Animation } from "./TextStripEffect";
 

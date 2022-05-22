@@ -1,4 +1,3 @@
-import { Vector2 } from "three";
 import type { Ref } from "vue";
 import { Container, Position } from "../core/Container";
 import { IVector2 } from "../core/IVector2";
@@ -127,8 +126,6 @@ const initialContaerState: Container = {
 };
 
 const event = new EventTarget();
-
-const MIN_PIXEL = 50;
 
 const minPercent = 10;
 function calculateMinMaxPercent() {
@@ -285,10 +282,11 @@ export default function useContainer() {
     container: readonly(container),
     resizeContainer: resizeContainer(container),
     changeLayout: changeLayout(container),
-    addEventListener: ((state: Ref<Container>) => {
+    addEventListener: ((_: Ref<Container>) => {
       return (type: string, listener: EventListenerOrEventListenerObject) => {
         event.addEventListener(type, listener);
       };
+      _; // for unused
     })(container),
   };
 }

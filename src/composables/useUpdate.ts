@@ -1,4 +1,4 @@
-import { del, Ref } from "nuxt/dist/app/compat/capi";
+import { Ref } from "nuxt/dist/app/compat/capi";
 type Uf = (delta: number) => void;
 
 interface UpdateState {
@@ -12,10 +12,9 @@ function addUpdate(update: Ref<UpdateState>) {
 }
 
 function update(update: Ref<UpdateState>) {
-  return () => {
-    const now = Date.now();
+  return (delta: number) => {
     for (const f of update.value.funcs) {
-      f(now - update.value.prev);
+      f(delta);
     }
     update.value.prev = Date.now();
   };
