@@ -66,7 +66,7 @@ const initialTimelineState: Timeline = {
         {
           id: "effect2",
           type: "Video",
-          start: 10,
+          start: 0,
           position: {
             x: 10,
             y: -10,

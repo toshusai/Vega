@@ -45,17 +45,26 @@ const ctx = ref<CanvasRenderingContext2D | null>(null);
 
 var audioBuffer: AudioBuffer | null = null;
 
+const overLeft = computed(() => {
+  return (props.strip.start - timeline.value.start) * pixScale.value;
+});
+
 function draw() {
   if (!ctx.value) return;
   const rect = canvas.value?.parentElement?.getBoundingClientRect();
+  const elrect = el.value?.parentElement?.getBoundingClientRect();
   if (!rect) return;
+  if (!elrect) return;
   if (!audioBuffer) return;
   const lengthPerSec = audioBuffer.sampleRate;
-  const data = audioBuffer.getChannelData(1);
-  const visualTime = rect.width / pixScale.value;
+  const data = audioBuffer.getChannelData(0);
 
+  // 表示されている時間
+  const visualTime = elrect.width / pixScale.value;
+  // 表示されているデータ配列の数
   const visualData = Math.floor(visualTime * lengthPerSec);
-  const dataPerPixel = Math.floor(visualData / rect.width);
+  // １ピクセルあたりのデータ数
+  const dataPerPixel = Math.floor(visualData / elrect.width);
 
   const sumData = [];
   let sum = 0;
@@ -64,7 +73,13 @@ function draw() {
   let max = 0;
   let min = 0;
 
-  for (let i = 0; i < visualData; i++) {
+  let start = 0;
+
+  if (overLeft.value < -50) {
+    start = Math.floor(dataPerPixel * (-50 - overLeft.value));
+  }
+
+  for (let i = start; i < visualData + start; i++) {
     sum += Math.abs(data[i]);
     pixel++;
     if (pixel >= dataPerPixel) {
@@ -77,6 +92,7 @@ function draw() {
     }
   }
 
+  ctx.value.clearRect(0, 0, rect.width, rect.height);
   ctx.value.fillStyle = "#fff2";
   ctx.value.fillRect(0, 0, rect.width, rect.height);
   ctx.value.fillStyle = "orange";
@@ -89,15 +105,19 @@ function draw() {
     // ハンドルの分ずらす
     const height = sumData[i + 12] * 40;
 
-    ctx.value.fillRect(i, 40 - height * 2, 1, 40);
+    // magic 4...
+    ctx.value.fillRect(i, 40 - height * 4, 1, 40);
   }
 }
 
+let load = false;
 function getBuffer() {
   if (audioBuffer) {
     draw();
     return;
   }
+  if (load) return;
+  load = true;
   fetch(audioSrc.value)
     .then((response) => response.arrayBuffer())
     .then(async (arrayBuffer) => {

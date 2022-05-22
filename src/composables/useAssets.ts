@@ -9,7 +9,7 @@ const initialAssetsState: AssetState = {
     {
       id: "asset1",
       type: "Video",
-      path: "./BigBuckBunny.mp4",
+      path: "./sample_1280x720_surfing_with_audio.mp4",
       name: "Big Buck Bunny",
     },
     {
