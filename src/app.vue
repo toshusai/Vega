@@ -2,6 +2,7 @@
 import { Container } from "./core/Container";
 import "~/assets/css/main.css";
 import Stats from "stats.js";
+import undo from "./core/Undo";
 
 const { container } = useContainer();
 
@@ -47,6 +48,18 @@ onMounted(() => {
     node.style.display = "";
   });
   hideStats();
+
+  window.addEventListener("keydown", (e) => {
+    // undo
+    // Shift + Ctrl + Z
+    if (e.keyCode === 90 && e.shiftKey && e.ctrlKey) {
+      console.log("redo");
+      undo.redo();
+    } else if (e.keyCode === 90 && e.ctrlKey) {
+      console.log("undo");
+      undo.undo();
+    }
+  });
 });
 
 const c = computed(() => container.value as Container);
