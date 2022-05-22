@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { time } from "console";
 import * as THREE from "three";
 import { view } from "~~/src/composables/useTimeline";
-import { eventToFloat } from "~~/src/utils/eventToFloat";
 import { timeFormat } from "~~/src/utils/formatTime";
 
 const canvas = ref<HTMLCanvasElement | null>(null);
@@ -53,17 +51,16 @@ const timestamp = computed(() => timeFormat(timeline.value.curent));
  * クリックで選択可能なStripを選択
  * @param e
  */
-function pointerdown(e: MouseEvent) {
-  const { left, right, top, bottom } =
-    canvas.value?.getBoundingClientRect() || {
-      left: 0,
-      right: 0,
-      top: 0,
-      bottom: 0,
-    };
+function pointerdown() {
+  // const { left, top } = canvas.value?.getBoundingClientRect() || {
+  //   left: 0,
+  //   right: 0,
+  //   top: 0,
+  //   bottom: 0,
+  // };
 
-  const x = (e.clientX - left) / scale.value;
-  const y = (e.clientY - top) / scale.value;
+  // const x = (e.clientX - left) / scale.value;
+  // const y = (e.clientY - top) / scale.value;
 
   for (const strip of timeline.value.strips) {
     if (

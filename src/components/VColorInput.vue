@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onDragStart } from "../utils/onDragStart";
 import { Chrome } from "@ckpack/vue-color";
+
 const props = defineProps<{
   value: number | string;
 }>();
@@ -47,7 +47,7 @@ const invalid = computed(() => {
   return !validColor(props.value.toString());
 });
 
-function changeColorByInputEvent(e: InputEvent) {
+function changeColorByInputEvent(e: Event) {
   const value = (e.target as HTMLInputElement).value;
   emit("updateColor", value);
 }

@@ -33,20 +33,24 @@ function toggleStats() {
 onMounted(() => {
   stats = new Stats();
   stats.showPanel(0);
-  const mainUpdate = () => {
+  let prev = 0;
+  const mainUpdate = (t: number) => {
     stats?.begin();
-    update();
+    update(t - prev);
     stats?.end();
     requestAnimationFrame(mainUpdate);
+    prev = t;
   };
-  mainUpdate();
+  mainUpdate(0);
 
   document.body.append(stats.dom);
   stats.dom.style.left = "";
   stats.dom.style.right = "0";
   stats.dom.style.pointerEvents = "none";
-  stats.dom.childNodes.forEach((node: HTMLElement) => {
-    node.style.display = "";
+  stats.dom.childNodes.forEach((node: Node) => {
+    if (node instanceof HTMLElement) {
+      node.style.display = "";
+    }
   });
   hideStats();
 
@@ -114,8 +118,6 @@ function open(e: MouseEvent) {
 </template>
 
 <style>
-.modal {
-}
 .overlay {
   position: absolute;
   top: 0;

@@ -3,7 +3,6 @@ import { Strip } from "~/core/Strip";
 import { ComputedRef } from "vue";
 import { TextStripEffect } from "~/core/TextStripEffect";
 import { isText } from "~/composables/useTimeline";
-import { eventToFloat } from "../utils/eventToFloat";
 import { eventToString } from "../utils/eventToString";
 import InspectorInput from "./InspectorInput.vue";
 // var colors = "#194d33";
@@ -16,7 +15,7 @@ const effect: ComputedRef<TextStripEffect | null> = computed(() => {
   ) as TextStripEffect | null;
 });
 
-function changeText(v: any, key: string) {
+function changeText(v: object | string | number, key: string) {
   if (effect.value && isText(effect.value)) {
     const newE = { ...effect.value };
     const newNewE = new Function(
@@ -34,10 +33,6 @@ return effect
       ...newNewE,
     });
   }
-}
-
-function u(x) {
-  console.log(x);
 }
 </script>
 

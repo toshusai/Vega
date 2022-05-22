@@ -89,7 +89,7 @@ const initialTimelineState: Timeline = {
           start: 0,
           audioAssetId: "asset2",
           animations: [],
-          volume: 0.1,
+          volume: 0.5,
         },
       ],
     },
@@ -100,17 +100,6 @@ function findStripById(id: string, timeline: Timeline) {
   for (const strip of timeline.strips) {
     if (strip.id === id) {
       return strip;
-    }
-  }
-  return null;
-}
-
-function findEffectById(id: string, timeline: Timeline) {
-  for (const strip of timeline.strips) {
-    for (const effect of strip.effects) {
-      if (effect.id === id) {
-        return effect;
-      }
     }
   }
   return null;
@@ -142,13 +131,6 @@ function update(timeline: Ref<Timeline>) {
 
     for (let j = 0; j < timeline.value.strips.length; j++) {
       const strip = timeline.value.strips[j];
-      let visible = false;
-      if (
-        timeline.value.curent > strip.start &&
-        timeline.value.curent < strip.start + strip.length
-      ) {
-        visible = true;
-      }
 
       for (let k = 0; k < strip.effects.length; k++) {
         const effect = strip.effects[k];

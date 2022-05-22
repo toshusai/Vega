@@ -27,7 +27,7 @@ const props = defineProps({
     requred: false,
   },
   view: {
-    defalut: null,
+    default: null,
     type: Function as PropType<(num: number) => string>,
     requred: false,
   },
@@ -59,7 +59,7 @@ function pointerdown(e: MouseEvent) {
   });
 }
 
-function inputByInputEvent(e: InputEvent) {
+function inputByInputEvent(e: Event) {
   if (typeof props.value === "number") {
     emit("input", parseFloat((e.target as HTMLInputElement).value));
   } else {

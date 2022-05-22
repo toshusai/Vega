@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { IAsset } from "../core/IAsset";
 
-const props = defineProps<{ asset: IAsset }>();
+defineProps<{ asset: IAsset }>();
 
 const videoEl = ref<HTMLVideoElement | null>(null);
 

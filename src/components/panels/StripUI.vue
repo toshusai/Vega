@@ -83,7 +83,7 @@ function drag(e: MouseEvent) {
         finalProps.layer
       );
     },
-    (e) => {
+    () => {
       pushHistory(`MoveStrip: ${JSON.stringify(finalProps, null, 2)}`);
       undo.push(
         () => {
@@ -140,7 +140,10 @@ function getComponentNameFromStrip(strip: Strip) {
       return "PanelsTextStripUI";
     } else if (effect.type == "Video") {
       return "PanelsVideoStripUI";
+    } else if (effect.type == "Audio") {
+      return "PanelsAudioStripUI";
     }
+    console.warn("unknown effect type", effect.type);
   }
 }
 </script>
