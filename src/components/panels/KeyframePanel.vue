@@ -2,7 +2,7 @@
 import { Animation } from "~~/src/core/TextStripEffect";
 import KeyframeMarker from "../KeyframeMarker.vue";
 
-const { timeline } = useTimeline();
+const { timeline, updateEffect } = useTimeline();
 
 const strip = computed(() => timeline.value.selectedStrips[0]);
 
@@ -33,11 +33,43 @@ watch(
   }
 );
 
+const el = ref<HTMLElement | null>(null);
+onMounted(() => {
+  console.log("ok");
+
+  el.value?.addEventListener("keydown", (e) => {
+    console.log(e.key);
+
+    if (e.key === "x") {
+      console.log("delete");
+
+      strip.value.effects.filter((effect) => {
+        if ("animations" in effect) {
+          let newAnimationIds: Animation[] = [];
+          effect.animations.forEach((animation) => {
+            timeline.value.selectedKeyframes.forEach((keyframe) => {
+              if (animation.id !== keyframe.id) {
+                newAnimationIds.push({ ...animation });
+              }
+            });
+
+            updateEffect(strip.value.id, {
+              ...effect,
+              animations: newAnimationIds,
+            });
+          });
+        }
+        return true;
+      });
+    }
+  });
+});
+
 const times = [...Array(10)].map((_, i) => i);
 </script>
 
 <template>
-  <div class="flex h-full">
+  <div ref="el" class="flex h-full">
     <div class="h-full border-r-[1px] border-default">
       <div class="border-bottom-1 h-24">Properties</div>
       <div style="width: 150px; height: 100%">
