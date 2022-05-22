@@ -13,17 +13,11 @@ onMounted(() => {
 
 <template>
   <div style="padding: 4px">
-    <video ref="videoEl" class="video" :src="asset.path" />
+    <div style="width: 32px"></div>
   </div>
   <div style="margin: auto 0">
     {{ asset.name }}
   </div>
 </template>
 
-<style scoped>
-.video {
-  min-height: 24px;
-  max-height: 24px;
-  max-width: 32px;
-}
-</style>
+<style scoped></style>

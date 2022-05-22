@@ -77,6 +77,22 @@ const initialTimelineState: Timeline = {
         },
       ],
     },
+    {
+      id: "strip3",
+      start: 0,
+      layer: 2,
+      length: 10,
+      effects: [
+        {
+          id: "effect3",
+          type: "Audio",
+          start: 0,
+          audioAssetId: "asset2",
+          animations: [],
+          volume: 0.1,
+        },
+      ],
+    },
   ],
 };
 
@@ -156,6 +172,19 @@ function update(timeline: Ref<Timeline>) {
               jump
             );
           }
+        } else if (isAudio(effect)) {
+          const audioObj = effectObjectMap.get(
+            effect.id
+          ) as AudioStripEffectObject;
+          if (audioObj) {
+            audioObj.update(
+              strip,
+              effect,
+              timeline.value.curent,
+              timeline.value.isPlay,
+              jump
+            );
+          }
         } else {
           console.log("Unknown effect type");
         }
@@ -180,10 +209,16 @@ export function isVideo(effect: StripEffect): effect is VideoStripEffect {
   return effect.type === "Video";
 }
 
+export function isAudio(effect: StripEffect): effect is AudioStripEffect {
+  return effect.type === "Audio";
+}
+
 import * as THREE from "three";
 import { VideoStripEffect } from "../core/VideoStripEffect";
 import { VideoStripEffectObject } from "../core/VideoStripEffectObject";
 import { Strip } from "../core/Strip";
+import { AudioStripEffect } from "../core/AudioStripEffect";
+import { AudioStripEffectObject } from "../core/AudioStripEffectObject";
 
 export const view: State = {
   scene: new THREE.Scene(),
@@ -219,6 +254,16 @@ export function useTimeline() {
             );
             effectObjectMap.set(effect.id, videoObj);
             view.scene.add(videoObj.obj);
+          }
+        } else if (isAudio(effect)) {
+          if (!effectObjectMap.has(effect.id)) {
+            const audioObj = new AudioStripEffectObject(
+              effect,
+              assets.assets.value.assets.find(
+                (a) => a.id == effect.audioAssetId
+              )?.path || ""
+            );
+            effectObjectMap.set(effect.id, audioObj);
           }
         } else {
           console.warn("Unknown effect type: " + effect.type);
