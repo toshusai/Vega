@@ -8,3 +8,5 @@ node_modules
 .DS_Store
 *.mp4
 dist/*
+*.png
+*.mp3

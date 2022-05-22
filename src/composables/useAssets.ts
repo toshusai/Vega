@@ -12,6 +12,12 @@ const initialAssetsState: AssetState = {
       path: "./BigBuckBunny.mp4",
       name: "Big Buck Bunny",
     },
+    {
+      id: "asset2",
+      type: "Audio",
+      path: "./tsudumi-japan.mp3",
+      name: "Tsu-dumi Japan",
+    },
   ],
 };
 
