@@ -1,6 +1,7 @@
 export function onDragStart(
   e: MouseEvent,
-  callback: (delta: { x: number; y: number }, e: MouseEvent) => void
+  callback: (delta: { x: number; y: number }, e: MouseEvent) => void,
+  endCallback?: (e: MouseEvent) => void
 ) {
   const startPosition = {
     x: e.clientX,
@@ -28,7 +29,8 @@ export function onDragStart(
   };
   window.addEventListener("mousemove", onMove);
 
-  const remove = () => {
+  const remove = (e: MouseEvent) => {
+    endCallback && endCallback(e);
     window.removeEventListener("mousemove", onMove);
     window.removeEventListener("mouseup", remove);
   };

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { CSSProperties } from "vue";
 import { Strip } from "~~/src/core/Strip";
+import undo from "~~/src/core/Undo";
 import { onDragStart } from "~~/src/utils/onDragStart";
 const props = defineProps<{ strip: Strip }>();
 
@@ -51,14 +52,54 @@ function drag(e: MouseEvent) {
   const parentRect = parent?.getBoundingClientRect();
   if (!parentRect) return;
 
-  const startProps = { ...props.strip };
+  const startProps = {
+    start: props.strip.start,
+    length: props.strip.length,
+    id: props.strip.id,
+    layer: props.strip.layer,
+  };
   let startStart = startProps.start;
-  onDragStart(e, (d, e) => {
-    const layerIndex = Math.floor((e.clientY - parentRect.top) / layerHeight);
-    if (layerIndex < 0) return;
-    startStart += d.x / pixScale.value;
-    moveStrip(startProps.id, startStart, startProps.length, layerIndex);
-  });
+  let finalProps = { ...startProps };
+  onDragStart(
+    e,
+    (d, e) => {
+      const layerIndex = Math.floor((e.clientY - parentRect.top) / layerHeight);
+      if (layerIndex < 0) return;
+      startStart += d.x / pixScale.value;
+      finalProps = {
+        id: startProps.id,
+        layer: layerIndex,
+        start: startStart,
+        length: startProps.length + d.x / pixScale.value,
+      };
+      moveStrip(
+        finalProps.id,
+        finalProps.start,
+        finalProps.length,
+        finalProps.layer
+      );
+    },
+    (e) => {
+      undo.push(
+        () => {
+          moveStrip(
+            startProps.id,
+            startProps.start,
+            startProps.length,
+            startProps.layer
+          );
+        },
+        () => {
+          moveStrip(
+            finalProps.id,
+            finalProps.start,
+            finalProps.length,
+            finalProps.layer
+          );
+        }
+      );
+    }
+  );
 }
 
 function moveStart(e: MouseEvent) {
