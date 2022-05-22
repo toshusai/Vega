@@ -37,6 +37,8 @@ function dragStart(e: MouseEvent) {
   onDragStart(e, (_, e) => {
     setTime(e);
   });
+  // block select rectangle
+  e.stopPropagation();
 }
 
 onMounted(() => {

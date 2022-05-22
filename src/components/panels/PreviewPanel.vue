@@ -49,6 +49,10 @@ onMounted(() => {
 
 const timestamp = computed(() => timeFormat(timeline.value.curent));
 
+/**
+ * クリックで選択可能なStripを選択
+ * @param e
+ */
 function pointerdown(e: MouseEvent) {
   const { left, right, top, bottom } =
     canvas.value?.getBoundingClientRect() || {
@@ -57,17 +61,25 @@ function pointerdown(e: MouseEvent) {
       top: 0,
       bottom: 0,
     };
+
   const x = (e.clientX - left) / scale.value;
   const y = (e.clientY - top) / scale.value;
 
-  timeline.value.strips.forEach((strip) => {
+  for (const strip of timeline.value.strips) {
     if (
       strip.start < timeline.value.curent &&
       strip.start + strip.length > timeline.value.curent
     ) {
+      const alreadySelected = timeline.value.selectedStrips.find((s) => {
+        return s.id == strip.id;
+      });
+      if (alreadySelected) continue;
+
+      // TODO 矩形を計算して選択する
       selectStrip([strip.id]);
+      break;
     }
-  });
+  }
 }
 </script>
 
@@ -76,13 +88,17 @@ function pointerdown(e: MouseEvent) {
     ref="el"
     style="height: calc(100% - 12px); width: 100%; overflow: hidden"
   >
-    <div class="flex h-24">
-      <div>Zoom:{{ scale }}</div>
-      <v-select :value="scale" @input="(e) => (scale = eventToFloat(e))">
-        <option value="1">100%</option>
-        <option value="0.5">50%</option>
-        <option value="0.2">20%</option>
-      </v-select>
+    <div class="flex h-24 whitespace-nowrap">
+      <div>Zoom :</div>
+      <v-input
+        :value="scale"
+        :scale="0.01"
+        :step="0.01"
+        :min="0.1"
+        :max="1"
+        :view="(n) => n.toFixed(2)"
+        @input="(n) => (scale = n)"
+      />
     </div>
     <div style="display: flex; height: calc(100% - 24px - 12px - 4px)">
       <div class="m-auto relative">

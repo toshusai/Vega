@@ -3,6 +3,7 @@ import TimeView from "./TimeView.vue";
 import ScaleScroll from "../ScaleScroll.vue";
 import Cursor from "./Cursor.vue";
 import { Strip } from "~~/src/core/Strip";
+import SelectRect from "../SelectRect.vue";
 const { timeline, changeView, play, update } = useTimeline();
 
 const { addUpdate } = useUpdate();
@@ -76,6 +77,8 @@ const layers = computed(() => {
 const strips = computed<Strip[]>(() => {
   return timeline.value.strips as Strip[];
 });
+
+const timelineBody = ref<HTMLElement | null>(null);
 </script>
 
 <template>
@@ -102,8 +105,10 @@ const strips = computed<Strip[]>(() => {
       ></div>
     </div>
     <div
+      ref="timelineBody"
       style="width: calc(100% - 100px); position: relative; overflow: hidden"
     >
+      <SelectRect v-if="timelineBody" :element="timelineBody" />
       <Cursor />
       <TimeView />
       <div style="display: flex; position: relative">
@@ -133,6 +138,7 @@ const strips = computed<Strip[]>(() => {
   overflow: hidden;
   height: 100%;
   position: relative;
+  user-select: none;
 }
 .layer {
   display: flex;
