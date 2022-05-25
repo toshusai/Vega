@@ -1,28 +1,28 @@
 <script setup lang="ts">
 interface Emits {
-  (e: "top", event: MouseEvent): void;
-  (e: "left", event: MouseEvent): void;
-  (e: "right", event: MouseEvent): void;
-  (e: "bottom", event: MouseEvent): void;
+  (e: 'top', event: MouseEvent): void;
+  (e: 'left', event: MouseEvent): void;
+  (e: 'right', event: MouseEvent): void;
+  (e: 'bottom', event: MouseEvent): void;
 }
 
-const emit = defineEmits<Emits>();
+const emit = defineEmits<Emits>()
 
 const top = (event: MouseEvent) => {
-  emit("top", event);
-};
+  emit('top', event)
+}
 
 const left = (event: MouseEvent) => {
-  emit("left", event);
-};
+  emit('left', event)
+}
 
 const right = (event: MouseEvent) => {
-  emit("right", event);
-};
+  emit('right', event)
+}
 
 const bottom = (event: MouseEvent) => {
-  emit("bottom", event);
-};
+  emit('bottom', event)
+}
 </script>
 
 <template>

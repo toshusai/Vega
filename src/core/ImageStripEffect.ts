@@ -1,5 +1,5 @@
-import { Vector2 } from "three";
-import { StripEffect } from "./StripEffect";
+import { Vector2 } from 'three'
+import { StripEffect } from './StripEffect'
 
 export type ImageStripEffect = StripEffect & {
   path: string;

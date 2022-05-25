@@ -1,89 +1,117 @@
 <script setup lang="ts">
-import { Container } from "./core/Container";
-import "~/assets/css/main.css";
-import Stats from "stats.js";
-import undo from "./core/Undo";
-import OperationHIstoryPanel from "./components/panels/OperationHIstoryPanel.vue";
+import { Container } from './core/Container'
+import '~/assets/css/main.css'
+import Stats from 'stats.js'
+import undo from './core/Undo'
+import OperationHIstoryPanel from './components/panels/OperationHIstoryPanel.vue'
+import ButtonMenu from './components/ButtonMenu.vue'
 
-const { container } = useContainer();
+const { container, setContainer } = useContainer()
+const { timeline, setTimeline } = useTimeline()
+const { assets, setAssets } = useAssets()
+const { init } = useKeyboard()
 
-const { update } = useUpdate();
+const { update } = useUpdate()
 
-let stats: Stats | null = null;
+let stats: Stats | null = null
 
-function showStat() {
-  if (!stats) return;
-  stats.dom.style.visibility = "visible";
+function showStat () {
+  if (!stats) { return }
+  stats.dom.style.visibility = 'visible'
 }
 
-function hideStats() {
-  if (!stats) return;
-  stats.dom.style.visibility = "hidden";
+function hideStats () {
+  if (!stats) { return }
+  stats.dom.style.visibility = 'hidden'
 }
 
-function toggleStats() {
-  if (!stats) return;
-  if (stats.dom.style.visibility === "hidden") {
-    showStat();
+function toggleStats () {
+  if (!stats) { return }
+  if (stats.dom.style.visibility === 'hidden') {
+    showStat()
   } else {
-    hideStats();
+    hideStats()
   }
 }
 
 onMounted(() => {
-  stats = new Stats();
-  stats.showPanel(0);
-  let prev = 0;
+  init()
+  stats = new Stats()
+  stats.showPanel(0)
+  let prev = 0
   const mainUpdate = (t: number) => {
-    stats?.begin();
-    update(t - prev);
-    stats?.end();
-    requestAnimationFrame(mainUpdate);
-    prev = t;
-  };
-  mainUpdate(0);
+    stats?.begin()
+    update(t - prev)
+    stats?.end()
+    requestAnimationFrame(mainUpdate)
+    prev = t
+  }
+  mainUpdate(0)
 
-  document.body.append(stats.dom);
-  stats.dom.style.left = "";
-  stats.dom.style.right = "0";
-  stats.dom.style.pointerEvents = "none";
+  document.body.append(stats.dom)
+  stats.dom.style.left = ''
+  stats.dom.style.right = '0'
+  stats.dom.style.pointerEvents = 'none'
   stats.dom.childNodes.forEach((node: Node) => {
     if (node instanceof HTMLElement) {
-      node.style.display = "";
+      node.style.display = ''
     }
-  });
-  hideStats();
+  })
+  hideStats()
 
-  window.addEventListener("keydown", (e) => {
+  window.addEventListener('keydown', (e) => {
     // if mac ctrl = command
-    const ctrlKey = isOSX() ? e.metaKey : e.ctrlKey;
+    const ctrlKey = isOSX() ? e.metaKey : e.ctrlKey
     //  Shift + Command + Z
     if (e.keyCode === 90 && e.shiftKey && ctrlKey) {
-      console.log("redo");
-      undo.redo();
+      console.log('redo')
+      undo.redo()
     } else if (e.keyCode === 90 && ctrlKey) {
-      console.log("undo");
-      undo.undo();
+      console.log('undo')
+      undo.undo()
     }
-  });
-});
+  })
+})
 
-function isOSX() {
-  return navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+function isOSX () {
+  return navigator.platform.toUpperCase().includes('MAC')
 }
 
-const c = computed(() => container.value as Container);
+function openfile () {
+  const fileInput = document.createElement('input')
+  fileInput.type = 'file'
+  fileInput.accept = '.json'
+  fileInput.click()
+  fileInput.onchange = () => {
+    if (!fileInput.files) { return }
+    const file = fileInput.files[0]
+    if (!file) { return }
+    const reader = new FileReader()
+    reader.onload = () => {
+      const data = JSON.parse(reader.result as string)
+      setContainer(data.container)
+      setTimeline(data.timeline)
+      setAssets(data.assets)
+    }
+    reader.readAsText(file)
+  }
+}
 
-const show = ref(false);
-function close() {
-  show.value = false;
-  window.removeEventListener("click", close);
+function downloadFile () {
+  const project = {
+    container: container.value,
+    timeline: timeline.value,
+    assets: assets.value
+  }
+  const a = document.createElement('a')
+  a.href =
+    'data:text/json;charset=utf-8,' +
+    encodeURIComponent(JSON.stringify(project))
+  a.download = 'project.json'
+  a.click()
 }
-function open(e: MouseEvent) {
-  show.value = true;
-  e.stopPropagation();
-  window.addEventListener("click", close);
-}
+
+const c = computed(() => container.value as Container)
 </script>
 
 <template>
@@ -95,19 +123,22 @@ function open(e: MouseEvent) {
   >
     <div style="height: calc(100vh - 48px)">
       <div class="header-menu flex">
-        <div class="header-button">
-          <button @click="open">Vega</button>
-          <div
-            v-if="show"
-            class="absolute top-24 left-0 bg-background1 border-default border-2 box-border z-10 px-8"
-          >
-            <button @click="toggleStats">Stats</button>
-          </div>
-        </div>
-        <div class="header-button">File</div>
+        <ButtonMenu
+          label="Vega"
+          :items="[{ name: 'stats', onClick: toggleStats }]"
+        />
+        <ButtonMenu
+          label="File"
+          :items="[
+            { name: 'Open', onClick: openfile },
+            { name: 'Save', onClick: downloadFile },
+          ]"
+        />
+
+        <!-- <div class="header-button">File</div> -->
       </div>
       <ContainerUI :container="c" />
-      <OperationHIstoryPanel></OperationHIstoryPanel>
+      <OperationHIstoryPanel />
     </div>
   </div>
   <!-- <div class="overlay">
@@ -128,14 +159,6 @@ function open(e: MouseEvent) {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.header-button {
-  cursor: pointer;
-  line-height: 24px;
-  padding: 0 12px;
-}
-.header-button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
 }
 .header-menu {
   height: 24px;

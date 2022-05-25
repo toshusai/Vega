@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { Position } from "../core/Container";
+import { Position } from '../core/Container'
 
-const props = defineProps<{ name: string; containerId: string }>();
-const { dad, startDad } = useDragAndDrop();
+const props = defineProps<{ name: string; containerId: string }>()
+const { dad, startDad } = useDragAndDrop()
 
-const enter = ref(false);
+const enter = ref(false)
 const mouseenter = (_e: MouseEvent) => {
-  enter.value = true;
-};
+  enter.value = true
+}
 const mouseleave = (_e: MouseEvent) => {
-  enter.value = false;
-};
+  enter.value = false
+}
 
-const { changeLayout } = useContainer();
+const { changeLayout } = useContainer()
 const upTop = (e: MouseEvent, pos: Position) => {
   changeLayout({
-    from: dad.value.payload || "",
+    from: dad.value.payload || '',
     to: props.containerId,
-    pos,
-  });
-};
+    pos
+  })
+}
 </script>
 
 <template>

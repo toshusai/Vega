@@ -1,67 +1,67 @@
 <script setup lang="ts">
-import { PropType } from "vue";
-import { onDragStart } from "../utils/onDragStart";
+import { PropType } from 'vue'
+import { onDragStart } from '../utils/onDragStart'
 
 const props = defineProps({
   value: {
     default: 0,
-    type: Number,
+    type: Number
   },
   scale: {
     default: 1,
-    type: Number,
+    type: Number
   },
   step: {
     default: null,
     type: Number,
-    requred: false,
+    requred: false
   },
   min: {
     default: null,
     type: Number,
-    requred: false,
+    requred: false
   },
   max: {
     default: null,
     type: Number,
-    requred: false,
+    requred: false
   },
   view: {
     default: null,
     type: Function as PropType<(num: number) => string>,
-    requred: false,
-  },
-});
+    requred: false
+  }
+})
 
 const emit = defineEmits<{
-  (e: "input", value: number): void;
-}>();
+  (e: 'input', value: number): void;
+}>()
 
-function pointerdown(e: MouseEvent) {
+function pointerdown (e: MouseEvent) {
   onDragStart(e, (delta, e) => {
-    if (typeof props.value === "number") {
-      let plus = e.movementX * props.scale;
+    if (typeof props.value === 'number') {
+      let plus = e.movementX * props.scale
       if (props.step) {
-        plus = Math.round(plus / props.step) * props.step;
+        plus = Math.round(plus / props.step) * props.step
       }
 
       // clamp
       if (props.min !== null && props.value + plus < props.min) {
-        plus = props.min - props.value;
+        plus = props.min - props.value
       }
       if (props.max !== null && props.value + plus > props.max) {
-        plus = props.max - props.value;
+        plus = props.max - props.value
       }
 
-      emit("input", props.value + plus);
+      emit('input', props.value + plus)
     } else {
     }
-  });
+  })
 }
 
-function inputByInputEvent(e: Event) {
-  if (typeof props.value === "number") {
-    emit("input", parseFloat((e.target as HTMLInputElement).value));
+function inputByInputEvent (e: Event) {
+  if (typeof props.value === 'number') {
+    emit('input', parseFloat((e.target as HTMLInputElement).value))
   } else {
   }
 }
@@ -74,7 +74,7 @@ function inputByInputEvent(e: Event) {
       :value="view ? view(value) : value"
       class="bg-transparent border-default border-2 rounded-4 pl-4 text-sm w-full"
       @input="inputByInputEvent"
-    />
+    >
     <div class="flex cursor-ew-resize">
       <svg
         class="my-auto mx-4 rounded-4"
@@ -96,10 +96,7 @@ function inputByInputEvent(e: Event) {
   </div>
 </template>
 
-<!-- 
-
-
-
+<!--
 
         <button>
           <svg style="width: 12px; height: 12px" viewBox="0 0 24 24">
@@ -118,5 +115,5 @@ function inputByInputEvent(e: Event) {
             />
           </svg>
         </button>
- 
+
  -->

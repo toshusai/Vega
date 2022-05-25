@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { assets } = useAssets();
+const { assets } = useAssets()
 </script>
 
 <template>

@@ -2,7 +2,7 @@
   <div
     v-bind="$attrs"
     class="resize-top absolute bg-background2 cursor-ns-resize w-full left-0 transition-all select-none"
-  ></div>
+  />
 </template>
 
 <style>

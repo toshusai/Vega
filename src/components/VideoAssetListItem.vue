@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { IAsset } from "../core/IAsset";
+import { IAsset } from '../core/IAsset'
 
-defineProps<{ asset: IAsset }>();
+defineProps<{ asset: IAsset }>()
 
-const videoEl = ref<HTMLVideoElement | null>(null);
+const videoEl = ref<HTMLVideoElement | null>(null)
 
 onMounted(() => {
-  if (!videoEl.value) return;
-  videoEl.value.currentTime = 20;
-});
+  if (!videoEl.value) { return }
+  videoEl.value.currentTime = 20
+})
 </script>
 
 <template>

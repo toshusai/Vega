@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import InspectorInputBase from "./InspectorInputBase.vue";
-defineProps<{ label: string; value: string }>();
+import InspectorInputBase from './InspectorInputBase.vue'
+defineProps<{ label: string; value: string }>()
 </script>
 <template>
   <inspector-input-base :label="label">

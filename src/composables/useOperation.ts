@@ -1,4 +1,4 @@
-import { Ref } from "nuxt/dist/app/compat/capi";
+import { Ref } from 'nuxt/dist/app/compat/capi'
 
 interface Operation {
   text: string;
@@ -12,14 +12,14 @@ interface OperationState {
 const init: OperationState = {
   history: [
     {
-      text: "Welcome to the Vega!",
-      time: Date.now(),
-    },
-  ],
-};
+      text: 'Welcome to the Vega!',
+      time: Date.now()
+    }
+  ]
+}
 
-export function useOperation() {
-  const operation = useState("operation", () => init);
+export function useOperation () {
+  const operation = useState('operation', () => init)
 
   return {
     history: readonly(operation.value.history),
@@ -27,9 +27,9 @@ export function useOperation() {
       return (text: string) => {
         state.value.history.push({
           text,
-          time: Date.now(),
-        });
-      };
-    })(operation),
-  };
+          time: Date.now()
+        })
+      }
+    })(operation)
+  }
 }

@@ -1,5 +1,5 @@
-import { Ref } from "nuxt/dist/app/compat/capi";
-import * as THREE from "three";
+import { Ref } from 'nuxt/dist/app/compat/capi'
+import * as THREE from 'three'
 
 export interface State {
   scene?: THREE.Scene;
@@ -7,37 +7,37 @@ export interface State {
   renderer?: THREE.WebGLRenderer;
 }
 
-export function useScene() {
-  const scene = useState<State>("scene", () => {
-    return {};
-  });
+export function useScene () {
+  const scene = useState<State>('scene', () => {
+    return {}
+  })
 
-  const { timeline } = useTimeline();
+  const { timeline } = useTimeline()
 
   onMounted(() => {
-    scene.value.scene = new THREE.Scene();
-    scene.value.camera = new THREE.OrthographicCamera(0, 0, 200, 200);
-    scene.value.camera.position.x = timeline.value.width / 2;
-    scene.value.camera.position.y = timeline.value.height / 2;
-    console.log(scene.value.camera);
-  });
+    scene.value.scene = new THREE.Scene()
+    scene.value.camera = new THREE.OrthographicCamera(0, 0, 200, 200)
+    scene.value.camera.position.x = timeline.value.width / 2
+    scene.value.camera.position.y = timeline.value.height / 2
+    console.log(scene.value.camera)
+  })
 
   return {
     scene,
     setRenderer: ((state: Ref<State>) => {
       return (canvas: HTMLCanvasElement) => {
         const renderer = new THREE.WebGLRenderer({
-          canvas,
-        });
-        state.value.renderer = renderer;
-      };
+          canvas
+        })
+        state.value.renderer = renderer
+      }
     })(scene),
     update: ((state: Ref<State>) => {
       return () => {
         if (state.value.renderer && state.value.scene && state.value.camera) {
-          state.value.renderer.render(state.value.scene, state.value.camera);
+          state.value.renderer.render(state.value.scene, state.value.camera)
         }
-      };
-    })(scene),
-  };
+      }
+    })(scene)
+  }
 }

@@ -1,84 +1,84 @@
 <script setup lang="ts">
-import TimeView from "./TimeView.vue";
-import ScaleScroll from "../ScaleScroll.vue";
-import Cursor from "./Cursor.vue";
-import { Strip } from "~~/src/core/Strip";
-import SelectRect from "../SelectRect.vue";
-const { timeline, changeView, play, update } = useTimeline();
+import ScaleScroll from '../ScaleScroll.vue'
+import SelectRect from '../SelectRect.vue'
+import TimeView from './TimeView.vue'
+import Cursor from './Cursor.vue'
+import { Strip } from '~~/src/core/Strip'
+const { timeline, changeView, play, update } = useTimeline()
 
-const { addUpdate } = useUpdate();
+const { addUpdate } = useUpdate()
 
-const { addEventListener } = useContainer();
+const { addEventListener } = useContainer()
 
-const el = ref<HTMLDivElement | null>(null);
+const el = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
-  if (!el.value) return;
-  el.value.addEventListener("wheel", (e) => {
-    e.preventDefault();
+  if (!el.value) { return }
+  el.value.addEventListener('wheel', (e) => {
+    e.preventDefault()
     if (e.ctrlKey) {
-      const zoomSize = e.deltaY * 0.01;
-      const start = timeline.value.start - zoomSize;
-      const end = timeline.value.end + zoomSize;
-      changeView(start, end);
+      const zoomSize = e.deltaY * 0.01
+      const start = timeline.value.start - zoomSize
+      const end = timeline.value.end + zoomSize
+      changeView(start, end)
     }
 
-    const scale = 0.01;
-    let start = timeline.value.start + e.deltaX * scale;
+    const scale = 0.01
+    const start = timeline.value.start + e.deltaX * scale
     if (start < 0) {
-      changeView(0, timeline.value.end);
-      return;
+      changeView(0, timeline.value.end)
+      return
     }
-    let end = timeline.value.end + e.deltaX * scale;
+    const end = timeline.value.end + e.deltaX * scale
     if (end > timeline.value.length) {
-      changeView(timeline.value.start, timeline.value.length);
-      return;
+      changeView(timeline.value.start, timeline.value.length)
+      return
     }
-    changeView(start, end);
-  });
+    changeView(start, end)
+  })
   addUpdate((d) => {
     if (timeline.value.isPlay) {
-      update(timeline.value.curent + d / 1000);
+      update(timeline.value.curent + d / 1000)
     } else {
-      update(timeline.value.curent);
+      update(timeline.value.curent)
     }
-  });
-  window.addEventListener("keydown", (e) => {
-    if (document.activeElement?.tagName == "INPUT") {
-      return;
+  })
+  window.addEventListener('keydown', (e) => {
+    if (document.activeElement?.tagName == 'INPUT') {
+      return
     }
-    if (e.key === " ") {
-      play(!timeline.value.isPlay);
+    if (e.key === ' ') {
+      play(!timeline.value.isPlay)
     }
-  });
+  })
 
-  addEventListener("resize", () => {
+  addEventListener('resize', () => {
     // 強制的に更新するためEPSILONを足す
     changeView(
       timeline.value.start + Number.EPSILON,
       timeline.value.end + Number.EPSILON
-    );
-  });
-});
+    )
+  })
+})
 
 const layers = computed(() => {
-  const l: Strip[][] = [[], [], [], []];
+  const l: Strip[][] = [[], [], [], []]
   for (const strip of timeline.value.strips) {
     if (l.length <= strip.layer) {
       for (let i = l.length; i <= strip.layer; i++) {
-        l.push([]);
+        l.push([])
       }
     }
-    l[strip.layer].push(strip as Strip);
+    l[strip.layer].push(strip as Strip)
   }
-  return l;
-});
+  return l
+})
 
 const strips = computed<Strip[]>(() => {
-  return timeline.value.strips as Strip[];
-});
+  return timeline.value.strips as Strip[]
+})
 
-const timelineBody = ref<HTMLElement | null>(null);
+const timelineBody = ref<HTMLElement | null>(null)
 </script>
 
 <template>
@@ -90,7 +90,7 @@ const timelineBody = ref<HTMLElement | null>(null);
           border-bottom: 1px solid var(--border-grey);
           box-sizing: border-box;
         "
-      ></div>
+      />
       <div
         v-for="(layer, i) in layers"
         :key="i"
@@ -102,7 +102,7 @@ const timelineBody = ref<HTMLElement | null>(null);
           width: 100px;
           top: ${20 + i * 50}px;
         `"
-      ></div>
+      />
     </div>
     <div
       ref="timelineBody"

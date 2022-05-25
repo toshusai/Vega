@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { Container } from "../core/Container";
-import PanelUI from "./PanelUI.vue";
-import ResizeTop from "./ResizeTop.vue";
-import ResizeLeft from "./ResizeLeft.vue";
-import { onDragStart } from "../utils/onDragStart";
-import RectUI from "./RectUI.vue";
-import { IVector2 } from "../core/IVector2";
+import { Container } from '../core/Container'
+import { onDragStart } from '../utils/onDragStart'
+import { IVector2 } from '../core/IVector2'
+import PanelUI from './PanelUI.vue'
+import ResizeTop from './ResizeTop.vue'
+import ResizeLeft from './ResizeLeft.vue'
+import RectUI from './RectUI.vue'
 
-const props = defineProps<{ container: Container }>();
-const { resizeContainer } = useContainer();
-const rectRef = ref([] as typeof RectUI[]);
+const props = defineProps<{ container: Container }>()
+const { resizeContainer } = useContainer()
+const rectRef = ref([] as typeof RectUI[])
 const move = (i: number) => {
   return (delta: IVector2, e: MouseEvent) => {
-    if (!rectRef.value || rectRef.value.length == 0) return;
+    if (!rectRef.value || rectRef.value.length == 0) { return }
 
-    const rect = rectRef.value[i].el.parentElement?.getBoundingClientRect();
+    const rect = rectRef.value[i].el.parentElement?.getBoundingClientRect()
     if (rect) {
-      delta.x = (delta.x / rect.width) * 100;
-      delta.y = (delta.y / rect.height) * 100;
+      delta.x = (delta.x / rect.width) * 100
+      delta.y = (delta.y / rect.height) * 100
 
-      resizeContainer({ id: props.container.children[i].id, delta });
+      resizeContainer({ id: props.container.children[i].id, delta })
     }
-  };
-};
+  }
+}
 onMounted(() => {
-  if (!rectRef.value || rectRef.value.length > 0) return;
-});
+  if (!rectRef.value || rectRef.value.length > 0) {}
+})
 </script>
 
 <template>
@@ -35,7 +35,7 @@ onMounted(() => {
     :container-id="props.container.id"
   />
   <template v-else>
-    <div :id="props.container.id"></div>
+    <div :id="props.container.id" />
     <RectUI
       v-for="(child, i) in props.container.children"
       :key="i"
@@ -49,12 +49,11 @@ onMounted(() => {
         <ResizeTop
           v-if="props.container.align == 'vertical'"
           @mousedown="(e:MouseEvent) => onDragStart(e, move(i))"
-        >
-        </ResizeTop>
+        />
         <ResizeLeft
           v-else
           @mousedown="(e:MouseEvent) => onDragStart(e, move(i))"
-        ></ResizeLeft>
+        />
       </template>
     </RectUI>
   </template>

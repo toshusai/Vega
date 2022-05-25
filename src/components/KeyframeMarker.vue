@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { Animation } from "../core/TextStripEffect";
+import { Animation } from '../core/TextStripEffect'
 
-const props = defineProps<{ animation: Animation; scale: number }>();
+const props = defineProps<{ animation: Animation; scale: number }>()
 
-const { timeline, selectKeyframe } = useTimeline();
+const { timeline, selectKeyframe } = useTimeline()
 
-const HEIGHT = 24;
-const SIZE = 12;
+const HEIGHT = 24
+const SIZE = 12
 
 const style = computed(() => {
   return {
     top: `${HEIGHT / 2 - SIZE / 2}px`,
-    left: `${props.animation.time * props.scale - SIZE / 2}px`,
-  };
-});
+    left: `${props.animation.time * props.scale - SIZE / 2}px`
+  }
+})
 
 const selected = computed(() => {
-  return timeline.value.selectedKeyframes.includes(props.animation);
-});
+  return timeline.value.selectedKeyframes.includes(props.animation)
+})
 
-function select() {
-  selectKeyframe([props.animation]);
+function select () {
+  selectKeyframe([props.animation])
 }
 </script>
 

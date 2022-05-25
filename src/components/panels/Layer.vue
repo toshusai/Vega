@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Strip } from "~~/src/core/Strip";
+import { Strip } from '~~/src/core/Strip'
 
-const props = defineProps<{ strips: Strip[] }>();
+const props = defineProps<{ strips: Strip[] }>()
 
-const { selectStrip } = useTimeline();
+const { selectStrip } = useTimeline()
 </script>
 
 <template>

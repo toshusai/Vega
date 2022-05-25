@@ -1,4 +1,4 @@
-import { Strip } from "./Strip";
+import { Strip } from './Strip'
 
 export interface Layer {
   strips: Strip[];

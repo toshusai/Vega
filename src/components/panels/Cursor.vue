@@ -1,13 +1,13 @@
 <script setup lang="ts">
-const { timeline } = useTimeline();
-const el = ref<HTMLElement | null>(null);
+const { timeline } = useTimeline()
+const el = ref<HTMLElement | null>(null)
 const pixScale = computed(() => {
-  const width = el.value?.parentElement.getBoundingClientRect().width || 1;
+  const width = el.value?.parentElement.getBoundingClientRect().width || 1
 
   const viewScale =
-    (timeline.value.end - timeline.value.start) / timeline.value.length;
-  return width / timeline.value.scale / viewScale;
-});
+    (timeline.value.end - timeline.value.start) / timeline.value.length
+  return width / timeline.value.scale / viewScale
+})
 </script>
 <template>
   <div
