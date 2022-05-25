@@ -138,11 +138,11 @@ onMounted(() => {
   if (!effectObj.value) { return }
   if (!canvas.value) { return }
   ctx.value = canvas.value.getContext('2d')
-  getBuffer()
+  updateVideoStart()
 })
 
 const rootOffset = ref(0)
-const updateVideoStart = async () => {
+const updateVideoStart = () => {
   if (!el.value) { return }
   const rect = el.value.getBoundingClientRect()
   if (!rect) { return }

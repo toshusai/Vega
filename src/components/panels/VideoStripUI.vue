@@ -110,7 +110,7 @@ const updateVideoStart = async () => {
     promises.push(
       () =>
         new Promise((resolve) => {
-          var i = setTimeout(() => {
+          const i = setTimeout(() => {
             clearTimeout(i)
             resolve()
           }, 1000)

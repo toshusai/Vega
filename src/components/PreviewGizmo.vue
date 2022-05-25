@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { log } from 'console'
 import { CSSProperties } from 'vue'
 import { uuid } from 'short-uuid'
 import { TextStripEffectObject } from '../core/TextStripEffectObject'
@@ -14,6 +15,35 @@ const props = defineProps<{ scale: number }>()
 const strip = computed(() => timeline.value.selectedStrips[0])
 const effect = computed(() => strip.value && strip.value.effects[0])
 const style = ref<CSSProperties>({})
+
+const isTextEffect = computed(() => {
+  return effect.value && effect.value.type === 'Text'
+})
+
+const textStyle = computed<CSSProperties>(() => {
+  if (isText(effect.value)) {
+    return {
+      fontSize: `${effect.value.size * props.scale}px`,
+      fontFamily: effect.value.family,
+      width: `calc(${style.value.width} + 10px)`,
+      color: effect.value.color,
+      height: `${style.value.height}`,
+      lineHeight: `${(Number.parseFloat(style.value?.height?.toString() || '0') || 0) / (effect.value.text.split('\n').length)}px`,
+      letterSpacing: `${effect.value.characterSpace * props.scale}px`
+    }
+  }
+  return {}
+})
+
+function update (e:InputEvent) {
+  console.log(e.target.value)
+
+  updateEffect(strip.value.id, {
+    ...effect.value,
+    text: e.target.value
+  })
+}
+
 function updateStyle (): CSSProperties {
   if (!effect.value) { return { display: 'none' } }
   const width = timeline.value.width
@@ -131,11 +161,9 @@ function drag (e: MouseEvent) {
 </script>
 
 <template>
-  <div
-    class="gizmo text-brand absolute cursor-pointer"
-    :style="style"
-    @pointerdown="drag"
-  />
+  <div class="gizmo text-brand absolute cursor-pointer" :style="style" @pointerdown="drag">
+    <textarea v-if="isTextEffect" :value="effect.text" class="text-gizmo" :style="textStyle" @input="update" />
+  </div>
 </template>
 
 <style scoped>
@@ -144,5 +172,17 @@ function drag (e: MouseEvent) {
   user-select: none;
   /* box-sizing: border-box; */
   /* box-sizing: content-box; */
+}
+
+.text-gizmo {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  height: 100%;
+  margin-left: -1px;
+  margin-top: -1px;
+  overflow: hidden;
+
 }
 </style>

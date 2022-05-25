@@ -33,9 +33,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits<{
-  (e: 'input', value: number): void;
-}>()
+const emit = defineEmits<{(e: 'input', value: number): void; }>()
 
 function pointerdown (e: MouseEvent) {
   onDragStart(e, (delta, e) => {
@@ -54,16 +52,12 @@ function pointerdown (e: MouseEvent) {
       }
 
       emit('input', props.value + plus)
-    } else {
     }
   })
 }
 
 function inputByInputEvent (e: Event) {
-  if (typeof props.value === 'number') {
-    emit('input', parseFloat((e.target as HTMLInputElement).value))
-  } else {
-  }
+  emit('input', parseFloat((e.target as HTMLInputElement).value))
 }
 </script>
 
@@ -87,10 +81,7 @@ function inputByInputEvent (e: Event) {
         viewBox="0 0 24 24"
         @pointerdown="pointerdown"
       >
-        <path
-          fill="currentColor"
-          d="M8,14V18L2,12L8,6V10H16V6L22,12L16,18V14H8Z"
-        />
+        <path fill="currentColor" d="M8,14V18L2,12L8,6V10H16V6L22,12L16,18V14H8Z" />
       </svg>
     </div>
   </div>
