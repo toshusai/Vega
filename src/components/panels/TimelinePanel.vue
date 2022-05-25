@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import shortUUID, { uuid } from 'short-uuid'
 import ScaleScroll from '../ScaleScroll.vue'
 import SelectRect from '../SelectRect.vue'
 import TimeView from './TimeView.vue'
 import Cursor from './Cursor.vue'
+import TimelineCursor from './TimelineCursor.vue'
 import { Strip } from '~~/src/core/Strip'
 const { timeline, changeView, play, update } = useTimeline()
 
@@ -74,8 +76,16 @@ const layers = computed(() => {
   return l
 })
 
-const strips = computed<Strip[]>(() => {
-  return timeline.value.strips as Strip[]
+/**
+ * BAD: 渡すStripのwatchを有効にするためにuuidをつける
+ */
+const strips = computed<{ strip: Strip, id: string }[]>(() => {
+  return timeline.value.strips.map((s) => {
+    return {
+      strip: s as Strip,
+      id: uuid()
+    }
+  })
 })
 
 const timelineBody = ref<HTMLElement | null>(null)
@@ -95,31 +105,22 @@ const timelineBody = ref<HTMLElement | null>(null)
         v-for="(layer, i) in layers"
         :key="i"
         :style="`
-          border-bottom: 1px solid var(--border-grey);
-          height: 50px;
-          box-sizing: content-box;
-          position: absolute;
-          width: 100px;
-          top: ${20 + i * 50}px;
-        `"
+        border-bottom: 1px solid var(--border-grey);
+        height: 50px;
+        box-sizing: content-box;
+        position: absolute;
+        width: 100px;
+        top: ${20 + i * 50}px;
+      `"
       />
     </div>
-    <div
-      ref="timelineBody"
-      style="width: calc(100% - 100px); position: relative; overflow: hidden"
-    >
+    <div ref="timelineBody" style="width: calc(100% - 100px); position: relative; overflow: hidden">
       <SelectRect v-if="timelineBody" :element="timelineBody" />
-      <Cursor />
+      <TimelineCursor />
       <TimeView />
       <div style="display: flex; position: relative">
-        <div
-          v-for="(layer, i) in layers"
-          :key="i"
-          :strips="layer"
-          class="layer"
-          :style="`top: ${i * 50}px`"
-        />
-        <PanelsStripUI v-for="(strip, i) in strips" :key="i" :strip="strip" />
+        <div v-for="(layer, i) in layers" :key="i" :strips="layer" class="layer" :style="`top: ${i * 50}px`" />
+        <PanelsStripUI v-for="(strip, ) in strips" :key="strip.id" :strip="strip.strip" />
       </div>
       <ScaleScroll
         style="position: absolute; bottom: 0"
@@ -140,6 +141,7 @@ const timelineBody = ref<HTMLElement | null>(null)
   position: relative;
   user-select: none;
 }
+
 .layer {
   display: flex;
   width: 100%;

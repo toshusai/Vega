@@ -40,11 +40,11 @@ return effect
   <div v-if="effect && isText(effect)">
     <div class="p-4">
       <div>TextEffect</div>
-      <inspector-string-input
+      <!-- <inspector-string-input
         label="Text"
         :value="effect.text"
         @input="(e) => changeText(eventToString(e), 'text')"
-      />
+      /> -->
       <inspector-input
         label="x"
         :value="effect.position.x"
@@ -76,6 +76,11 @@ return effect
         label="Family"
         :value="effect.family"
         @input="(e) => changeText(eventToString(e), 'family')"
+      />
+      <inspector-input
+        label="characterSpace"
+        :value="effect.characterSpace"
+        @input="(n) => changeText(n, 'characterSpace')"
       />
       <inspector-color-input
         label="shadowColor"

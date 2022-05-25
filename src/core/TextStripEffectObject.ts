@@ -68,7 +68,7 @@ export class TextStripEffectObject extends EffectObject {
   }
 
   updateFont (itext: TextStripEffect) {
-    if (itext.size == this.prevSize) { return }
+    if (itext.size === this.prevSize && itext.text == this.prevText) { return }
     const span = document.createElement('span')
     span.innerHTML = this.text
     span.style.fontFamily = itext.family
@@ -78,12 +78,14 @@ export class TextStripEffectObject extends EffectObject {
     document.body.append(span)
     const r = span.getBoundingClientRect()
     // this.canvas.height = r.height;
-    this.mesureHeight = r.height
+    this.mesureHeight = r.height * itext.text.split('\n').length - 1
     span.remove()
     this.prevSize = itext.size
+    this.prevText = itext.text
   }
 
   prevSize = 0
+  prevText = ''
 
   /**
    * Draw text to canvas by ctx.fillText.
@@ -94,8 +96,16 @@ export class TextStripEffectObject extends EffectObject {
     // const font =
     // this.updateFont();
     this.ctx.font = `${itext.style} ${itext.size}px ${itext.family}`
-    const metrics = this.ctx.measureText(itext.text)
-    this.mesureWidth = metrics.width
+
+    this.mesureWidth = 0
+    itext.text.split('\n').forEach((line, i) => {
+      const metrics = this.ctx.measureText(line)
+      this.mesureWidth = Math.max(metrics.width + itext.characterSpace * (line.length - 1), this.mesureWidth)
+    })
+
+    const breakLineCount = itext.text.split('\n').length - 1
+
+    const lineHeight = this.mesureHeight / (breakLineCount + 1)
 
     this.obj.scale.set(this.canvas.width, this.canvas.height, 1)
 
@@ -108,22 +118,48 @@ export class TextStripEffectObject extends EffectObject {
 
     this.ctx.shadowColor = itext.shadowColor
     this.ctx.shadowBlur = itext.shadowBlur
+    this.ctx.lineJoin = 'round'
     this.ctx.strokeStyle = itext.outlineColor
     this.ctx.lineWidth = itext.outlineWidth
-    this.ctx.strokeText(
-      itext.text,
-      this.canvas.width / 2 - metrics.width / 2,
-      this.canvas.height / 2 + this.mesureHeight / 2
-    )
-    this.ctx.shadowBlur = 0
+
+    let left = this.canvas.width / 2 - this.mesureWidth / 2
+    let top = this.canvas.height / 2 + lineHeight / 2 - (lineHeight / 2) * breakLineCount
+    for (let i = 0; i < itext.text.length; i++) {
+      const char = itext.text[i]
+      if (char === '\n') {
+        top += lineHeight
+        left = this.canvas.width / 2 - this.mesureWidth / 2
+        continue
+      }
+      const w = this.ctx.measureText(char).width
+      this.ctx.strokeText(
+        char,
+        left,
+        top
+      )
+      left += w + itext.characterSpace
+    }
 
     this.ctx.fillStyle = itext.color
-    // this.ctx.fillRect(0, 0, 10000, 10000);
-    this.ctx.fillText(
-      itext.text,
-      this.canvas.width / 2 - metrics.width / 2,
-      this.canvas.height / 2 + this.mesureHeight / 2
-    )
+    this.ctx.shadowBlur = 0
+
+    left = this.canvas.width / 2 - this.mesureWidth / 2
+    top = this.canvas.height / 2 + lineHeight / 2 - (lineHeight / 2) * breakLineCount
+    for (let i = 0; i < itext.text.length; i++) {
+      const char = itext.text[i]
+      if (char === '\n') {
+        top += lineHeight
+        left = this.canvas.width / 2 - this.mesureWidth / 2
+        continue
+      }
+      const w = this.ctx.measureText(char).width
+      this.ctx.fillText(
+        char,
+        left,
+        top
+      )
+      left += w + itext.characterSpace
+    }
     this.texture.needsUpdate = true
   }
 

@@ -54,6 +54,8 @@ function drag (e: MouseEvent) {
   // block select rectangle
   e.stopPropagation()
 
+  selectStripClick(props.strip)
+
   const parent = el.value?.parentElement
   const parentRect = parent?.getBoundingClientRect()
   if (!parentRect) { return }
@@ -66,6 +68,10 @@ function drag (e: MouseEvent) {
   }
   let startStart = startProps.start
   let finalProps = { ...startProps }
+
+  const otherStrips = timeline.value.selectedStrips.filter(strip => strip.id !== props.strip.id)
+  const otherStripsStart = otherStrips.map(strip => strip.start)
+
   onDragStart(
     e,
     (d, e) => {
@@ -84,6 +90,15 @@ function drag (e: MouseEvent) {
         finalProps.length,
         finalProps.layer
       )
+
+      otherStrips.forEach((strip) => {
+        moveStrip(
+          strip.id,
+          strip.start + d.x / pixScale.value,
+          strip.length,
+          strip.layer
+        )
+      })
     },
     () => {
       pushHistory(`MoveStrip: ${JSON.stringify(finalProps, null, 2)}`)
@@ -138,11 +153,11 @@ function moveEnd (e: MouseEvent) {
 function getComponentNameFromStrip (strip: Strip) {
   for (let i = 0; i < strip.effects.length; i++) {
     const effect = strip.effects[i]
-    if (effect.type == 'Text') {
+    if (effect.type === 'Text') {
       return 'PanelsTextStripUI'
-    } else if (effect.type == 'Video') {
+    } else if (effect.type === 'Video') {
       return 'PanelsVideoStripUI'
-    } else if (effect.type == 'Audio') {
+    } else if (effect.type === 'Audio') {
       return 'PanelsAudioStripUI'
     }
     console.warn('unknown effect type', effect.type)
@@ -171,13 +186,9 @@ function selectStripClick (strip: Strip) {
         : ''
     "
     @mousedown="drag"
-    @click.stop="() => selectStripClick(props.strip)"
   >
     <div class="handle" @mousedown="moveStart" />
-    <component
-      :is="getComponentNameFromStrip(props.strip)"
-      :strip="props.strip"
-    />
+    <component :is="getComponentNameFromStrip(props.strip)" :strip="props.strip" />
     <div class="handle" style="right: 0" @mousedown="moveEnd" />
     <div
       class="absolute -right-[4px] -top-[4px] h-[49px]"

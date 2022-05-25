@@ -58,8 +58,7 @@ if (isDev) {
   })
 
   server.listen()
-  // @ts-ignore
-  const port = server.address().port
+  const port = server.address()
   indexUrl = `http://localhost:${port}`
 }
 

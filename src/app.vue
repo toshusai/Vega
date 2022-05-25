@@ -58,6 +58,13 @@ onMounted(() => {
     }
   })
   hideStats()
+  const project = localStorage.getItem('save')
+  if (typeof project === 'string') {
+    const p = JSON.parse(project)
+    setAssets(p.assets)
+    setTimeline(p.timeline)
+    setContainer(p.container)
+  }
 
   window.addEventListener('keydown', (e) => {
     // if mac ctrl = command
@@ -69,6 +76,11 @@ onMounted(() => {
     } else if (e.keyCode === 90 && ctrlKey) {
       console.log('undo')
       undo.undo()
+    }
+    // Cmannd + S
+    if (e.keyCode === 83 && ctrlKey) {
+      localStorage.setItem('save', projectToJsonString())
+      e.preventDefault()
     }
   })
 })
@@ -88,27 +100,42 @@ function openfile () {
     if (!file) { return }
     const reader = new FileReader()
     reader.onload = () => {
-      const data = JSON.parse(reader.result as string)
-      setContainer(data.container)
-      setTimeline(data.timeline)
-      setAssets(data.assets)
+      if (typeof reader.result === 'string') {
+        const data = projectFromJsonString(reader.result)
+        setContainer(data.container)
+        setTimeline(data.timeline)
+        setAssets(data.assets)
+      }
     }
     reader.readAsText(file)
   }
 }
 
 function downloadFile () {
+  const project = projectToJsonString()
+  const a = document.createElement('a')
+  a.href =
+    'data:text/json;charset=utf-8,' +
+    encodeURIComponent(project)
+  a.download = 'project.json'
+  a.click()
+}
+
+function projectToJsonString () {
   const project = {
     container: container.value,
     timeline: timeline.value,
     assets: assets.value
   }
-  const a = document.createElement('a')
-  a.href =
-    'data:text/json;charset=utf-8,' +
-    encodeURIComponent(JSON.stringify(project))
-  a.download = 'project.json'
-  a.click()
+  return JSON.stringify(project)
+}
+
+function projectFromJsonString (json: string) {
+  const project = JSON.parse(json)
+  setContainer(project.container)
+  setTimeline(project.timeline)
+  setAssets(project.assets)
+  return project
 }
 
 const c = computed(() => container.value as Container)
@@ -123,10 +150,7 @@ const c = computed(() => container.value as Container)
   >
     <div style="height: calc(100vh - 48px)">
       <div class="header-menu flex">
-        <ButtonMenu
-          label="Vega"
-          :items="[{ name: 'stats', onClick: toggleStats }]"
-        />
+        <ButtonMenu label="Vega" :items="[{ name: 'stats', onClick: toggleStats }]" />
         <ButtonMenu
           label="File"
           :items="[
@@ -160,15 +184,18 @@ const c = computed(() => container.value as Container)
   justify-content: center;
   align-items: center;
 }
+
 .header-menu {
   height: 24px;
   border-bottom: 1px solid var(--border-grey);
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   overflow: hidden;
 }
+
 :root {
   --vc-l-5: #eceff1;
   --vc-l-4: #cfd8dc;

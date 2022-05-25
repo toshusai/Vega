@@ -2,7 +2,7 @@
 const { timeline } = useTimeline()
 const el = ref<HTMLElement | null>(null)
 const pixScale = computed(() => {
-  const width = el.value?.parentElement.getBoundingClientRect().width || 1
+  const width = el.value?.parentElement?.getBoundingClientRect().width || 1
 
   const viewScale =
     (timeline.value.end - timeline.value.start) / timeline.value.length
