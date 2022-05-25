@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { onDragStart } from "../utils/onDragStart";
+import { onDragStart } from '../utils/onDragStart'
 
 const props = defineProps<{
   value: number | string;
-}>();
+}>()
 
 const emit = defineEmits<{
-  (e: "input", value: number): void;
-}>();
+  (e: 'input', value: number): void;
+}>()
 
-function pointerdown(e: MouseEvent) {
+function pointerdown (e: MouseEvent) {
   onDragStart(e, (delta, e) => {
-    if (typeof props.value === "number") {
-      emit("input", props.value + e.movementX);
+    if (typeof props.value === 'number') {
+      emit('input', props.value + e.movementX)
     } else {
     }
-  });
+  })
 }
 </script>
 
@@ -25,14 +25,11 @@ function pointerdown(e: MouseEvent) {
       v-bind="$attrs"
       :value="value"
       class="bg-transparent border-default border-2 rounded-4 pl-4 text-sm w-full"
-    />
+    >
   </div>
 </template>
 
-<!-- 
-
-
-
+<!--
 
         <button>
           <svg style="width: 12px; height: 12px" viewBox="0 0 24 24">
@@ -51,5 +48,5 @@ function pointerdown(e: MouseEvent) {
             />
           </svg>
         </button>
- 
+
  -->

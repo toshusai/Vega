@@ -2,9 +2,9 @@
 defineProps({
   invalid: {
     default: false,
-    type: Boolean,
-  },
-});
+    type: Boolean
+  }
+})
 </script>
 <template>
   <input
@@ -13,7 +13,7 @@ defineProps({
     :class="{
       invalid,
     }"
-  />
+  >
 </template>
 <style scoped>
 .invalid {
@@ -24,10 +24,7 @@ defineProps({
 }
 </style>
 
-<!-- 
-
-
-
+<!--
 
         <button>
           <svg style="width: 12px; height: 12px" viewBox="0 0 24 24">
@@ -46,5 +43,5 @@ defineProps({
             />
           </svg>
         </button>
- 
+
  -->

@@ -1,50 +1,50 @@
 <script setup lang="ts">
-import { onDragStart } from "~~/src/utils/onDragStart";
+import { onDragStart } from '~~/src/utils/onDragStart'
 
-const { timeline, update } = useTimeline();
+const { timeline, update } = useTimeline()
 
-const el = ref<HTMLElement | null>(null);
+const el = ref<HTMLElement | null>(null)
 
 const pixScale = computed(() => {
-  const width = el.value?.parentElement?.getBoundingClientRect().width || 1;
+  const width = el.value?.parentElement?.getBoundingClientRect().width || 1
   const viewScale =
-    (timeline.value.end - timeline.value.start) / timeline.value.length;
-  return width / timeline.value.scale / viewScale;
-});
+    (timeline.value.end - timeline.value.start) / timeline.value.length
+  return width / timeline.value.scale / viewScale
+})
 
 const secs = computed(() => {
-  const times = [];
+  const times = []
 
   for (let i = Math.round(timeline.value.start); i < timeline.value.end; i++) {
     times.push({
       time: i,
-      left: (i - timeline.value.start) * pixScale.value,
-    });
+      left: (i - timeline.value.start) * pixScale.value
+    })
   }
-  return times;
-});
+  return times
+})
 
-function setTime(e: MouseEvent) {
-  const x = e.clientX;
-  const left = el.value?.parentElement?.getBoundingClientRect().left || 1;
+function setTime (e: MouseEvent) {
+  const x = e.clientX
+  const left = el.value?.parentElement?.getBoundingClientRect().left || 1
 
-  const time = (x - left) / pixScale.value + timeline.value.start;
-  update(time, true);
+  const time = (x - left) / pixScale.value + timeline.value.start
+  update(time, true)
 }
 
-function dragStart(e: MouseEvent) {
-  setTime(e);
+function dragStart (e: MouseEvent) {
+  setTime(e)
   onDragStart(e, (_, e) => {
-    setTime(e);
-  });
+    setTime(e)
+  })
   // block select rectangle
-  e.stopPropagation();
+  e.stopPropagation()
 }
 
 onMounted(() => {
   // foce update first view
-  update(timeline.value.curent + Number.EPSILON * 2, true);
-});
+  update(timeline.value.curent + Number.EPSILON * 2, true)
+})
 </script>
 
 <template>

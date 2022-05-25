@@ -1,55 +1,55 @@
 <script setup lang="ts">
-import { Chrome } from "@ckpack/vue-color";
+import { Chrome } from '@ckpack/vue-color'
 
 const props = defineProps<{
   value: number | string;
-}>();
+}>()
 
 const emit = defineEmits<{
-  (e: "updateColor", value: string): void;
-}>();
+  (e: 'updateColor', value: string): void;
+}>()
 
-function changeColor(c: { hex8: string }) {
-  emit("updateColor", c.hex8);
+function changeColor (c: { hex8: string }) {
+  emit('updateColor', c.hex8)
 }
 
-const isOpenPicker = ref(false);
-const left = ref(0);
-const top = ref(0);
-const el = ref<HTMLElement | null>(null);
-function closePicker(e: MouseEvent) {
-  if (el.value?.parentElement?.contains(e.target as HTMLElement)) return;
-  isOpenPicker.value = false;
-  window.removeEventListener("pointerdown", closePicker);
+const isOpenPicker = ref(false)
+const left = ref(0)
+const top = ref(0)
+const el = ref<HTMLElement | null>(null)
+function closePicker (e: MouseEvent) {
+  if (el.value?.parentElement?.contains(e.target as HTMLElement)) { return }
+  isOpenPicker.value = false
+  window.removeEventListener('pointerdown', closePicker)
 }
-function openPicker(e: MouseEvent) {
-  isOpenPicker.value = true;
-  const rect = el.value?.getBoundingClientRect();
+function openPicker (e: MouseEvent) {
+  isOpenPicker.value = true
+  const rect = el.value?.getBoundingClientRect()
   if (rect) {
-    left.value = rect.left;
-    top.value = rect.top + rect.height + 8; // modal top margin;
+    left.value = rect.left
+    top.value = rect.top + rect.height + 8 // modal top margin;
   }
-  e.stopPropagation();
-  window.addEventListener("pointerdown", closePicker);
+  e.stopPropagation()
+  window.addEventListener('pointerdown', closePicker)
 }
 const colors = computed(() => {
-  return props.value.toString();
-});
+  return props.value.toString()
+})
 
 /**
  * Expect color to be hex8
  */
-function validColor(color: string) {
-  return color.match(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/i);
+function validColor (color: string) {
+  return color.match(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/i)
 }
 
 const invalid = computed(() => {
-  return !validColor(props.value.toString());
-});
+  return !validColor(props.value.toString())
+})
 
-function changeColorByInputEvent(e: Event) {
-  const value = (e.target as HTMLInputElement).value;
-  emit("updateColor", value);
+function changeColorByInputEvent (e: Event) {
+  const value = (e.target as HTMLInputElement).value
+  emit('updateColor', value)
 }
 </script>
 
@@ -95,10 +95,7 @@ function changeColorByInputEvent(e: Event) {
   </div>
 </template>
 
-<!-- 
-
-
-
+<!--
 
         <button>
           <svg style="width: 12px; height: 12px" viewBox="0 0 24 24">
@@ -117,5 +114,5 @@ function changeColorByInputEvent(e: Event) {
             />
           </svg>
         </button>
- 
+
  -->

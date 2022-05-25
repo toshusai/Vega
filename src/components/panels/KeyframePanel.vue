@@ -1,77 +1,79 @@
 <script setup lang="ts">
-import { Animation } from "~~/src/core/TextStripEffect";
-import KeyframeMarker from "../KeyframeMarker.vue";
+import KeyframeMarker from '../KeyframeMarker.vue'
+import { Animation } from '~~/src/core/TextStripEffect'
 
-const { timeline, updateEffect } = useTimeline();
+const { timeline, updateEffect } = useTimeline()
 
-const strip = computed(() => timeline.value.selectedStrips[0]);
+const strip = computed(() => timeline.value.selectedStrips[0])
 
-const keys = ref(new Map<string, Animation[]>());
+const keys = ref(new Map<string, Animation[]>())
 
-function update() {
-  keys.value.clear();
+function update () {
+  keys.value.clear()
   strip.value?.effects.forEach((effect) => {
-    if ("animations" in effect) {
+    if ('animations' in effect) {
       effect.animations.forEach((animation) => {
         if (!keys.value.has(animation.key)) {
-          keys.value.set(animation.key, []);
+          keys.value.set(animation.key, [])
         }
-        keys.value.get(animation.key)?.push(animation);
-      });
+        keys.value.get(animation.key)?.push(animation)
+      })
     }
-  });
+  })
 }
 
 watch(strip, () => {
-  update();
-});
+  update()
+})
 
 watch(
   () => [...(strip.value?.effects || [])],
   () => {
-    update();
+    update()
   }
-);
+)
 
-const el = ref<HTMLElement | null>(null);
+const el = ref<HTMLElement | null>(null)
 onMounted(() => {
-  console.log("ok");
+  console.log('ok')
 
-  el.value?.addEventListener("keydown", (e) => {
-    console.log(e.key);
+  el.value?.addEventListener('keydown', (e) => {
+    console.log(e.key)
 
-    if (e.key === "x") {
-      console.log("delete");
+    if (e.key === 'x') {
+      console.log('delete')
 
       strip.value.effects.filter((effect) => {
-        if ("animations" in effect) {
-          let newAnimationIds: Animation[] = [];
+        if ('animations' in effect) {
+          const newAnimationIds: Animation[] = []
           effect.animations.forEach((animation) => {
             timeline.value.selectedKeyframes.forEach((keyframe) => {
               if (animation.id !== keyframe.id) {
-                newAnimationIds.push({ ...animation });
+                newAnimationIds.push({ ...animation })
               }
-            });
+            })
 
             updateEffect(strip.value.id, {
               ...effect,
-              animations: newAnimationIds,
-            });
-          });
+              animations: newAnimationIds
+            })
+          })
         }
-        return true;
-      });
+        return true
+      })
     }
-  });
-});
+  })
+})
 
-const times = [...Array(10)].map((_, i) => i);
+const times = [...Array(10)].map((_, i) => i)
 </script>
 
 <template>
   <div ref="el" class="flex h-full">
     <div class="h-full border-r-[1px] border-default">
-      <div class="border-bottom-1 h-24">Properties</div>
+      <div class="border-bottom-1 h-24">
+        Properties
+      </div>
       <div style="width: 150px; height: 100%">
         <div
           v-for="(key, i) in keys"
@@ -82,7 +84,9 @@ const times = [...Array(10)].map((_, i) => i);
             border-bottom: 1px solid var(--border-grey);
           "
         >
-          <div class="mr-4">{{ key[0] }} :</div>
+          <div class="mr-4">
+            {{ key[0] }} :
+          </div>
           <v-input-base style="margin: auto" :value="0" readonly />
         </div>
       </div>

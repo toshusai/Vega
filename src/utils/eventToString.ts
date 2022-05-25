@@ -1,6 +1,6 @@
-export function eventToString(e: Event) {
+export function eventToString (e: Event) {
   if (e.target instanceof HTMLInputElement) {
-    return e.target.value;
+    return e.target.value
   }
-  return "";
+  return ''
 }

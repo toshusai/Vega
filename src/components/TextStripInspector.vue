@@ -1,37 +1,37 @@
 <script setup lang="ts">
-import { Strip } from "~/core/Strip";
-import { ComputedRef } from "vue";
-import { TextStripEffect } from "~/core/TextStripEffect";
-import { isText } from "~/composables/useTimeline";
-import { eventToString } from "../utils/eventToString";
-import InspectorInput from "./InspectorInput.vue";
+import { ComputedRef } from 'vue'
+import { eventToString } from '../utils/eventToString'
+import InspectorInput from './InspectorInput.vue'
+import { Strip } from '~/core/Strip'
+import { TextStripEffect } from '~/core/TextStripEffect'
+import { isText } from '~/composables/useTimeline'
 // var colors = "#194d33";
-const { updateEffect } = useTimeline();
-const props = defineProps<{ strip: Strip }>();
+const { updateEffect } = useTimeline()
+const props = defineProps<{ strip: Strip }>()
 
 const effect: ComputedRef<TextStripEffect | null> = computed(() => {
   return props.strip.effects.find(
-    (e) => e.type == "Text"
-  ) as TextStripEffect | null;
-});
+    e => e.type == 'Text'
+  ) as TextStripEffect | null
+})
 
-function changeText(v: object | string | number, key: string) {
+function changeText (v: object | string | number, key: string) {
   if (effect.value && isText(effect.value)) {
-    const newE = { ...effect.value };
+    const newE = { ...effect.value }
     const newNewE = new Function(
-      "effect",
-      "value",
+      'effect',
+      'value',
       `
 effect.${key} = value;
 return effect
 `
-    )(newE, v);
+    )(newE, v)
 
-    console.log(key, v);
+    console.log(key, v)
 
     updateEffect(props.strip?.id, {
-      ...newNewE,
-    });
+      ...newNewE
+    })
   }
 }
 </script>

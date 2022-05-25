@@ -1,26 +1,26 @@
 <script setup lang="ts">
-const { history } = useOperation();
+const { history } = useOperation()
 
 const latest = computed(() => {
-  return history.length > 0 ? history[history.length - 1] : null;
-});
+  return history.length > 0 ? history[history.length - 1] : null
+})
 
 /**
  * UNIX time to HH:mm:ss.SSS
  */
-function formatTime(time: number) {
-  const date = new Date(time);
-  const h = date.getHours().toString().padStart(2, "0");
-  const m = date.getMinutes().toString().padStart(2, "0");
-  const s = date.getSeconds().toString().padStart(2, "0");
-  const ms = date.getMilliseconds().toString().padStart(3, "0");
-  return `${h}:${m}:${s}.${ms}`;
+function formatTime (time: number) {
+  const date = new Date(time)
+  const h = date.getHours().toString().padStart(2, '0')
+  const m = date.getMinutes().toString().padStart(2, '0')
+  const s = date.getSeconds().toString().padStart(2, '0')
+  const ms = date.getMilliseconds().toString().padStart(3, '0')
+  return `${h}:${m}:${s}.${ms}`
 }
 
-const showAll = ref(false);
+const showAll = ref(false)
 
-function toggleShowAll() {
-  showAll.value = !showAll.value;
+function toggleShowAll () {
+  showAll.value = !showAll.value
 }
 </script>
 

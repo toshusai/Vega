@@ -1,163 +1,163 @@
 <script setup lang="ts">
-import { Strip } from "~~/src/core/Strip";
-import { VideoStripEffectObject } from "~~/src/core/VideoStripEffectObject";
-import { AudioStripEffect } from "~~/src/core/AudioStripEffect";
-import { audioCtx, waitForFirstInterfact } from "~/core/Global";
+import { Strip } from '~~/src/core/Strip'
+import { VideoStripEffectObject } from '~~/src/core/VideoStripEffectObject'
+import { AudioStripEffect } from '~~/src/core/AudioStripEffect'
+import { audioCtx, waitForFirstInterfact } from '~/core/Global'
 
-const props = defineProps<{ strip: Strip }>();
-const { timeline } = useTimeline();
-const { assets } = useAssets();
+const props = defineProps<{ strip: Strip }>()
+const { timeline } = useTimeline()
+const { assets } = useAssets()
 
-const imageEls = ref<HTMLImageElement[]>([]);
+const imageEls = ref<HTMLImageElement[]>([])
 
 const audioEffect = props.strip.effects.find(
-  (e) => e.type === "Audio"
-) as AudioStripEffect;
+  e => e.type === 'Audio'
+) as AudioStripEffect
 
 const audioSrc = computed(() => {
   return (
     assets.value.assets.find((a) => {
-      return a.id == audioEffect.audioAssetId;
-    })?.path || ""
-  );
-});
-const el = ref<HTMLElement | null>(null);
+      return a.id == audioEffect.audioAssetId
+    })?.path || ''
+  )
+})
+const el = ref<HTMLElement | null>(null)
 
 const pixScale = computed(() => {
   const width =
-    el.value?.parentElement?.parentElement?.getBoundingClientRect().width || 1;
+    el.value?.parentElement?.parentElement?.getBoundingClientRect().width || 1
   const viewScale =
-    (timeline.value.end - timeline.value.start) / timeline.value.length;
-  return width / timeline.value.scale / viewScale;
-});
+    (timeline.value.end - timeline.value.start) / timeline.value.length
+  return width / timeline.value.scale / viewScale
+})
 
 const effectObj = computed(() => {
   const effectObj = effectObjectMap.get(
     audioEffect.id
-  ) as VideoStripEffectObject | null;
-  return effectObj;
-});
+  ) as VideoStripEffectObject | null
+  return effectObj
+})
 
-const videoHeight = 40;
+const videoHeight = 40
 
-const canvas = ref<HTMLCanvasElement | null>(null);
-const ctx = ref<CanvasRenderingContext2D | null>(null);
+const canvas = ref<HTMLCanvasElement | null>(null)
+const ctx = ref<CanvasRenderingContext2D | null>(null)
 
-var audioBuffer: AudioBuffer | null = null;
+let audioBuffer: AudioBuffer | null = null
 
 const overLeft = computed(() => {
-  return (props.strip.start - timeline.value.start) * pixScale.value;
-});
+  return (props.strip.start - timeline.value.start) * pixScale.value
+})
 
-function draw() {
-  if (!ctx.value) return;
-  const rect = canvas.value?.parentElement?.getBoundingClientRect();
-  const elrect = el.value?.parentElement?.getBoundingClientRect();
-  if (!rect) return;
-  if (!elrect) return;
-  if (!audioBuffer) return;
-  const lengthPerSec = audioBuffer.sampleRate;
-  const data = audioBuffer.getChannelData(0);
+function draw () {
+  if (!ctx.value) { return }
+  const rect = canvas.value?.parentElement?.getBoundingClientRect()
+  const elrect = el.value?.parentElement?.getBoundingClientRect()
+  if (!rect) { return }
+  if (!elrect) { return }
+  if (!audioBuffer) { return }
+  const lengthPerSec = audioBuffer.sampleRate
+  const data = audioBuffer.getChannelData(0)
 
   // 表示されている時間
-  const visualTime = elrect.width / pixScale.value;
+  const visualTime = elrect.width / pixScale.value
   // 表示されているデータ配列の数
-  const visualData = Math.floor(visualTime * lengthPerSec);
+  const visualData = Math.floor(visualTime * lengthPerSec)
   // １ピクセルあたりのデータ数
-  const dataPerPixel = Math.floor(visualData / elrect.width);
+  const dataPerPixel = Math.floor(visualData / elrect.width)
 
-  const sumData = [];
-  let sum = 0;
-  let pixel = 0;
+  const sumData = []
+  let sum = 0
+  let pixel = 0
 
-  let max = 0;
-  let min = 0;
+  let max = 0
+  let min = 0
 
-  let start = 0;
+  let start = 0
 
   if (overLeft.value < -50) {
-    start = Math.floor(dataPerPixel * (-50 - overLeft.value));
+    start = Math.floor(dataPerPixel * (-50 - overLeft.value))
   }
 
   for (let i = start; i < visualData + start; i++) {
-    sum += Math.abs(data[i]);
-    pixel++;
+    sum += Math.abs(data[i])
+    pixel++
     if (pixel >= dataPerPixel) {
-      const v = sum / dataPerPixel;
-      sumData.push(v);
-      max = Math.max(max, v);
-      min = Math.min(min, v);
-      sum = 0;
-      pixel = 0;
+      const v = sum / dataPerPixel
+      sumData.push(v)
+      max = Math.max(max, v)
+      min = Math.min(min, v)
+      sum = 0
+      pixel = 0
     }
   }
 
-  ctx.value.clearRect(0, 0, rect.width, rect.height);
-  ctx.value.fillStyle = "#fff2";
-  ctx.value.fillRect(0, 0, rect.width, rect.height);
-  ctx.value.fillStyle = "orange";
+  ctx.value.clearRect(0, 0, rect.width, rect.height)
+  ctx.value.fillStyle = '#fff2'
+  ctx.value.fillRect(0, 0, rect.width, rect.height)
+  ctx.value.fillStyle = 'orange'
 
-  const canvasRect = canvas.value?.getBoundingClientRect();
-  if (!canvasRect) return;
+  const canvasRect = canvas.value?.getBoundingClientRect()
+  if (!canvasRect) { return }
   // const leftOffset = Math.floor(canvasRect.left - rect.left);
 
   for (let i = 0; i < sumData.length; i++) {
     // ハンドルの分ずらす
-    const height = sumData[i + 12] * 40;
+    const height = sumData[i + 12] * 40
 
     // magic 4...
-    ctx.value.fillRect(i, 40 - height * 4, 1, 40);
+    ctx.value.fillRect(i, 40 - height * 4, 1, 40)
   }
 }
 
-let load = false;
-function getBuffer() {
+let load = false
+function getBuffer () {
   if (audioBuffer) {
-    draw();
-    return;
+    draw()
+    return
   }
-  if (load) return;
-  load = true;
+  if (load) { return }
+  load = true
   fetch(audioSrc.value)
-    .then((response) => response.arrayBuffer())
+    .then(response => response.arrayBuffer())
     .then(async (arrayBuffer) => {
-      await waitForFirstInterfact();
-      if (!audioCtx) return;
-      if (!ctx.value) return;
-      const rect = el.value?.parentElement?.getBoundingClientRect();
-      if (!rect) return;
+      await waitForFirstInterfact()
+      if (!audioCtx) { return }
+      if (!ctx.value) { return }
+      const rect = el.value?.parentElement?.getBoundingClientRect()
+      if (!rect) { return }
       // Ref: https://css-tricks.com/making-an-audio-waveform-visualizer-with-vanilla-javascript/
       audioCtx.decodeAudioData(arrayBuffer).then((_audioBuffer) => {
-        audioBuffer = _audioBuffer;
-        draw();
-      });
-    });
+        audioBuffer = _audioBuffer
+        draw()
+      })
+    })
 }
 
 onMounted(() => {
-  if (!effectObj.value) return;
-  if (!canvas.value) return;
-  ctx.value = canvas.value.getContext("2d");
-  getBuffer();
-});
+  if (!effectObj.value) { return }
+  if (!canvas.value) { return }
+  ctx.value = canvas.value.getContext('2d')
+  getBuffer()
+})
 
-const rootOffset = ref(0);
+const rootOffset = ref(0)
 const updateVideoStart = async () => {
-  if (!el.value) return;
-  const rect = el.value.getBoundingClientRect();
-  if (!rect) return;
-  if (!canvas.value) return;
-  canvas.value.width = rect.width;
-  getBuffer();
-};
+  if (!el.value) { return }
+  const rect = el.value.getBoundingClientRect()
+  if (!rect) { return }
+  if (!canvas.value) { return }
+  canvas.value.width = rect.width
+  getBuffer()
+}
 
-watch(imageEls.value, () => updateVideoStart());
+watch(imageEls.value, () => updateVideoStart())
 watch(props.strip, () => {
-  updateVideoStart();
-});
+  updateVideoStart()
+})
 watch(timeline.value, () => {
-  updateVideoStart();
-});
+  updateVideoStart()
+})
 </script>
 
 <template>

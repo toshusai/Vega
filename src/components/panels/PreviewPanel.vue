@@ -1,57 +1,57 @@
 <script setup lang="ts">
-import * as THREE from "three";
-import { view } from "~~/src/composables/useTimeline";
-import { timeFormat } from "~~/src/utils/formatTime";
+import * as THREE from 'three'
+import { view } from '~~/src/composables/useTimeline'
+import { timeFormat } from '~~/src/utils/formatTime'
 
-const canvas = ref<HTMLCanvasElement | null>(null);
+const canvas = ref<HTMLCanvasElement | null>(null)
 
-const el = ref<HTMLDivElement | null>(null);
+const el = ref<HTMLDivElement | null>(null)
 
-const { addUpdate } = useUpdate();
-const { timeline, selectStrip } = useTimeline();
+const { addUpdate } = useUpdate()
+const { timeline, selectStrip } = useTimeline()
 
-const scale = ref(0.2);
+const scale = ref(0.2)
 
 onMounted(() => {
-  if (!canvas.value) return;
-  if (!el.value) return;
+  if (!canvas.value) { return }
+  if (!el.value) { return }
   const renderer = new THREE.WebGLRenderer({
-    canvas: canvas.value,
-  });
-  const width = timeline.value.width;
-  const height = timeline.value.height;
-  renderer.setSize(width, height);
+    canvas: canvas.value
+  })
+  const width = timeline.value.width
+  const height = timeline.value.height
+  renderer.setSize(width, height)
 
   if (view.camera.left == 0) {
-    view.camera.left = -width / 2;
-    view.camera.right = width / 2;
-    view.camera.top = height / 2;
-    view.camera.bottom = -height / 2;
-    view.camera.near = -100;
-    view.camera.far = 1000;
+    view.camera.left = -width / 2
+    view.camera.right = width / 2
+    view.camera.top = height / 2
+    view.camera.bottom = -height / 2
+    view.camera.near = -100
+    view.camera.far = 1000
   }
 
   addUpdate(() => {
-    if (!canvas.value) return;
+    if (!canvas.value) { return }
     // const rect = el.value?.getBoundingClientRect();
-    renderer.setSize(width, height);
-    canvas.value.style.margin = `auto`;
+    renderer.setSize(width, height)
+    canvas.value.style.margin = 'auto'
 
-    canvas.value.style.width = `${width * scale.value}px`;
-    canvas.value.style.height = ``;
-    view.camera.updateProjectionMatrix();
+    canvas.value.style.width = `${width * scale.value}px`
+    canvas.value.style.height = ''
+    view.camera.updateProjectionMatrix()
 
-    renderer.render(view.scene, view.camera);
-  });
-});
+    renderer.render(view.scene, view.camera)
+  })
+})
 
-const timestamp = computed(() => timeFormat(timeline.value.curent));
+const timestamp = computed(() => timeFormat(timeline.value.curent))
 
 /**
  * クリックで選択可能なStripを選択
  * @param e
  */
-function pointerdown() {
+function pointerdown () {
   // const { left, top } = canvas.value?.getBoundingClientRect() || {
   //   left: 0,
   //   right: 0,
@@ -68,13 +68,13 @@ function pointerdown() {
       strip.start + strip.length > timeline.value.curent
     ) {
       const alreadySelected = timeline.value.selectedStrips.find((s) => {
-        return s.id == strip.id;
-      });
-      if (alreadySelected) continue;
+        return s.id == strip.id
+      })
+      if (alreadySelected) { continue }
 
       // TODO 矩形を計算して選択する
-      selectStrip([strip.id]);
-      break;
+      selectStrip([strip.id])
+      break
     }
   }
 }

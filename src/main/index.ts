@@ -1,14 +1,14 @@
-import http from "http";
-import fs from "fs";
-import path from "path";
-import electron from "electron";
+import http from 'http'
+import fs from 'fs'
+import path from 'path'
+import electron from 'electron'
 
-const PROXY_PORT = 3000;
+const PROXY_PORT = 3000
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NODE_ENV === 'development'
 
 // The url load first by electron.
-let indexUrl = "";
+let indexUrl = ''
 
 if (isDev) {
   //   const httpProxy = require("http-proxy");
@@ -21,62 +21,62 @@ if (isDev) {
   //   );
 
   //   proxy.listen(PROXY_PORT);
-  indexUrl = `http://localhost:${PROXY_PORT}`;
+  indexUrl = `http://localhost:${PROXY_PORT}`
 } else {
   const server = http.createServer(function (req, res) {
-    const baseDir = path.resolve(__dirname, "../.output/public");
+    const baseDir = path.resolve(__dirname, '../.output/public')
     // redirect Docs to docs (for docsify)
     // if (!req.url?.match(/^\/docs/)) {
     //   req.url = "/static/docs/index.html";
     // }
     // redirect Nuxt pages to index.html
-    if (req.url == "/BigBuckBunny.mp4") {
-      req.url = "/BigBuckBunny.mp4";
+    if (req.url == '/BigBuckBunny.mp4') {
+      req.url = '/BigBuckBunny.mp4'
       if (req.url.match(/(\.mp4|\.webm)$/)) {
-        res.setHeader("Content-Type", "video/mp4");
+        res.setHeader('Content-Type', 'video/mp4')
       }
-      const responseContent = fs.readFileSync(baseDir + req.url);
-      res.write(responseContent);
-      res.end();
-      return;
+      const responseContent = fs.readFileSync(baseDir + req.url)
+      res.write(responseContent)
+      res.end()
+      return
     }
 
     if (!req.url?.match(/^\/_nuxt|\/static/)) {
-      req.url = "/index.html";
+      req.url = '/index.html'
     }
-    const responseContent = fs.readFileSync(baseDir + req.url);
+    const responseContent = fs.readFileSync(baseDir + req.url)
     // set script header
     if (req.url.match(/(\.js|\.mjs)$/)) {
-      res.setHeader("Content-Type", "text/javascript");
+      res.setHeader('Content-Type', 'text/javascript')
     }
     if (req.url.match(/(\.mp4|\.webm)$/)) {
-      res.setHeader("Content-Type", "video/mp4");
+      res.setHeader('Content-Type', 'video/mp4')
     }
 
-    res.write(responseContent);
-    res.end();
-  });
+    res.write(responseContent)
+    res.end()
+  })
 
-  server.listen();
+  server.listen()
   // @ts-ignore
-  const port = server.address().port;
-  indexUrl = `http://localhost:${port}`;
+  const port = server.address().port
+  indexUrl = `http://localhost:${port}`
 }
 
-let win: any = null;
-const app = electron.app;
+let win: any = null
+const app = electron.app
 const newWin = () => {
   win = new electron.BrowserWindow({
     width: 1280,
     height: 720,
     webPreferences: {
-      webSecurity: false,
-    },
-  });
-  win.on("closed", () => (win = null));
-  win.loadURL(indexUrl);
-};
+      webSecurity: false
+    }
+  })
+  win.on('closed', () => (win = null))
+  win.loadURL(indexUrl)
+}
 
-app.on("ready", newWin);
-app.on("window-all-closed", () => app.quit());
-app.on("activate", () => win === null && newWin());
+app.on('ready', newWin)
+app.on('window-all-closed', () => app.quit())
+app.on('activate', () => win === null && newWin())
