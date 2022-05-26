@@ -4,6 +4,7 @@ import { Animation } from './TextStripEffect'
 export interface Timeline {
   selectedStrips: Strip[];
   selectedKeyframes: Animation[];
+  focusStripId: string;
   isPlay: boolean;
   curent: number;
   width: number;
