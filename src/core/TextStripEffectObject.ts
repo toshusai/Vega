@@ -5,6 +5,7 @@ import { calcAnimationValue, findBetween } from '../utils/calcAnimationValue'
 import { EffectObject } from './EffectObject'
 import { TextStripEffect } from './TextStripEffect'
 import { Strip } from './Strip'
+import { Timeline } from './Timeline'
 
 export class TextStripEffectObject extends EffectObject {
   // id: string;
@@ -163,7 +164,8 @@ export class TextStripEffectObject extends EffectObject {
     this.texture.needsUpdate = true
   }
 
-  public async update (strip: Strip, itext: TextStripEffect, time: number) {
+  public async update (strip: Strip, itext: TextStripEffect, timeline: Timeline) {
+    const time = timeline.curent
     const x = calcAnimationValue(
       itext.animations,
       time - strip.start,
@@ -185,6 +187,9 @@ export class TextStripEffectObject extends EffectObject {
       this.obj.visible = false
     }
 
+    if (timeline.focusStripId === strip.id) {
+      this.obj.visible = false
+    }
     return await new Promise<void>((resolve, reject) => {
       try {
         return resolve()

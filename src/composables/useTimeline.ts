@@ -15,6 +15,7 @@ import { AudioStripEffectObject } from '../core/AudioStripEffectObject'
 const initialTimelineState: Timeline = {
   selectedStrips: [],
   selectedKeyframes: [],
+  focusStripId: '',
   isPlay: false,
   width: 1920,
   height: 1080,
@@ -146,7 +147,7 @@ function update (timeline: Ref<Timeline>) {
             effect.id
           ) as TextStripEffectObject
           if (textObj) {
-            textObj.update(strip, effect, timeline.value.curent)
+            textObj.update(strip, effect, timeline.value)
           }
         } else if (isVideo(effect)) {
           const videoObj = effectObjectMap.get(
@@ -264,6 +265,12 @@ export function useTimeline () {
     setTimeline: ((state: Ref<Timeline>) => {
       return (timeline: Timeline) => {
         state.value = timeline
+      }
+    })(timeline),
+
+    setFocusStripId: ((state: Ref<Timeline>) => {
+      return (id: string) => {
+        state.value.focusStripId = id
       }
     })(timeline),
 

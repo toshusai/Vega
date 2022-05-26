@@ -8,13 +8,15 @@ import { calcAnimationValue } from '../utils/calcAnimationValue'
 import { onDragStart } from '../utils/onDragStart'
 import { setAnimation } from '../utils/setAnimation'
 
-const { timeline, updateEffect } = useTimeline()
+const { timeline, updateEffect, setFocusStripId } = useTimeline()
 
 const props = defineProps<{ scale: number }>()
 
 const strip = computed(() => timeline.value.selectedStrips[0])
 const effect = computed(() => strip.value && strip.value.effects[0])
 const style = ref<CSSProperties>({})
+
+const focus = ref(false)
 
 const isTextEffect = computed(() => {
   return effect.value && effect.value.type === 'Text'
@@ -29,15 +31,14 @@ const textStyle = computed<CSSProperties>(() => {
       color: effect.value.color,
       height: `${style.value.height}`,
       lineHeight: `${(Number.parseFloat(style.value?.height?.toString() || '0') || 0) / (effect.value.text.split('\n').length)}px`,
-      letterSpacing: `${effect.value.characterSpace * props.scale}px`
+      letterSpacing: `${effect.value.characterSpace * props.scale}px`,
+      visibility: focus.value ? 'visible' : 'hidden'
     }
   }
   return {}
 })
 
-function update (e:InputEvent) {
-  console.log(e.target.value)
-
+function update (e: InputEvent) {
   updateEffect(strip.value.id, {
     ...effect.value,
     text: e.target.value
@@ -112,7 +113,38 @@ onMounted(() => {
   update()
 })
 
+const prevClickTime = ref(0)
+
+const textarea = ref<HTMLTextAreaElement | null>(null)
+
+watch(effect, (newV, oldV) => {
+  if (newV && oldV && newV.id !== oldV.id) {
+    focus.value = false
+    setFocusStripId('')
+  }
+})
+
+function click (e: MouseEvent) {
+  if (e.timeStamp - prevClickTime.value < 500) {
+    focus.value = true
+  }
+  prevClickTime.value = e.timeStamp
+  if (focus.value) {
+    setFocusStripId(strip.value.id)
+    updateStyle()
+    setTimeout(() => {
+      textarea.value?.focus()
+    })
+  } else {
+    setFocusStripId('')
+  }
+}
+
 function drag (e: MouseEvent) {
+  if (!effect.value) { return }
+
+  if (focus.value) { return }
+
   onDragStart(e, (delta) => {
     if (isText(effect.value) || isVideo(effect.value)) {
       const newE = {
@@ -161,8 +193,15 @@ function drag (e: MouseEvent) {
 </script>
 
 <template>
-  <div class="gizmo text-brand absolute cursor-pointer" :style="style" @pointerdown="drag">
-    <textarea v-if="isTextEffect" :value="effect.text" class="text-gizmo" :style="textStyle" @input="update" />
+  <div class="gizmo text-brand absolute cursor-pointer" :style="style" @click="click" @pointerdown="drag">
+    <textarea
+      v-if="isTextEffect"
+      ref="textarea"
+      :value="effect.text"
+      class="text-gizmo"
+      :style="textStyle"
+      @input="update"
+    />
   </div>
 </template>
 
@@ -176,6 +215,7 @@ function drag (e: MouseEvent) {
 
 .text-gizmo {
   border: none;
+  resize: none;
   outline: none;
   background: transparent;
   width: 100%;
