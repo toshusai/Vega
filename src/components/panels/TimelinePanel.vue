@@ -6,7 +6,7 @@ import TimeView from './TimeView.vue'
 import Cursor from './Cursor.vue'
 import TimelineCursor from './TimelineCursor.vue'
 import { Strip } from '~~/src/core/Strip'
-const { timeline, changeView, play, update } = useTimeline()
+const { timeline, selectStrip, changeView, play, update } = useTimeline()
 
 const { addUpdate } = useUpdate()
 
@@ -88,6 +88,23 @@ const strips = computed<{ strip: Strip, id: string }[]>(() => {
   })
 })
 
+const clickMouseBehaviour = ref(false)
+
+function mousedown () {
+  clickMouseBehaviour.value = true
+}
+
+function mousemove () {
+  clickMouseBehaviour.value = false
+}
+
+function unselect () {
+  if (clickMouseBehaviour.value) {
+    selectStrip([])
+  }
+  clickMouseBehaviour.value = false
+}
+
 const timelineBody = ref<HTMLElement | null>(null)
 </script>
 
@@ -118,7 +135,7 @@ const timelineBody = ref<HTMLElement | null>(null)
       <SelectRect v-if="timelineBody" :element="timelineBody" />
       <TimelineCursor />
       <TimeView />
-      <div style="display: flex; position: relative">
+      <div style="display: flex; position: relative" @mouseup="unselect" @mousedown="mousedown" @mousemove="mousemove">
         <div v-for="(layer, i) in layers" :key="i" :strips="layer" class="layer" :style="`top: ${i * 50}px`" />
         <PanelsStripUI v-for="(strip, ) in strips" :key="strip.id" :strip="strip.strip" />
       </div>

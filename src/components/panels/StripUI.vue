@@ -192,6 +192,7 @@ function selectStripClick (strip: Strip) {
 
 <template>
   <div
+    :id="'strip-' + strip.id"
     ref="el"
     :style="style"
     class="strip"
