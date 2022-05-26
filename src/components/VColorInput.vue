@@ -17,17 +17,21 @@ const isOpenPicker = ref(false)
 const left = ref(0)
 const top = ref(0)
 const el = ref<HTMLElement | null>(null)
-function closePicker (e: MouseEvent) {
-  if (el.value?.parentElement?.contains(e.target as HTMLElement)) { return }
+function closePicker (e: MouseEvent, force = false) {
+  if (!force && el.value?.parentElement?.contains(e.target as HTMLElement)) { return }
   isOpenPicker.value = false
   window.removeEventListener('pointerdown', closePicker)
 }
 function openPicker (e: MouseEvent) {
+  if (isOpenPicker.value) {
+    closePicker(e, true)
+    return
+  }
   isOpenPicker.value = true
   const rect = el.value?.getBoundingClientRect()
   if (rect) {
-    left.value = rect.left
-    top.value = rect.top + rect.height + 8 // modal top margin;
+    left.value = rect.left + rect.width + 8
+    top.value = rect.top
   }
   e.stopPropagation()
   window.addEventListener('pointerdown', closePicker)
