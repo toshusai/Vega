@@ -29,7 +29,7 @@ export class TextStripEffectObject extends EffectObject {
     this.text = itext.text
     // this.fontFamily = itext.fontFamily;
     this.canvas = document.createElement('canvas')
-    this.canvas.width = 1024
+    this.canvas.width = 2048
     this.canvas.height = 1024
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
     this.texture = new THREE.CanvasTexture(this.canvas)
@@ -142,7 +142,7 @@ export class TextStripEffectObject extends EffectObject {
     }
 
     this.ctx.fillStyle = itext.color
-    this.ctx.shadowBlur = 0
+    this.ctx.shadowBlur = itext.shadowBlur
 
     left = this.canvas.width / 2 - this.mesureWidth / 2
     top = this.canvas.height / 2 + lineHeight / 2 - (lineHeight / 2) * breakLineCount
