@@ -218,6 +218,7 @@ function drag (e: MouseEvent) {
   resize: none;
   outline: none;
   background: transparent;
+  white-space: nowrap;
   width: 100%;
   height: 100%;
   margin-left: -1px;
