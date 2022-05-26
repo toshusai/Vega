@@ -49,12 +49,12 @@ const style = computed<CSSProperties>(() => {
   }
 })
 
+const clickEvent = ref(false)
+
 function drag (e: MouseEvent) {
   e.preventDefault()
   // block select rectangle
   e.stopPropagation()
-
-  selectStripClick(props.strip)
 
   const parent = el.value?.parentElement
   const parentRect = parent?.getBoundingClientRect()
@@ -69,12 +69,23 @@ function drag (e: MouseEvent) {
   let startStart = startProps.start
   let finalProps = { ...startProps }
 
-  const otherStrips = timeline.value.selectedStrips.filter(strip => strip.id !== props.strip.id)
+  let otherStrips = timeline.value.selectedStrips.filter(strip => strip.id !== props.strip.id)
   const otherStripsStart = otherStrips.map(strip => strip.start)
+
+  clickEvent.value = true
 
   onDragStart(
     e,
     (d, e) => {
+      // 自分が選択されていないで他に選択中のストリップがあったら自分だけ選択する
+      // 複数選択なら自分を加える
+      if (!timeline.value.selectedStrips.find(s => s.id === props.strip.id)) {
+        if (!keyboard.value.shift) {
+          otherStrips = []
+        }
+        selectStripClick(props.strip)
+      }
+      clickEvent.value = false
       const layerIndex = Math.floor((e.clientY - parentRect.top) / layerHeight)
       if (layerIndex < 0) { return }
       startStart += d.x / pixScale.value
@@ -82,7 +93,7 @@ function drag (e: MouseEvent) {
         id: startProps.id,
         layer: layerIndex,
         start: startStart,
-        length: startProps.length + d.x / pixScale.value
+        length: startProps.length
       }
       moveStrip(
         finalProps.id,
@@ -101,6 +112,10 @@ function drag (e: MouseEvent) {
       })
     },
     () => {
+      if (clickEvent.value) {
+        selectStripClick(props.strip)
+        return
+      }
       pushHistory(`MoveStrip: ${JSON.stringify(finalProps, null, 2)}`)
       undo.push(
         () => {
