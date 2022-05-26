@@ -1,0 +1,17 @@
+- timeline vertical scroll
+- audio inspector
+- video inspector
+- image support
+- keyframe timeline
+- load assets
+  - drag and drop assets
+- timeline tools
+  - cut
+  - move
+- preview tools
+  - text
+  - move
+- effect system
+  - add/delete effects
+- delete strips
+- add keyframes
