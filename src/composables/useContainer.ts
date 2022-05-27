@@ -209,16 +209,16 @@ export default function useContainer () {
 
       // 移動元のコンテナの子が1つになる場合、そのコンテナを削除する
       if (
-        fromParent.id != toParent.id &&
+        fromParent.id !== toParent.id &&
         fromParent.children.length === 1 &&
-        fromParent.id != 'root'
+        fromParent.id !== 'root'
       ) {
         const child = fromParent.children[0]
         fromParent.children = []
         fromParent.panel = child.panel
       }
 
-      if (fromParent.id != toParent.id) {
+      if (fromParent.id !== toParent.id) {
         const newChild: Container = {
           id: toContainer.id + '-new',
           align: '',
@@ -229,33 +229,33 @@ export default function useContainer () {
 
         const newChildren: Container[] = [newChild]
 
-        if (pos == 'right' || pos == 'bottom') {
+        if (pos === 'right' || pos === 'bottom') {
           newChildren.push(fromContainer)
         } else {
           newChildren.splice(0, 0, fromContainer)
         }
-        if (pos == 'top' || pos == 'bottom') {
+        if (pos === 'top' || pos === 'bottom') {
           toContainer.align = 'vertical'
         } else {
           toContainer.align = 'horizontal'
         }
 
-        newChild.rect.width = toContainer.align == 'horizontal' ? 50 : 100
-        newChild.rect.height = toContainer.align == 'horizontal' ? 100 : 50
+        newChild.rect.width = toContainer.align === 'horizontal' ? 50 : 100
+        newChild.rect.height = toContainer.align === 'horizontal' ? 100 : 50
 
         toContainer.children = newChildren
         toContainer.panel = null
 
-        fromContainer.rect.width = toContainer.align == 'horizontal' ? 50 : 100
+        fromContainer.rect.width = toContainer.align === 'horizontal' ? 50 : 100
         fromContainer.rect.height =
-          toContainer.align == 'horizontal' ? 100 : 50
+          toContainer.align === 'horizontal' ? 100 : 50
       } else {
-        if (pos == 'right' || pos == 'bottom') {
+        if (pos === 'right' || pos === 'bottom') {
           toParent.children.push(fromContainer)
         } else {
           toParent.children.splice(0, 0, fromContainer)
         }
-        if (pos == 'top' || pos == 'bottom') {
+        if (pos === 'top' || pos === 'bottom') {
           toParent.align = 'vertical'
           toContainer.rect.width = 100
           toContainer.rect.height = 50
@@ -270,7 +270,7 @@ export default function useContainer () {
         }
       }
 
-      if (fromParent.id == 'root' && fromParent.children.length == 1) {
+      if (fromParent.id === 'root' && fromParent.children.length === 1) {
         fromParent.children = fromParent.children[0].children
         fromParent.align = 'horizontal'
         fromParent.rect.width = 100
@@ -286,7 +286,6 @@ export default function useContainer () {
       return (type: string, listener: EventListenerOrEventListenerObject) => {
         event.addEventListener(type, listener)
       }
-      _ // for unused
     })(container),
     setContainer: ((state: Ref<Container>) => {
       return (value: Container) => {

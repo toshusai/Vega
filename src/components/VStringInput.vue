@@ -5,15 +5,12 @@ const props = defineProps<{
   value: number | string;
 }>()
 
-const emit = defineEmits<{
-  (e: 'input', value: number): void;
-}>()
+const emit = defineEmits<{(e: 'input', value: number): void; }>()
 
 function pointerdown (e: MouseEvent) {
   onDragStart(e, (delta, e) => {
     if (typeof props.value === 'number') {
       emit('input', props.value + e.movementX)
-    } else {
     }
   })
 }

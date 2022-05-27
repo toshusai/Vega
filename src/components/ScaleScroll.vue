@@ -6,10 +6,7 @@ const props = defineProps<{
   end: number;
 }>()
 
-const emit = defineEmits<{
-  (e: 'start', n: number): void;
-  (e: 'end', n: number): void;
-}>()
+const emit = defineEmits<{(e: 'start', n: number): void; (e: 'end', n: number): void; }>()
 
 const el = ref<HTMLElement | null>(null)
 
@@ -46,7 +43,7 @@ function moveView (e: MouseEvent) {
     ref="el"
     style="height: 20px; width: 100%; position: relative; padding: 4px 0"
     class="bg-[#111]"
-    @mousedown.stop="() => {}"
+    @mousedown.stop="() => { }"
   >
     <div
       class="fill bg-[#222] top-[4px] absolute h-[12px]"
@@ -82,9 +79,11 @@ function moveView (e: MouseEvent) {
   box-sizing: border-box;
   user-select: none;
 }
+
 .handle:hover {
   background-color: var(--teal-800);
 }
+
 .fill {
   position: absolute;
   user-select: none;

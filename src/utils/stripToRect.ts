@@ -16,7 +16,7 @@ export function stripToRect (
   width: number,
   height: number
 ) {
-  if (strip.effects.length == 0) {
+  if (strip.effects.length === 0) {
     return
   }
   const effect = strip.effects[0]

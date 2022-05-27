@@ -175,6 +175,7 @@ function getComponentNameFromStrip (strip: Strip) {
     } else if (effect.type === 'Audio') {
       return 'PanelsAudioStripUI'
     }
+    // eslint-disable-next-line no-console
     console.warn('unknown effect type', effect.type)
   }
 }
@@ -197,7 +198,7 @@ function selectStripClick (strip: Strip) {
     :style="style"
     class="strip"
     :class="
-      timeline.selectedStrips.find((x) => x.id == props.strip.id)
+      timeline.selectedStrips.find((x) => x.id === props.strip.id)
         ? 'strip-selected'
         : ''
     "

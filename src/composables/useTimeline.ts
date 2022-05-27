@@ -177,7 +177,8 @@ function update (timeline: Ref<Timeline>) {
             )
           }
         } else {
-          console.log('Unknown effect type')
+          // eslint-disable-next-line no-console
+          console.warn('Unknown effect type')
         }
       }
     }
@@ -204,15 +205,15 @@ export function isAudio (effect: StripEffect): effect is AudioStripEffect {
   return effect.type === 'Audio'
 }
 
-export const view: State = {
-  scene: new THREE.Scene(),
-  camera: new THREE.OrthographicCamera(0, 0, 200, 200)
-}
-
 export interface State {
   scene: THREE.Scene;
   camera: THREE.OrthographicCamera;
   // renderer?: THREE.WebGLRenderer | null;
+}
+
+export const view: State = {
+  scene: new THREE.Scene(),
+  camera: new THREE.OrthographicCamera(0, 0, 200, 200)
 }
 
 export function useTimeline () {
@@ -233,7 +234,7 @@ export function useTimeline () {
             const videoObj = new VideoStripEffectObject(
               effect,
               assets.assets.value.assets.find(
-                a => a.id == effect.videoAssetId
+                a => a.id === effect.videoAssetId
               )?.path || ''
             )
             effectObjectMap.set(effect.id, videoObj)
@@ -244,12 +245,13 @@ export function useTimeline () {
             const audioObj = new AudioStripEffectObject(
               effect,
               assets.assets.value.assets.find(
-                a => a.id == effect.audioAssetId
+                a => a.id === effect.audioAssetId
               )?.path || ''
             )
             effectObjectMap.set(effect.id, audioObj)
           }
         } else {
+          // eslint-disable-next-line no-console
           console.warn('Unknown effect type: ' + effect.type)
         }
       }
@@ -287,7 +289,7 @@ export function useTimeline () {
     })(timeline),
 
     updateEffect: ((state: Ref<Timeline>) => {
-      return (stripId: string, effect: StripEffect) => {
+      return <T extends StripEffect>(stripId: string, effect: T) => {
         const strip = findStripById(stripId, state.value)
         if (!strip) { return }
         const index = strip.effects.findIndex(e => e.id === effect.id)

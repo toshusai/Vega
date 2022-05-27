@@ -10,7 +10,6 @@ function drop (e: DragEvent) {
   if (!file) {
     return
   }
-  console.log(file)
 
   addAsset({
     id: uuid(),

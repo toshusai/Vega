@@ -5,9 +5,7 @@ const props = defineProps<{
   value: number | string;
 }>()
 
-const emit = defineEmits<{
-  (e: 'updateColor', value: string): void;
-}>()
+const emit = defineEmits<{(e: 'updateColor', value: string): void; }>()
 
 function changeColor (c: { hex8: string }) {
   emit('updateColor', c.hex8)

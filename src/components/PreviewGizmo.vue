@@ -158,7 +158,7 @@ function drag (e: MouseEvent) {
       }
 
       if (
-        effect.value.animations.filter(a => a.key == 'position.x').length == 0
+        effect.value.animations.filter(a => a.key === 'position.x').length === 0
       ) {
         newE.position = p
       } else {

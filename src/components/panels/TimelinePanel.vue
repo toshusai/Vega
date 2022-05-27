@@ -45,7 +45,7 @@ onMounted(() => {
     }
   })
   window.addEventListener('keydown', (e) => {
-    if (document.activeElement?.tagName == 'INPUT') {
+    if (document.activeElement?.tagName === 'INPUT') {
       return
     }
     if (e.key === ' ') {
@@ -114,7 +114,6 @@ onMounted(() => {
     if (!leftBox.value) { return }
 
     leftBox.value.scrollTop = timelineBox.value?.scrollTop || 0
-    console.log(leftBox.value.scrollTop)
   })
 
   getScrollbarWidth()

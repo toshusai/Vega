@@ -69,7 +69,7 @@ export class TextStripEffectObject extends EffectObject {
   }
 
   updateFont (itext: TextStripEffect) {
-    if (itext.size === this.prevSize && itext.text == this.prevText) { return }
+    if (itext.size === this.prevSize && itext.text === this.prevText) { return }
     const span = document.createElement('span')
     span.innerHTML = this.text
     span.style.fontFamily = itext.family

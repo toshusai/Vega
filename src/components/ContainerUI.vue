@@ -12,7 +12,7 @@ const { resizeContainer } = useContainer()
 const rectRef = ref([] as typeof RectUI[])
 const move = (i: number) => {
   return (delta: IVector2, e: MouseEvent) => {
-    if (!rectRef.value || rectRef.value.length == 0) { return }
+    if (!rectRef.value || rectRef.value.length === 0) { return }
 
     const rect = rectRef.value[i].el.parentElement?.getBoundingClientRect()
     if (rect) {
@@ -23,9 +23,6 @@ const move = (i: number) => {
     }
   }
 }
-onMounted(() => {
-  if (!rectRef.value || rectRef.value.length > 0) {}
-})
 </script>
 
 <template>
@@ -47,7 +44,7 @@ onMounted(() => {
       <ContainerUI :container="child" />
       <template v-if="i !== 0">
         <ResizeTop
-          v-if="props.container.align == 'vertical'"
+          v-if="props.container.align === 'vertical'"
           @mousedown="(e:MouseEvent) => onDragStart(e, move(i))"
         />
         <ResizeLeft

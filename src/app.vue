@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import Stats from 'stats.js'
+
 import { Container } from './core/Container'
 import '~/assets/css/main.css'
-import Stats from 'stats.js'
 import undo from './core/Undo'
 import OperationHIstoryPanel from './components/panels/OperationHIstoryPanel.vue'
 import ButtonMenu from './components/ButtonMenu.vue'
@@ -71,10 +72,8 @@ onMounted(() => {
     const ctrlKey = isOSX() ? e.metaKey : e.ctrlKey
     //  Shift + Command + Z
     if (e.keyCode === 90 && e.shiftKey && ctrlKey) {
-      console.log('redo')
       undo.redo()
     } else if (e.keyCode === 90 && ctrlKey) {
-      console.log('undo')
       undo.undo()
     }
     // Cmannd + S
@@ -145,7 +144,7 @@ const c = computed(() => container.value as Container)
   <div
     class="root text-white bg-background1"
     :style="{
-      display: container.align == 'horizontal' ? 'flex' : 'block',
+      display: container.align === 'horizontal' ? 'flex' : 'block',
     }"
   >
     <div style="height: calc(100vh - 48px)">
