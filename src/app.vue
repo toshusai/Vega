@@ -10,6 +10,7 @@ import ButtonMenu from './components/ButtonMenu.vue'
 const { container, setContainer } = useContainer()
 const { timeline, setTimeline } = useTimeline()
 const { assets, setAssets } = useAssets()
+const op = useOperation()
 const { init } = useKeyboard()
 
 const { update } = useUpdate()
@@ -79,6 +80,7 @@ onMounted(() => {
     // Cmannd + S
     if (e.keyCode === 83 && ctrlKey) {
       localStorage.setItem('save', projectToJsonString())
+      op.pushHistory('Save')
       e.preventDefault()
     }
   })

@@ -1,12 +1,22 @@
 <script setup lang="ts">
+import { time } from 'console'
 import KeyframeMarker from '../KeyframeMarker.vue'
 import { Animation } from '~~/src/core/TextStripEffect'
 
 const { timeline, updateEffect } = useTimeline()
 
-const strip = computed(() => timeline.value.selectedStrips[0])
+const strip = computed(() => {
+  if (timeline.value.selectedStrips.length > 0) {
+    return timeline.value.selectedStrips[0]
+  }
+  return null
+})
 
 const keys = ref(new Map<string, Animation[]>())
+
+const times = computed(() => [...Array(Math.floor(maxTime.value))].map((_, i) => i))
+const start = ref(0)
+const end = ref(1)
 
 function update () {
   keys.value.clear()
@@ -22,6 +32,26 @@ function update () {
   })
 }
 
+const timeArea = ref<HTMLDivElement | null>(null)
+const pixPerSec = computed(() => {
+  if (!strip.value) { return 1 }
+  const rect = timeArea.value?.getBoundingClientRect()
+  const width = rect?.width || 0
+  return width / strip.value.length / (end.value - start.value)
+})
+
+const startOffset = computed(() => {
+  if (!strip.value) { return 0 }
+  const rect = timeArea.value?.getBoundingClientRect()
+  const width = rect?.width || 0
+  return -width * (start.value) / (end.value - start.value)
+})
+
+const maxTime = computed(() => {
+  if (!strip.value) { return 0 }
+  return strip.value.length
+})
+
 watch(strip, () => {
   update()
 })
@@ -36,6 +66,7 @@ watch(
 const el = ref<HTMLElement | null>(null)
 onMounted(() => {
   el.value?.addEventListener('keydown', (e) => {
+    if (!strip.value) { return }
     if (e.key === 'x') {
       strip.value.effects.filter((effect) => {
         if ('animations' in effect) {
@@ -47,6 +78,7 @@ onMounted(() => {
               }
             })
 
+            if (!strip.value) { return }
             updateEffect(strip.value.id, {
               ...effect,
               animations: newAnimationIds
@@ -59,7 +91,13 @@ onMounted(() => {
   })
 })
 
-const times = [...Array(10)].map((_, i) => i)
+function changeStart (s: number) {
+  start.value = s
+}
+
+function changeEnd (e: number) {
+  end.value = e
+}
 </script>
 
 <template>
@@ -85,13 +123,13 @@ const times = [...Array(10)].map((_, i) => i)
         </div>
       </div>
     </div>
-    <div style="width: 100%">
+    <div ref="timeArea" class="w-full h-full relative">
       <div class="border-bottom-1 h-24 flex relative">
         <div
           v-for="i in times"
           :key="i"
           class="absolute border-l-[1px] border-default text-xs h-24 flex"
-          :style="{ left: `${i * 30}px` }"
+          :style="{ left: `${startOffset + i * pixPerSec}px` }"
         >
           <div class="mt-auto ml-2 mb-2">
             {{ i }}
@@ -109,15 +147,14 @@ const times = [...Array(10)].map((_, i) => i)
           box-sizing: border-box;
         "
       >
-        <KeyframeMarker
-          v-for="(anim, j) in key[1]"
-          :key="j"
-          :animation="anim"
-          :scale="30"
-        />
+        <KeyframeMarker v-for="(anim, j) in key[1]" :key="j" :animation="anim" :scale="pixPerSec" />
+      </div>
+      <div class="absolute bottom-0 w-full">
+        <ScaleScroll :start="start" :end="end" @start="changeStart" @end="changeEnd" />
       </div>
     </div>
   </div>
 </template>
 
-<style></style>
+<style>
+</style>

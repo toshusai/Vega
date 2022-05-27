@@ -57,7 +57,11 @@ function pointerdown (e: MouseEvent) {
 }
 
 function inputByInputEvent (e: Event) {
-  emit('input', parseFloat((e.target as HTMLInputElement).value))
+  const num = parseFloat((e.target as HTMLInputElement).value)
+  if (Number.isNaN(num)) {
+    return
+  }
+  emit('input', num)
 }
 </script>
 
