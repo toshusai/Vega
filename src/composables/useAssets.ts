@@ -32,6 +32,12 @@ export function useAssets () {
       return (assets: AssetState) => {
         state.value = assets
       }
+    })(assets),
+
+    addAsset: ((state: Ref<AssetState>) => {
+      return (asset: IAsset) => {
+        state.value.assets = [...state.value.assets, asset]
+      }
     })(assets)
   }
 }
