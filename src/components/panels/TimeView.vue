@@ -6,7 +6,8 @@ const { timeline, update } = useTimeline()
 const el = ref<HTMLElement | null>(null)
 
 const pixScale = computed(() => {
-  const width = el.value?.parentElement?.getBoundingClientRect().width || 1
+  const width = el.value?.getBoundingClientRect().width || 1
+
   const viewScale =
     (timeline.value.end - timeline.value.start) / timeline.value.length
   return width / timeline.value.scale / viewScale
@@ -25,7 +26,8 @@ const secs = computed(() => {
 })
 
 function setTime (e: MouseEvent) {
-  const x = e.clientX
+  const xleft = el.value?.getBoundingClientRect().left || 0
+  const x = e.clientX - xleft
   const left = el.value?.parentElement?.getBoundingClientRect().left || 1
 
   const time = (x - left) / pixScale.value + timeline.value.start
@@ -45,6 +47,7 @@ onMounted(() => {
   // foce update first view
   update(timeline.value.curent + Number.EPSILON * 2, true)
 })
+
 </script>
 
 <template>
