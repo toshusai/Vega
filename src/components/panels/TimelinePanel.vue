@@ -17,7 +17,6 @@ const el = ref<HTMLDivElement | null>(null)
 onMounted(() => {
   if (!el.value) { return }
   el.value.addEventListener('wheel', (e) => {
-    e.preventDefault()
     if (e.ctrlKey) {
       const zoomSize = e.deltaY * 0.01
       const start = timeline.value.start - zoomSize
@@ -106,11 +105,43 @@ function unselect () {
 }
 
 const timelineBody = ref<HTMLElement | null>(null)
+
+const leftBox = ref<HTMLElement | null>(null)
+const timelineBox = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  timelineBox.value?.addEventListener('scroll', () => {
+    if (!leftBox.value) { return }
+
+    leftBox.value.scrollTop = timelineBox.value?.scrollTop || 0
+    console.log(leftBox.value.scrollTop)
+  })
+
+  getScrollbarWidth()
+})
+
+const scrollbarWidth = ref(0)
+function getScrollbarWidth () {
+  // Creating invisible container
+  const outer = document.createElement('div')
+  outer.style.visibility = 'hidden'
+  outer.style.overflow = 'scroll' // forcing scrollbar to appear
+  // outer.style.msOverflowStyle = 'scrollbar' // needed for WinJS apps
+  document.body.appendChild(outer)
+
+  // Creating inner element and placing it in the container
+  const inner = document.createElement('div')
+  outer.appendChild(inner)
+
+  // Calculating difference between container's full width and the child width
+  scrollbarWidth.value = (outer.offsetWidth - inner.offsetWidth)
+}
+
 </script>
 
 <template>
   <div ref="el" class="timeline-root">
-    <div style="width: 100px; border-right: 1px solid var(--border-grey)">
+    <!-- <div style="width: 100px; border-right: 1px solid var(--border-grey)">
       <div
         style="
           height: 20px;
@@ -118,26 +149,54 @@ const timelineBody = ref<HTMLElement | null>(null)
           box-sizing: border-box;
         "
       />
-      <div
-        v-for="(layer, i) in layers"
-        :key="i"
-        :style="`
+      <div ref="leftBox" class="timeline-box" style="overflow: hidden;">
+        <div
+          v-for="(layer, i) in layers"
+          :key="i"
+          :style="`
         border-bottom: 1px solid var(--border-grey);
         height: 50px;
         box-sizing: content-box;
         position: absolute;
         width: 100px;
-        top: ${20 + i * 50}px;
+        top: ${i * 50}px;
       `"
-      />
-    </div>
-    <div ref="timelineBody" style="width: calc(100% - 100px); position: relative; overflow: hidden">
-      <SelectRect v-if="timelineBody" :element="timelineBody" />
+        />
+      </div>
+    </div> -->
+    <div ref="timelineBody" style="width: calc(100% ); position: relative; overflow: hidden">
       <TimelineCursor />
-      <TimeView />
-      <div style="display: flex; position: relative" @mouseup="unselect" @mousedown="mousedown" @mousemove="mousemove">
-        <div v-for="(layer, i) in layers" :key="i" :strips="layer" class="layer" :style="`top: ${i * 50}px`" />
-        <PanelsStripUI v-for="(strip, ) in strips" :key="strip.id" :strip="strip.strip" />
+      <div class="flex h-[20px]">
+        <div style="width: 100px" />
+        <TimeView style="width: calc(100% - 100px)" />
+      </div>
+      <div class="flex h-full timeline-box">
+        <div class="f-full w-[100px]" style="border-right: 1px solid var(--border-grey)">
+          <div
+            v-for="(layer, i) in layers"
+            :key="i"
+            :style="`
+            border-bottom: 1px solid var(--border-grey);
+            height: 50px;
+            box-sizing: content-box;
+            position: absolute;
+            width: 100px;
+            top: ${i * 50}px;
+          `"
+          />
+        </div>
+        <div
+          ref="timelineBox"
+          class="flex relative overflow-x-hidden"
+          :style="`width: calc(100% - ${100}px);`"
+          @mouseup="unselect"
+          @mousedown="mousedown"
+          @mousemove="mousemove"
+        >
+          <SelectRect v-if="timelineBody" :element="timelineBody" />
+          <div v-for="(layer, i) in layers" :key="i" :strips="layer" class="layer" :style="`top: ${i * 50}px`" />
+          <PanelsStripUI v-for="(strip, ) in strips" :key="strip.id" :strip="strip.strip" />
+        </div>
       </div>
       <ScaleScroll
         style="position: absolute; bottom: 0"
@@ -157,6 +216,15 @@ const timelineBody = ref<HTMLElement | null>(null)
   height: 100%;
   position: relative;
   user-select: none;
+}
+
+.timeline-box {
+  display: flex;
+  position: relative;
+  height: calc(100% - 40px);
+  /* 20px(TimeView) 20px(ScaleScroll */
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .layer {
