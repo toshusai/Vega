@@ -7,13 +7,15 @@ const videoEl = ref<HTMLVideoElement | null>(null)
 
 onMounted(() => {
   if (!videoEl.value) { return }
-  videoEl.value.currentTime = 20
+  videoEl.value.currentTime = 2
 })
 </script>
 
 <template>
   <div style="padding: 4px">
-    <video ref="videoEl" class="video" :src="asset.path" />
+    <div class="w-[32px] flex">
+      <video ref="videoEl" class="video m-auto" :src="asset.path" />
+    </div>
   </div>
   <div style="margin: auto 0">
     {{ asset.name }}
