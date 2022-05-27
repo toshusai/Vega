@@ -187,13 +187,13 @@ function getScrollbarWidth () {
         </div>
         <div
           ref="timelineBox"
-          class="flex relative overflow-x-hidden"
+          class="flex relative h-full"
           :style="`width: calc(100% - ${100}px);`"
           @mouseup="unselect"
           @mousedown="mousedown"
           @mousemove="mousemove"
         >
-          <SelectRect v-if="timelineBody" :element="timelineBody" />
+          <SelectRect v-if="timelineBox" :element="timelineBox" />
           <div v-for="(layer, i) in layers" :key="i" :strips="layer" class="layer" :style="`top: ${i * 50}px`" />
           <PanelsStripUI v-for="(strip, ) in strips" :key="strip.id" :strip="strip.strip" />
         </div>
