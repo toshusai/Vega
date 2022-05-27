@@ -5,7 +5,7 @@ export const globalEvent = new EventTarget()
 
 export const FIRST_INTERFACT = 'firstInterfact'
 
-export async function waitForFirstInterfact () {
+export function waitForFirstInterfact () {
   return new Promise<void>((resolve) => {
     if (firstInterfact) { return resolve() }
     const listener = () => {

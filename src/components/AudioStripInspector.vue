@@ -18,7 +18,7 @@ const effect = computed(() =>
   getEffect<AudioStripEffect>(props.strip, 'Audio')
 )
 
-function changeText (v: any, key: string) {
+function changeText (v: number, key: string) {
   if (effect.value && isAudio(effect.value)) {
     const newE = { ...effect.value }
     const newNewE = new Function(

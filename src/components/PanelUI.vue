@@ -30,7 +30,7 @@ const upTop = (e: MouseEvent, pos: Position) => {
     @mouseleave="mouseleave"
   >
     <LayoutChangeArea
-      v-if="dad.key == 'layout' && enter && dad.payload != props.containerId"
+      v-if="dad.key === 'layout' && enter && dad.payload !== props.containerId"
       @top="(e) => upTop(e, 'top')"
       @left="(e) => upTop(e, 'left')"
       @right="(e) => upTop(e, 'right')"

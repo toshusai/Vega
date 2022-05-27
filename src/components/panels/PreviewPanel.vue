@@ -22,7 +22,7 @@ onMounted(() => {
   const height = timeline.value.height
   renderer.setSize(width, height)
 
-  if (view.camera.left == 0) {
+  if (view.camera.left === 0) {
     view.camera.left = -width / 2
     view.camera.right = width / 2
     view.camera.top = height / 2
@@ -68,7 +68,7 @@ function pointerdown () {
       strip.start + strip.length > timeline.value.curent
     ) {
       const alreadySelected = timeline.value.selectedStrips.find((s) => {
-        return s.id == strip.id
+        return s.id === strip.id
       })
       if (alreadySelected) { continue }
 

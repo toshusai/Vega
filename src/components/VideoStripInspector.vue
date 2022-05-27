@@ -17,7 +17,7 @@ const effect = computed(() =>
   getEffect<VideoStripEffect>(props.strip, 'Video')
 )
 
-function changeText (v: any, key: string) {
+function changeText (v: object | number, key: string) {
   if (effect.value && isVideo(effect.value)) {
     const newE = { ...effect.value }
     const newNewE = new Function(

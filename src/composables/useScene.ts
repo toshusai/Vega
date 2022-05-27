@@ -19,7 +19,6 @@ export function useScene () {
     scene.value.camera = new THREE.OrthographicCamera(0, 0, 200, 200)
     scene.value.camera.position.x = timeline.value.width / 2
     scene.value.camera.position.y = timeline.value.height / 2
-    console.log(scene.value.camera)
   })
 
   return {

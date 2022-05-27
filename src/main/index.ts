@@ -30,7 +30,7 @@ if (isDev) {
     //   req.url = "/static/docs/index.html";
     // }
     // redirect Nuxt pages to index.html
-    if (req.url == '/BigBuckBunny.mp4') {
+    if (req.url === '/BigBuckBunny.mp4') {
       req.url = '/BigBuckBunny.mp4'
       if (req.url.match(/(\.mp4|\.webm)$/)) {
         res.setHeader('Content-Type', 'video/mp4')
@@ -62,7 +62,7 @@ if (isDev) {
   indexUrl = `http://localhost:${port}`
 }
 
-let win: any = null
+let win: electron.BrowserWindow | null = null
 const app = electron.app
 const newWin = () => {
   win = new electron.BrowserWindow({

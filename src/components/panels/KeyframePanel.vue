@@ -35,14 +35,8 @@ watch(
 
 const el = ref<HTMLElement | null>(null)
 onMounted(() => {
-  console.log('ok')
-
   el.value?.addEventListener('keydown', (e) => {
-    console.log(e.key)
-
     if (e.key === 'x') {
-      console.log('delete')
-
       strip.value.effects.filter((effect) => {
         if ('animations' in effect) {
           const newAnimationIds: Animation[] = []

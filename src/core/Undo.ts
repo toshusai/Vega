@@ -8,8 +8,7 @@ export class Undo {
     this.redoStack.push(redo)
     this.index++
     // undo中にredoを入れると、redoStackのindexがずれるので、indexを更新する
-    if (this.index != this.undoStack.length - 1) {
-      console.log('reset', this.index, this.undoStack.length)
+    if (this.index !== this.undoStack.length - 1) {
       this.undoStack.splice(
         this.index,
         this.undoStack.length - this.index,
@@ -21,7 +20,6 @@ export class Undo {
         redo
       )
       this.index = this.undoStack.length - 1
-      console.log('reset', this.index, this.undoStack.length)
     }
 
     if (this.index > 100) {
@@ -32,7 +30,6 @@ export class Undo {
   }
 
   public undo () {
-    console.log(this.index, this.redoStack.length)
     if (this.index > -1) {
       this.undoStack[this.index]()
       this.index--
@@ -40,7 +37,6 @@ export class Undo {
   }
 
   public redo () {
-    console.log(this.index, this.redoStack.length)
     if (this.index + 1 < this.undoStack.length) {
       this.redoStack[this.index + 1]()
       this.index++

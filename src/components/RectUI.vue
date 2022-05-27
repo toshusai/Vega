@@ -5,9 +5,9 @@ import { Rect } from '../core/Rect'
 const props = defineProps<{ align: Align; rect: Rect; parentAlign: Align }>()
 
 const style = computed(() => ({
-  width: props.parentAlign == 'vertical' ? '100%' : props.rect.width + '%',
-  height: props.parentAlign == 'horizontal' ? '100%' : props.rect.height + '%',
-  display: props.align == 'horizontal' ? 'flex' : 'block'
+  width: props.parentAlign === 'vertical' ? '100%' : props.rect.width + '%',
+  height: props.parentAlign === 'horizontal' ? '100%' : props.rect.height + '%',
+  display: props.align === 'horizontal' ? 'flex' : 'block'
 }))
 
 const el = ref<HTMLDivElement | null>(null)

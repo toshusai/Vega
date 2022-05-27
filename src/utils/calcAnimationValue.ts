@@ -35,7 +35,7 @@ export function calcAnimationValue (
   key: string,
   defaultValue = 0
 ) {
-  if (animations.filter(a => a.key == key).length == 0) { return defaultValue }
+  if (animations.filter(a => a.key === key).length === 0) { return defaultValue }
   const [prev, next] = findBetween(animations, time, key)
 
   let v = defaultValue

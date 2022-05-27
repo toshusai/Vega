@@ -28,7 +28,7 @@ function close (e: MouseEvent, force = false) {
 }
 
 function open (e: MouseEvent) {
-  if (show.value == true) {
+  if (show.value === true) {
     close(e, true)
     return
   }
