@@ -135,6 +135,7 @@ function changeView (timeline: Ref<Timeline>) {
 
 function update (timeline: Ref<Timeline>) {
   return (time: number, jump = false) => {
+    if (time < 0) { time = 0 }
     timeline.value.curent = time
 
     for (let j = 0; j < timeline.value.strips.length; j++) {

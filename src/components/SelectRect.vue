@@ -3,7 +3,7 @@
 const { timeline, selectStrip } = useTimeline()
 
 const props = defineProps<{
-  element: HTMLElement;
+  element: HTMLElement ;
 }>()
 
 const isDraging = ref(false)
@@ -95,6 +95,7 @@ const style = computed(() => {
   background: rgba(96, 96, 255, 0.1);
   border: 1px solid rgba(96, 96, 255, 0.2);
   box-sizing: border-box;
+  pointer-events: none;
   z-index: 3;
 }
 </style>
