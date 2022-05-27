@@ -44,6 +44,8 @@ return effect
       <inspector-input
         label="start"
         :value="effect.start"
+        :step="0.01"
+        :scale="0.01"
         @input="
           (num) =>
             changeText(num, 'start')

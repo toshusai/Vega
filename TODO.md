@@ -1,5 +1,3 @@
-- audio inspector
-- video inspector
 - image support
 - keyframe timeline
 - load assets

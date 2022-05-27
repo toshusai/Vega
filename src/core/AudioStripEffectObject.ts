@@ -99,7 +99,7 @@ export class AudioStripEffectObject {
 
   prevTime = 0
 
-  public async update (
+  public update (
     strip: Strip,
     effect: AudioStripEffect,
     time: number,
