@@ -2,9 +2,7 @@
 import InspectorInputBase from './InspectorInputBase.vue'
 defineProps<{ label: string; value: number }>()
 const emit = defineEmits<{(e: 'input', value: number): void; }>()
-function update (e) {
-  console.log(e)
-
+function update (e: number) {
   emit('input', e)
 }
 </script>

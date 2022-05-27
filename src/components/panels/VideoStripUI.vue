@@ -12,14 +12,14 @@ const imageEls = ref<HTMLImageElement[]>([])
 
 const videoArray = ref<number[]>([])
 
-const videoEffect = props.strip.effects.find(
+const videoEffect = computed(() => props.strip.effects.find(
   e => e.type === 'Video'
-) as VideoStripEffect
+) as VideoStripEffect)
 
 const videoSrc = computed(() => {
   return (
     assets.value.assets.find((a) => {
-      return a.id == videoEffect.videoAssetId
+      return a.id === videoEffect.value.videoAssetId
     })?.path || ''
   )
 })
@@ -35,7 +35,7 @@ const pixScale = computed(() => {
 
 const effectObj = computed(() => {
   const effectObj = effectObjectMap.get(
-    videoEffect.id
+    videoEffect.value.id
   ) as VideoStripEffectObject | null
   return effectObj
 })
@@ -46,7 +46,7 @@ function updateVideoArray () {
   if (!el.value) { return }
   const parentRect = el.value.getBoundingClientRect()
   if (!effectObj.value) { return }
-  if (effectObj.value.video.videoHeight == 0) { return }
+  if (effectObj.value.video.videoHeight === 0) { return }
   const ratio =
     effectObj.value.video.videoHeight / effectObj.value.video.videoWidth
 
@@ -56,7 +56,7 @@ function updateVideoArray () {
     (_, i) => i
   )
 
-  if (newArray.length != videoArray.value.length) {
+  if (newArray.length !== videoArray.value.length) {
     videoArray.value = newArray
   }
 }
@@ -103,7 +103,7 @@ const updateVideoStart = async () => {
     if (!thumbnailVideo) { return }
     const rect = imageEl.getBoundingClientRect()
     const startPx = 8 + videoWidth.value * i // rect.left - parentRect.left;
-    if (i == 0) {
+    if (i === 0) {
       // console.log(rect.left, startPx);
     }
 
@@ -137,7 +137,7 @@ const updateVideoStart = async () => {
             resolve()
           }
 
-          currentTime = startPx / pixScale.value + videoEffect.start
+          currentTime = startPx / pixScale.value + videoEffect.value.start
           const left =
             (props.strip.start - timeline.value.start) * pixScale.value
 
@@ -229,7 +229,8 @@ function draw () {
   let max = 0
   let min = 0
 
-  let start = 0
+  let start = Math.floor(videoEffect.value.start * lengthPerSec)
+  console.log(start)
 
   if (overLeft.value < -50) {
     const l = Math.floor((overLeft.value + 50) / videoWidth.value) + 1

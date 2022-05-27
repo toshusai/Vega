@@ -11,19 +11,18 @@ const strip = computed(() => {
   return timeline.value.selectedStrips[0] as Strip | null
 })
 
-const effect: ComputedRef<TextStripEffect | null> = computed(() => {
-  return strip.value?.effects.find(
-    e => e.type == 'Text'
-  ) as TextStripEffect | null
+const effect = computed(() => {
+  return strip.value?.effects.find(_ => true)
 })
+
+const componentName = computed(() => {
+  return `${effect.value?.type}StripInspector`
+})
+
 </script>
 
 <template>
   <div v-if="strip" style="height: 100%; overflow-y: scroll">
-    <text-strip-inspector v-if="getEffect(strip, 'Text')" :strip="strip" />
-    <video-strip-inspector
-      v-else-if="getEffect(strip, 'Video')"
-      :strip="strip"
-    />
+    <component :is="componentName" :strip="strip" />
   </div>
 </template>
