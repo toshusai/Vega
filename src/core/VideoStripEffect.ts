@@ -6,5 +6,7 @@ export type VideoStripEffect = StripEffect & {
   start: number;
   position: IVector3;
   videoAssetId: string;
+  volume: number;
+  scale: IVector3
   animations: Animation[];
 };

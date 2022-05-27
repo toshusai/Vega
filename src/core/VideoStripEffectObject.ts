@@ -97,7 +97,7 @@ export class VideoStripEffectObject {
 
   prevTime = 0
 
-  public async update (
+  public update (
     strip: Strip,
     effect: VideoStripEffect,
     time: number,
@@ -116,9 +116,11 @@ export class VideoStripEffectObject {
       return
     }
 
+    this.obj.scale.set(effect.scale.x, effect.scale.y, 1)
+
     if (strip.start < time && time < strip.start + strip.length) {
       this.obj.visible = true
-      this.video.volume = 1
+      this.video.volume = effect.volume || 1
 
       // When move strip and
       if (this.prevTime !== strip.start) {

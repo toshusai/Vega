@@ -1,4 +1,3 @@
-- timeline vertical scroll
 - audio inspector
 - video inspector
 - image support
