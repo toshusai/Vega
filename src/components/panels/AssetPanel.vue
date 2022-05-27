@@ -2,6 +2,7 @@
 import { uuid } from 'short-uuid'
 
 const { assets, addAsset } = useAssets()
+const { startDad } = useDragAndDrop()
 
 function drop (e: DragEvent) {
   e.preventDefault()
@@ -45,11 +46,15 @@ function extentionToType (ext: string) {
 function dragover (e: DragEvent) {
   e.preventDefault()
 }
+
+function dragstart (e: MouseEvent, id: string) {
+  startDad(e, 'assets', id)
+}
 </script>
 
 <template>
   <div class="h-full" @drop="drop" @dragover="dragover">
-    <div v-for="(asset, i) in assets.assets" :key="i" class="asset-list-item">
+    <div v-for="(asset, i) in assets.assets" :key="i" class="asset-list-item" @mousedown="e => dragstart(e, asset.id)">
       <component :is="asset.type + 'AssetListItem'" :asset="asset" />
     </div>
   </div>
@@ -58,11 +63,15 @@ function dragover (e: DragEvent) {
 <style scoped>
 .asset-list-item {
   white-space: nowrap;
+  user-select: none;
   display: flex;
   cursor: pointer;
   height: 32px;
   overflow: hidden;
   border-bottom: 1px solid var(--border-grey);
+  background-color: #111;
+  padding: 0 8px;
+  color: #fff;
 }
 
 .asset-list-item:hover {
