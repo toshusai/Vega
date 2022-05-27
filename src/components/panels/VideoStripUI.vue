@@ -230,7 +230,6 @@ function draw () {
   let min = 0
 
   let start = Math.floor(videoEffect.value.start * lengthPerSec)
-  console.log(start)
 
   if (overLeft.value < -50) {
     const l = Math.floor((overLeft.value + 50) / videoWidth.value) + 1
@@ -268,8 +267,7 @@ function draw () {
     // ハンドルの分ずらす
     const height = sumData[i + 12] * 40 * scale
 
-    // magic 4...
-    ctx.value.fillRect(i, 40 - height, 1, 40)
+    ctx.value.fillRect(i, 40 - height * 2 * videoEffect.value.volume, 1, 40)
   }
 }
 

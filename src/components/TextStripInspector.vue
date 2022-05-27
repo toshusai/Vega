@@ -11,7 +11,7 @@ const props = defineProps<{ strip: Strip }>()
 
 const effect: ComputedRef<TextStripEffect | null> = computed(() => {
   return props.strip.effects.find(
-    e => e.type == 'Text'
+    e => e.type === 'Text'
   ) as TextStripEffect | null
 })
 
@@ -26,8 +26,6 @@ effect.${key} = value;
 return effect
 `
     )(newE, v)
-
-    console.log(key, v)
 
     updateEffect(props.strip?.id, {
       ...newNewE

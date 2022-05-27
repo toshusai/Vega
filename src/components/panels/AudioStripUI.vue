@@ -10,14 +10,14 @@ const { assets } = useAssets()
 
 const imageEls = ref<HTMLImageElement[]>([])
 
-const audioEffect = props.strip.effects.find(
+const audioEffect = computed(() => props.strip.effects.find(
   e => e.type === 'Audio'
-) as AudioStripEffect
+) as AudioStripEffect)
 
 const audioSrc = computed(() => {
   return (
     assets.value.assets.find((a) => {
-      return a.id == audioEffect.audioAssetId
+      return a.id === audioEffect.value.audioAssetId
     })?.path || ''
   )
 })
@@ -33,7 +33,7 @@ const pixScale = computed(() => {
 
 const effectObj = computed(() => {
   const effectObj = effectObjectMap.get(
-    audioEffect.id
+    audioEffect.value.id
   ) as VideoStripEffectObject | null
   return effectObj
 })
@@ -73,7 +73,7 @@ function draw () {
   let max = 0
   let min = 0
 
-  let start = 0
+  let start = Math.floor(audioEffect.value.start * lengthPerSec)
 
   if (overLeft.value < -50) {
     start = Math.floor(dataPerPixel * (-50 - overLeft.value))
@@ -105,8 +105,7 @@ function draw () {
     // ハンドルの分ずらす
     const height = sumData[i + 12] * 40
 
-    // magic 4...
-    ctx.value.fillRect(i, 40 - height * 4, 1, 40)
+    ctx.value.fillRect(i, 40 - height * 2 * audioEffect.value.volume, 1, 40)
   }
 }
 
