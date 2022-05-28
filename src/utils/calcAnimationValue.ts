@@ -29,11 +29,17 @@ export function findBetween (
   return [prevAnimation, nextAnimation]
 }
 
+const animFuncMap:Record<string, (x:number)=>number> = {
+  easeInOutCubic,
+  liner: x => x
+}
+
 export function calcAnimationValue (
   animations: Animation[],
   time: number,
   key: string,
-  defaultValue = 0
+  defaultValue = 0,
+  animFunc = 'liner'
 ) {
   if (animations.filter(a => a.key === key).length === 0) { return defaultValue }
   const [prev, next] = findBetween(animations, time, key)
@@ -42,7 +48,7 @@ export function calcAnimationValue (
   if (prev && next) {
     v =
       prev.value +
-      easeInOutCubic(normalize(prev.time, next.time, time)) *
+      animFuncMap[animFunc](normalize(prev.time, next.time, time)) *
         (next.value - prev.value)
   } else if (prev && !next) {
     v = prev.value

@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { ComputedRef } from 'vue'
+import { uuid } from 'short-uuid'
 import { eventToString } from '../utils/eventToString'
+import { StripEffect } from '../core/StripEffect'
+import { setAnimation } from '../utils/setAnimation'
 import InspectorInput from './InspectorInput.vue'
 import { Strip } from '~/core/Strip'
-import { TextStripEffect } from '~/core/TextStripEffect'
+import { Animation, TextStripEffect } from '~/core/TextStripEffect'
 import { isText } from '~/composables/useTimeline'
 // var colors = "#194d33";
-const { updateEffect } = useTimeline()
+const { timeline, updateEffect } = useTimeline()
+
 const props = defineProps<{ strip: Strip }>()
 
 const effect: ComputedRef<TextStripEffect | null> = computed(() => {
@@ -32,6 +36,25 @@ return effect
     })
   }
 }
+
+function addKeyframe (key: string, value: any) {
+  if (!effect.value) { return }
+  const newAnimation: Animation = {
+    id: uuid(),
+    key,
+    time: timeline.value.curent - props.strip.start,
+    value
+  }
+
+  const newEffect = { ...effect.value, animations: [...effect.value.animations] }
+  newEffect.animations = setAnimation(newEffect.animations || [], newAnimation)
+
+  updateEffect(props.strip.id, newEffect)
+}
+
+function hasKeyframe (key:string) {
+  return effect.value?.animations.find(a => a.key === key) != null
+}
 </script>
 
 <template>
@@ -46,25 +69,20 @@ return effect
       <inspector-input
         label="x"
         :value="effect.position.x"
+        :key-frame="hasKeyframe('position.x')"
         @input="
           (num) => changeText({ ...effect?.position, x: num }, 'position')
         "
+        @key-frame="() => addKeyframe('position.x', effect?.position.x)"
       />
       <inspector-input
         label="y"
         :value="effect.position.y"
         @input="(e) => changeText({ ...effect?.position, y: e }, 'position')"
+        @key-frame="() => addKeyframe('position.y', effect?.position.y)"
       />
-      <inspector-input
-        label="fontSize"
-        :value="effect.size"
-        @input="(n) => changeText(n, 'size')"
-      />
-      <inspector-color-input
-        label="color"
-        :value="effect.color"
-        @update-color="(e) => changeText(e, 'color')"
-      />
+      <inspector-input label="fontSize" :value="effect.size" @input="(n) => changeText(n, 'size')" />
+      <inspector-color-input label="color" :value="effect.color" @update-color="(e) => changeText(e, 'color')" />
       <inspector-string-input
         label="style"
         :value="effect.style"
@@ -85,11 +103,7 @@ return effect
         :value="effect.shadowColor"
         @update-color="(e) => changeText(e, 'shadowColor')"
       />
-      <inspector-input
-        label="shadowBlur"
-        :value="effect.shadowBlur"
-        @input="(n) => changeText(n, 'shadowBlur')"
-      />
+      <inspector-input label="shadowBlur" :value="effect.shadowBlur" @input="(n) => changeText(n, 'shadowBlur')" />
       <inspector-color-input
         label="outlineColor"
         :value="effect.outlineColor"

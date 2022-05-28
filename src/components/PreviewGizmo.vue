@@ -175,11 +175,25 @@ function drag (e: MouseEvent) {
           value: p.x,
           time: timeline.value.curent - strip.value.start - 0.01
         })
-        // setAnimation(newE.animations, {
-        //   key: "position.y",
-        //   value: p.y,
-        //   time: timeline.value.curent,
-        // });
+      }
+      if (
+        effect.value.animations.filter(a => a.key === 'position.y').length === 0
+      ) {
+        newE.position = p
+      } else {
+        p.y =
+          calcAnimationValue(
+            newE.animations,
+            timeline.value.curent - strip.value.start,
+            'position.y'
+          ) +
+          -delta.y / props.scale
+        newE.animations = setAnimation(newE.animations, {
+          id: uuid(),
+          key: 'position.y',
+          value: p.y,
+          time: timeline.value.curent - strip.value.start - 0.01
+        })
       }
 
       newE.position = p
