@@ -497,6 +497,10 @@ body {
 
   --border-grey: #9e9e9e;
 }
+
+body {
+  font-family: Monaco;
+}
 </style>
 
 <style scoped>

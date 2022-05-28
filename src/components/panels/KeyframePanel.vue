@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { time } from 'console'
 import KeyframeMarker from '../KeyframeMarker.vue'
+import KeyframeSelectRect from '../KeyframeSelectRect.vue'
 import { Animation } from '~~/src/core/TextStripEffect'
+import { calcAnimationValue } from '~~/src/utils/calcAnimationValue'
 
 const { timeline, updateEffect } = useTimeline()
 
@@ -30,6 +32,15 @@ function update () {
       })
     }
   })
+
+  // create new map and set key order by name
+  const sortedKeys = new Map<string, Animation[]>()
+  const mapKeys = [...keys.value.keys()]
+  mapKeys.sort((a, b) => a.localeCompare(b))
+  mapKeys.forEach((key) => {
+    sortedKeys.set(key, keys.value.get(key) || [])
+  })
+  keys.value = sortedKeys
 }
 
 const timeArea = ref<HTMLDivElement | null>(null)
@@ -98,6 +109,7 @@ function changeStart (s: number) {
 function changeEnd (e: number) {
   end.value = e
 }
+
 </script>
 
 <template>
@@ -119,11 +131,12 @@ function changeEnd (e: number) {
           <div class="mr-4">
             {{ key[0] }} :
           </div>
-          <v-input-base style="margin: auto" :value="0" readonly />
+          <v-input-base style="margin: auto" :value="calcAnimationValue(key[1], timeline.curent - strip!.start, key[0], 0)" readonly />
         </div>
       </div>
     </div>
-    <div ref="timeArea" class="w-full h-full relative">
+    <div ref="timeArea" class="w-full h-full relative overflow-hidden">
+      <KeyframeSelectRect />
       <div class="border-bottom-1 h-24 flex relative">
         <div
           v-for="i in times"
@@ -147,7 +160,7 @@ function changeEnd (e: number) {
           box-sizing: border-box;
         "
       >
-        <KeyframeMarker v-for="(anim, j) in key[1]" :key="j" :animation="anim" :scale="pixPerSec" />
+        <KeyframeMarker v-for="(anim, j) in key[1]" :key="j" :animation="anim" :scale="pixPerSec" :left="startOffset" />
       </div>
       <div class="absolute bottom-0 w-full">
         <ScaleScroll :start="start" :end="end" @start="changeStart" @end="changeEnd" />
