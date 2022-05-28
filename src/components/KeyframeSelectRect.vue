@@ -23,6 +23,7 @@ const selected = computed(() => {
 onMounted(() => {
   if (!el.value) { return }
   const parent = el.value.parentElement as HTMLElement
+
   parent.addEventListener('mousedown', (e) => {
     if (!selected.value) { return }
     stripElements.value = []
@@ -61,9 +62,9 @@ onMounted(() => {
       const rect = el.getBoundingClientRect()
       if (
         rect.left < selfRect.right &&
-        rect.right > selfRect.left &&
-        rect.top < selfRect.bottom &&
-        rect.bottom > selfRect.top
+                rect.right > selfRect.left &&
+                rect.top < selfRect.bottom &&
+                rect.bottom > selfRect.top
       ) {
         newStripIds.push(el.id)
       }
@@ -106,10 +107,11 @@ const style = computed(() => {
 
 <style scoped>
 .select-rect {
-  background: rgba(96, 96, 255, 0.1);
-  border: 1px solid rgba(96, 96, 255, 0.2);
-  box-sizing: border-box;
-  pointer-events: none;
-  z-index: 3;
+    user-select: none;
+    background: rgba(96, 96, 255, 0.1);
+    border: 1px solid rgba(96, 96, 255, 0.2);
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 3;
 }
 </style>

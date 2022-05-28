@@ -271,6 +271,15 @@ export function useTimeline () {
       }
     })(timeline),
 
+    getFisrtSelectedStrip: ((state:Ref<Timeline>) => {
+      return () => {
+        if (state.value.selectedStrips.length > 0) {
+          return state.value.selectedStrips[0]
+        }
+        return null
+      }
+    })(timeline),
+
     setFocusStripId: ((state: Ref<Timeline>) => {
       return (id: string) => {
         state.value.focusStripId = id

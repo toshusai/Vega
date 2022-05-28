@@ -4,6 +4,7 @@ import KeyframeMarker from '../KeyframeMarker.vue'
 import KeyframeSelectRect from '../KeyframeSelectRect.vue'
 import { Animation } from '~~/src/core/TextStripEffect'
 import { calcAnimationValue } from '~~/src/utils/calcAnimationValue'
+import { StripEffect } from '~~/src/core/StripEffect'
 
 const { timeline, updateEffect } = useTimeline()
 
@@ -15,6 +16,8 @@ const strip = computed(() => {
 })
 
 const keys = ref(new Map<string, Animation[]>())
+
+const animationIdEffectIdMap = ref(new Map<string, StripEffect>())
 
 const times = computed(() => [...Array(Math.floor(maxTime.value))].map((_, i) => i))
 const start = ref(0)
@@ -28,6 +31,7 @@ function update () {
         if (!keys.value.has(animation.key)) {
           keys.value.set(animation.key, [])
         }
+        animationIdEffectIdMap.value.set(animation.id, { ...effect as StripEffect })
         keys.value.get(animation.key)?.push(animation)
       })
     }
@@ -131,11 +135,15 @@ function changeEnd (e: number) {
           <div class="mr-4">
             {{ key[0] }} :
           </div>
-          <v-input-base style="margin: auto" :value="calcAnimationValue(key[1], timeline.curent - strip!.start, key[0], 0)" readonly />
+          <v-input-base
+            style="margin: auto"
+            :value="calcAnimationValue(key[1], timeline.curent - strip!.start, key[0], 0)"
+            readonly
+          />
         </div>
       </div>
     </div>
-    <div ref="timeArea" class="w-full h-full relative overflow-hidden">
+    <div ref="timeArea" class="w-full h-full relative overflow-hidden select-none">
       <KeyframeSelectRect />
       <div class="border-bottom-1 h-24 flex relative">
         <div
@@ -160,7 +168,15 @@ function changeEnd (e: number) {
           box-sizing: border-box;
         "
       >
-        <KeyframeMarker v-for="(anim, j) in key[1]" :key="j" :animation="anim" :scale="pixPerSec" :left="startOffset" />
+        <KeyframeMarker
+          v-for="(anim, j) in key[1]"
+          :key="j"
+          :animation="anim"
+          :scale="pixPerSec"
+          :left="startOffset"
+          :effect="animationIdEffectIdMap.get(anim.id)"
+          :strip-id="strip?.id || ''"
+        />
       </div>
       <div class="absolute bottom-0 w-full">
         <ScaleScroll :start="start" :end="end" @start="changeStart" @end="changeEnd" />
