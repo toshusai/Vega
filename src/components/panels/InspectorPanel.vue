@@ -22,7 +22,7 @@ const componentName = computed(() => {
 </script>
 
 <template>
-  <div v-if="strip" style="height: 100%; overflow-y: scroll">
+  <div v-if="strip" style="height: 100%; overflow-y: scroll; padding-right: 16px;">
     <component :is="componentName" :strip="strip" />
   </div>
 </template>

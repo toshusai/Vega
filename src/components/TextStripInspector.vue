@@ -4,6 +4,7 @@ import { uuid } from 'short-uuid'
 import { eventToString } from '../utils/eventToString'
 import { StripEffect } from '../core/StripEffect'
 import { setAnimation } from '../utils/setAnimation'
+import { calcAnimationValue } from '../utils/calcAnimationValue'
 import InspectorInput from './InspectorInput.vue'
 import { Strip } from '~/core/Strip'
 import { Animation, TextStripEffect } from '~/core/TextStripEffect'
@@ -55,20 +56,16 @@ function addKeyframe (key: string, value: any) {
 function hasKeyframe (key:string) {
   return effect.value?.animations.find(a => a.key === key) != null
 }
+
 </script>
 
 <template>
   <div v-if="effect && isText(effect)">
     <div class="p-4">
       <div>TextEffect</div>
-      <!-- <inspector-string-input
-        label="Text"
-        :value="effect.text"
-        @input="(e) => changeText(eventToString(e), 'text')"
-      /> -->
       <inspector-input
         label="x"
-        :value="effect.position.x"
+        :value="calcAnimationValue(effect.animations, timeline.curent - strip.start, 'position.x', effect.position.x)"
         :key-frame="hasKeyframe('position.x')"
         @input="
           (num) => changeText({ ...effect?.position, x: num }, 'position')
@@ -77,11 +74,17 @@ function hasKeyframe (key:string) {
       />
       <inspector-input
         label="y"
-        :value="effect.position.y"
+        :value="calcAnimationValue(effect.animations, timeline.curent - strip.start, 'position.y', effect.position.y)"
+        :key-frame="hasKeyframe('position.y')"
         @input="(e) => changeText({ ...effect?.position, y: e }, 'position')"
         @key-frame="() => addKeyframe('position.y', effect?.position.y)"
       />
-      <inspector-input label="fontSize" :value="effect.size" @input="(n) => changeText(n, 'size')" />
+      <inspector-input
+        :key-frame="hasKeyframe('size')"
+        label="fontSize"
+        :value="effect.size"
+        @input="(n) => changeText(n, 'size')"
+      />
       <inspector-color-input label="color" :value="effect.color" @update-color="(e) => changeText(e, 'color')" />
       <inspector-string-input
         label="style"
@@ -94,6 +97,7 @@ function hasKeyframe (key:string) {
         @input="(e) => changeText(eventToString(e), 'family')"
       />
       <inspector-input
+        :key-frame="hasKeyframe('characterSpace')"
         label="characterSpace"
         :value="effect.characterSpace"
         @input="(n) => changeText(n, 'characterSpace')"
@@ -103,7 +107,13 @@ function hasKeyframe (key:string) {
         :value="effect.shadowColor"
         @update-color="(e) => changeText(e, 'shadowColor')"
       />
-      <inspector-input label="shadowBlur" :value="effect.shadowBlur" @input="(n) => changeText(n, 'shadowBlur')" />
+      <inspector-input
+
+        :key-frame="hasKeyframe('shadowBlur')"
+        label="shadowBlur"
+        :value="effect.shadowBlur"
+        @input="(n) => changeText(n, 'shadowBlur')"
+      />
       <inspector-color-input
         label="outlineColor"
         :value="effect.outlineColor"

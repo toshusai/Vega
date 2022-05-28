@@ -186,7 +186,7 @@ function getScrollbarWidth () {
         </div>
         <div
           ref="timelineBox"
-          class="flex relative h-full"
+          class="flex relative h-full overflow-hidden"
           :style="`width: calc(100% - ${100}px);`"
           @mouseup="unselect"
           @mousedown="mousedown"

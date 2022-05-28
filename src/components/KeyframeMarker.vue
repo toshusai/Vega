@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Animation } from '../core/TextStripEffect'
 
-const props = defineProps<{ animation: Animation; scale: number }>()
+const props = defineProps<{ animation: Animation; scale: number, left: number }>()
 
 const { timeline, selectKeyframe } = useTimeline()
 
@@ -11,7 +11,7 @@ const SIZE = 12
 const style = computed(() => {
   return {
     top: `${HEIGHT / 2 - SIZE / 2}px`,
-    left: `${props.animation.time * props.scale - SIZE / 2}px`
+    left: `${props.left + props.animation.time * props.scale - SIZE / 2}px`
   }
 })
 
@@ -25,7 +25,7 @@ function select () {
 </script>
 
 <template>
-  <div :style="style" class="keyframe-marker cursor-pointer">
+  <div :id="animation.id" :style="style" class="keyframe-marker cursor-pointer">
     <svg
       :class="selected ? `selected` : ``"
       :style="`width: ${SIZE}px; height: ${SIZE}px`"
