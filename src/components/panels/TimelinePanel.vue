@@ -12,6 +12,8 @@ const { addUpdate } = useUpdate()
 
 const { addEventListener } = useContainer()
 
+const { dad } = useDragAndDrop()
+
 const el = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
@@ -93,8 +95,22 @@ function mousedown () {
   clickMouseBehaviour.value = true
 }
 
-function mousemove () {
+function mousemove (e: MouseEvent) {
+  if (!timelineBox.value) { return }
   clickMouseBehaviour.value = false
+  const rect = timelineBox.value.getBoundingClientRect()
+  const visibleSec = timeline.value.end - timeline.value.start
+  const secPerPx = visibleSec / rect.width
+
+  if (dad.value.key === 'assets') {
+    dummyStrip.value = {
+      effects: [],
+      layer: 0,
+      start: (e.clientX - rect.left) * secPerPx + timeline.value.start,
+      length: 1,
+      id: 'x'
+    }
+  }
 }
 
 function unselect () {
@@ -102,6 +118,8 @@ function unselect () {
     selectStrip([])
   }
   clickMouseBehaviour.value = false
+
+  dummyStrip.value = null
 }
 
 const timelineBody = ref<HTMLElement | null>(null)
@@ -136,6 +154,7 @@ function getScrollbarWidth () {
   scrollbarWidth.value = (outer.offsetWidth - inner.offsetWidth)
 }
 
+const dummyStrip = ref<Strip | null>()
 </script>
 
 <template>
@@ -195,6 +214,7 @@ function getScrollbarWidth () {
           <SelectRect v-if="timelineBox" :element="timelineBox" />
           <div v-for="(layer, i) in layers" :key="i" :strips="layer" class="layer" :style="`top: ${i * 50}px`" />
           <PanelsStripUI v-for="(strip, ) in strips" :key="strip.id" :strip="strip.strip" />
+          <PanelsStripUI v-if="dummyStrip" key="dummy" :strip="dummyStrip" />
         </div>
       </div>
       <ScaleScroll
