@@ -2,6 +2,7 @@
 import shortUUID, { uuid } from 'short-uuid'
 import ScaleScroll from '../ScaleScroll.vue'
 import SelectRect from '../SelectRect.vue'
+import { getScrollbarWidth } from '../../utils/getScrollbarWidth'
 import TimeView from './TimeView.vue'
 import Cursor from './Cursor.vue'
 import TimelineCursor from './TimelineCursor.vue'
@@ -133,26 +134,9 @@ onMounted(() => {
 
     leftBox.value.scrollTop = timelineBox.value?.scrollTop || 0
   })
-
-  getScrollbarWidth()
 })
 
-const scrollbarWidth = ref(0)
-function getScrollbarWidth () {
-  // Creating invisible container
-  const outer = document.createElement('div')
-  outer.style.visibility = 'hidden'
-  outer.style.overflow = 'scroll' // forcing scrollbar to appear
-  // outer.style.msOverflowStyle = 'scrollbar' // needed for WinJS apps
-  document.body.appendChild(outer)
-
-  // Creating inner element and placing it in the container
-  const inner = document.createElement('div')
-  outer.appendChild(inner)
-
-  // Calculating difference between container's full width and the child width
-  scrollbarWidth.value = (outer.offsetWidth - inner.offsetWidth)
-}
+const scrollbarWidth = ref(getScrollbarWidth())
 
 const dummyStrip = ref<Strip | null>()
 </script>
@@ -183,7 +167,6 @@ const dummyStrip = ref<Strip | null>()
       </div>
     </div> -->
     <div ref="timelineBody" style="width: calc(100% ); position: relative; overflow: hidden">
-      <timeline-cursor />
       <div class="flex h-[20px]">
         <div style="width: 100px; border-bottom: 1px solid white; border-right: 1px solid white" />
         <time-view style="width: calc(100% - 100px)" />
@@ -211,19 +194,23 @@ const dummyStrip = ref<Strip | null>()
           @mousedown="mousedown"
           @mousemove="mousemove"
         >
+          <timeline-cursor />
           <select-rect v-if="timelineBox" :element="timelineBox" />
           <div v-for="(layer, i) in layers" :key="i" :strips="layer" class="layer" :style="`top: ${i * 50}px`" />
           <panels-strip-ui v-for="(strip, ) in strips" :key="strip.id" :strip="strip.strip" />
           <panels-strip-ui v-if="dummyStrip" key="dummy" :strip="dummyStrip" />
         </div>
       </div>
-      <scale-scroll
-        style="position: absolute; bottom: 0"
-        :start="timeline.start / timeline.length"
-        :end="timeline.end / timeline.length"
-        @start="(n) => changeView(n * timeline.length, timeline.end)"
-        @end="(n) => changeView(timeline.start, n * timeline.length)"
-      />
+      <div class="flex">
+        <div class="w-[100px] min-w-[100px]" style="border-right: 1px solid var(--border-grey)" />
+        <scale-scroll
+          style="position: relative; bottom: 0"
+          :start="timeline.start / timeline.length"
+          :end="timeline.end / timeline.length"
+          @start="(n) => changeView(n * timeline.length, timeline.end)"
+          @end="(n) => changeView(timeline.start, n * timeline.length)"
+        />
+      </div>
     </div>
   </div>
 </template>

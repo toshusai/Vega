@@ -90,11 +90,19 @@ onMounted(() => {
 })
 
 const rootOffset = ref(0)
+let cansels: (() => Promise<void>)[] = []
 const updateVideoStart = async () => {
   if (!el.value) { return }
   if (!canvas.value) { return }
   const rect = el.value.getBoundingClientRect()
   const promises: (() => Promise<void>)[] = []
+
+  for (let i = 0; i < cansels.length; i++) {
+    const c = cansels[i]
+    await c()
+  }
+  cansels = []
+
   let i = 0
   canvas.value.width = rect.width + 50
   getBuffer()
@@ -110,6 +118,7 @@ const updateVideoStart = async () => {
     promises.push(
       () =>
         new Promise((resolve) => {
+          cansels.push(() => resolve())
           const i = setTimeout(() => {
             clearTimeout(i)
             resolve()
@@ -295,14 +304,8 @@ watch(timeline.value, () => {
       width: 100%;
     "
   >
-    <div
-      :style="`margin-left: ${rootOffset + 4}px`"
-      class="flex pointer-events-none relative"
-    >
-      <template
-        v-for="(_, i) in videoArray"
-        :key="i"
-      >
+    <div :style="`margin-left: ${rootOffset + 4}px`" class="flex pointer-events-none relative">
+      <template v-for="(_, i) in videoArray" :key="i">
         <img
           :ref="
             (el) => {
@@ -314,11 +317,7 @@ watch(timeline.value, () => {
           class="video"
         >
       </template>
-      <canvas
-        ref="canvas"
-        class="absolute flex pointer-events-none"
-        height="40"
-      />
+      <canvas ref="canvas" class="absolute flex pointer-events-none" height="40" />
     </div>
   </div>
 </template>

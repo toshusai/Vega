@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { getScrollbarWidth } from '../../utils/getScrollbarWidth'
 const { timeline } = useTimeline()
 const el = ref<HTMLElement | null>(null)
 const pixScale = computed(() => {
-  const width = (el.value?.parentElement?.getBoundingClientRect().width || 1) - 100
+  const w = getScrollbarWidth()
+  const width = (el.value?.parentElement?.getBoundingClientRect().width || 1) + w
   const viewScale =
     (timeline.value.end - timeline.value.start) / timeline.value.length
   return width / timeline.value.scale / viewScale
@@ -13,7 +15,7 @@ const pixScale = computed(() => {
     ref="el"
     class="cursor"
     :style="{
-      left: 100 + (timeline.curent - timeline.start) * pixScale + 'px',
+      left: (timeline.curent - timeline.start) * pixScale + 'px',
     }"
   >
     <svg fill="red">
