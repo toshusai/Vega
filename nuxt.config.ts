@@ -15,6 +15,6 @@ export default defineNuxtConfig({
   components: {
     global: true,
     dirs: ['~/components', '~/components/panels']
-  },
-  vite: {}
+  }
+  // vite: {}
 })

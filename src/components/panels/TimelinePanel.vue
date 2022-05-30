@@ -183,10 +183,10 @@ const dummyStrip = ref<Strip | null>()
       </div>
     </div> -->
     <div ref="timelineBody" style="width: calc(100% ); position: relative; overflow: hidden">
-      <TimelineCursor />
+      <timeline-cursor />
       <div class="flex h-[20px]">
-        <div style="width: 100px" />
-        <TimeView style="width: calc(100% - 100px)" />
+        <div style="width: 100px; border-bottom: 1px solid white; border-right: 1px solid white" />
+        <time-view style="width: calc(100% - 100px)" />
       </div>
       <div class="flex h-full timeline-box">
         <div class="f-full w-[100px]" style="border-right: 1px solid var(--border-grey)">
@@ -205,19 +205,19 @@ const dummyStrip = ref<Strip | null>()
         </div>
         <div
           ref="timelineBox"
-          class="flex relative h-full overflow-hidden"
-          :style="`width: calc(100% - ${100}px);`"
+          class="flex relative h-full "
+          :style="`width: calc(100% - ${100}px); overflow-x: clip;`"
           @mouseup="unselect"
           @mousedown="mousedown"
           @mousemove="mousemove"
         >
-          <SelectRect v-if="timelineBox" :element="timelineBox" />
+          <select-rect v-if="timelineBox" :element="timelineBox" />
           <div v-for="(layer, i) in layers" :key="i" :strips="layer" class="layer" :style="`top: ${i * 50}px`" />
-          <PanelsStripUI v-for="(strip, ) in strips" :key="strip.id" :strip="strip.strip" />
-          <PanelsStripUI v-if="dummyStrip" key="dummy" :strip="dummyStrip" />
+          <panels-strip-ui v-for="(strip, ) in strips" :key="strip.id" :strip="strip.strip" />
+          <panels-strip-ui v-if="dummyStrip" key="dummy" :strip="dummyStrip" />
         </div>
       </div>
-      <ScaleScroll
+      <scale-scroll
         style="position: absolute; bottom: 0"
         :start="timeline.start / timeline.length"
         :end="timeline.end / timeline.length"

@@ -151,19 +151,17 @@ const c = computed(() => container.value as Container)
   >
     <div style="height: calc(100vh - 48px)">
       <div class="header-menu flex">
-        <ButtonMenu label="Vega" :items="[{ name: 'stats', onClick: toggleStats }]" />
-        <ButtonMenu
+        <button-menu label="Vega" :items="[{ name: 'stats', onClick: toggleStats }]" />
+        <button-menu
           label="File"
           :items="[
             { name: 'Open', onClick: openfile },
             { name: 'Save', onClick: downloadFile },
           ]"
         />
-
-        <!-- <div class="header-button">File</div> -->
       </div>
-      <ContainerUI :container="c" />
-      <OperationHIstoryPanel />
+      <container-ui :container="c" />
+      <panels-operation-history-panel />
     </div>
   </div>
   <!-- <div class="overlay">
