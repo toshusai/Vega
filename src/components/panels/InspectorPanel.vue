@@ -16,7 +16,7 @@ const effect = computed(() => {
 })
 
 const componentName = computed(() => {
-  return `${effect.value?.type}StripInspector`
+  return `${effect.value?.type.toLowerCase()}-strip-inspector`
 })
 
 </script>

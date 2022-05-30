@@ -7,13 +7,14 @@ import { VideoStripEffectObject } from '../core/VideoStripEffectObject'
 import { calcAnimationValue } from '../utils/calcAnimationValue'
 import { onDragStart } from '../utils/onDragStart'
 import { setAnimation } from '../utils/setAnimation'
+import { StripEffect } from '../core/StripEffect'
 
 const { timeline, updateEffect, setFocusStripId } = useTimeline()
 
 const props = defineProps<{ scale: number }>()
 
 const strip = computed(() => timeline.value.selectedStrips[0])
-const effect = computed(() => strip.value && strip.value.effects[0])
+const effect = computed(() => strip.value?.effects.length > 0 ? strip.value.effects[0] as StripEffect : null)
 const style = ref<CSSProperties>({})
 
 const focus = ref(false)
@@ -92,11 +93,11 @@ function updateStyle (): CSSProperties {
       effect.value.position.y
     )
 
-    const videoW = obj.video.videoWidth
-    const videoH = obj.video.videoHeight
+    const videoW = obj.video.videoWidth * effect.value.scale.x
+    const videoH = obj.video.videoHeight * effect.value.scale.y
 
     return {
-      left: (width / 2 + x - obj.video.videoWidth / 2) * props.scale + 'px',
+      left: (width / 2 + x - videoW / 2) * props.scale + 'px',
       bottom: (height / 2 + y - videoH / 2) * props.scale + 'px',
       width: videoW * props.scale + 'px',
       height: videoH * props.scale + 'px'
@@ -146,6 +147,7 @@ function drag (e: MouseEvent) {
   if (focus.value) { return }
 
   onDragStart(e, (delta) => {
+    if (!effect.value) { return }
     if (isText(effect.value) || isVideo(effect.value)) {
       const newE = {
         ...effect.value,

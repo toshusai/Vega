@@ -144,7 +144,7 @@ function changeEnd (e: number) {
       </div>
     </div>
     <div ref="timeArea" class="w-full h-full relative overflow-hidden select-none">
-      <KeyframeSelectRect />
+      <keyframe-select-rect />
       <div class="border-bottom-1 h-24 flex relative">
         <div
           v-for="i in times"
@@ -168,7 +168,7 @@ function changeEnd (e: number) {
           box-sizing: border-box;
         "
       >
-        <KeyframeMarker
+        <keyframe-marker
           v-for="(anim, j) in key[1]"
           :key="j"
           :animation="anim"
@@ -179,7 +179,7 @@ function changeEnd (e: number) {
         />
       </div>
       <div class="absolute bottom-0 w-full">
-        <ScaleScroll :start="start" :end="end" @start="changeStart" @end="changeEnd" />
+        <scale-scroll :start="start" :end="end" @start="changeStart" @end="changeEnd" />
       </div>
     </div>
   </div>
