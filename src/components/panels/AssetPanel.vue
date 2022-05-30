@@ -47,13 +47,13 @@ function dragover (e: DragEvent) {
 }
 
 function dragstart (e: MouseEvent, id: string) {
-  startDad(e, 'assets', id)
+  startDad(e, 'assets', id, `asset-list-item-${id}`)
 }
 </script>
 
 <template>
   <div class="h-full" @drop="drop" @dragover="dragover">
-    <div v-for="(asset, i) in assets.assets" :key="i" class="asset-list-item" @mousedown="e => dragstart(e, asset.id)">
+    <div v-for="(asset, i) in assets.assets" :id="`asset-list-item-${asset.id}`" :key="i" class="asset-list-item" @mousedown="e => dragstart(e, asset.id)">
       <component :is="asset.type.toLowerCase() + '-asset-list-item'" :asset="asset" />
     </div>
   </div>

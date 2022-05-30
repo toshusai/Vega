@@ -25,8 +25,12 @@ onMounted(() => {
       const start = timeline.value.start - zoomSize
       const end = timeline.value.end + zoomSize
       changeView(start, end)
+    } else {
+      scrollTop.value += e.deltaY
+      if (scrollTop.value < 0) {
+        scrollTop.value = 0
+      }
     }
-
     const scale = 0.01
     const start = timeline.value.start + e.deltaX * scale
     if (start < 0) {
@@ -91,6 +95,8 @@ const strips = computed<{ strip: Strip, id: string }[]>(() => {
 })
 
 const clickMouseBehaviour = ref(false)
+
+const scrollTop = ref(0)
 
 function mousedown () {
   clickMouseBehaviour.value = true
@@ -182,7 +188,7 @@ const dummyStrip = ref<Strip | null>()
             box-sizing: content-box;
             position: absolute;
             width: 100px;
-            top: ${i * 50}px;
+            top: ${i * 50 - scrollTop}px;
           `"
           />
         </div>
@@ -196,8 +202,8 @@ const dummyStrip = ref<Strip | null>()
         >
           <timeline-cursor />
           <select-rect v-if="timelineBox" :element="timelineBox" />
-          <div v-for="(layer, i) in layers" :key="i" :strips="layer" class="layer" :style="`top: ${i * 50}px`" />
-          <panels-strip-ui v-for="(strip, ) in strips" :key="strip.id" :strip="strip.strip" />
+          <div v-for="(layer, i) in layers" :key="i" :strips="layer" class="layer" :style="`top: ${i * 50 - scrollTop}px`" />
+          <panels-strip-ui v-for="(strip, ) in strips" :key="strip.id" :strip="strip.strip" :top="scrollTop" />
           <panels-strip-ui v-if="dummyStrip" key="dummy" :strip="dummyStrip" />
         </div>
       </div>

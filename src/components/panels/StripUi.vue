@@ -1,9 +1,18 @@
 <script setup lang="ts">
-import { CSSProperties } from 'vue'
+import { CSSProperties, PropType } from 'vue'
 import { Strip } from '~~/src/core/Strip'
 import undo from '~~/src/core/Undo'
 import { onDragStart } from '~~/src/utils/onDragStart'
-const props = defineProps<{ strip: Strip }>()
+const props = defineProps({
+  strip: {
+    type: Object as PropType<Strip>,
+    required: true
+  },
+  top: {
+    default: 0,
+    type: Number
+  }
+})
 
 const { timeline, moveStrip, selectStrip } = useTimeline()
 
@@ -44,7 +53,7 @@ const style = computed<CSSProperties>(() => {
   return {
     width: width + 'px',
     position: 'absolute',
-    top: props.strip.layer * layerHeight + 1 + 'px',
+    top: props.strip.layer * layerHeight + 1 - props.top + 'px',
     left: left + 'px'
   }
 })
@@ -239,7 +248,7 @@ function selectStripClick (strip: Strip) {
   background-color: var(--teal-300);
   height: 100%;
   cursor: ew-resize;
-  z-index: 1;
+  /* z-index: 1; */
   user-select: none;
 }
 </style>
