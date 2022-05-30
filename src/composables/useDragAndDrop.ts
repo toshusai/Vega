@@ -13,11 +13,13 @@ export default function () {
     }
   }
   const startDad = (dad: Ref<DD>) => {
-    return (e: MouseEvent, key: string, payload: string) => {
+    return (e: MouseEvent, key: string, payload: string, domId?:string) => {
       dad.value.key = key
       dad.value.payload = payload
-      const target = e.target as HTMLElement
+      const target = domId ? document.getElementById(domId) : e.target as HTMLElement
+      if (!target) { return }
       const tmp = target.cloneNode(true) as HTMLElement
+      tmp.style.opacity = '0.5'
       const wrap = document.createElement('div')
       wrap.style.position = 'absolute'
       wrap.style.pointerEvents = 'none'
