@@ -171,7 +171,7 @@ const isOpenSettingsModal = ref(false)
     </div>
   </div>
 
-  <modal v-model:is-open="isOpenSettingsModal" />
+  <v-modal v-model:is-open="isOpenSettingsModal" />
   <!-- <div class="overlay">
     <div class="modal">
       <button>OpenRecent</button>
