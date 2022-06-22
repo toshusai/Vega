@@ -16,6 +16,8 @@ const initialTimelineState: Timeline = {
   selectedStrips: [],
   selectedKeyframes: [],
   focusStripId: '',
+  previewTool: 'cursor',
+  timelineTool: 'cursor',
   isPlay: false,
   width: 1920,
   height: 1080,
@@ -311,6 +313,13 @@ export function useTimeline () {
       return (animations: Animation[]) => {
         state.value.selectedKeyframes = animations
       }
-    })(timeline)
+    })(timeline),
+
+    changeTimelineTool: ((state: Ref<Timeline>) => {
+      return (tool: 'cursor' | 'cut') => {
+        state.value.timelineTool = tool
+      }
+    }
+    )(timeline)
   }
 }

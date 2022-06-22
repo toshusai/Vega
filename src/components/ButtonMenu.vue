@@ -41,7 +41,7 @@ const el = ref<HTMLElement | null>(null)
 
 <template>
   <div ref="el" class="header-button">
-    <button @click="open">
+    <button class="px-16" @click="open">
       {{ label }}
     </button>
     <div
@@ -51,7 +51,7 @@ const el = ref<HTMLElement | null>(null)
       <button
         v-for="(item, i) in items"
         :key="i"
-        class="header-item px-16 cursor-pointer"
+        class="header-item"
         @click="
           (e) => {
             item.onClick();
@@ -69,16 +69,19 @@ const el = ref<HTMLElement | null>(null)
 .header-button {
   cursor: pointer;
   line-height: 24px;
-  padding: 0 12px;
+  user-select: none;
   position: relative;
 }
+
 .header-button:hover {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
 .header-item {
   width: 100%;
+  padding: 0 16px;
 }
+
 .header-item:hover {
   background-color: #333;
 }

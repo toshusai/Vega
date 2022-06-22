@@ -21,6 +21,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off',
     'vue/no-multiple-template-root': 'off',
     'import/no-mutable-exports': 'off',
+    'vue/no-v-model-argument': 'off',
     'no-new-func': 'off'
   }
 }
