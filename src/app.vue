@@ -6,6 +6,7 @@ import '~/assets/css/main.css'
 import undo from './core/Undo'
 import OperationHIstoryPanel from './components/panels/OperationHIstoryPanel.vue'
 import ButtonMenu from './components/ButtonMenu.vue'
+import Modal from './components/Modal.vue'
 
 const { container, setContainer } = useContainer()
 const { timeline, setTimeline } = useTimeline()
@@ -140,6 +141,8 @@ function projectFromJsonString (json: string) {
 }
 
 const c = computed(() => container.value as Container)
+
+const isOpenSettingsModal = ref(false)
 </script>
 
 <template>
@@ -159,11 +162,16 @@ const c = computed(() => container.value as Container)
             { name: 'Save', onClick: downloadFile },
           ]"
         />
+        <button @click="()=>isOpenSettingsModal = true">
+          Settings
+        </button>
       </div>
       <container-ui :container="c" />
       <panels-operation-history-panel />
     </div>
   </div>
+
+  <modal v-model:is-open="isOpenSettingsModal" />
   <!-- <div class="overlay">
     <div class="modal">
       <button>OpenRecent</button>
