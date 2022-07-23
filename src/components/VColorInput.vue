@@ -2,10 +2,10 @@
 import { Chrome } from '@ckpack/vue-color'
 
 const props = defineProps<{
-  value: number | string;
+  value: number | string
 }>()
 
-const emit = defineEmits<{(e: 'updateColor', value: string): void; }>()
+const emit = defineEmits<{(e: 'updateColor', value: string): void }>()
 
 function changeColor (c: { hex8: string }) {
   emit('updateColor', c.hex8)
@@ -16,7 +16,9 @@ const left = ref(0)
 const top = ref(0)
 const el = ref<HTMLElement | null>(null)
 function closePicker (e: MouseEvent, force = false) {
-  if (!force && el.value?.parentElement?.contains(e.target as HTMLElement)) { return }
+  if (!force && el.value?.parentElement?.contains(e.target as HTMLElement)) {
+    return
+  }
   isOpenPicker.value = false
   window.removeEventListener('pointerdown', closePicker)
 }
@@ -56,19 +58,19 @@ function changeColorByInputEvent (e: Event) {
 </script>
 
 <template>
-  <div class="flex w-full">
+  <div style="display: flex; width: 100%">
     <v-input-base
       v-bind="$attrs"
       :value="value"
       :invalid="invalid"
-      class="bg-transparent border-default border-2 rounded-4 pl-4 text-sm w-full"
       @input="changeColorByInputEvent"
     />
-    <div class="flex cursor-pointer relative">
+    <div style="display: flex; position: relative; cursor: pointer">
       <svg
         ref="el"
-        class="my-auto mx-4 rounded-4"
         style="
+          margin: auto 4px;
+          border-radius: 4px;
           border: 1px solid var(--border-grey);
           width: 16px;
           height: 16px;
@@ -85,10 +87,11 @@ function changeColorByInputEvent (e: Event) {
 
       <div
         v-if="isOpenPicker"
-        class="fixed z-10"
         :style="{
           left: `${left}px`,
           top: `${top}px`,
+          position: 'fixed',
+          zIndex: '10'
         }"
       >
         <chrome :model-value="colors" @update:model-value="changeColor" />

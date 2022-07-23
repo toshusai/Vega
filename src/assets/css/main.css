@@ -1,18 +1,27 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:root {
+    --text1: #fafafa;
+    --bg1: #111;
+    --bg2: #444;
+    font-size: 16px;
+}
 
+body {
+    font-size: 12px;
+}
 
-@layer utilities {
-    .border-bottom-1 {
-        border-bottom: 1px solid var(--border-grey);
-    }
+button {
+    border: none;
+    background: none;
+    color: var(--text1);
+}
 
-    .ml-2 {
-        margin-left: 2px;
-    }
-
-    .mb-2 {
-        margin-bottom: 2px;
-    }
+input {
+    border: 1px solid;
+    padding-left: 4px;
+    border-radius: 4px;
+    width: 100%;
+    background: none;
+    line-height: 1;
+    font-size: 12px;
+    color: var(--text1);
 }

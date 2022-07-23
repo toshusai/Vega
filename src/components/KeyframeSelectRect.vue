@@ -21,11 +21,15 @@ const selected = computed(() => {
 })
 
 onMounted(() => {
-  if (!el.value) { return }
+  if (!el.value) {
+    return
+  }
   const parent = el.value.parentElement as HTMLElement
 
   parent.addEventListener('mousedown', (e) => {
-    if (!selected.value) { return }
+    if (!selected.value) {
+      return
+    }
     stripElements.value = []
     selected.value?.effects.forEach((e) => {
       if (e.animations) {
@@ -43,8 +47,12 @@ onMounted(() => {
     startY.value = e.clientY - parentRect.top
   })
   window.addEventListener('mousemove', (e) => {
-    if (!isDraging.value) { return }
-    if (!selected.value) { return }
+    if (!isDraging.value) {
+      return
+    }
+    if (!selected.value) {
+      return
+    }
     const parentRect = parent.getBoundingClientRect()
     const cx = e.clientX - parentRect.left
     const cy = e.clientY - parentRect.top
@@ -54,7 +62,9 @@ onMounted(() => {
     height.value = Math.abs(cy - startY.value)
 
     const selfRect = el.value?.getBoundingClientRect()
-    if (!selfRect) { return }
+    if (!selfRect) {
+      return
+    }
 
     const newStripIds: string[] = []
     stripElements.value.forEach((el) => {
@@ -62,9 +72,9 @@ onMounted(() => {
       const rect = el.getBoundingClientRect()
       if (
         rect.left < selfRect.right &&
-                rect.right > selfRect.left &&
-                rect.top < selfRect.bottom &&
-                rect.bottom > selfRect.top
+        rect.right > selfRect.left &&
+        rect.top < selfRect.bottom &&
+        rect.bottom > selfRect.top
       ) {
         newStripIds.push(el.id)
       }
@@ -102,16 +112,17 @@ const style = computed(() => {
 </script>
 
 <template>
-  <div v-show="isDraging" ref="el" class="select-rect absolute" :style="style" />
+  <div v-show="isDraging" ref="el" class="select-rect" :style="style" />
 </template>
 
 <style scoped>
 .select-rect {
-    user-select: none;
-    background: rgba(96, 96, 255, 0.1);
-    border: 1px solid rgba(96, 96, 255, 0.2);
-    box-sizing: border-box;
-    pointer-events: none;
-    z-index: 3;
+  user-select: none;
+  position: absolute;
+  background: rgba(96, 96, 255, 0.1);
+  border: 1px solid rgba(96, 96, 255, 0.2);
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 3;
 }
 </style>

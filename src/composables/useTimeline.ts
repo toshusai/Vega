@@ -12,7 +12,7 @@ import { Strip } from '../core/Strip'
 import { AudioStripEffect } from '../core/AudioStripEffect'
 import { AudioStripEffectObject } from '../core/AudioStripEffectObject'
 
-const initialTimelineState: Timeline = {
+export const initialTimelineState: Timeline = {
   selectedStrips: [],
   selectedKeyframes: [],
   focusStripId: '',
@@ -135,10 +135,15 @@ function changeView (timeline: Ref<Timeline>) {
   }
 }
 
+const ONE_FRAME = 1 / 60
+
 function update (timeline: Ref<Timeline>) {
   return (time: number, jump = false) => {
     if (time < 0) { time = 0 }
     timeline.value.curent = time
+    if (jump) {
+      timeline.value.curent = Math.floor(time / ONE_FRAME) * ONE_FRAME
+    }
 
     for (let j = 0; j < timeline.value.strips.length; j++) {
       const strip = timeline.value.strips[j]
@@ -218,6 +223,12 @@ export const view: State = {
   camera: new THREE.OrthographicCamera(0, 0, 200, 200)
 }
 
+export function setTimeline (state: Ref<Timeline>) {
+  return (timeline: Timeline) => {
+    state.value = timeline
+  }
+}
+
 export function useTimeline () {
   const timeline = useState('timeline', () => initialTimelineState)
   const assets = useAssets()
@@ -266,12 +277,7 @@ export function useTimeline () {
     changeView: changeView(timeline),
     update: update(timeline),
     play: play(timeline),
-
-    setTimeline: ((state: Ref<Timeline>) => {
-      return (timeline: Timeline) => {
-        state.value = timeline
-      }
-    })(timeline),
+    setTimeline: setTimeline(timeline),
 
     getFisrtSelectedStrip: ((state:Ref<Timeline>) => {
       return () => {

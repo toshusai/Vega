@@ -1,9 +1,8 @@
 <script setup lang="ts">
-
 const { timeline, selectStrip } = useTimeline()
 
 const props = defineProps<{
-  element: HTMLElement ;
+  element: HTMLElement
 }>()
 
 const isDraging = ref(false)
@@ -34,7 +33,9 @@ onMounted(() => {
     startY.value = e.clientY - parentRect.top
   })
   window.addEventListener('mousemove', (e) => {
-    if (!isDraging.value) { return }
+    if (!isDraging.value) {
+      return
+    }
     const parentRect = props.element.getBoundingClientRect()
     const cx = e.clientX - parentRect.left
     const cy = e.clientY - parentRect.top
@@ -44,7 +45,9 @@ onMounted(() => {
     height.value = Math.abs(cy - startY.value)
 
     const selfRect = el.value?.getBoundingClientRect()
-    if (!selfRect) { return }
+    if (!selfRect) {
+      return
+    }
 
     const newStripIds: string[] = []
     stripElements.value.forEach((el) => {
@@ -60,9 +63,11 @@ onMounted(() => {
       }
     })
     // filter by newStripIds
-    const selectedStrips = timeline.value.strips.filter((strip) => {
-      return newStripIds.includes(`strip-${strip.id}`)
-    }).map(s => s.id)
+    const selectedStrips = timeline.value.strips
+      .filter((strip) => {
+        return newStripIds.includes(`strip-${strip.id}`)
+      })
+      .map(s => s.id)
 
     selectStrip(selectedStrips)
   })
@@ -87,12 +92,13 @@ const style = computed(() => {
 </script>
 
 <template>
-  <div v-show="isDraging" ref="el" class="select-rect absolute" :style="style" />
+  <div v-show="isDraging" ref="el" class="select-rect" :style="style" />
 </template>
 
 <style scoped>
 .select-rect {
   background: rgba(96, 96, 255, 0.1);
+  position: absolute;
   border: 1px solid rgba(96, 96, 255, 0.2);
   box-sizing: border-box;
   pointer-events: none;

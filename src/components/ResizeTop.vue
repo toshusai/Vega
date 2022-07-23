@@ -1,14 +1,18 @@
 <template>
-  <div
-    v-bind="$attrs"
-    class="resize-top absolute bg-background2 cursor-ns-resize w-full left-0 transition-all select-none"
-  />
+  <div v-bind="$attrs" class="resize-top" />
 </template>
 
 <style>
 .resize-top {
   top: -1px;
   height: 2px;
+  position: absolute;
+  left: 0;
+  transition-property: all;
+  width: 100%;
+  background: var(--bg2);
+  cursor: ns-resize;
+  user-select: none;
 }
 .resize-top:hover {
   top: -2px;

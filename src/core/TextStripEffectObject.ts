@@ -69,7 +69,9 @@ export class TextStripEffectObject extends EffectObject {
   }
 
   updateFont (itext: TextStripEffect) {
-    if (itext.size === this.prevSize && itext.text === this.prevText) { return }
+    if (itext.size === this.prevSize && itext.text === this.prevText) {
+      return
+    }
     const span = document.createElement('span')
     span.innerHTML = this.text
     span.style.fontFamily = itext.family
@@ -92,7 +94,9 @@ export class TextStripEffectObject extends EffectObject {
    * Draw text to canvas by ctx.fillText.
    */
   draw (itext: TextStripEffect) {
-    if (!this.ctx || !this.obj || !this.canvas) { return }
+    if (!this.ctx || !this.obj || !this.canvas) {
+      return
+    }
     this.updateFont(itext)
     // const font =
     // this.updateFont();
@@ -101,7 +105,13 @@ export class TextStripEffectObject extends EffectObject {
     this.mesureWidth = 0
     itext.text.split('\n').forEach((line, i) => {
       const metrics = this.ctx.measureText(line)
-      this.mesureWidth = Math.max(metrics.width + itext.characterSpace * (line.length - 1), this.mesureWidth)
+      if (!itext.characterSpace) {
+        itext.characterSpace = 0
+      }
+      this.mesureWidth = Math.max(
+        metrics.width + itext.characterSpace * (line.length - 1),
+        this.mesureWidth
+      )
     })
 
     const breakLineCount = itext.text.split('\n').length - 1
@@ -124,7 +134,10 @@ export class TextStripEffectObject extends EffectObject {
     this.ctx.lineWidth = itext.outlineWidth
 
     let left = this.canvas.width / 2 - this.mesureWidth / 2
-    let top = this.canvas.height / 2 + lineHeight / 2 - (lineHeight / 2) * breakLineCount
+    let top =
+      this.canvas.height / 2 +
+      lineHeight / 2 -
+      (lineHeight / 2) * breakLineCount
     for (let i = 0; i < itext.text.length; i++) {
       const char = itext.text[i]
       if (char === '\n') {
@@ -133,11 +146,7 @@ export class TextStripEffectObject extends EffectObject {
         continue
       }
       const w = this.ctx.measureText(char).width
-      this.ctx.strokeText(
-        char,
-        left,
-        top
-      )
+      this.ctx.strokeText(char, left, top)
       left += w + itext.characterSpace
     }
 
@@ -145,7 +154,10 @@ export class TextStripEffectObject extends EffectObject {
     this.ctx.shadowBlur = itext.shadowBlur
 
     left = this.canvas.width / 2 - this.mesureWidth / 2
-    top = this.canvas.height / 2 + lineHeight / 2 - (lineHeight / 2) * breakLineCount
+    top =
+      this.canvas.height / 2 +
+      lineHeight / 2 -
+      (lineHeight / 2) * breakLineCount
     for (let i = 0; i < itext.text.length; i++) {
       const char = itext.text[i]
       if (char === '\n') {
@@ -154,17 +166,19 @@ export class TextStripEffectObject extends EffectObject {
         continue
       }
       const w = this.ctx.measureText(char).width
-      this.ctx.fillText(
-        char,
-        left,
-        top
-      )
+      this.ctx.fillText(char, left, top)
+      // console.log(char, left, top, this.canvas.width, this.mesureWidth)
       left += w + itext.characterSpace
     }
     this.texture.needsUpdate = true
+    this.ctx.fillStyle = 'red'
   }
 
-  public async update (strip: Strip, itext: TextStripEffect, timeline: Timeline) {
+  public async update (
+    strip: Strip,
+    itext: TextStripEffect,
+    timeline: Timeline
+  ) {
     const time = timeline.curent
     const x = calcAnimationValue(
       itext.animations,

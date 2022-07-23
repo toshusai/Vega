@@ -2,11 +2,14 @@
 import { onDragStart } from '../utils/onDragStart'
 
 const props = defineProps<{
-  start: number;
-  end: number;
+  start: number
+  end: number
 }>()
 
-const emit = defineEmits<{(e: 'start', n: number): void; (e: 'end', n: number): void; }>()
+const emit = defineEmits<{
+  (e: 'start', n: number): void
+  (e: 'end', n: number): void
+}>()
 
 const el = ref<HTMLElement | null>(null)
 
@@ -29,9 +32,13 @@ function moveView (e: MouseEvent) {
   const width = el.value?.getBoundingClientRect().width || 0
   onDragStart(e, (d) => {
     const start = props.start + d.x / width
-    if (start < 0) { return }
+    if (start < 0) {
+      return
+    }
     const max = props.end + d.x / width
-    if (max > 1) { return }
+    if (max > 1) {
+      return
+    }
     emit('start', Math.max(start, 0))
     emit('end', Math.min(max, 1))
   })
@@ -42,28 +49,27 @@ function moveView (e: MouseEvent) {
   <div
     ref="el"
     style="height: 20px; width: 100%; position: relative; padding: 4px 0"
-    class="bg-[#111]"
-    @mousedown.stop="() => { }"
+    @mousedown.stop="() => {}"
   >
     <div
-      class="fill bg-[#222] top-[4px] absolute h-[12px]"
+      class="bg"
       :style="{
         left: `calc(${props.start * 100}% + 0px)`,
-        width: `calc(${(props.end - props.start) * 100}% - 0px)`,
+        width: `calc(${(props.end - props.start) * 100}% - 0px)`
       }"
       @mousedown="moveView"
     >
       <div
-        class="handle bg-[#333] rounded-8 h-[10px] w-[10px]"
+        class="handle"
         :style="{
-          left: `1px`,
+          left: `1px`
         }"
         @mousedown="moveStart"
       />
       <div
-        class="handle bg-[#333] rounded-8 h-[10px] w-[10px]"
+        class="handle"
         :style="{
-          right: `1px`,
+          right: `1px`
         }"
         @mousedown="moveEnd"
       />
@@ -72,8 +78,19 @@ function moveView (e: MouseEvent) {
 </template>
 
 <style scoped>
+.bg {
+  position: absolute;
+  background: #222;
+  top: 4px;
+  height: 12px;
+}
+
 .handle {
   position: absolute;
+  background: #333;
+  height: 10px;
+  width: 10px;
+
   top: 1px;
   cursor: pointer;
   box-sizing: border-box;

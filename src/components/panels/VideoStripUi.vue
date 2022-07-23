@@ -317,12 +317,17 @@ watch(timeline.value, () => {
           class="video"
         >
       </template>
-      <canvas ref="canvas" class="absolute flex pointer-events-none" height="40" />
+      <canvas ref="canvas" class="canvas" height="40" />
     </div>
   </div>
 </template>
 
 <style scoped>
+.canvas{
+  position: absolute;
+  display: flex;
+  pointer-events: none;
+}
 .video {
   height: 100%;
   max-width: none;

@@ -67,7 +67,9 @@ function drag (e: MouseEvent) {
 
   const parent = el.value?.parentElement
   const parentRect = parent?.getBoundingClientRect()
-  if (!parentRect) { return }
+  if (!parentRect) {
+    return
+  }
 
   const startProps = {
     start: props.strip.start,
@@ -78,7 +80,9 @@ function drag (e: MouseEvent) {
   let startStart = startProps.start
   let finalProps = { ...startProps }
 
-  let otherStrips = timeline.value.selectedStrips.filter(strip => strip.id !== props.strip.id)
+  let otherStrips = timeline.value.selectedStrips.filter(
+    strip => strip.id !== props.strip.id
+  )
   const otherStripsStart = otherStrips.map(strip => strip.start)
 
   clickEvent.value = true
@@ -96,7 +100,9 @@ function drag (e: MouseEvent) {
       }
       clickEvent.value = false
       const layerIndex = Math.floor((e.clientY - parentRect.top) / layerHeight)
-      if (layerIndex < 0) { return }
+      if (layerIndex < 0) {
+        return
+      }
       startStart += d.x / pixScale.value
       finalProps = {
         id: startProps.id,
@@ -155,7 +161,9 @@ function moveStart (e: MouseEvent) {
   const firstEnd = props.strip.start + props.strip.length
   onDragStart(e, (d) => {
     const start = props.strip.start + d.x / pixScale.value
-    if (start > firstEnd) { return }
+    if (start > firstEnd) {
+      return
+    }
     moveStrip(
       props.strip.id,
       start,
@@ -169,7 +177,9 @@ function moveEnd (e: MouseEvent) {
   e.stopPropagation()
   onDragStart(e, (d) => {
     const length = props.strip.length + d.x / pixScale.value
-    if (length < 0) { return }
+    if (length < 0) {
+      return
+    }
     moveStrip(props.strip.id, props.strip.start, length)
   })
 }
@@ -191,9 +201,7 @@ function getComponentNameFromStrip (strip: Strip) {
 
 function selectStripClick (strip: Strip) {
   if (keyboard.value.shift) {
-    selectStrip(
-      timeline.value.selectedStrips.map(s => s.id).concat([strip.id])
-    )
+    selectStrip(timeline.value.selectedStrips.map(s => s.id).concat([strip.id]))
   } else {
     selectStrip([strip.id])
   }
@@ -207,20 +215,28 @@ function selectStripClick (strip: Strip) {
     :style="style"
     class="strip"
     :class="
-      timeline.selectedStrips.find((x) => x.id === props.strip.id)
+      timeline.selectedStrips.find(x => x.id === props.strip.id)
         ? 'strip-selected'
         : ''
     "
     @mousedown="drag"
   >
+    <component
+      :is="getComponentNameFromStrip(props.strip)"
+      :strip="props.strip"
+    />
     <div class="handle" @mousedown="moveStart" />
-    <component :is="getComponentNameFromStrip(props.strip)" :strip="props.strip" />
     <div class="handle" style="right: 0" @mousedown="moveEnd" />
     <div
-      class="absolute -right-[4px] -top-[4px] h-[49px]"
-      style="background-color: rgba(0, 0, 0, 0.5)"
+      style="
+        background-color: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        right: -4px;
+        top: -4px;
+        height: 49px;
+      "
       :style="{
-        width: hiddenWidth + 'px',
+        width: hiddenWidth + 'px'
       }"
     />
   </div>

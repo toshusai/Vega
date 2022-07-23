@@ -19,7 +19,9 @@ const keys = ref(new Map<string, Animation[]>())
 
 const animationIdEffectIdMap = ref(new Map<string, StripEffect>())
 
-const times = computed(() => [...Array(Math.floor(maxTime.value))].map((_, i) => i))
+const times = computed(() =>
+  [...Array(Math.floor(maxTime.value))].map((_, i) => i)
+)
 const start = ref(0)
 const end = ref(1)
 
@@ -31,7 +33,9 @@ function update () {
         if (!keys.value.has(animation.key)) {
           keys.value.set(animation.key, [])
         }
-        animationIdEffectIdMap.value.set(animation.id, { ...effect as StripEffect })
+        animationIdEffectIdMap.value.set(animation.id, {
+          ...(effect as StripEffect)
+        })
         keys.value.get(animation.key)?.push(animation)
       })
     }
@@ -49,21 +53,27 @@ function update () {
 
 const timeArea = ref<HTMLDivElement | null>(null)
 const pixPerSec = computed(() => {
-  if (!strip.value) { return 1 }
+  if (!strip.value) {
+    return 1
+  }
   const rect = timeArea.value?.getBoundingClientRect()
   const width = rect?.width || 0
   return width / strip.value.length / (end.value - start.value)
 })
 
 const startOffset = computed(() => {
-  if (!strip.value) { return 0 }
+  if (!strip.value) {
+    return 0
+  }
   const rect = timeArea.value?.getBoundingClientRect()
   const width = rect?.width || 0
-  return -width * (start.value) / (end.value - start.value)
+  return (-width * start.value) / (end.value - start.value)
 })
 
 const maxTime = computed(() => {
-  if (!strip.value) { return 0 }
+  if (!strip.value) {
+    return 0
+  }
   return strip.value.length
 })
 
@@ -81,7 +91,9 @@ watch(
 const el = ref<HTMLElement | null>(null)
 onMounted(() => {
   el.value?.addEventListener('keydown', (e) => {
-    if (!strip.value) { return }
+    if (!strip.value) {
+      return
+    }
     if (e.key === 'x') {
       strip.value.effects.filter((effect) => {
         if ('animations' in effect) {
@@ -93,7 +105,9 @@ onMounted(() => {
               }
             })
 
-            if (!strip.value) { return }
+            if (!strip.value) {
+              return
+            }
             updateEffect(strip.value.id, {
               ...effect,
               animations: newAnimationIds
@@ -113,58 +127,89 @@ function changeStart (s: number) {
 function changeEnd (e: number) {
   end.value = e
 }
-
 </script>
 
 <template>
-  <div ref="el" class="flex h-full">
-    <div class="h-full border-r-[1px] border-default">
-      <div class="border-bottom-1 h-24">
+  <div ref="el" style="display: flex; height: 100%">
+    <div style="height: 100%; border-right: solid 1px white">
+      <div style="border-bottom: 1px solid; height: 24px">
         Properties
       </div>
-      <div style="width: 150px; height: 100%">
+      <div style="width: 200px; height: 100%">
         <div
           v-for="(key, i) in keys"
           :key="i"
-          class="flex overflow-hidden whitespace-nowrap"
           style="
+            display: flex;
+            overflow: hidden;
+            height: 24px;
+            white-space: nowrap;
             box-sizing: border-box;
             border-bottom: 1px solid var(--border-grey);
           "
         >
-          <div class="mr-4">
-            {{ key[0] }} :
+          <div style="margin: auto 4px;">
+            {{ key[0] }}:
           </div>
           <v-input-base
-            style="margin: auto"
+            style="margin: 2px 4px 2px auto"
             :value="calcAnimationValue(key[1], timeline.curent - strip!.start, key[0], 0)"
             readonly
           />
         </div>
       </div>
     </div>
-    <div ref="timeArea" class="w-full h-full relative overflow-hidden select-none">
+    <div
+      ref="timeArea"
+      style="
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        user-select: none;
+      "
+    >
       <keyframe-select-rect />
-      <div class="border-bottom-1 h-24 flex relative">
+      <div style="display: flex; position: relative; height: 24px; border-bottom: 1px solid;">
         <div
           v-for="i in times"
           :key="i"
-          class="absolute border-l-[1px] border-default text-xs h-24 flex"
           :style="{ left: `${startOffset + i * pixPerSec}px` }"
+          style="
+            display: flex;
+            position: absolute;
+            font-size: 0.75rem;
+            line-height: 1rem;
+            height: 24px;
+            border-left: 1px solid var(--bg2);
+          "
         >
-          <div class="mt-auto ml-2 mb-2">
+          <div style="margin: auto 0 2px 2px">
             {{ i }}
           </div>
         </div>
       </div>
       <div
+        v-for="i in times"
+        :key="i"
+        :style="{ left: `${startOffset + i * pixPerSec}px` }"
+        style="
+            display: flex;
+            position: absolute;
+            height: 100%;
+            border-left: 1px solid var(--bg2);
+          "
+      />
+
+      <div
         v-for="(key, i) in keys"
         :key="i"
-        class="flex relative"
         style="
-          height: 25px;
+          dislplay: flex;
+          position: relative;
+          height: 24px;
           width: 100%;
-          border-bottom: 1px solid var(--border-grey);
+          border-bottom: 1px solid var(--bg2);
           box-sizing: border-box;
         "
       >
@@ -178,12 +223,16 @@ function changeEnd (e: number) {
           :strip-id="strip?.id || ''"
         />
       </div>
-      <div class="absolute bottom-0 w-full">
-        <scale-scroll :start="start" :end="end" @start="changeStart" @end="changeEnd" />
+      <div style="position: absolute; bottom: 0; width: 100%">
+        <scale-scroll
+          :start="start"
+          :end="end"
+          @start="changeStart"
+          @end="changeEnd"
+        />
       </div>
     </div>
   </div>
 </template>
 
-<style>
-</style>
+<style></style>

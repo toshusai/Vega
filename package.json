@@ -13,10 +13,8 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@charcoal-ui/tailwind-config": "1.0.1-alpha.1",
     "@nuxtjs/eslint-config-typescript": "^10.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
-    "@nuxtjs/tailwindcss": "^5.0.4",
     "@types/stats.js": "^0.17.0",
     "@types/three": "^0.139.0",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
@@ -26,7 +24,7 @@
     "eslint-plugin-nuxt": "^3.0.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^9.0.1",
-    "nuxt": "^3.0.0-rc.3",
+    "nuxt": "^3.0.0-rc.6",
     "postcss-custom-properties": "^12.1.7",
     "prettier": "^2.5.1",
     "typescript": "^4.7.2",

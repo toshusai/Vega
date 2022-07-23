@@ -30,15 +30,23 @@ const effectObj = computed(() => {
 })
 
 function drawCanvas () {
-  if (!canvas.value) { return }
+  if (!canvas.value) {
+    return
+  }
   const ctx = canvas.value?.getContext('2d')
-  if (!ctx) { return }
-  if (!effectObj.value) { return }
+  if (!ctx) {
+    return
+  }
+  if (!effectObj.value) {
+    return
+  }
   const srcCanvas = effectObj.value.canvas
   const srcCtx = srcCanvas.getContext('2d')
   // canvas.value.width = srcCanvas.width;
   // canvas.value.height = srcCanvas.height;
-  if (!srcCtx) { return }
+  if (!srcCtx) {
+    return
+  }
   const mw = effectObj.value.mesureWidth
   const mh = effectObj.value.mesureHeight
   const rate = mw / mh
@@ -89,16 +97,21 @@ const markerSize = 12
   <div
     v-if="textEffect"
     ref="el"
-    style="height: 100%; display: flex; overflow: hidden; padding: 0 12px"
-    class="relative"
+    style="
+      height: 100%;
+      display: flex;
+      overflow: hidden;
+      padding: 0 12px;
+      position: relative;
+    "
   >
     <div style="overflow: hidden">
       <canvas
         ref="canvas"
-        class="video absolute"
+        class="video"
         :style="{
           left:
-            (overLeft < 0 ? (overLeft < -50 ? 62 : 12 - overLeft) : 12) + 'px',
+            (overLeft < 0 ? (overLeft < -50 ? 62 : 12 - overLeft) : 12) + 'px'
         }"
       />
       <!-- {{ animations.length }} -->
@@ -107,8 +120,12 @@ const markerSize = 12
       <svg
         v-for="(anim, i) in textEffect.animations"
         :key="i"
-        class="absolute"
-        style="fill: orange; stroke: white; stroke-width: 2px"
+        style="
+          fill: orange;
+          stroke: white;
+          stroke-width: 2px;
+          position: absolute;
+        "
         :style="`width: ${markerSize}px; height: ${markerSize}px; left: ${
           anim.time * pixScale -
           4 -
@@ -129,5 +146,6 @@ const markerSize = 12
 .video {
   height: 100%;
   pointer-events: none;
+  position: absolute;
 }
 </style>

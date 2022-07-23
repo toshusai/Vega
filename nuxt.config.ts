@@ -4,17 +4,8 @@ import { defineNuxtConfig } from 'nuxt'
 export default defineNuxtConfig({
   srcDir: './src',
   ssr: false,
-  modules: ['@nuxtjs/tailwindcss'],
-  tailwindcss: {
-    cssPath: './src/assets/css/tailwind.css',
-    exposeConfig: false,
-    config: {},
-    injectPosition: 0,
-    viewer: true
-  },
   components: {
     global: true,
     dirs: ['~/components', '~/components/panels']
   }
-  // vite: {}
 })

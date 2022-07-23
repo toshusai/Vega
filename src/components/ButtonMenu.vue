@@ -2,8 +2,8 @@
 import type { PropType } from 'vue'
 
 interface Item {
-  name: string;
-  onClick: () => void;
+  name: string
+  onClick: () => void
 }
 
 defineProps({
@@ -41,21 +41,18 @@ const el = ref<HTMLElement | null>(null)
 
 <template>
   <div ref="el" class="header-button">
-    <button class="px-16" @click="open">
+    <button style="padding: 0 16px" @click="open">
       {{ label }}
     </button>
-    <div
-      v-if="show"
-      class="absolute top-24 left-0 bg-background1 border-default border-2 box-border z-10"
-    >
+    <div v-if="show" class="menu">
       <button
         v-for="(item, i) in items"
         :key="i"
         class="header-item"
         @click="
-          (e) => {
-            item.onClick();
-            close(e, true);
+          e => {
+            item.onClick()
+            close(e, true)
           }
         "
       >
@@ -66,6 +63,15 @@ const el = ref<HTMLElement | null>(null)
 </template>
 
 <style scoped>
+.menu {
+  position: absolute;
+  top: 24px;
+  left: 0;
+  background-color: var(--bg1);
+  border: 2px;
+  box-sizing: border-box;
+  z-index: 10;
+}
 .header-button {
   cursor: pointer;
   line-height: 24px;
