@@ -19,17 +19,23 @@ const { update } = useUpdate()
 let stats: Stats | null = null
 
 function showStat () {
-  if (!stats) { return }
+  if (!stats) {
+    return
+  }
   stats.dom.style.visibility = 'visible'
 }
 
 function hideStats () {
-  if (!stats) { return }
+  if (!stats) {
+    return
+  }
   stats.dom.style.visibility = 'hidden'
 }
 
 function toggleStats () {
-  if (!stats) { return }
+  if (!stats) {
+    return
+  }
   if (stats.dom.style.visibility === 'hidden') {
     showStat()
   } else {
@@ -97,9 +103,13 @@ function openfile () {
   fileInput.accept = '.json'
   fileInput.click()
   fileInput.onchange = () => {
-    if (!fileInput.files) { return }
+    if (!fileInput.files) {
+      return
+    }
     const file = fileInput.files[0]
-    if (!file) { return }
+    if (!file) {
+      return
+    }
     const reader = new FileReader()
     reader.onload = () => {
       if (typeof reader.result === 'string') {
@@ -116,9 +126,7 @@ function openfile () {
 function downloadFile () {
   const project = projectToJsonString()
   const a = document.createElement('a')
-  a.href =
-    'data:text/json;charset=utf-8,' +
-    encodeURIComponent(project)
+  a.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(project)
   a.download = 'project.json'
   a.click()
 }
@@ -149,20 +157,23 @@ const isOpenSettingsModal = ref(false)
   <div
     class="root text-white bg-background1"
     :style="{
-      display: container.align === 'horizontal' ? 'flex' : 'block',
+      display: container.align === 'horizontal' ? 'flex' : 'block'
     }"
   >
     <div style="height: calc(100vh - 48px)">
-      <div class="header-menu flex">
-        <button-menu label="Vega" :items="[{ name: 'stats', onClick: toggleStats }]" />
+      <div class="header-menu">
+        <button-menu
+          label="Vega"
+          :items="[{ name: 'stats', onClick: toggleStats }]"
+        />
         <button-menu
           label="File"
           :items="[
             { name: 'Open', onClick: openfile },
-            { name: 'Save', onClick: downloadFile },
+            { name: 'Save', onClick: downloadFile }
           ]"
         />
-        <button @click="()=>isOpenSettingsModal = true">
+        <button @click="() => (isOpenSettingsModal = true)">
           Settings
         </button>
       </div>
@@ -180,6 +191,10 @@ const isOpenSettingsModal = ref(false)
 </template>
 
 <style>
+body {
+  background: var(--bg1);
+  color: var(--text1);
+}
 .overlay {
   position: absolute;
   top: 0;
@@ -193,6 +208,7 @@ const isOpenSettingsModal = ref(false)
 }
 
 .header-menu {
+  display: flex;
   height: 24px;
   border-bottom: 1px solid var(--border-grey);
   box-sizing: border-box;

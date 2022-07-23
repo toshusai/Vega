@@ -2,10 +2,10 @@
 import { onDragStart } from '../utils/onDragStart'
 
 const props = defineProps<{
-  value: number | string;
+  value: number | string
 }>()
 
-const emit = defineEmits<{(e: 'input', value: number): void; }>()
+const emit = defineEmits<{(e: 'input', value: number): void }>()
 
 function pointerdown (e: MouseEvent) {
   onDragStart(e, (delta, e) => {
@@ -17,12 +17,8 @@ function pointerdown (e: MouseEvent) {
 </script>
 
 <template>
-  <div class="flex w-full">
-    <input
-      v-bind="$attrs"
-      :value="value"
-      class="bg-transparent border-default border-2 rounded-4 pl-4 text-sm w-full"
-    >
+  <div style="width: 100%; display: flex">
+    <input v-bind="$attrs" :value="value">
   </div>
 </template>
 

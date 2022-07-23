@@ -8,7 +8,8 @@ import Cursor from './Cursor.vue'
 import TimelineCursor from './TimelineCursor.vue'
 import { Strip } from '~~/src/core/Strip'
 import { Timeline } from '~~/src/core/Timeline'
-const { timeline, selectStrip, changeView, play, update, changeTimelineTool } = useTimeline()
+const { timeline, selectStrip, changeView, play, update, changeTimelineTool } =
+  useTimeline()
 
 const { addUpdate } = useUpdate()
 
@@ -19,7 +20,9 @@ const { dad } = useDragAndDrop()
 const el = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
-  if (!el.value) { return }
+  if (!el.value) {
+    return
+  }
   el.value.addEventListener('wheel', (e) => {
     if (e.ctrlKey) {
       const zoomSize = e.deltaY * 0.01
@@ -86,7 +89,7 @@ const layers = computed(() => {
 /**
  * BAD: 渡すStripのwatchを有効にするためにuuidをつける
  */
-const strips = computed<{ strip: Strip, id: string }[]>(() => {
+const strips = computed<{ strip: Strip; id: string }[]>(() => {
   return timeline.value.strips.map((s) => {
     return {
       strip: s as Strip,
@@ -104,7 +107,9 @@ function mousedown () {
 }
 
 function mousemove (e: MouseEvent) {
-  if (!timelineBox.value) { return }
+  if (!timelineBox.value) {
+    return
+  }
   clickMouseBehaviour.value = false
   const rect = timelineBox.value.getBoundingClientRect()
   const visibleSec = timeline.value.end - timeline.value.start
@@ -137,7 +142,9 @@ const timelineBox = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   timelineBox.value?.addEventListener('scroll', () => {
-    if (!leftBox.value) { return }
+    if (!leftBox.value) {
+      return
+    }
 
     leftBox.value.scrollTop = timelineBox.value?.scrollTop || 0
   })
@@ -177,17 +184,31 @@ function changeTool (tool: 'cursor' | 'cut') {
         />
       </div>
     </div> -->
-    <div ref="timelineBody" style="width: calc(100% ); position: relative; overflow: hidden">
-      <div class="flex h-[20px]">
-        <div style="width: 100px; border-bottom: 1px solid white; border-right: 1px solid white" />
+    <div
+      ref="timelineBody"
+      style="width: calc(100%); position: relative; overflow: hidden"
+    >
+      <div style="display: flex; height: 20px">
+        <div
+          style="
+            width: 100px;
+            border-bottom: 1px solid white;
+            border-right: 1px solid white;
+          "
+        />
         <time-view style="width: calc(100% - 100px)" />
       </div>
-      <div class="flex h-full timeline-box">
-        <div class="h-full w-[30px]" style="border-right: 1px solid var(--border-grey);">
-          <div class="w-[30px] h-[30px] flex">
+      <div class="timeline-box">
+        <div
+          style="
+            border-right: 1px solid var(--border-grey);
+            height: 100%;
+            width: 30px;
+          "
+        >
+          <div style="width: 30px; height: 30px; display: flex">
             <svg
-              class="m-auto cursor-pointer"
-              style="width:20px;height:20px"
+              style="width: 20px; height: 20px; margin: auto; cursor: pointer"
               viewBox="0 0 24 24"
               @click="() => changeTool('cursor')"
             >
@@ -199,8 +220,7 @@ function changeTool (tool: 'cursor' | 'cut') {
           </div>
           <div class="w-[30px] h-[30px] flex">
             <svg
-              class="m-auto cursor-pointer"
-              style="width:20px;height:20px"
+              style="width: 20px; height: 20px; margin: auto; cursor: pointer"
               viewBox="0 0 24 24"
               @click="() => changeTool('cut')"
             >
@@ -213,10 +233,7 @@ function changeTool (tool: 'cursor' | 'cut') {
         </div>
 
         <div
-          class="
-          h-full
-          w-[70px]"
-          style="border-right: 1px solid var(--border-grey)"
+          style="border-right: 1px solid var(--border-grey); height: 100%; width: 70px"
         >
           <div
             v-for="(layer, i) in layers"
@@ -233,8 +250,7 @@ function changeTool (tool: 'cursor' | 'cut') {
         </div>
         <div
           ref="timelineBox"
-          class="flex relative h-full "
-          :style="`width: calc(100% - ${100}px); overflow-x: clip;`"
+          :style="`width: calc(100% - ${100}px); overflow-x: clip; display: flex; position: relative; height: 100%`"
           @mouseup="unselect"
           @mousedown="mousedown"
           @mousemove="mousemove"
@@ -248,18 +264,25 @@ function changeTool (tool: 'cursor' | 'cut') {
             class="layer"
             :style="`top: ${i * 50 - scrollTop}px`"
           />
-          <panels-strip-ui v-for="(strip, ) in strips" :key="strip.id" :strip="strip.strip" :top="scrollTop" />
+          <panels-strip-ui
+            v-for="strip in strips"
+            :key="strip.id"
+            :strip="strip.strip"
+            :top="scrollTop"
+          />
           <panels-strip-ui v-if="dummyStrip" key="dummy" :strip="dummyStrip" />
         </div>
       </div>
       <div class="flex">
-        <div class="w-[100px] min-w-[100px]" style="border-right: 1px solid var(--border-grey)" />
+        <div
+          style="border-right: 1px solid var(--border-grey); width: 100px; min-width: 100px;"
+        />
         <scale-scroll
           style="position: relative; bottom: 0"
           :start="timeline.start / timeline.length"
           :end="timeline.end / timeline.length"
-          @start="(n) => changeView(n * timeline.length, timeline.end)"
-          @end="(n) => changeView(timeline.start, n * timeline.length)"
+          @start="n => changeView(n * timeline.length, timeline.end)"
+          @end="n => changeView(timeline.start, n * timeline.length)"
         />
       </div>
     </div>

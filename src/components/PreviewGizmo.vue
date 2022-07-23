@@ -209,7 +209,7 @@ function drag (e: MouseEvent) {
 </script>
 
 <template>
-  <div class="gizmo text-brand absolute cursor-pointer" :style="style" @click="click" @pointerdown="drag">
+  <div class="gizmo" :style="style" @click="click" @pointerdown="drag">
     <textarea
       v-if="isTextEffect"
       ref="textarea"
@@ -225,8 +225,9 @@ function drag (e: MouseEvent) {
 .gizmo {
   border: 1px solid red;
   user-select: none;
-  /* box-sizing: border-box; */
-  /* box-sizing: content-box; */
+  cursor: pointer;
+  position: absolute;
+  color: var(--brand);
 }
 
 .text-gizmo {

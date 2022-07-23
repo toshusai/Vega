@@ -10,9 +10,9 @@ const { assets } = useAssets()
 
 const imageEls = ref<HTMLImageElement[]>([])
 
-const audioEffect = computed(() => props.strip.effects.find(
-  e => e.type === 'Audio'
-) as AudioStripEffect)
+const audioEffect = computed(
+  () => props.strip.effects.find(e => e.type === 'Audio') as AudioStripEffect
+)
 
 const audioSrc = computed(() => {
   return (
@@ -50,12 +50,20 @@ const overLeft = computed(() => {
 })
 
 function draw () {
-  if (!ctx.value) { return }
+  if (!ctx.value) {
+    return
+  }
   const rect = canvas.value?.parentElement?.getBoundingClientRect()
   const elrect = el.value?.parentElement?.getBoundingClientRect()
-  if (!rect) { return }
-  if (!elrect) { return }
-  if (!audioBuffer) { return }
+  if (!rect) {
+    return
+  }
+  if (!elrect) {
+    return
+  }
+  if (!audioBuffer) {
+    return
+  }
   const lengthPerSec = audioBuffer.sampleRate
   const data = audioBuffer.getChannelData(0)
 
@@ -98,7 +106,9 @@ function draw () {
   ctx.value.fillStyle = 'orange'
 
   const canvasRect = canvas.value?.getBoundingClientRect()
-  if (!canvasRect) { return }
+  if (!canvasRect) {
+    return
+  }
   // const leftOffset = Math.floor(canvasRect.left - rect.left);
 
   for (let i = 0; i < sumData.length; i++) {
@@ -115,16 +125,24 @@ function getBuffer () {
     draw()
     return
   }
-  if (load) { return }
+  if (load) {
+    return
+  }
   load = true
   fetch(audioSrc.value)
     .then(response => response.arrayBuffer())
     .then(async (arrayBuffer) => {
       await waitForFirstInterfact()
-      if (!audioCtx) { return }
-      if (!ctx.value) { return }
+      if (!audioCtx) {
+        return
+      }
+      if (!ctx.value) {
+        return
+      }
       const rect = el.value?.parentElement?.getBoundingClientRect()
-      if (!rect) { return }
+      if (!rect) {
+        return
+      }
       // Ref: https://css-tricks.com/making-an-audio-waveform-visualizer-with-vanilla-javascript/
       audioCtx.decodeAudioData(arrayBuffer).then((_audioBuffer) => {
         audioBuffer = _audioBuffer
@@ -134,18 +152,28 @@ function getBuffer () {
 }
 
 onMounted(() => {
-  if (!effectObj.value) { return }
-  if (!canvas.value) { return }
+  if (!effectObj.value) {
+    return
+  }
+  if (!canvas.value) {
+    return
+  }
   ctx.value = canvas.value.getContext('2d')
   updateVideoStart()
 })
 
 const rootOffset = ref(0)
 const updateVideoStart = () => {
-  if (!el.value) { return }
+  if (!el.value) {
+    return
+  }
   const rect = el.value.getBoundingClientRect()
-  if (!rect) { return }
-  if (!canvas.value) { return }
+  if (!rect) {
+    return
+  }
+  if (!canvas.value) {
+    return
+  }
   canvas.value.width = rect.width
   getBuffer()
 }
@@ -173,8 +201,9 @@ watch(timeline.value, () => {
     "
   >
     <div
-      :style="`margin-left: ${rootOffset + 4}px`"
-      class="flex pointer-events-none"
+      :style="`margin-left: ${
+        rootOffset + 4
+      }px; display: flex; pointer-events: none;`"
     >
       <canvas ref="canvas" :height="videoHeight" class="video" />
     </div>

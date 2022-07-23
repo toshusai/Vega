@@ -61,7 +61,7 @@ function hasKeyframe (key:string) {
 
 <template>
   <div v-if="effect && isText(effect)">
-    <div class="p-4">
+    <div style="padding: 4px;">
       <div>TextEffect</div>
       <inspector-input
         label="x"

@@ -33,7 +33,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits<{(e: 'input', value: number): void; }>()
+const emit = defineEmits<{(e: 'input', value: number): void }>()
 
 function pointerdown (e: MouseEvent) {
   onDragStart(e, (delta, e) => {
@@ -66,17 +66,17 @@ function inputByInputEvent (e: Event) {
 </script>
 
 <template>
-  <div class="flex w-full">
+  <div style="display: flex; width: 100%">
     <input
       v-bind="$attrs"
       :value="view ? view(value) : value"
-      class="bg-transparent border-default border-2 rounded-4 pl-4 text-sm w-full"
       @input="inputByInputEvent"
     >
-    <div class="flex cursor-ew-resize">
+    <div style="display: flex; cursor: ew-resize">
       <svg
-        class="my-auto mx-4 rounded-4"
         style="
+          margin: auto 4px;
+          border-radius: 4px;
           border: 1px solid var(--border-grey);
           width: 16px;
           height: 16px;
@@ -85,7 +85,10 @@ function inputByInputEvent (e: Event) {
         viewBox="0 0 24 24"
         @pointerdown="pointerdown"
       >
-        <path fill="currentColor" d="M8,14V18L2,12L8,6V10H16V6L22,12L16,18V14H8Z" />
+        <path
+          fill="currentColor"
+          d="M8,14V18L2,12L8,6V10H16V6L22,12L16,18V14H8Z"
+        />
       </svg>
     </div>
   </div>

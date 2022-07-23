@@ -7,7 +7,7 @@ const { selectStrip } = useTimeline()
 </script>
 
 <template>
-  <div class="layer border-default" @click="() => selectStrip([])">
+  <div class="layer" @click="() => selectStrip([])">
     <!-- <PanelsStripUI v-for="(strip, i) in props.strips" :key="i" :strip="strip" /> -->
   </div>
 </template>

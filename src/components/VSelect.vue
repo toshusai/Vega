@@ -1,9 +1,17 @@
 <script setup lang="ts"></script>
 <template>
-  <select
-    v-bind="$attrs"
-    class="bg-transparent border-default border-2 rounded-4 pl-4 text-sm w-full"
-  >
+  <select v-bind="$attrs" class="select">
     <slot />
   </select>
 </template>
+
+<style scoped>
+.select {
+  padding-left: 1rem;
+  background-color: transparent;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  width: 100%;
+  border-width: 2px;
+}
+</style>

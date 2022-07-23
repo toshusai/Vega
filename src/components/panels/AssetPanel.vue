@@ -52,7 +52,7 @@ function dragstart (e: MouseEvent, id: string) {
 </script>
 
 <template>
-  <div class="h-full" @drop="drop" @dragover="dragover">
+  <div style="height: 100%" @drop="drop" @dragover="dragover">
     <div v-for="(asset, i) in assets.assets" :id="`asset-list-item-${asset.id}`" :key="i" class="asset-list-item" @mousedown="e => dragstart(e, asset.id)">
       <component :is="asset.type.toLowerCase() + '-asset-list-item'" :asset="asset" />
     </div>

@@ -11,5 +11,7 @@ export function getScrollbarWidth () {
   outer.appendChild(inner)
 
   // Calculating difference between container's full width and the child width
-  return (outer.offsetWidth - inner.offsetWidth)
+  const x = (outer.offsetWidth - inner.offsetWidth)
+  outer.remove()
+  return x
 }

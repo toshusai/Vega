@@ -39,7 +39,9 @@ export class VideoStripEffectObject {
     this.canvas.height = this.video.videoHeight
 
     this.ctx = this.canvas.getContext('2d')
-    if (!this.ctx) { throw new Error('context2d error') }
+    if (!this.ctx) {
+      throw new Error('context2d error')
+    }
     this.ctx.fillStyle = '#ffffff'
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
 
@@ -77,8 +79,12 @@ export class VideoStripEffectObject {
   public updateAsset (src: string) {
     this.loaded = false
     const onLoad = () => {
-      if (!this.canvas) { return }
-      if (this.loaded) { return }
+      if (!this.canvas) {
+        return
+      }
+      if (this.loaded) {
+        return
+      }
       this.videoDuration = this.video.duration
       this.canvas.width = this.video.videoWidth
       this.canvas.height = this.video.videoHeight
@@ -104,8 +110,12 @@ export class VideoStripEffectObject {
     isPlay: boolean,
     jump: boolean
   ) {
-    if (this.tex) { this.tex.needsUpdate = true }
-    if (this.ctx && this.video) { this.ctx.drawImage(this.video, 0, 0) }
+    if (this.tex) {
+      this.tex.needsUpdate = true
+    }
+    if (this.ctx && this.video) {
+      this.ctx.drawImage(this.video, 0, 0)
+    }
 
     this.obj.position.copy(
       new Vector3(effect.position.x, effect.position.y, strip.layer)
@@ -116,6 +126,9 @@ export class VideoStripEffectObject {
       return
     }
 
+    if (!effect.scale) {
+      effect.scale = { x: 1, y: 1, z: 1 }
+    }
     this.obj.scale.set(effect.scale.x, effect.scale.y, 1)
 
     if (strip.start < time && time < strip.start + strip.length) {
