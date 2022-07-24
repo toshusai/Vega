@@ -8,8 +8,11 @@ import Cursor from './Cursor.vue'
 import TimelineCursor from './TimelineCursor.vue'
 import { Strip } from '~~/src/core/Strip'
 import { Timeline } from '~~/src/core/Timeline'
-const { timeline, selectStrip, changeView, play, update, changeTimelineTool } =
+import { VideoStripEffect } from '~~/src/core/VideoStripEffect'
+const { timeline, addStrip, removeStrips, selectStrip, changeView, play, update, changeTimelineTool } =
   useTimeline()
+
+const { assets } = useAssets()
 
 const { addUpdate } = useUpdate()
 
@@ -126,12 +129,44 @@ function mousemove (e: MouseEvent) {
   }
 }
 
-function unselect () {
+function mouseup () {
   if (clickMouseBehaviour.value) {
     selectStrip([])
   }
   clickMouseBehaviour.value = false
+  if (!dummyStrip.value) {
+    return
+  }
 
+  if (dad.value.key === 'assets') {
+    const assetId = dad.value.payload
+    if (!assetId) {
+      dummyStrip.value = null
+      return
+    }
+    const asset = assets.value.assets.find(a => a.id === assetId)
+    if (asset?.type === 'Video') {
+      const ve: VideoStripEffect = {
+        type: 'Video',
+        videoAssetId: assetId,
+        animations: [],
+        id: uuid(),
+        position: { x: 0, y: 0, z: 0 },
+        scale: { x: 1, y: 1, z: 1 },
+        start: 0,
+        volume: 1
+      }
+      const newStrip: Strip = {
+        effects: [ve],
+        layer: 0,
+        start: dummyStrip.value.start,
+        length: dummyStrip.value.length,
+        id: uuid()
+      }
+
+      addStrip(newStrip)
+    }
+  }
   dummyStrip.value = null
 }
 
@@ -148,6 +183,16 @@ onMounted(() => {
 
     leftBox.value.scrollTop = timelineBox.value?.scrollTop || 0
   })
+  el.value?.addEventListener('mouseenter', () => {
+    el.value?.focus()
+  })
+  el.value?.addEventListener('keydown', (e) => {
+    if (e.key === 'x') {
+      if (timeline.value.selectedStrips.length > 0) {
+        removeStrips(timeline.value.selectedStrips.map(s => s.id))
+      }
+    }
+  })
 })
 
 const scrollbarWidth = ref(getScrollbarWidth())
@@ -160,7 +205,7 @@ function changeTool (tool: 'cursor' | 'cut') {
 </script>
 
 <template>
-  <div ref="el" class="timeline-root">
+  <div ref="el" class="timeline-root" tabindex="0">
     <!-- <div style="width: 100px; border-right: 1px solid var(--border-grey)">
       <div
         style="
@@ -198,7 +243,7 @@ function changeTool (tool: 'cursor' | 'cut') {
         />
         <time-view style="width: calc(100% - 100px)" />
       </div>
-      <div class="timeline-box">
+      <div class="timeline-box" tabindex="0">
         <div
           style="
             border-right: 1px solid var(--border-grey);
@@ -233,7 +278,11 @@ function changeTool (tool: 'cursor' | 'cut') {
         </div>
 
         <div
-          style="border-right: 1px solid var(--border-grey); height: 100%; width: 70px"
+          style="
+            border-right: 1px solid var(--border-grey);
+            height: 100%;
+            width: 70px;
+          "
         >
           <div
             v-for="(layer, i) in layers"
@@ -251,7 +300,7 @@ function changeTool (tool: 'cursor' | 'cut') {
         <div
           ref="timelineBox"
           :style="`width: calc(100% - ${100}px); overflow-x: clip; display: flex; position: relative; height: 100%`"
-          @mouseup="unselect"
+          @mouseup="mouseup"
           @mousedown="mousedown"
           @mousemove="mousemove"
         >
@@ -275,7 +324,11 @@ function changeTool (tool: 'cursor' | 'cut') {
       </div>
       <div class="flex">
         <div
-          style="border-right: 1px solid var(--border-grey); width: 100px; min-width: 100px;"
+          style="
+            border-right: 1px solid var(--border-grey);
+            width: 100px;
+            min-width: 100px;
+          "
         />
         <scale-scroll
           style="position: relative; bottom: 0"
@@ -296,6 +349,7 @@ function changeTool (tool: 'cursor' | 'cut') {
   height: 100%;
   position: relative;
   user-select: none;
+  outline: none;
 }
 
 .timeline-box {

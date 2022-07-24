@@ -16,7 +16,7 @@ onMounted(() => {
 <template>
   <div style="padding: 4px">
     <div style="display: flex; width: 32px">
-      <video ref="videoEl" class="video m-auto" :src="asset.path" />
+      <!-- <video ref="videoEl" class="video m-auto" :src="asset.path" /> -->
     </div>
   </div>
   <div style="margin: auto 0">

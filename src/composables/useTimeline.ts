@@ -118,7 +118,9 @@ function findStripById (id: string, timeline: Timeline) {
 function moveStrip (timeline: Ref<Timeline>) {
   return (id: string, start: number, length: number, layer?: number) => {
     const strip = findStripById(id, timeline.value)
-    if (!strip) { return }
+    if (!strip) {
+      return
+    }
     strip.start = start
     strip.length = length
     strip.layer = layer ?? strip.layer
@@ -127,9 +129,15 @@ function moveStrip (timeline: Ref<Timeline>) {
 
 function changeView (timeline: Ref<Timeline>) {
   return (start: number, end: number) => {
-    if (start < 0) { start = 0 }
-    if (end > timeline.value.length) { end = timeline.value.length }
-    if (end - start < 1) { end = start + 1 }
+    if (start < 0) {
+      start = 0
+    }
+    if (end > timeline.value.length) {
+      end = timeline.value.length
+    }
+    if (end - start < 1) {
+      end = start + 1
+    }
     timeline.value.start = start
     timeline.value.end = end
   }
@@ -139,7 +147,9 @@ const ONE_FRAME = 1 / 60
 
 function update (timeline: Ref<Timeline>) {
   return (time: number, jump = false) => {
-    if (time < 0) { time = 0 }
+    if (time < 0) {
+      time = 0
+    }
     timeline.value.curent = time
     if (jump) {
       timeline.value.curent = Math.floor(time / ONE_FRAME) * ONE_FRAME
@@ -273,13 +283,25 @@ export function useTimeline () {
 
   return {
     timeline: readonly(timeline),
+    addStrip: ((state: Ref<Timeline>) => {
+      return (strip: Strip) => {
+        state.value.strips.push(strip)
+      }
+    })(timeline),
+    removeStrips: ((state: Ref<Timeline>) => {
+      return (ids: string[]) => {
+        state.value.strips = state.value.strips.filter(
+          s => !ids.includes(s.id)
+        )
+      }
+    })(timeline),
     moveStrip: moveStrip(timeline),
     changeView: changeView(timeline),
     update: update(timeline),
     play: play(timeline),
     setTimeline: setTimeline(timeline),
 
-    getFisrtSelectedStrip: ((state:Ref<Timeline>) => {
+    getFisrtSelectedStrip: ((state: Ref<Timeline>) => {
       return () => {
         if (state.value.selectedStrips.length > 0) {
           return state.value.selectedStrips[0]
@@ -308,9 +330,13 @@ export function useTimeline () {
     updateEffect: ((state: Ref<Timeline>) => {
       return <T extends StripEffect>(stripId: string, effect: T) => {
         const strip = findStripById(stripId, state.value)
-        if (!strip) { return }
+        if (!strip) {
+          return
+        }
         const index = strip.effects.findIndex(e => e.id === effect.id)
-        if (index === -1) { return }
+        if (index === -1) {
+          return
+        }
         strip.effects[index] = effect
       }
     })(timeline),
@@ -325,7 +351,6 @@ export function useTimeline () {
       return (tool: 'cursor' | 'cut') => {
         state.value.timelineTool = tool
       }
-    }
-    )(timeline)
+    })(timeline)
   }
 }
