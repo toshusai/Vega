@@ -3,6 +3,7 @@ import { audioCtx, waitForFirstInterfact } from '~~/src/core/Global'
 import { Strip } from '~~/src/core/Strip'
 import { VideoStripEffect } from '~~/src/core/VideoStripEffect'
 import { VideoStripEffectObject } from '~~/src/core/VideoStripEffectObject'
+import { getCache, setCache, drawCtx, drawCanvas, getThumbnailVideo } from '~~/src/utils/thumbnailCache'
 
 const props = defineProps<{ strip: Strip }>()
 const { timeline } = useTimeline()
@@ -12,9 +13,9 @@ const imageEls = ref<HTMLImageElement[]>([])
 
 const videoArray = ref<number[]>([])
 
-const videoEffect = computed(() => props.strip.effects.find(
-  e => e.type === 'Video'
-) as VideoStripEffect)
+const videoEffect = computed(
+  () => props.strip.effects.find(e => e.type === 'Video') as VideoStripEffect
+)
 
 const videoSrc = computed(() => {
   return (
@@ -43,10 +44,16 @@ const effectObj = computed(() => {
 const videoWidth = ref(0)
 
 function updateVideoArray () {
-  if (!el.value) { return }
+  if (!el.value) {
+    return
+  }
   const parentRect = el.value.getBoundingClientRect()
-  if (!effectObj.value) { return }
-  if (effectObj.value.video.videoHeight === 0) { return }
+  if (!effectObj.value) {
+    return
+  }
+  if (effectObj.value.video.videoHeight === 0) {
+    return
+  }
   const ratio =
     effectObj.value.video.videoHeight / effectObj.value.video.videoWidth
 
@@ -62,44 +69,33 @@ function updateVideoArray () {
 }
 
 const videoHeight = 40
-let drawCanvas: HTMLCanvasElement | null = null
-let drawCtx: CanvasRenderingContext2D | null = null
-
-let thumbnailVideo: HTMLVideoElement | null = null
-
-const thumbnailCache = new Map<string, string>()
-
-function setCache (time: number, url: string) {
-  thumbnailCache.set(time.toFixed(1), url)
-}
-function getCache (time: number) {
-  return thumbnailCache.get(time.toFixed(1))
-}
-
+const thumbnailVideo = getThumbnailVideo(props.strip.id)
 onMounted(() => {
-  drawCanvas = document.createElement('canvas')
-  drawCtx = drawCanvas.getContext('2d')
   ctx.value = canvas.value?.getContext('2d') || null
-  thumbnailVideo = document.createElement('video')
   thumbnailVideo.src = videoSrc.value
-  document.body.appendChild(thumbnailVideo)
-  if (!effectObj.value) { return }
+  if (!effectObj.value) {
+    return
+  }
   effectObj.value.video.addEventListener('loadedmetadata', () => {
     updateVideoArray()
   })
 })
 
 const rootOffset = ref(0)
-let cansels: (() => Promise<void>)[] = []
+let cansels: (() => void)[] = []
 const updateVideoStart = async () => {
-  if (!el.value) { return }
-  if (!canvas.value) { return }
+  if (!el.value) {
+    return
+  }
+  if (!canvas.value) {
+    return
+  }
   const rect = el.value.getBoundingClientRect()
   const promises: (() => Promise<void>)[] = []
 
   for (let i = 0; i < cansels.length; i++) {
     const c = cansels[i]
-    await c()
+    c()
   }
   cansels = []
 
@@ -107,8 +103,12 @@ const updateVideoStart = async () => {
   canvas.value.width = rect.width + 50
   getBuffer()
   imageEls.value.forEach((imageEl) => {
-    if (!imageEl) { return }
-    if (!thumbnailVideo) { return }
+    if (!imageEl) {
+      return
+    }
+    if (!thumbnailVideo) {
+      return
+    }
     const rect = imageEl.getBoundingClientRect()
     const startPx = 8 + videoWidth.value * i // rect.left - parentRect.left;
     if (i === 0) {
@@ -117,7 +117,7 @@ const updateVideoStart = async () => {
 
     promises.push(
       () =>
-        new Promise((resolve) => {
+        new Promise<void>((resolve) => {
           cansels.push(() => resolve())
           const i = setTimeout(() => {
             clearTimeout(i)
@@ -125,11 +125,27 @@ const updateVideoStart = async () => {
           }, 1000)
           let currentTime = 0
 
-          if (!thumbnailVideo) { return resolve() }
+          if (!thumbnailVideo) {
+            return resolve()
+          }
           thumbnailVideo.onseeked = () => {
-            if (!thumbnailVideo) { return resolve() }
-            if (!imageEl) { return resolve() }
-            if (!drawCanvas) { return resolve() }
+            const cache = getCache(currentTime)
+            if (cache) {
+              imageEl.src = cache
+              resolve()
+              return
+            }
+            if (!thumbnailVideo) {
+              return resolve()
+            }
+            if (!imageEl) {
+              return resolve()
+            }
+            if (!drawCanvas) {
+              return resolve()
+            }
+            drawCanvas.width = videoWidth.value
+            drawCanvas.height = videoHeight
             drawCtx?.drawImage(
               thumbnailVideo,
               0,
@@ -161,11 +177,9 @@ const updateVideoStart = async () => {
 
           const cache = getCache(currentTime)
           if (cache) {
-            // console.log("HIT", currentTime.toFixed(1));
             imageEl.src = cache
             resolve()
           } else {
-            // console.log("notfound", currentTime.toFixed(1));
             thumbnailVideo.currentTime = currentTime
           }
         })
@@ -187,16 +201,24 @@ function getBuffer () {
     draw()
     return
   }
-  if (loading) { return }
+  if (loading) {
+    return
+  }
   loading = true
   fetch(videoSrc.value)
     .then(response => response.arrayBuffer())
     .then(async (arrayBuffer) => {
       await waitForFirstInterfact()
-      if (!audioCtx) { return }
-      if (!drawCtx) { return }
+      if (!audioCtx) {
+        return
+      }
+      if (!drawCtx) {
+        return
+      }
       const rect = el.value?.parentElement?.getBoundingClientRect()
-      if (!rect) { return }
+      if (!rect) {
+        return
+      }
       // Ref: https://css-tricks.com/making-an-audio-waveform-visualizer-with-vanilla-javascript/
       audioCtx.decodeAudioData(arrayBuffer).then((_audioBuffer) => {
         audioBuffer = _audioBuffer
@@ -212,12 +234,20 @@ const overLeft = computed(() => {
 })
 function draw () {
   // console.log("ok");
-  if (!ctx.value) { return }
+  if (!ctx.value) {
+    return
+  }
   const rect = canvas.value?.parentElement?.getBoundingClientRect()
   const elrect = el.value?.parentElement?.getBoundingClientRect()
-  if (!rect) { return }
-  if (!elrect) { return }
-  if (!audioBuffer) { return }
+  if (!rect) {
+    return
+  }
+  if (!elrect) {
+    return
+  }
+  if (!audioBuffer) {
+    return
+  }
   const lengthPerSec = audioBuffer.sampleRate
   const data = audioBuffer.getChannelData(0)
 
@@ -268,7 +298,9 @@ function draw () {
   ctx.value.fillStyle = 'darkorange'
 
   const canvasRect = canvas.value?.getBoundingClientRect()
-  if (!canvasRect) { return }
+  if (!canvasRect) {
+    return
+  }
   // const leftOffset = Math.floor(canvasRect.left - rect.left);
 
   const scale = 1
@@ -304,26 +336,29 @@ watch(timeline.value, () => {
       width: 100%;
     "
   >
-    <div :style="`margin-left: ${rootOffset + 4}px`" class="flex pointer-events-none relative">
-      <template v-for="(_, i) in videoArray" :key="i">
-        <img
-          :ref="
-            (el) => {
-              imageEls[i] = el as HTMLImageElement;
-            }
-          "
-          :width="videoWidth"
-          :height="videoHeight"
-          class="video"
-        >
-      </template>
+    <div
+      :style="`margin-left: ${rootOffset + 4}px`"
+      style="display: flex; pointer-events: none; position: relative;"
+    >
+      <img
+        v-for="(_, i) in videoArray"
+        :key="i"
+        :ref="
+          (el) => {
+            imageEls[i] = el as HTMLImageElement;
+          }
+        "
+        :width="videoWidth"
+        :height="videoHeight"
+        class="video"
+      >
       <canvas ref="canvas" class="canvas" height="40" />
     </div>
   </div>
 </template>
 
 <style scoped>
-.canvas{
+.canvas {
   position: absolute;
   display: flex;
   pointer-events: none;

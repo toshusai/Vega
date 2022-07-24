@@ -13,6 +13,7 @@ button {
     border: none;
     background: none;
     color: var(--text1);
+    cursor: pointer;
 }
 
 input {

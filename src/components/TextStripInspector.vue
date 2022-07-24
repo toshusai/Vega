@@ -84,6 +84,7 @@ function hasKeyframe (key:string) {
         label="fontSize"
         :value="effect.size"
         @input="(n) => changeText(n, 'size')"
+        @key-frame="() => addKeyframe('size', effect?.size)"
       />
       <inspector-color-input label="color" :value="effect.color" @update-color="(e) => changeText(e, 'color')" />
       <inspector-string-input

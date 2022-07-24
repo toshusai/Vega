@@ -249,6 +249,7 @@ function selectStripClick (strip: Strip) {
   box-sizing: border-box;
   cursor: pointer;
   height: 48px;
+  overflow: hidden;
 }
 
 .strip-selected {

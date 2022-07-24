@@ -180,6 +180,8 @@ export class TextStripEffectObject extends EffectObject {
     timeline: Timeline
   ) {
     const time = timeline.curent
+
+    // keyframe calculation
     const x = calcAnimationValue(
       itext.animations,
       time - strip.start,
@@ -192,6 +194,7 @@ export class TextStripEffectObject extends EffectObject {
       'position.y',
       itext.position.y
     )
+
     this.obj.position.set(x, y, strip.layer)
 
     if (strip.start < time && time < strip.start + strip.length) {
