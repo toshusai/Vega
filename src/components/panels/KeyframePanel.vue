@@ -7,6 +7,7 @@ import { calcAnimationValue } from '~~/src/utils/calcAnimationValue'
 import { StripEffect } from '~~/src/core/StripEffect'
 
 const { timeline, updateEffect } = useTimeline()
+const { addEventListener } = useContainer()
 
 const strip = computed(() => {
   if (timeline.value.selectedStrips.length > 0) {
@@ -52,23 +53,39 @@ function update () {
 }
 
 const timeArea = ref<HTMLDivElement | null>(null)
-const pixPerSec = computed(() => {
+const pixPerSec = ref(0)
+function updatePixPerSec () {
   if (!strip.value) {
-    return 1
+    pixPerSec.value = 1
+    return
   }
   const rect = timeArea.value?.getBoundingClientRect()
   const width = rect?.width || 0
-  return width / strip.value.length / (end.value - start.value)
+  pixPerSec.value = width / strip.value.length / (end.value - start.value)
+}
+watch(start, () => {
+  updatePixPerSec()
+  updateStartOffset()
+})
+watch(end, () => {
+  updatePixPerSec()
+  updateStartOffset()
+})
+watch(strip, () => {
+  updatePixPerSec()
+  updateStartOffset()
 })
 
-const startOffset = computed(() => {
+const startOffset = ref(0)
+function updateStartOffset () {
   if (!strip.value) {
-    return 0
+    startOffset.value = 0
+    return
   }
   const rect = timeArea.value?.getBoundingClientRect()
   const width = rect?.width || 0
-  return (-width * start.value) / (end.value - start.value)
-})
+  startOffset.value = (-width * start.value) / (end.value - start.value)
+}
 
 const maxTime = computed(() => {
   if (!strip.value) {
@@ -90,6 +107,10 @@ watch(
 
 const el = ref<HTMLElement | null>(null)
 onMounted(() => {
+  addEventListener('resize', () => {
+    updatePixPerSec()
+    updateStartOffset()
+  })
   el.value?.addEventListener('keydown', (e) => {
     if (!strip.value) {
       return
@@ -148,7 +169,7 @@ function changeEnd (e: number) {
             border-bottom: 1px solid var(--border-grey);
           "
         >
-          <div style="margin: auto 4px;">
+          <div style="margin: auto 4px">
             {{ key[0] }}:
           </div>
           <v-input-base
@@ -170,7 +191,14 @@ function changeEnd (e: number) {
       "
     >
       <keyframe-select-rect />
-      <div style="display: flex; position: relative; height: 24px; border-bottom: 1px solid;">
+      <div
+        style="
+          display: flex;
+          position: relative;
+          height: 24px;
+          border-bottom: 1px solid;
+        "
+      >
         <div
           v-for="i in times"
           :key="i"
@@ -194,11 +222,11 @@ function changeEnd (e: number) {
         :key="i"
         :style="{ left: `${startOffset + i * pixPerSec}px` }"
         style="
-            display: flex;
-            position: absolute;
-            height: 100%;
-            border-left: 1px solid var(--bg2);
-          "
+          display: flex;
+          position: absolute;
+          height: 100%;
+          border-left: 1px solid var(--bg2);
+        "
       />
 
       <div
