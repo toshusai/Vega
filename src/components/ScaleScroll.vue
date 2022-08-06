@@ -43,6 +43,13 @@ function moveView (e: MouseEvent) {
     emit('end', Math.min(max, 1))
   })
 }
+
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    emit('start', props.start + Number.EPSILON)
+    emit('end', props.end + Number.EPSILON)
+  })
+})
 </script>
 
 <template>

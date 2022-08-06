@@ -9,8 +9,16 @@ import TimelineCursor from './TimelineCursor.vue'
 import { Strip } from '~~/src/core/Strip'
 import { Timeline } from '~~/src/core/Timeline'
 import { VideoStripEffect } from '~~/src/core/VideoStripEffect'
-const { timeline, addStrip, removeStrips, selectStrip, changeView, play, update, changeTimelineTool } =
-  useTimeline()
+const {
+  timeline,
+  addStrip,
+  removeStrips,
+  selectStrip,
+  changeView,
+  play,
+  update,
+  changeTimelineTool
+} = useTimeline()
 
 const { assets } = useAssets()
 
@@ -36,6 +44,8 @@ onMounted(() => {
       scrollTop.value += e.deltaY
       if (scrollTop.value < 0) {
         scrollTop.value = 0
+      } else if (scrollTop.value > 50 * (layers.value.length - 1)) {
+        scrollTop.value = 50 * (layers.value.length - 1)
       }
     }
     const scale = 0.01
@@ -67,17 +77,25 @@ onMounted(() => {
     }
   })
 
-  addEventListener('resize', () => {
-    // 強制的に更新するためEPSILONを足す
+  const forceResize = () => {
+    // EPSILON for force update
     changeView(
       timeline.value.start + Number.EPSILON,
       timeline.value.end + Number.EPSILON
+    )
+  }
+
+  addEventListener('resize', forceResize)
+  window.addEventListener('resize', () => {
+    changeView(
+      timeline.value.start + Number.EPSILON,
+      timeline.value.end + Number.EPSILON * 5
     )
   })
 })
 
 const layers = computed(() => {
-  const l: Strip[][] = [[], [], [], []]
+  const l: Strip[][] = []
   for (const strip of timeline.value.strips) {
     if (l.length <= strip.layer) {
       for (let i = l.length; i <= strip.layer; i++) {
@@ -86,6 +104,7 @@ const layers = computed(() => {
     }
     l[strip.layer].push(strip as Strip)
   }
+  l.push([])
   return l
 })
 

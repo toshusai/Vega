@@ -93,23 +93,36 @@ export class TextStripEffectObject extends EffectObject {
   /**
    * Draw text to canvas by ctx.fillText.
    */
-  draw (itext: TextStripEffect) {
+  draw (itext: TextStripEffect, strip: Strip, current: number) {
     if (!this.ctx || !this.obj || !this.canvas) {
       return
     }
+
+    // keyframe calculation
+    let characterSpace = calcAnimationValue(
+      itext.animations,
+      current - strip.start,
+      'characterSpace',
+      itext.characterSpace
+    )
+    const size = calcAnimationValue(
+      itext.animations,
+      current - strip.start,
+      'size',
+      itext.size
+    )
+
     this.updateFont(itext)
-    // const font =
-    // this.updateFont();
-    this.ctx.font = `${itext.style} ${itext.size}px ${itext.family}`
+    this.ctx.font = `${itext.style} ${size}px ${itext.family}`
 
     this.mesureWidth = 0
     itext.text.split('\n').forEach((line, i) => {
       const metrics = this.ctx.measureText(line)
-      if (!itext.characterSpace) {
-        itext.characterSpace = 0
+      if (!characterSpace) {
+        characterSpace = 0
       }
       this.mesureWidth = Math.max(
-        metrics.width + itext.characterSpace * (line.length - 1),
+        metrics.width + characterSpace * (line.length - 1),
         this.mesureWidth
       )
     })
@@ -147,7 +160,7 @@ export class TextStripEffectObject extends EffectObject {
       }
       const w = this.ctx.measureText(char).width
       this.ctx.strokeText(char, left, top)
-      left += w + itext.characterSpace
+      left += w + characterSpace
     }
 
     this.ctx.fillStyle = itext.color
@@ -167,8 +180,7 @@ export class TextStripEffectObject extends EffectObject {
       }
       const w = this.ctx.measureText(char).width
       this.ctx.fillText(char, left, top)
-      // console.log(char, left, top, this.canvas.width, this.mesureWidth)
-      left += w + itext.characterSpace
+      left += w + characterSpace
     }
     this.texture.needsUpdate = true
     this.ctx.fillStyle = 'red'
@@ -199,7 +211,7 @@ export class TextStripEffectObject extends EffectObject {
 
     if (strip.start < time && time < strip.start + strip.length) {
       this.obj.visible = true
-      this.draw(itext)
+      this.draw(itext, strip, time)
     } else {
       this.obj.visible = false
     }

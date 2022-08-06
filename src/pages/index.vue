@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import Stats from 'stats.js'
 
-import { Container } from './core/Container'
+import { Container } from '../core/Container'
 import '~/assets/css/main.css'
-import undo from './core/Undo'
-import OperationHIstoryPanel from './components/panels/OperationHIstoryPanel.vue'
-import ButtonMenu from './components/ButtonMenu.vue'
+import undo from '../core/Undo'
+import OperationHIstoryPanel from '../components/panels/OperationHistoryPanel.vue'
+import ButtonMenu from '../components/ButtonMenu.vue'
 import Modal from './components/Modal.vue'
 
 const { container, setContainer } = useContainer()

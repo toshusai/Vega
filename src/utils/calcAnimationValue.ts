@@ -10,7 +10,7 @@ export function findBetween (
   let prev = -1
   for (let i = 0; i < animations.length; i++) {
     if (animations[i].key !== key) { continue }
-    if (animations[i].time < time) {
+    if (animations[i].time <= time) {
       prev = i
     }
   }
@@ -20,10 +20,12 @@ export function findBetween (
   let next = -1
   for (let i = animations.length - 1; i >= 0; i--) {
     if (animations[i].key !== key) { continue }
-    if (animations[i].time > time) {
+    if (animations[i].time >= time) {
       next = i
     }
   }
+
+  // if (prev !== 1 && next !== -1 && prev >= next) { return [null, null] }
 
   const nextAnimation = next !== -1 ? animations[next] : null
   return [prevAnimation, nextAnimation]
@@ -46,6 +48,9 @@ export function calcAnimationValue (
 
   let v = defaultValue
   if (prev && next) {
+    if (prev === next) {
+      return prev?.value
+    }
     v =
       prev.value +
       animFuncMap[animFunc](normalize(prev.time, next.time, time)) *

@@ -26,7 +26,7 @@ const times = computed(() =>
 const start = ref(0)
 const end = ref(1)
 
-function update () {
+function updateKeys () {
   keys.value.clear()
   strip.value?.effects.forEach((effect) => {
     if ('animations' in effect) {
@@ -63,18 +63,12 @@ function updatePixPerSec () {
   const width = rect?.width || 0
   pixPerSec.value = width / strip.value.length / (end.value - start.value)
 }
-watch(start, () => {
+
+function resize () {
   updatePixPerSec()
   updateStartOffset()
-})
-watch(end, () => {
-  updatePixPerSec()
-  updateStartOffset()
-})
-watch(strip, () => {
-  updatePixPerSec()
-  updateStartOffset()
-})
+}
+onUpdated(resize)
 
 const startOffset = ref(0)
 function updateStartOffset () {
@@ -95,22 +89,20 @@ const maxTime = computed(() => {
 })
 
 watch(strip, () => {
-  update()
+  updateKeys()
 })
 
 watch(
   () => [...(strip.value?.effects || [])],
   () => {
-    update()
+    updateKeys()
   }
 )
 
 const el = ref<HTMLElement | null>(null)
 onMounted(() => {
-  addEventListener('resize', () => {
-    updatePixPerSec()
-    updateStartOffset()
-  })
+  addEventListener('resize', resize)
+  window.addEventListener('resize', resize)
   el.value?.addEventListener('keydown', (e) => {
     if (!strip.value) {
       return
