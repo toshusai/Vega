@@ -17,7 +17,10 @@ module.exports = {
   },
   plugins: ['vue', '@typescript-eslint'],
   rules: {
+    'vue/multi-word-component-names': 'off',
     'no-unused-vars': 'off',
+    'func-call-spacing': 'off',
+    'no-use-before-define': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     'vue/no-multiple-template-root': 'off',
     'import/no-mutable-exports': 'off',

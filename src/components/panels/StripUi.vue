@@ -99,7 +99,7 @@ function drag (e: MouseEvent) {
         selectStripClick(props.strip)
       }
       clickEvent.value = false
-      const layerIndex = Math.floor((e.clientY - parentRect.top) / layerHeight)
+      const layerIndex = Math.floor((e.clientY - parentRect.top + props.top) / layerHeight)
       if (layerIndex < 0) {
         return
       }
