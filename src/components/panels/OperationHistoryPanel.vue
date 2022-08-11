@@ -27,10 +27,10 @@ function toggleShowAll () {
 <template>
   <div
     class="history-panel"
-    :style="showAll ? `height: 50%;` : ``"
-    style="display: flex; height: 24px"
+    :style="showAll ? `height: 50%;` : `height: 24px`"
+    style="display: flex;"
   >
-    <div v-if="showAll" style="overflow-y: scroll" class="w-full">
+    <div v-if="showAll" style="overflow-y: scroll; width: 100%">
       <div v-for="(_, i) in history" :key="i">
         [{{ formatTime(history[history.length - 1 - i]?.time || 0) }}]
         {{ history[history.length - 1 - i]?.text }}
@@ -42,7 +42,7 @@ function toggleShowAll () {
         {{ latest.text }}
       </div>
     </div>
-    <button v-if="showAll" class="toggle" @click="toggleShowAll">
+    <button v-if="showAll" class="toggle" style="top: -20px" @click="toggleShowAll">
       Hide Operation history
     </button>
     <button v-else class="toggle" @click="toggleShowAll">
@@ -56,21 +56,20 @@ function toggleShowAll () {
   font-family: 'Monaco';
   border-top: 1px solid var(--border-grey);
   font-size: 12px;
-  padding-left: 12px;
   position: fixed;
   bottom: 0;
   width: 100%;
   background: rgb(17 17 17);
   z-index: 1000;
+  white-space: nowrap;
 }
 
 .toggle {
   border: 1px solid var(--border-grey);
   box-sizing: border-box;
+  background: black;
   position: absolute;
   top: 0;
-  right: 4rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  right: 0;
 }
 </style>
