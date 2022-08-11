@@ -10,7 +10,7 @@ const pixScale = computed(() => {
 
   const viewScale =
     (timeline.value.end - timeline.value.start) / timeline.value.length
-  return width / timeline.value.scale / viewScale
+  return width / timeline.value.length / viewScale
 })
 
 const secs = computed(() => {

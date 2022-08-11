@@ -6,10 +6,20 @@ import '~/assets/css/main.css'
 import undo from '../core/Undo'
 import OperationHIstoryPanel from '../components/panels/OperationHistoryPanel.vue'
 import ButtonMenu from '../components/ButtonMenu.vue'
+import { Recorder } from '../core/Recorder'
+import { Strip } from '../core/Strip'
+import { download } from '../utils/download'
 import Modal from './components/Modal.vue'
 
 const { container, setContainer } = useContainer()
-const { timeline, setTimeline } = useTimeline()
+const {
+  timeline,
+  setTimeline,
+  updateLength,
+  startRecording,
+  play,
+  update: updateTime
+} = useTimeline()
 const { assets, setAssets } = useAssets()
 const op = useOperation()
 const { init } = useKeyboard()
@@ -151,6 +161,29 @@ function projectFromJsonString (json: string) {
 const c = computed(() => container.value as Container)
 
 const isOpenSettingsModal = ref(false)
+
+const isOpenExportModal = ref(false)
+
+function openExport () {
+  isOpenExportModal.value = true
+}
+
+function startRecord () {
+  if (Recorder.main) {
+    Recorder.main.start(timeline.value.strips as Strip[])
+    updateTime(0)
+    startRecording()
+    play(true)
+    Recorder.main.onEnd = (blob) => {
+      download(blob, 'hoge.webm')
+      updateTime(0)
+    }
+  }
+}
+
+const inputLenght = (v: number) => {
+  updateLength(v)
+}
 </script>
 
 <template>
@@ -164,7 +197,10 @@ const isOpenSettingsModal = ref(false)
       <div class="header-menu">
         <button-menu
           label="Vega"
-          :items="[{ name: 'stats', onClick: toggleStats }]"
+          :items="[
+            { name: 'stats', onClick: toggleStats },
+            { name: 'export', onClick: openExport }
+          ]"
         />
         <button-menu
           label="File"
@@ -182,7 +218,16 @@ const isOpenSettingsModal = ref(false)
     </div>
   </div>
 
-  <v-modal v-model:is-open="isOpenSettingsModal" />
+  <v-modal v-model:is-open="isOpenSettingsModal">
+    <div />
+    <v-input :value="timeline.length" @input="inputLenght" />
+  </v-modal>
+  <v-modal v-model:is-open="isOpenExportModal">
+    <button @click="startRecord">
+      export
+    </button>
+    <div />
+  </v-modal>
   <!-- <div class="overlay">
     <div class="modal">
       <button>OpenRecent</button>
