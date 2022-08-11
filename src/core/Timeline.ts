@@ -16,4 +16,5 @@ export interface Timeline {
   end: number;
   scale: number;
   length: number;
+  isRecording: boolean
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as THREE from 'three'
 import { view } from '~~/src/composables/useTimeline'
+import { Recorder } from '~~/src/core/Recorder'
 import { timeFormat } from '~~/src/utils/formatTime'
 
 const canvas = ref<HTMLCanvasElement | null>(null)
@@ -12,6 +13,8 @@ const { timeline, selectStrip } = useTimeline()
 
 const scale = ref(0.2)
 
+const recorder = ref<Recorder | null>(null)
+
 onMounted(() => {
   if (!canvas.value) {
     return
@@ -19,6 +22,7 @@ onMounted(() => {
   if (!el.value) {
     return
   }
+  recorder.value = new Recorder(canvas.value)
   const renderer = new THREE.WebGLRenderer({
     canvas: canvas.value
   })
@@ -48,6 +52,11 @@ onMounted(() => {
     view.camera.updateProjectionMatrix()
 
     renderer.render(view.scene, view.camera)
+    if (timeline.value.isRecording) {
+      if (timeline.value.curent > timeline.value.length) {
+        recorder.value?.stop()
+      }
+    }
   })
 })
 

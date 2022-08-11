@@ -13,6 +13,7 @@ import { AudioStripEffect } from '../core/AudioStripEffect'
 import { AudioStripEffectObject } from '../core/AudioStripEffectObject'
 
 export const initialTimelineState: Timeline = {
+  isRecording: false,
   selectedStrips: [],
   selectedKeyframes: [],
   focusStripId: '',
@@ -300,6 +301,16 @@ export function useTimeline () {
     update: update(timeline),
     play: play(timeline),
     setTimeline: setTimeline(timeline),
+    startRecording: ((state: Ref<Timeline>) => {
+      return () => {
+        state.value.isRecording = true
+      }
+    })(timeline),
+    updateLength: ((state: Ref<Timeline>) => {
+      return (length: number) => {
+        state.value.length = length
+      }
+    })(timeline),
 
     getFisrtSelectedStrip: ((state: Ref<Timeline>) => {
       return () => {

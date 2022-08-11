@@ -27,7 +27,7 @@ const pixScale = computed(() => {
   const width = el.value?.parentElement?.getBoundingClientRect().width || 1
   const viewScale =
     (timeline.value.end - timeline.value.start) / timeline.value.length
-  return width / timeline.value.scale / viewScale
+  return width / timeline.value.length / viewScale
 })
 
 const CUT_LEFT_PX = 50
@@ -99,7 +99,9 @@ function drag (e: MouseEvent) {
         selectStripClick(props.strip)
       }
       clickEvent.value = false
-      const layerIndex = Math.floor((e.clientY - parentRect.top + props.top) / layerHeight)
+      const layerIndex = Math.floor(
+        (e.clientY - parentRect.top + props.top) / layerHeight
+      )
       if (layerIndex < 0) {
         return
       }

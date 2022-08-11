@@ -4,10 +4,11 @@ const { timeline } = useTimeline()
 const el = ref<HTMLElement | null>(null)
 const pixScale = computed(() => {
   const w = getScrollbarWidth()
-  const width = (el.value?.parentElement?.getBoundingClientRect().width || 1) + w
+  const width =
+    (el.value?.parentElement?.getBoundingClientRect().width || 1) + w
   const viewScale =
     (timeline.value.end - timeline.value.start) / timeline.value.length
-  return width / timeline.value.scale / viewScale
+  return width / timeline.value.length / viewScale
 })
 </script>
 <template>
@@ -15,7 +16,7 @@ const pixScale = computed(() => {
     ref="el"
     class="cursor"
     :style="{
-      left: (timeline.curent - timeline.start) * pixScale + 'px',
+      left: (timeline.curent - timeline.start) * pixScale + 'px'
     }"
   >
     <svg fill="red">
