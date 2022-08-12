@@ -13,6 +13,7 @@ import Modal from './components/Modal.vue'
 
 const { container, setContainer } = useContainer()
 const {
+  init: initTimeline,
   timeline,
   setTimeline,
   updateLength,
@@ -101,6 +102,7 @@ onMounted(() => {
       e.preventDefault()
     }
   })
+  initTimeline()
 })
 
 function isOSX () {
@@ -124,9 +126,9 @@ function openfile () {
     reader.onload = () => {
       if (typeof reader.result === 'string') {
         const data = projectFromJsonString(reader.result)
-        setContainer(data.container)
-        setTimeline(data.timeline)
-        setAssets(data.assets)
+        // setContainer(data.container)
+        // setTimeline(data.timeline)
+        // setAssets(data.assets)
       }
     }
     reader.readAsText(file)

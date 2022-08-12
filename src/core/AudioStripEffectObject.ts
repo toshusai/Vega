@@ -11,7 +11,8 @@ export class AudioStripEffectObject {
 
   event: EventTarget = new EventTarget()
   constructor (iface: AudioStripEffect, src: string) {
-    this.audio = document.createElement('video')
+    this.audio = document.createElement('audio')
+    document.body.append(this.audio)
 
     this.audio.volume = iface.volume
     this.updateAsset(src)
