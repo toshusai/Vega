@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { mdiRhombus } from '@mdi/js'
 import { Strip } from '~~/src/core/Strip'
 import { TextStripEffect } from '~~/src/core/TextStripEffect'
 import { TextStripEffectObject } from '~~/src/core/TextStripEffectObject'
@@ -117,9 +118,10 @@ const markerSize = 12
       <!-- {{ animations.length }} -->
     </div>
     <div>
-      <svg
+      <v-icons
         v-for="(anim, i) in textEffect.animations"
         :key="i"
+        :path="mdiRhombus"
         style="
           fill: orange;
           stroke: white;
@@ -133,11 +135,7 @@ const markerSize = 12
           (overLeft < -50 ? overLeft + 50 : 0) // 4(strip border) + 6(half width)
         }px; z-index: 1; bottom: ${0}px`"
         viewBox="0 0 24 24"
-      >
-        <path
-          d="M12 2C11.5 2 11 2.19 10.59 2.59L2.59 10.59C1.8 11.37 1.8 12.63 2.59 13.41L10.59 21.41C11.37 22.2 12.63 22.2 13.41 21.41L21.41 13.41C22.2 12.63 22.2 11.37 21.41 10.59L13.41 2.59C13 2.19 12.5 2 12 2Z"
-        />
-      </svg>
+      />
     </div>
   </div>
 </template>

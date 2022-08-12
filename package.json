@@ -7,7 +7,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "build:electron": "tsc -p ./src/main/tsconfig.json",
-    "dev:electron:run": "NODE_ENV='development' electron .",
+    "electron:dev": "NODE_ENV='development' electron .",
     "electron:run": "yarn build:electron && electron .",
     "lint": "eslint --ext .vue,.ts src/",
     "preview": "nuxt preview"
@@ -33,9 +33,12 @@
   },
   "dependencies": {
     "@ckpack/vue-color": "^1.1.9",
+    "@mdi/js": "^7.0.96",
     "electron": "^18.2.4",
     "electron-builder": "^23.0.3",
     "electron-devtools-installer": "^3.2.0",
+    "install": "^0.13.0",
+    "npm": "^8.17.0",
     "short-uuid": "^4.2.0",
     "stats.js": "^0.17.0",
     "three": "^0.139.2"
