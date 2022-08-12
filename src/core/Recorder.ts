@@ -29,7 +29,8 @@ export class Recorder {
     const dst = this.audioCtx.createMediaStreamDestination()
 
     this.recorder = new MediaRecorder(stream, {
-      mimeType: 'video/webm;codecs=vp8',
+      // mimeType: 'video/webm;codecs=vp8',
+      mimeType: 'video/webm;codecs=vp9',
       audioBitsPerSecond: 16 * 1000
     })
 

@@ -244,7 +244,7 @@ export function useTimeline () {
   const timeline = useState('timeline', () => initialTimelineState)
   const assets = useAssets()
 
-  onMounted(() => {
+  const init = () => {
     for (const strip of timeline.value.strips) {
       for (const effect of strip.effects) {
         if (isText(effect)) {
@@ -280,10 +280,11 @@ export function useTimeline () {
         }
       }
     }
-  })
+  }
 
   return {
     timeline: readonly(timeline),
+    init,
     addStrip: ((state: Ref<Timeline>) => {
       return (strip: Strip) => {
         state.value.strips.push(strip)

@@ -3,22 +3,24 @@ import { IAsset } from '../core/IAsset'
 
 interface AssetState {
   assets: IAsset[];
+  selectedAssets: IAsset[];
 }
 
 const initialAssetsState: AssetState = {
+  selectedAssets: [],
   assets: [
-    {
-      id: 'asset1',
-      type: 'Video',
-      path: './sample_1280x720_surfing_with_audio.mp4',
-      name: 'Big Buck Bunny'
-    },
-    {
-      id: 'asset2',
-      type: 'Audio',
-      path: './tsudumi-japan.mp3',
-      name: 'Tsu-dumi Japan'
-    }
+    // {
+    //   id: 'asset1',
+    //   type: 'Video',
+    //   path: './sample_1280x720_surfing_with_audio.mp4',
+    //   name: 'Big Buck Bunny'
+    // },
+    // {
+    //   id: 'asset2',
+    //   type: 'Audio',
+    //   path: './tsudumi-japan.wav',
+    //   name: 'Tsu-dumi Japan'
+    // }
   ]
 }
 
@@ -26,7 +28,7 @@ export function useAssets () {
   const assets = useState('assets', () => initialAssetsState)
 
   return {
-    assets: readonly(assets),
+    assets,
 
     setAssets: ((state: Ref<AssetState>) => {
       return (assets: AssetState) => {

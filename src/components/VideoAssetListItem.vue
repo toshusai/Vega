@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { mdiFileVideo } from '@mdi/js'
 import { IAsset } from '../core/IAsset'
 
 defineProps<{ asset: IAsset }>()
@@ -14,10 +15,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="padding: 4px">
-    <div style="display: flex; width: 32px">
-      <!-- <video ref="videoEl" class="video m-auto" :src="asset.path" /> -->
-    </div>
+  <div style="display: flex; width: 32px">
+    <v-icons style="margin: auto" fill="white" :path="mdiFileVideo" />
   </div>
   <div style="margin: auto 0">
     {{ asset.name }}

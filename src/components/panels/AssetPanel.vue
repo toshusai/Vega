@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { uuid } from 'short-uuid'
+import { IAsset } from '~~/src/core/IAsset'
 
 const { assets, addAsset } = useAssets()
 const { startDad } = useDragAndDrop()
@@ -49,12 +50,33 @@ function dragover (e: DragEvent) {
 function dragstart (e: MouseEvent, id: string) {
   startDad(e, 'assets', id, `asset-list-item-${id}`)
 }
+
+function selectAsset (asset: IAsset) {
+  assets.value.selectedAssets = [asset]
+}
+
+function isSelectedAsset (asset: IAsset) {
+  return assets.value.selectedAssets.includes(asset)
+}
 </script>
 
 <template>
   <div style="height: 100%" @drop="drop" @dragover="dragover">
-    <div v-for="(asset, i) in assets.assets" :id="`asset-list-item-${asset.id}`" :key="i" class="asset-list-item" @mousedown="e => dragstart(e, asset.id)">
-      <component :is="asset.type.toLowerCase() + '-asset-list-item'" :asset="asset" />
+    <div
+      v-for="(asset, i) in assets.assets"
+      :id="`asset-list-item-${asset.id}`"
+      :key="i"
+      class="asset-list-item"
+      :style="{
+        backgroundColor: isSelectedAsset(asset) ? 'darkgray' : 'transparent'
+      }"
+      @click="() => selectAsset(asset)"
+      @mousedown="e => dragstart(e, asset.id)"
+    >
+      <component
+        :is="asset.type.toLowerCase() + '-asset-list-item'"
+        :asset="asset"
+      />
     </div>
   </div>
 </template>
@@ -69,7 +91,6 @@ function dragstart (e: MouseEvent, id: string) {
   overflow: hidden;
   border-bottom: 1px solid var(--border-grey);
   background-color: #111;
-  padding: 0 8px;
   color: #fff;
 }
 
