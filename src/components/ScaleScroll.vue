@@ -55,7 +55,7 @@ onMounted(() => {
 <template>
   <div
     ref="el"
-    style="height: 20px; width: 100%; position: relative; padding: 4px 0"
+    style="height: 12px; width: 100%; position: relative"
     @mousedown.stop="() => {}"
   >
     <div
@@ -88,7 +88,6 @@ onMounted(() => {
 .bg {
   position: absolute;
   background: #222;
-  top: 4px;
   height: 12px;
 }
 
