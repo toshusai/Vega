@@ -3,6 +3,8 @@ type Uf = (delta: number) => void;
 
 interface UpdateState {
   funcs: Uf[];
+  before?: Uf;
+  after?: Uf;
   prev: number;
 }
 function addUpdate (update: Ref<UpdateState>) {
@@ -13,9 +15,11 @@ function addUpdate (update: Ref<UpdateState>) {
 
 function update (update: Ref<UpdateState>) {
   return (delta: number) => {
+    update.value.before?.(delta)
     for (const f of update.value.funcs) {
       f(delta)
     }
+    update.value.after?.(delta)
     update.value.prev = Date.now()
   }
 }
@@ -29,6 +33,7 @@ export function useUpdate () {
   })
 
   return {
+    updateState: updateFuncs,
     update: update(updateFuncs),
     addUpdate: addUpdate(updateFuncs)
   }
