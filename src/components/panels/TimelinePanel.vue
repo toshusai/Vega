@@ -5,11 +5,10 @@ import ScaleScroll from '../ScaleScroll.vue'
 import SelectRect from '../SelectRect.vue'
 import { getScrollbarWidth } from '../../utils/getScrollbarWidth'
 import TimeView from './TimeView.vue'
-import Cursor from './Cursor.vue'
 import TimelineCursor from './TimelineCursor.vue'
 import { Strip } from '~~/src/core/Strip'
-import { Timeline } from '~~/src/core/Timeline'
 import { VideoStripEffect } from '~~/src/core/VideoStripEffect'
+import { ImageStripEffect } from '~~/src/core/ImageStripEffect'
 const {
   timeline,
   addStrip,
@@ -165,6 +164,7 @@ function mouseup () {
       return
     }
     const asset = assets.value.assets.find(a => a.id === assetId)
+    console.warn('TODO add three.js object to scene')
     if (asset?.type === 'Video') {
       const ve: VideoStripEffect = {
         type: 'Video',
@@ -178,6 +178,26 @@ function mouseup () {
       }
       const newStrip: Strip = {
         effects: [ve],
+        layer: 0,
+        start: dummyStrip.value.start,
+        length: dummyStrip.value.length,
+        id: uuid()
+      }
+
+      addStrip(newStrip)
+    } else if (asset?.type === 'Image') {
+      const imageEffect: ImageStripEffect = {
+        type: 'Image',
+        imageAssetId: assetId,
+        animations: [],
+        id: uuid(),
+        position: { x: 0, y: 0, z: 0 },
+        scale: { x: 1, y: 1, z: 1 },
+        opacity: 1
+      }
+
+      const newStrip: Strip = {
+        effects: [imageEffect],
         layer: 0,
         start: dummyStrip.value.start,
         length: dummyStrip.value.length,
@@ -245,7 +265,7 @@ const pixScale = computed(() => {
           :start="timeline.start"
           :length="timeline.end - timeline.start"
           style="width: calc(100% - 100px)"
-          @move="(t)=>update(t,true)"
+          @move="t => update(t, true)"
         />
       </div>
       <div class="timeline-box" tabindex="0">
