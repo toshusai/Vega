@@ -23,7 +23,7 @@ const emit = defineEmits<{
 
 <template>
   <div v-if="isOpen" class="overlay" @click="emit('close')">
-    <div class="modal">
+    <div class="modal" @click.stop="() => {}">
       <div class="header">
         <button
           v-if="showClose"
