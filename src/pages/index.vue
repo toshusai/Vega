@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Stats from 'stats.js'
-
 import { Container } from '../core/Container'
 import '~/assets/css/main.css'
 import undo from '../core/Undo'
@@ -15,57 +13,8 @@ const { init } = useKeyboard()
 
 const { update } = useUpdate()
 
-let stats: Stats | null = null
-
-function showStat () {
-  if (!stats) {
-    return
-  }
-  stats.dom.style.visibility = 'visible'
-}
-
-function hideStats () {
-  if (!stats) {
-    return
-  }
-  stats.dom.style.visibility = 'hidden'
-}
-
-function toggleStats () {
-  if (!stats) {
-    return
-  }
-  if (stats.dom.style.visibility === 'hidden') {
-    showStat()
-  } else {
-    hideStats()
-  }
-}
-
 onMounted(() => {
   init()
-  stats = new Stats()
-  stats.showPanel(0)
-  let prev = 0
-  const mainUpdate = (t: number) => {
-    stats?.begin()
-    update(t - prev)
-    stats?.end()
-    requestAnimationFrame(mainUpdate)
-    prev = t
-  }
-  mainUpdate(0)
-
-  document.body.append(stats.dom)
-  stats.dom.style.left = ''
-  stats.dom.style.right = '0'
-  stats.dom.style.pointerEvents = 'none'
-  stats.dom.childNodes.forEach((node: Node) => {
-    if (node instanceof HTMLElement) {
-      node.style.display = ''
-    }
-  })
-  hideStats()
   const project = localStorage.getItem('save')
   if (typeof project === 'string') {
     const p = JSON.parse(project)
@@ -73,6 +22,13 @@ onMounted(() => {
     setTimeline(p.timeline)
     setContainer(p.container)
   }
+  let prev = 0
+  const mainUpdate = (t: number) => {
+    update(t - prev)
+    requestAnimationFrame(mainUpdate)
+    prev = t
+  }
+  mainUpdate(0)
 
   window.addEventListener('keydown', (e) => {
     // if mac ctrl = command
@@ -145,7 +101,7 @@ function projectFromJsonString (json: string) {
   return project
 }
 
-const c = computed(() => container.value as Container)
+const rootContainer = computed(() => container.value as Container)
 </script>
 
 <template>
@@ -157,10 +113,6 @@ const c = computed(() => container.value as Container)
   >
     <div style="height: calc(100vh - 48px)">
       <div class="header-menu">
-        <button-menu
-          label="Vega"
-          :items="[{ name: 'stats', onClick: toggleStats }]"
-        />
         <recording-button />
         <button-menu
           label="File"
@@ -170,8 +122,9 @@ const c = computed(() => container.value as Container)
           ]"
         />
         <settings-button />
+        <show-stats-button />
       </div>
-      <container-ui :container="c" />
+      <container-ui :container="rootContainer" />
       <panels-operation-history-panel />
     </div>
   </div>
