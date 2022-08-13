@@ -10,6 +10,7 @@ import { setAnimation } from '../utils/setAnimation'
 import { StripEffect } from '../core/StripEffect'
 import { snap } from '../utils/snap'
 import { TextStripEffect } from '../core/TextStripEffect'
+import { ImageStripEffectObject } from '../core/ImageStripEffectObject'
 
 const { timeline, updateEffect, setFocusStripId } = useTimeline()
 
@@ -111,6 +112,32 @@ function updateStyle (): CSSProperties {
       width: videoW * props.scale + 'px',
       height: videoH * props.scale + 'px'
     }
+  } else if (isImage(effect.value)) {
+    const obj = effectObjectMap.get(effect.value.id)
+    if (!(obj instanceof ImageStripEffectObject)) { return { display: 'none' } }
+    const x = calcAnimationValue(
+      effect.value.animations,
+      timeline.value.curent,
+      'position.x',
+      effect.value.position.x
+    )
+
+    const y = calcAnimationValue(
+      effect.value.animations,
+      timeline.value.curent,
+      'position.y',
+      effect.value.position.y
+    )
+
+    const videoW = obj.width * effect.value.scale.x
+    const videoH = obj.height * effect.value.scale.y
+
+    return {
+      left: (width / 2 + x - videoW / 2) * props.scale + 'px',
+      bottom: (height / 2 + y - videoH / 2) * props.scale + 'px',
+      width: videoW * props.scale + 'px',
+      height: videoH * props.scale + 'px'
+    }
   }
   return { display: 'none' }
 }
@@ -157,7 +184,7 @@ function drag (e: MouseEvent) {
 
   onDragStart(e, (delta) => {
     if (!effect.value) { return }
-    if (isText(effect.value) || isVideo(effect.value)) {
+    if (isText(effect.value) || isVideo(effect.value) || isImage(effect.value)) {
       const newE = {
         ...effect.value,
         animations: [...effect.value.animations]

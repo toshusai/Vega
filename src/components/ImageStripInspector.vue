@@ -75,7 +75,7 @@ function hasKeyframe (key: string) {
         @input="e => changeImage({ ...effect?.position, y: e }, 'position')"
       />
       <inspector-input
-        label="x"
+        label="scaleX"
         :step="0.01"
         :scale="0.01"
         :value="
@@ -91,7 +91,7 @@ function hasKeyframe (key: string) {
       />
 
       <inspector-input
-        label="y"
+        label="scaleY"
         :step="0.01"
         :scale="0.01"
         :value="
