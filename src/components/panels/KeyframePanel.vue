@@ -61,6 +61,7 @@ function updatePixPerSec () {
   }
   const rect = timeArea.value?.getBoundingClientRect()
   const width = rect?.width || 0
+  // 3 / (1.5 - 1)
   pixPerSec.value = width / strip.value.length / (end.value - start.value)
 }
 

@@ -238,7 +238,7 @@ function changeTool (tool: 'cursor' | 'cut') {
             border-right: 1px solid white;
           "
         />
-        <time-view style="width: calc(100% - 100px)" />
+        <time-view style="width: calc(100% - 100px)" @move="update" />
       </div>
       <div class="timeline-box" tabindex="0">
         <div
