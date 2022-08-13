@@ -4,22 +4,14 @@ import Stats from 'stats.js'
 import { Container } from '../core/Container'
 import '~/assets/css/main.css'
 import undo from '../core/Undo'
-import OperationHIstoryPanel from '../components/panels/OperationHistoryPanel.vue'
 import ButtonMenu from '../components/ButtonMenu.vue'
-import { Recorder } from '../core/Recorder'
-import { Strip } from '../core/Strip'
-import { download } from '../utils/download'
-import Modal from './components/Modal.vue'
-
 const { container, setContainer } = useContainer()
+
 const {
   init: initTimeline,
   timeline,
   setTimeline,
-  updateLength,
-  startRecording,
-  play,
-  update: updateTime
+  updateLength
 } = useTimeline()
 const { assets, setAssets } = useAssets()
 const op = useOperation()
@@ -170,31 +162,6 @@ function openExport () {
   isOpenExportModal.value = true
 }
 
-const isRecording = ref(false)
-
-function cancelRecord () {
-  startRecording(false)
-  isRecording.value = false
-  updateTime(0, true)
-  play(false)
-}
-function startRecord () {
-  if (Recorder.main) {
-    Recorder.main.start(timeline.value.strips as Strip[])
-    updateTime(0, true)
-    startRecording()
-    play(true)
-    isRecording.value = true
-    Recorder.main.onEnd = (blob) => {
-      startRecording(false)
-      download(blob, 'hoge.webm')
-      isRecording.value = false
-      updateTime(0, true)
-      play(false)
-    }
-  }
-}
-
 const inputLenght = (v: number) => {
   updateLength(v)
 }
@@ -213,9 +180,9 @@ const inputLenght = (v: number) => {
           label="Vega"
           :items="[
             { name: 'stats', onClick: toggleStats },
-            { name: 'export', onClick: openExport }
           ]"
         />
+        <recording-button />
         <button-menu
           label="File"
           :items="[
@@ -235,15 +202,6 @@ const inputLenght = (v: number) => {
   <v-modal v-model:is-open="isOpenSettingsModal">
     <div />
     <v-input :value="timeline.length" @input="inputLenght" />
-  </v-modal>
-  <v-modal v-model:is-open="isOpenExportModal" :closable="!isRecording">
-    <button v-if="!isRecording" @click="startRecord">
-      export
-    </button>
-    <button v-else @click="cancelRecord">
-      cancel
-    </button>
-    <div />
   </v-modal>
   <!-- <div class="overlay">
     <div class="modal">

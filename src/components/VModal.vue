@@ -16,14 +16,21 @@ defineProps({
   }
 })
 
-const emit = defineEmits<{(e: 'update:isOpen', v: boolean): void }>()
+const emit = defineEmits<{
+  (e: 'close'): void
+}>()
 </script>
 
 <template>
-  <div v-if="isOpen" class="overlay">
+  <div v-if="isOpen" class="overlay" @click="emit('close')">
     <div class="modal">
       <div class="header">
-        <button v-if="showClose" :disabled="!closable" style="margin-left: auto;" @click="emit('update:isOpen', false)">
+        <button
+          v-if="showClose"
+          :disabled="!closable"
+          style="margin-left: auto"
+          @click="emit('close')"
+        >
           <v-icons fill="white" :path="mdiClose" />
         </button>
       </div>
