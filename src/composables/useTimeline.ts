@@ -304,8 +304,8 @@ export function useTimeline () {
     play: play(timeline),
     setTimeline: setTimeline(timeline),
     startRecording: ((state: Ref<Timeline>) => {
-      return () => {
-        state.value.isRecording = true
+      return (value = true) => {
+        state.value.isRecording = value
       }
     })(timeline),
     updateLength: ((state: Ref<Timeline>) => {
