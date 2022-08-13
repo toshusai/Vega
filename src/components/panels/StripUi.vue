@@ -23,12 +23,7 @@ const { keyboard } = useKeyboard()
 const layerHeight = 50
 const el = ref<HTMLElement | null>(null)
 
-const pixScale = computed(() => {
-  const width = el.value?.parentElement?.getBoundingClientRect().width || 1
-  const viewScale =
-    (timeline.value.end - timeline.value.start) / timeline.value.length
-  return width / timeline.value.length / viewScale
-})
+const pixScale = computed(() => usePixPerSec(el.value?.parentElement))
 
 const CUT_LEFT_PX = 50
 const MIN_VISIBLE_WIDTH = 28 // border 4 * 2 + handle 8 * 2 + middle space 4
