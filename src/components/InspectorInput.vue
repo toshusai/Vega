@@ -16,11 +16,17 @@ function update (e: number) {
 <template>
   <inspector-input-base :label="label">
     <div style="display: flex; width: 100%">
-      <v-input v-bind="$attrs" :value="value" @input="update" />
+      <v-input
+        :view="n => n.toFixed(3)"
+        v-bind="$attrs"
+        :value="value"
+        @input="update"
+      />
       <v-icons
+        v-if="keyFrame"
         viewBox="0 0 24 24"
         class="icon"
-        :path="keyFrame ? mdiRhombus: mdiRhombusOutline "
+        :path="keyFrame ? mdiRhombus : mdiRhombusOutline"
         :fill="keyFrame ? 'orange' : 'currentColor'"
         @click="emit('key-frame')"
       />
