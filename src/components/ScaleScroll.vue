@@ -16,26 +16,30 @@ const el = ref<HTMLElement | null>(null)
 function moveStart (e: MouseEvent) {
   e.stopPropagation()
   const width = el.value?.getBoundingClientRect().width || 0
-  onDragStart(e, (d) => {
-    emit('start', Math.max(props.start + d.x / width, 0))
+  const ss = props.start
+  onDragStart(e, (_, __, sd) => {
+    emit('start', Math.max(ss + sd.x / width, 0))
   })
 }
 function moveEnd (e: MouseEvent) {
   e.stopPropagation()
   const width = el.value?.getBoundingClientRect().width || 0
-  onDragStart(e, (d) => {
-    emit('end', Math.min(props.end + d.x / width, 1))
+  const se = props.end
+  onDragStart(e, (_, __, sd) => {
+    emit('end', Math.min(se + sd.x / width, 1))
   })
 }
 function moveView (e: MouseEvent) {
   e.stopPropagation()
   const width = el.value?.getBoundingClientRect().width || 0
-  onDragStart(e, (d) => {
-    const start = props.start + d.x / width
+  const ss = props.start
+  const se = props.end
+  onDragStart(e, (_, __, sd) => {
+    const start = ss + sd.x / width
     if (start < 0) {
       return
     }
-    const max = props.end + d.x / width
+    const max = se + sd.x / width
     if (max > 1) {
       return
     }
