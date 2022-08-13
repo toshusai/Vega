@@ -6,7 +6,7 @@ import { Animation } from '~~/src/core/TextStripEffect'
 import { calcAnimationValue } from '~~/src/utils/calcAnimationValue'
 import { StripEffect } from '~~/src/core/StripEffect'
 
-const { timeline, updateEffect } = useTimeline()
+const { timeline, updateEffect, update } = useTimeline()
 const { addEventListener } = useContainer()
 
 const strip = computed(() => {
@@ -141,6 +141,13 @@ function changeStart (s: number) {
 function changeEnd (e: number) {
   end.value = e
 }
+
+function updateTime (t: number) {
+  if (!strip.value) {
+    return
+  }
+  update(strip.value.start + t, true)
+}
 </script>
 
 <template>
@@ -183,50 +190,44 @@ function changeEnd (e: number) {
         user-select: none;
       "
     >
-      <keyframe-select-rect />
-      <div
-        style="
+      <div style="position: relative; height: calc(100% - 12px)">
+        <keyframe-select-rect />
+        <div
+          style="
           display: flex;
           position: relative;
           height: 24px;
           border-bottom: 1px solid;
         "
-      >
-        <!-- <div
+        >
+          <panels-time-view
+            :start="start * strip.length"
+            :length="(end - start) * strip.length"
+            @move="updateTime"
+          />
+        </div>
+        <panels-timeline-cursor
+          :style="{
+            left: (timeline.curent - strip.start - start * strip.length) * pixPerSec + 'px'
+          }"
+        />
+
+        <div
           v-for="i in times"
           :key="i"
           :style="{ left: `${startOffset + i * pixPerSec}px` }"
           style="
-            display: flex;
-            position: absolute;
-            font-size: 0.75rem;
-            line-height: 1rem;
-            height: 24px;
-            border-left: 1px solid var(--bg2);
-          "
-        >
-          <div style="margin: auto 0 2px 2px">
-            {{ i }}
-          </div>
-        </div> -->
-        <panels-time-view :start="start * strip.length" :length="(end - start) * strip.length" />
-      </div>
-      <div
-        v-for="i in times"
-        :key="i"
-        :style="{ left: `${startOffset + i * pixPerSec}px` }"
-        style="
           display: flex;
           position: absolute;
           height: 100%;
           border-left: 1px solid var(--bg2);
         "
-      />
+        />
 
-      <div
-        v-for="(key, i) in keys"
-        :key="i"
-        style="
+        <div
+          v-for="(key, i) in keys"
+          :key="i"
+          style="
           dislplay: flex;
           position: relative;
           height: 24px;
@@ -234,16 +235,17 @@ function changeEnd (e: number) {
           border-bottom: 1px solid var(--bg2);
           box-sizing: border-box;
         "
-      >
-        <keyframe-marker
-          v-for="(anim, j) in key[1]"
-          :key="j"
-          :animation="anim"
-          :scale="pixPerSec"
-          :left="startOffset"
-          :effect="animationIdEffectIdMap.get(anim.id)"
-          :strip-id="strip?.id || ''"
-        />
+        >
+          <keyframe-marker
+            v-for="(anim, j) in key[1]"
+            :key="j"
+            :animation="anim"
+            :scale="pixPerSec"
+            :left="startOffset"
+            :effect="animationIdEffectIdMap.get(anim.id)"
+            :strip-id="strip?.id || ''"
+          />
+        </div>
       </div>
       <div style="position: absolute; bottom: 0; width: 100%">
         <scale-scroll

@@ -222,6 +222,9 @@ const dummyStrip = ref<Strip | null>()
 function changeTool (tool: 'cursor' | 'cut') {
   changeTimelineTool(tool)
 }
+const pixScale = computed(() => {
+  return usePixPerSecTimeline(timelineBox.value)
+})
 </script>
 
 <template>
@@ -296,7 +299,11 @@ function changeTool (tool: 'cursor' | 'cut') {
           @mousedown="mousedown"
           @mousemove="mousemove"
         >
-          <timeline-cursor />
+          <timeline-cursor
+            :style="{
+              left: (timeline.curent - timeline.start) * pixScale + 'px'
+            }"
+          />
           <select-rect v-if="timelineBox" :element="timelineBox" />
           <div
             v-for="(layer, i) in layers"
@@ -347,7 +354,7 @@ function changeTool (tool: 'cursor' | 'cut') {
 .timeline-box {
   display: flex;
   position: relative;
-  height: calc(100% - 40px);
+  height: calc(100% - 32px);
   overflow: hidden;
 }
 

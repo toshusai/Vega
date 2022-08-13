@@ -41,11 +41,10 @@ const secs = computed(() => {
 })
 
 function setTime (e: MouseEvent) {
-  const xleft = el.value?.getBoundingClientRect().left || 0
-  const x = e.clientX - xleft
-  const left = el.value?.parentElement?.getBoundingClientRect().left || 1
+  const screenX = el.value?.getBoundingClientRect().left || 0
+  const relativeX = e.clientX - screenX
 
-  const time = (x - left) / pixScale.value + props.start
+  const time = (relativeX) / pixScale.value + props.start
   emits('move', time)
 }
 
