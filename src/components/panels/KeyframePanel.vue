@@ -238,7 +238,7 @@ function updateTime (t: number) {
         >
           <keyframe-marker
             v-for="(anim, j) in key[1]"
-            :key="j"
+            :key="anim.id"
             :animation="anim"
             :scale="pixPerSec"
             :left="startOffset"

@@ -8,6 +8,7 @@ import { calcAnimationValue } from '../utils/calcAnimationValue'
 import { onDragStart } from '../utils/onDragStart'
 import { setAnimation } from '../utils/setAnimation'
 import { StripEffect } from '../core/StripEffect'
+import { snap } from '../utils/snap'
 
 const { timeline, updateEffect, setFocusStripId } = useTimeline()
 
@@ -175,7 +176,7 @@ function drag (e: MouseEvent) {
           id: uuid(),
           key: 'position.x',
           value: p.x,
-          time: timeline.value.curent - strip.value.start - 0.01
+          time: snap(timeline.value.curent - strip.value.start)
         })
       }
       if (
@@ -194,7 +195,7 @@ function drag (e: MouseEvent) {
           id: uuid(),
           key: 'position.y',
           value: p.y,
-          time: timeline.value.curent - strip.value.start - 0.01
+          time: snap(timeline.value.curent - strip.value.start)
         })
       }
 

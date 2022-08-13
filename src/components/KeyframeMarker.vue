@@ -2,6 +2,7 @@
 import { StripEffect } from '../core/StripEffect'
 import { Animation } from '../core/TextStripEffect'
 import { onDragStart } from '../utils/onDragStart'
+import { snap } from '../utils/snap'
 
 const props = defineProps<{ animation: Animation; scale: number, left: number, stripId: string, effect?: StripEffect }>()
 
@@ -32,17 +33,13 @@ function select () {
 function mousedown (e: MouseEvent) {
   e.stopPropagation()
   clickDown.value = true
-  onDragStart(e, (_, e) => {
+  const ss = props.animation.time
+  onDragStart(e, (_, __, sd) => {
     if (!props.effect) { return }
     clickDown.value = false
     if (!timeline.value.selectedKeyframes.find(x => x.id === props.animation.id)) {
-      // if (keyboard.keyboard.value.shift) {
-
-      // }
       selectKeyframe([props.animation])
     }
-
-    const deltaX = e.movementX
 
     const selectedStrip = getFisrtSelectedStrip()
     if (!selectedStrip) { return }
@@ -51,9 +48,10 @@ function mousedown (e: MouseEvent) {
     const newEffect = { ...props.effect, animations: props.effect.animations.map(x => ({ ...x })) }
     newEffect.animations.forEach((a) => {
       if (a.id === props.animation.id || otherSelectedAnimationIds.includes(a.id)) {
-        a.time += deltaX / props.scale
+        a.time = snap(ss + sd.x / props.scale)
       }
     })
+    newEffect.animations.sort((a, b) => a.time - b.time)
     updateEffect(props.stripId, newEffect)
 
     // reselect other animations
