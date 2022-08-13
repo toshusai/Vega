@@ -350,6 +350,15 @@ export function useTimeline () {
         if (index === -1) {
           return
         }
+        const newAnimations: Animation[] = []
+        effect.animations.forEach((a) => {
+          if (
+            !newAnimations.find(na => na.key === a.key && na.time === a.time)
+          ) {
+            newAnimations.push(a)
+          }
+        })
+        effect.animations = newAnimations
         strip.effects[index] = effect
       }
     })(timeline),

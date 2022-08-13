@@ -68,14 +68,20 @@ export class TextStripEffectObject extends EffectObject {
     // this.updateFont(itext);
   }
 
-  updateFont (itext: TextStripEffect) {
+  updateFont (itext: TextStripEffect, strip: Strip, current: number) {
     if (itext.size === this.prevSize && itext.text === this.prevText) {
       return
     }
     const span = document.createElement('span')
     span.innerHTML = this.text
     span.style.fontFamily = itext.family
-    span.style.fontSize = itext.size + 'px'
+    const size = calcAnimationValue(
+      itext.animations,
+      current - strip.start,
+      'size',
+      itext.size
+    )
+    span.style.fontSize = size + 'px'
     span.style.fontStyle = itext.style
     span.style.whiteSpace = 'nowrap'
     document.body.append(span)
@@ -83,7 +89,7 @@ export class TextStripEffectObject extends EffectObject {
     // this.canvas.height = r.height;
     this.mesureHeight = r.height * itext.text.split('\n').length - 1
     span.remove()
-    this.prevSize = itext.size
+    this.prevSize = size
     this.prevText = itext.text
   }
 
@@ -112,7 +118,7 @@ export class TextStripEffectObject extends EffectObject {
       itext.size
     )
 
-    this.updateFont(itext)
+    this.updateFont(itext, strip, current)
     this.ctx.font = `${itext.style} ${size}px ${itext.family}`
 
     this.mesureWidth = 0
