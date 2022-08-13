@@ -348,9 +348,7 @@ function changeTool (tool: 'cursor' | 'cut') {
   display: flex;
   position: relative;
   height: calc(100% - 40px);
-  /* 20px(TimeView) 20px(ScaleScroll */
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .layer {
