@@ -15,7 +15,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="display: flex; width: 32px">
+  <div style="display: flex; min-width: 32px">
     <v-icons style="margin: auto" fill="white" :path="mdiFileMusic" />
   </div>
   <div style="margin: auto 0">
