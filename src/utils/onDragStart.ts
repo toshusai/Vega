@@ -1,6 +1,7 @@
+
 export function onDragStart (
   e: MouseEvent,
-  callback: (delta: { x: number; y: number }, e: MouseEvent) => void,
+  callback: (delta: { x: number; y: number }, e: MouseEvent, startDiff: {x:number, y:number}) => void,
   endCallback?: (e: MouseEvent) => void
 ) {
   const startPosition = {
@@ -11,10 +12,6 @@ export function onDragStart (
   let prevPosition: { x: number; y: number } = startPosition
 
   const onMove = (e: MouseEvent) => {
-    // const delta = {
-    //   x: e.clientX - startPosition.x,
-    //   y: e.clientY - startPosition.y,
-    // };
     const delta = {
       x: e.clientX - prevPosition.x,
       y: e.clientY - prevPosition.y
@@ -24,8 +21,10 @@ export function onDragStart (
       y: e.clientY
     }
 
-    // console.log(delta);
-    callback(delta, e)
+    callback(delta, e, {
+      x: e.clientX - startPosition.x,
+      y: e.clientY - startPosition.y
+    })
   }
   window.addEventListener('mousemove', onMove)
 

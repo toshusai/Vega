@@ -3,6 +3,7 @@ import { CSSProperties, PropType } from 'vue'
 import { Strip } from '~~/src/core/Strip'
 import undo from '~~/src/core/Undo'
 import { onDragStart } from '~~/src/utils/onDragStart'
+import { snap } from '~~/src/utils/snap'
 const props = defineProps({
   strip: {
     type: Object as PropType<Strip>,
@@ -32,7 +33,6 @@ const hiddenWidth = ref(0)
 const style = computed<CSSProperties>(() => {
   let left = (props.strip.start - timeline.value.start) * pixScale.value
   let width = props.strip.length * pixScale.value
-  // console.log(left);
   if (left < -CUT_LEFT_PX) {
     width += left + CUT_LEFT_PX
     left = -CUT_LEFT_PX
@@ -156,15 +156,18 @@ function drag (e: MouseEvent) {
 function moveStart (e: MouseEvent) {
   e.stopPropagation()
   const firstEnd = props.strip.start + props.strip.length
-  onDragStart(e, (d) => {
-    const start = props.strip.start + d.x / pixScale.value
+  const ss = props.strip.start
+  const sl = props.strip.length
+  onDragStart(e, (d, _, sd) => {
+    const diff = snap(sd.x / pixScale.value)
+    const start = ss + diff
     if (start > firstEnd) {
       return
     }
     moveStrip(
       props.strip.id,
       start,
-      props.strip.length - d.x / pixScale.value,
+      sl - diff,
       props.strip.layer
     )
   })
@@ -172,8 +175,9 @@ function moveStart (e: MouseEvent) {
 
 function moveEnd (e: MouseEvent) {
   e.stopPropagation()
-  onDragStart(e, (d) => {
-    const length = props.strip.length + d.x / pixScale.value
+  const sl = props.strip.length
+  onDragStart(e, (_, __, sd) => {
+    const length = sl + sd.x / pixScale.value
     if (length < 0) {
       return
     }

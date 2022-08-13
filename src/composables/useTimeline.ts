@@ -11,6 +11,7 @@ import { VideoStripEffectObject } from '../core/VideoStripEffectObject'
 import { Strip } from '../core/Strip'
 import { AudioStripEffect } from '../core/AudioStripEffect'
 import { AudioStripEffectObject } from '../core/AudioStripEffectObject'
+import { snap } from '../utils/snap'
 
 export const initialTimelineState: Timeline = {
   isRecording: false,
@@ -122,8 +123,8 @@ function moveStrip (timeline: Ref<Timeline>) {
     if (!strip) {
       return
     }
-    strip.start = start
-    strip.length = length
+    strip.start = snap(start)
+    strip.length = snap(length)
     strip.layer = layer ?? strip.layer
   }
 }
@@ -134,13 +135,13 @@ function changeView (timeline: Ref<Timeline>) {
       start = 0
     }
     if (end > timeline.value.length) {
-      end = timeline.value.length
+      end = snap(timeline.value.length)
     }
     if (end - start < 1) {
       end = start + 1
     }
-    timeline.value.start = start
-    timeline.value.end = end
+    timeline.value.start = snap(start)
+    timeline.value.end = snap(end)
   }
 }
 
