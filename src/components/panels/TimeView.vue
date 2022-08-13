@@ -28,10 +28,10 @@ const secs = computed(() => {
     i += step
   ) {
     const time = snap(Math.floor(props.start) + j * step)
-    let str = time.toString()
-    if (str.length === 1) { str += '.' }
+    let str = time.toFixed(0)
+    str += '.'
     times.push({
-      time: str.padEnd(5, '0').substring(0, 5) + 's',
+      time: str + time.toFixed(3).padEnd(3, '0').split('.')[1],
       left: (time - props.start) * pixScale.value,
       type: time % 1 === 0 ? 'time' : 'time-half'
     })
