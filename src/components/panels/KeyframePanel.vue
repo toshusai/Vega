@@ -174,7 +174,7 @@ function updateTime (t: number) {
           </div>
           <v-input-base
             style="margin: 2px 4px 2px auto"
-            :value="calcAnimationValue(key[1], timeline.curent - strip!.start, key[0], 0)"
+            :value="calcAnimationValue(key[1], timeline.curent - strip!.start, key[0], 0).toFixed(3)"
             readonly
           />
         </div>
