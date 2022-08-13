@@ -72,6 +72,7 @@ onMounted(() => {
       font-size: 4px;
       line-height: 20px;
       border-bottom: 1px solid;
+      width: 100%;
       position: relative;
       overflow: hidden;
     "

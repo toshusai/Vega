@@ -144,7 +144,7 @@ function changeEnd (e: number) {
 </script>
 
 <template>
-  <div ref="el" style="display: flex; height: 100%">
+  <div v-if="strip" ref="el" style="display: flex; height: 100%">
     <div style="height: 100%; border-right: solid 1px white">
       <div style="border-bottom: 1px solid; height: 24px">
         Properties
@@ -192,7 +192,7 @@ function changeEnd (e: number) {
           border-bottom: 1px solid;
         "
       >
-        <div
+        <!-- <div
           v-for="i in times"
           :key="i"
           :style="{ left: `${startOffset + i * pixPerSec}px` }"
@@ -208,7 +208,8 @@ function changeEnd (e: number) {
           <div style="margin: auto 0 2px 2px">
             {{ i }}
           </div>
-        </div>
+        </div> -->
+        <panels-time-view :start="start * strip.length" :length="(end - start) * strip.length" />
       </div>
       <div
         v-for="i in times"
