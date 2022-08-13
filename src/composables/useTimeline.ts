@@ -12,6 +12,8 @@ import { Strip } from '../core/Strip'
 import { AudioStripEffect } from '../core/AudioStripEffect'
 import { AudioStripEffectObject } from '../core/AudioStripEffectObject'
 import { snap } from '../utils/snap'
+import { ImageStripEffect } from '../core/ImageStripEffect'
+import { ImageStripEffectObject } from '../core/ImageStripEffectObject'
 
 export const initialTimelineState: Timeline = {
   isRecording: false,
@@ -195,6 +197,19 @@ function update (timeline: Ref<Timeline>) {
               jump
             )
           }
+        } else if (isImage(effect)) {
+          const imageObj = effectObjectMap.get(
+            effect.id
+          ) as ImageStripEffectObject
+          if (imageObj) {
+            imageObj.update(
+              strip,
+              effect,
+              timeline.value.curent,
+              timeline.value.isPlay,
+              jump
+            )
+          }
         } else {
           // eslint-disable-next-line no-console
           console.warn('Unknown effect type')
@@ -222,6 +237,9 @@ export function isVideo (effect: StripEffect): effect is VideoStripEffect {
 
 export function isAudio (effect: StripEffect): effect is AudioStripEffect {
   return effect.type === 'Audio'
+}
+export function isImage (effect: StripEffect): effect is ImageStripEffect {
+  return effect.type === 'Image'
 }
 
 export interface State {
@@ -274,6 +292,17 @@ export function useTimeline () {
               )?.path || ''
             )
             effectObjectMap.set(effect.id, audioObj)
+          }
+        } else if (isImage(effect)) {
+          if (!effectObjectMap.has(effect.id)) {
+            const audioObj = new ImageStripEffectObject(
+              effect,
+              assets.assets.value.assets.find(
+                a => a.id === effect.imageAssetId
+              )?.path || ''
+            )
+            effectObjectMap.set(effect.id, audioObj)
+            view.scene.add(audioObj.obj)
           }
         } else {
           // eslint-disable-next-line no-console
