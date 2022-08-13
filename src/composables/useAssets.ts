@@ -40,6 +40,14 @@ export function useAssets () {
       return (asset: IAsset) => {
         state.value.assets = [...state.value.assets, asset]
       }
+    })(assets),
+
+    removeAsset: ((state: Ref<AssetState>) => {
+      return (asset: IAsset) => {
+        state.value.assets = state.value.assets.filter(
+          a => a.id !== asset.id
+        )
+      }
     })(assets)
   }
 }

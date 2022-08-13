@@ -17,6 +17,10 @@ button {
     cursor: pointer;
 }
 
+div:focus {
+    outline: none;
+}
+
 input {
     border: 1px solid;
     padding-left: 4px;

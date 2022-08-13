@@ -2,7 +2,7 @@
 import { uuid } from 'short-uuid'
 import { IAsset } from '~~/src/core/IAsset'
 
-const { assets, addAsset } = useAssets()
+const { assets, addAsset, removeAsset } = useAssets()
 const { startDad } = useDragAndDrop()
 
 function drop (e: DragEvent) {
@@ -58,10 +58,31 @@ function selectAsset (asset: IAsset) {
 function isSelectedAsset (asset: IAsset) {
   return assets.value.selectedAssets.includes(asset)
 }
+
+const el = ref<HTMLElement | null>(null)
+const focus = () => {
+  el.value?.focus()
+}
+onMounted(() => {
+  el.value?.addEventListener('keydown', (e) => {
+    if (e.key === 'x') {
+      if (assets.value.selectedAssets.length > 0) {
+        removeAsset(assets.value.selectedAssets[0])
+      }
+    }
+  })
+})
 </script>
 
 <template>
-  <div style="height: 100%" @drop="drop" @dragover="dragover">
+  <div
+    ref="el"
+    style="height: 100%"
+    tabindex="0"
+    @click="focus"
+    @drop="drop"
+    @dragover="dragover"
+  >
     <div
       v-for="(asset, i) in assets.assets"
       :id="`asset-list-item-${asset.id}`"
