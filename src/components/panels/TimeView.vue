@@ -1,24 +1,41 @@
 <script setup lang="ts">
 import { onDragStart } from '~~/src/utils/onDragStart'
+import { snap } from '~~/src/utils/snap'
 
 const emits = defineEmits<{
   (e: 'move', t: number): void
 }>()
 
-const { timeline } = useTimeline()
+const props = defineProps<{
+  start: number
+  length: number
+}>()
 
 const el = ref<HTMLElement | null>(null)
 
-const pixScale = computed(() => usePixPerSec(el.value))
+const pixScale = computed(() => usePixPerSec(el.value, props.length))
 
+const r = [...Array(10)].map((_, i) => 2 ** i)
 const secs = computed(() => {
   const times = []
-
-  for (let i = Math.round(timeline.value.start); i < timeline.value.end; i++) {
+  const x = Math.ceil(pixScale.value / 80)
+  const nx = r.find(r => r >= x) || 1
+  const step = (1 / nx)
+  let j = 0
+  for (
+    let i = Math.floor(props.start);
+    i < props.start + props.length;
+    i += step
+  ) {
+    const time = snap(Math.floor(props.start) + j * step)
+    let str = time.toString()
+    if (str.length === 1) { str += '.' }
     times.push({
-      time: i,
-      left: (i - timeline.value.start) * pixScale.value
+      time: str.padEnd(5, '0').substring(0, 5) + 's',
+      left: (time - props.start) * pixScale.value,
+      type: time % 1 === 0 ? 'time' : 'time-half'
     })
+    j++
   }
   return times
 })
@@ -28,7 +45,7 @@ function setTime (e: MouseEvent) {
   const x = e.clientX - xleft
   const left = el.value?.parentElement?.getBoundingClientRect().left || 1
 
-  const time = (x - left) / pixScale.value + timeline.value.start
+  const time = (x - left) / pixScale.value + props.start
   emits('move', time)
 }
 
@@ -64,10 +81,27 @@ onMounted(() => {
       v-for="(sec, i) in secs"
       :key="i"
       class="sec"
-      style="border-left: 1px solid; padding-left: 1px"
-      :style="{ position: 'absolute', left: sec.left + 'px' }"
+      style="padding-left: 1px"
+      :style="{
+        position: 'absolute',
+        left: sec.left + 'px',
+        bottom: '0',
+        lineHeight: '12px',
+        borderLeft: sec.type === 'time' ? '1px solid white' : '1px solid gray',
+        color: sec.type === 'time' ? 'white' : 'gray',
+        height: sec.type === 'time' ? '20px' : '12px'
+      }"
     >
-      {{ sec.time }}
+      <div
+        :style="{
+          position: 'absolute',
+          bottom: '0',
+          transformOrigin: 'left bottom',
+          transform: sec.type === 'time' ? 'scale(1)' : 'scale(0.8)'
+        }"
+      >
+        {{ sec.time }}
+      </div>
     </div>
   </div>
 </template>

@@ -1,8 +1,12 @@
-export function usePixPerSec (el?: HTMLElement | null) {
+export function usePixPerSecTimeline (el: HTMLElement | null | undefined) {
   const { timeline } = useTimeline()
-  const width = el?.getBoundingClientRect().width || 1
-  // 0(start) to 1(length)
   const viewScale =
-    (timeline.value.end - timeline.value.start) / timeline.value.length
-  return width / timeline.value.length / viewScale
+    (timeline.value.end - timeline.value.start)
+  const scale = viewScale
+  return usePixPerSec(el, scale)
+}
+
+export function usePixPerSec (el: HTMLElement | null | undefined, visibleSeconds: number) {
+  const width = el?.getBoundingClientRect().width || 1
+  return width / visibleSeconds
 }
