@@ -194,11 +194,11 @@ function updateTime (t: number) {
         <keyframe-select-rect />
         <div
           style="
-          display: flex;
-          position: relative;
-          height: 24px;
-          border-bottom: 1px solid;
-        "
+            display: flex;
+            position: relative;
+            height: 24px;
+            border-bottom: 1px solid;
+          "
         >
           <panels-time-view
             :start="start * strip.length"
@@ -208,7 +208,10 @@ function updateTime (t: number) {
         </div>
         <panels-timeline-cursor
           :style="{
-            left: (timeline.curent - strip.start - start * strip.length) * pixPerSec + 'px'
+            left:
+              (timeline.curent - strip.start - start * strip.length) *
+              pixPerSec +
+              'px'
           }"
         />
 
@@ -217,27 +220,27 @@ function updateTime (t: number) {
           :key="i"
           :style="{ left: `${startOffset + i * pixPerSec}px` }"
           style="
-          display: flex;
-          position: absolute;
-          height: 100%;
-          border-left: 1px solid var(--bg2);
-        "
+            display: flex;
+            position: absolute;
+            height: 100%;
+            border-left: 1px solid var(--bg2);
+          "
         />
 
         <div
           v-for="(key, i) in keys"
           :key="i"
           style="
-          dislplay: flex;
-          position: relative;
-          height: 24px;
-          width: 100%;
-          border-bottom: 1px solid var(--bg2);
-          box-sizing: border-box;
-        "
+            dislplay: flex;
+            position: relative;
+            height: 24px;
+            width: 100%;
+            border-bottom: 1px solid var(--bg2);
+            box-sizing: border-box;
+          "
         >
           <keyframe-marker
-            v-for="(anim, j) in key[1]"
+            v-for="anim in key[1]"
             :key="anim.id"
             :animation="anim"
             :scale="pixPerSec"

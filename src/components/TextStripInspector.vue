@@ -21,7 +21,7 @@ const effect: ComputedRef<TextStripEffect | null> = computed(() => {
   ) as TextStripEffect | null
 })
 
-function changeText (v: object | string | number, key: string) {
+function changeText (v: number | string | object, key: string) {
   if (effect.value && isText(effect.value)) {
     const newE = clone(effect.value)
     const newNewE = new Function(
@@ -36,13 +36,13 @@ return effect
     updateEffect(props.strip?.id, {
       ...newNewE
     })
-    if (hasKeyframe(key)) {
+    if (typeof v === 'number' && hasKeyframe(key)) {
       addKeyframe(key, v)
     }
   }
 }
 
-function addKeyframe (key: string, value: any) {
+function addKeyframe (key: string, value: number) {
   if (!effect.value) {
     return
   }
@@ -79,7 +79,7 @@ function hasKeyframe (key: string) {
             timeline.curent - strip.start,
             'position.x',
             effect.position.x
-          )
+          ) as number
         "
         :key-frame="hasKeyframe('position.x')"
         @input="num => changeText(num, 'position.x')"
@@ -93,7 +93,7 @@ function hasKeyframe (key: string) {
             timeline.curent - strip.start,
             'position.y',
             effect.position.y
-          )
+          ) as number
         "
         :key-frame="hasKeyframe('position.y')"
         @input="e => changeText({ ...effect?.position, y: e }, 'position')"
