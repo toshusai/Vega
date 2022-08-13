@@ -95,5 +95,6 @@ export class Recorder {
     this.audioNodes.forEach((node) => {
       node.connect(this.audioCtx.destination)
     })
+    this.audioNodes = []
   }
 }

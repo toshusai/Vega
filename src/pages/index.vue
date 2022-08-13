@@ -170,15 +170,27 @@ function openExport () {
   isOpenExportModal.value = true
 }
 
+const isRecording = ref(false)
+
+function cancelRecord () {
+  startRecording(false)
+  isRecording.value = false
+  updateTime(0, true)
+  play(false)
+}
 function startRecord () {
   if (Recorder.main) {
     Recorder.main.start(timeline.value.strips as Strip[])
-    updateTime(0)
+    updateTime(0, true)
     startRecording()
     play(true)
+    isRecording.value = true
     Recorder.main.onEnd = (blob) => {
+      startRecording(false)
       download(blob, 'hoge.webm')
-      updateTime(0)
+      isRecording.value = false
+      updateTime(0, true)
+      play(false)
     }
   }
 }
@@ -224,9 +236,12 @@ const inputLenght = (v: number) => {
     <div />
     <v-input :value="timeline.length" @input="inputLenght" />
   </v-modal>
-  <v-modal v-model:is-open="isOpenExportModal">
-    <button @click="startRecord">
+  <v-modal v-model:is-open="isOpenExportModal" :closable="!isRecording">
+    <button v-if="!isRecording" @click="startRecord">
       export
+    </button>
+    <button v-else @click="cancelRecord">
+      cancel
     </button>
     <div />
   </v-modal>
