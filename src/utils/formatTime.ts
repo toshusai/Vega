@@ -3,8 +3,8 @@ export function timeFormat (time: number) {
   if (s < 0) {
     s = -s
   }
-  const sec = s.toFixed(4)
-  const ms = sec.substr(sec.length - 4, 4)
+  const sec = s.toFixed(3)
+  const ms = sec.split('.')[1]
   const hhmmss = new Date(s * 1000).toISOString().substr(11, 8)
   let sign = ''
   if (s < 0) { sign = '-' }
