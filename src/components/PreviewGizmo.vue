@@ -9,6 +9,7 @@ import { onDragStart } from '../utils/onDragStart'
 import { setAnimation } from '../utils/setAnimation'
 import { StripEffect } from '../core/StripEffect'
 import { snap } from '../utils/snap'
+import { TextStripEffect } from '../core/TextStripEffect'
 
 const { timeline, updateEffect, setFocusStripId } = useTimeline()
 
@@ -21,11 +22,17 @@ const style = ref<CSSProperties>({})
 const focus = ref(false)
 
 const isTextEffect = computed(() => {
-  return effect.value && effect.value.type === 'Text'
+  return effect.value && isText(effect.value)
+})
+
+const text = computed(() => {
+  if (effect.value && isText(effect.value)) {
+    return effect.value.text
+  }
 })
 
 const textStyle = computed<CSSProperties>(() => {
-  if (isText(effect.value)) {
+  if (effect.value && isText(effect.value)) {
     return {
       fontSize: `${effect.value.size * props.scale}px`,
       fontFamily: effect.value.family,
@@ -40,11 +47,12 @@ const textStyle = computed<CSSProperties>(() => {
   return {}
 })
 
-function update (e: InputEvent) {
+function update (e: Event) {
+  const t = e.target as HTMLTextAreaElement
   updateEffect(strip.value.id, {
     ...effect.value,
-    text: e.target.value
-  })
+    text: t.value || ''
+  } as TextStripEffect)
 }
 
 function updateStyle (): CSSProperties {
@@ -214,7 +222,7 @@ function drag (e: MouseEvent) {
     <textarea
       v-if="isTextEffect"
       ref="textarea"
-      :value="effect.text"
+      :value="text"
       class="text-gizmo"
       :style="textStyle"
       @input="update"

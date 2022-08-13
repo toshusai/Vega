@@ -5,7 +5,7 @@ export interface Animation {
   id: string;
   time: number;
   key: string;
-  value: number;
+  value: number ;
 }
 
 export type TextStripEffect = StripEffect & {
