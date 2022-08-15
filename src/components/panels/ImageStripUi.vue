@@ -6,6 +6,7 @@ import { Strip } from '~~/src/core/Strip'
 
 const props = defineProps<{ strip: Strip }>()
 const { timeline } = useTimeline()
+const { assets } = useAssets()
 
 const imageEffect = computed(() => {
   return props.strip.effects.find(e => e.type === 'Image') as ImageStripEffect
@@ -29,7 +30,7 @@ const overLeft = computed(() => {
 const markerSize = 12
 
 const imageSrc = computed(() => {
-  return effectObj.value?.tex?.image?.src || ''
+  return assets.value.assets.find(a => a.id === imageEffect.value.imageAssetId)?.path
 })
 
 </script>
