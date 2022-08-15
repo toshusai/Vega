@@ -215,7 +215,7 @@ export class TextStripEffectObject extends EffectObject {
 
     this.obj.position.set(x, y, strip.layer)
 
-    if (strip.start < time && time < strip.start + strip.length) {
+    if (strip.start <= time && time < strip.start + strip.length) {
       this.obj.visible = true
       this.draw(itext, strip, time)
     } else {

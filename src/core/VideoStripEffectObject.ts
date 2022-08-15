@@ -131,7 +131,7 @@ export class VideoStripEffectObject {
     }
     this.obj.scale.set(effect.scale.x, effect.scale.y, 1)
 
-    if (strip.start < time && time < strip.start + strip.length) {
+    if (strip.start <= time && time < strip.start + strip.length) {
       this.obj.visible = true
       this.video.volume = effect.volume || 1
 
