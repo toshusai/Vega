@@ -142,7 +142,8 @@ const markerSize = 12
 
 <style scoped>
 .video {
-  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
   pointer-events: none;
   position: absolute;
 }
