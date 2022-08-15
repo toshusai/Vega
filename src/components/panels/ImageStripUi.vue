@@ -1,79 +1,25 @@
 <script setup lang="ts">
 import { mdiRhombus } from '@mdi/js'
+import { ImageStripEffect } from '~~/src/core/ImageStripEffect'
+import { ImageStripEffectObject } from '~~/src/core/ImageStripEffectObject'
 import { Strip } from '~~/src/core/Strip'
-import { TextStripEffect } from '~~/src/core/TextStripEffect'
-import { TextStripEffectObject } from '~~/src/core/TextStripEffectObject'
 
 const props = defineProps<{ strip: Strip }>()
 const { timeline } = useTimeline()
 
-const textEffect = computed(() => {
-  return props.strip.effects.find(e => e.type === 'Text') as TextStripEffect
+const imageEffect = computed(() => {
+  return props.strip.effects.find(e => e.type === 'Image') as ImageStripEffect
 })
 
 const el = ref<HTMLElement | null>(null)
 
-const pixScale = computed(() => {
-  const width =
-    el.value?.parentElement?.parentElement?.getBoundingClientRect().width || 1
-  const viewScale =
-    (timeline.value.end - timeline.value.start) / timeline.value.length
-  return width / timeline.value.length / viewScale
-})
-
-const canvas = ref<HTMLCanvasElement | null>(null)
+const pixScale = computed(() => usePixPerSecTimeline(el.value?.parentElement?.parentElement))
 
 const effectObj = computed(() => {
   const effectObj = effectObjectMap.get(
-    textEffect.value.id
-  ) as TextStripEffectObject | null
+    imageEffect.value.id
+  ) as ImageStripEffectObject | null
   return effectObj
-})
-
-function drawCanvas () {
-  if (!canvas.value) {
-    return
-  }
-  const ctx = canvas.value?.getContext('2d')
-  if (!ctx) {
-    return
-  }
-  if (!effectObj.value) {
-    return
-  }
-  const srcCanvas = effectObj.value.canvas
-  const srcCtx = srcCanvas.getContext('2d')
-  // canvas.value.width = srcCanvas.width;
-  // canvas.value.height = srcCanvas.height;
-  if (!srcCtx) {
-    return
-  }
-  const mw = effectObj.value.mesureWidth
-  const mh = effectObj.value.mesureHeight
-  const rate = mw / mh
-
-  canvas.value.width = canvas.value.height * rate
-  ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
-
-  ctx.drawImage(
-    srcCtx.canvas,
-    srcCanvas.width / 2 - mw / 2,
-    srcCtx.canvas.height / 2 - mh / 2,
-    mw,
-    mh,
-    0,
-    0,
-    canvas.value.width,
-    canvas.value.height
-  )
-}
-
-onMounted(() => {
-  const update = () => {
-    drawCanvas()
-    window.requestAnimationFrame(update)
-  }
-  update()
 })
 
 const overLeft = computed(() => {
@@ -82,21 +28,11 @@ const overLeft = computed(() => {
 
 const markerSize = 12
 
-// const animations = ref(textEffect.animations);
-// const updateFlag = ref(false);
-// watch(
-//   () => [...props.strip.effects],
-//   () => {
-//     console.log("update", textEffect.animations.length);
-
-//     animations.value = textEffect.animations;
-//   }
-// );
 </script>
 
 <template>
   <div
-    v-if="textEffect"
+    v-if="imageEffect"
     ref="el"
     style="
       height: 100%;
@@ -107,19 +43,11 @@ const markerSize = 12
     "
   >
     <div style="overflow: hidden">
-      <canvas
-        ref="canvas"
-        class="video"
-        :style="{
-          left:
-            (overLeft < 0 ? (overLeft < -50 ? 62 : 12 - overLeft) : 12) + 'px'
-        }"
-      />
-      <!-- {{ animations.length }} -->
+      <img v-if="effectObj" style="height: 100%;" :src="effectObj?.tex?.image.src">
     </div>
     <div>
       <v-icons
-        v-for="(anim, i) in textEffect.animations"
+        v-for="(anim, i) in imageEffect.animations"
         :key="i"
         :path="mdiRhombus"
         style="
@@ -128,8 +56,7 @@ const markerSize = 12
           stroke-width: 2px;
           position: absolute;
         "
-        :style="`width: ${markerSize}px; height: ${markerSize}px; left: ${
-          anim.time * pixScale -
+        :style="`width: ${markerSize}px; height: ${markerSize}px; left: ${anim.time * pixScale -
           4 -
           markerSize / 2 +
           (overLeft < -50 ? overLeft + 50 : 0) // 4(strip border) + 6(half width)
@@ -139,11 +66,3 @@ const markerSize = 12
     </div>
   </div>
 </template>
-
-<style scoped>
-.video {
-  height: 100%;
-  pointer-events: none;
-  position: absolute;
-}
-</style>

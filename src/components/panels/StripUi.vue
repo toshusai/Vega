@@ -194,6 +194,8 @@ function getComponentNameFromStrip (strip: Strip) {
       return 'panels-video-strip-ui'
     } else if (effect.type === 'Audio') {
       return 'panels-audio-strip-ui'
+    } else if (effect.type === 'Image') {
+      return 'panels-image-strip-ui'
     }
     // eslint-disable-next-line no-console
     console.warn('unknown effect type', effect.type)
@@ -222,10 +224,7 @@ function selectStripClick (strip: Strip) {
     "
     @mousedown="drag"
   >
-    <component
-      :is="getComponentNameFromStrip(props.strip)"
-      :strip="props.strip"
-    />
+    <component :is="getComponentNameFromStrip(props.strip)" :strip="props.strip" />
     <div class="handle" @mousedown="moveStart" />
     <div class="handle" style="right: 0" @mousedown="moveEnd" />
     <div
