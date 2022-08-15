@@ -221,11 +221,9 @@ function getBuffer (force = false) {
       }
       try {
         // Ref: https://css-tricks.com/making-an-audio-waveform-visualizer-with-vanilla-javascript/
-        audioCtx.decodeAudioData(arrayBuffer).then((_audioBuffer) => {
-          audioBuffer.value = _audioBuffer
-          loading.value = false
-          draw()
-        })
+        audioBuffer.value = await audioCtx.decodeAudioData(arrayBuffer)
+        loading.value = false
+        draw()
       } catch (e) { }
     })
 }
