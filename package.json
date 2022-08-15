@@ -1,6 +1,15 @@
 {
-  "main": "dist/index.js",
+  "name": "vega",
   "version": "2.0.0",
+  "license": "MIT",
+  "author": "toshusai",
+  "description": "Browser-based video editing software.",
+  "keywords": [
+    "video editor",
+    "nuxt",
+    "ffmpeg"
+  ],
+  "main": "dist/index.js",
   "scripts": {
     "build": "nuxt build",
     "start": "nuxt start",
