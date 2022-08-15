@@ -13,10 +13,18 @@ const { init } = useKeyboard()
 
 const { update } = useUpdate()
 
-onMounted(() => {
+const route = useRoute()
+
+onMounted(async () => {
   init()
   const project = localStorage.getItem('save')
-  if (typeof project === 'string') {
+  if (project === null && route.query.demo === 'true') {
+    const text = await (await fetch('/demo/project.json')).text()
+    const p = JSON.parse(text)
+    setAssets(p.assets)
+    setTimeline(p.timeline)
+    setContainer(p.container)
+  } else if (typeof project === 'string') {
     const p = JSON.parse(project)
     setAssets(p.assets)
     setTimeline(p.timeline)
@@ -135,6 +143,7 @@ body {
   background: var(--bg1);
   color: var(--text1);
 }
+
 .overlay {
   position: absolute;
   top: 0;
