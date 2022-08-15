@@ -2,22 +2,28 @@
 import { mdiFileVideo } from '@mdi/js'
 import { IAsset } from '../core/IAsset'
 
-defineProps<{ asset: IAsset }>()
+const props = defineProps<{ asset: IAsset }>()
 
-const videoEl = ref<HTMLVideoElement | null>(null)
+const video = ref<HTMLVideoElement | null>(null)
+
+const error = ref<boolean>(false)
 
 onMounted(() => {
-  if (!videoEl.value) {
-    return
+  if (video.value) {
+    video.value.src = props.asset.path
+    video.value.onerror = () => {
+      error.value = true
+    }
   }
-  videoEl.value.currentTime = 2
 })
 </script>
 
 <template>
-  <div style="display: flex; min-width: 32px">
+  <div style="display: flex; min-width: 32px; position: relative;">
     <v-icons style="margin: auto" fill="white" :path="mdiFileVideo" />
+    <asset-list-item-error-icon v-if="error" />
   </div>
+  <video ref="video" style="display: none;" />
   <div style="margin: auto 0">
     {{ asset.name }}
   </div>
