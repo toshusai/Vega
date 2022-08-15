@@ -1,9 +1,0 @@
-{
-    "//": [
-        "Default port 9999 is not working.",
-        "Need a proxy for Shared Array Buffer."
-    ],
-    "baseUrl": "http://localhost:9000",
-    "chromeWebSecurity": false,
-    "video": false
-}

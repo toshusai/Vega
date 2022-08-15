@@ -5,11 +5,7 @@
     "module": "commonjs",
     "outDir": "../../dist",
     "moduleResolution": "Node",
-    "lib": [
-      "ESNext",
-      "ESNext.AsyncIterable",
-      "DOM"
-    ],
+    "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
     "esModuleInterop": true,
     "allowJs": true,
     "sourceMap": true,
@@ -18,26 +14,11 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "./*"
-      ],
-      "@/*": [
-        "./*"
-      ]
+      "~/*": ["./*"],
+      "@/*": ["./*"]
     },
-    "types": [
-      "@nuxt/types",
-      "@types/node",
-      "cypress",
-      "cypress-file-upload"
-    ]
+    "types": []
   },
-  "exclude": [
-    "node_modules",
-    ".nuxt",
-    "dist"
-  ],
-  "includes": [
-    "./*.(js|ts)"
-  ]
+  "exclude": ["node_modules", ".nuxt", "dist"],
+  "includes": ["./*.(js|ts)"]
 }
