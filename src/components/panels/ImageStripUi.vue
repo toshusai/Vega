@@ -29,7 +29,7 @@ const overLeft = computed(() => {
 const markerSize = 12
 
 const imageSrc = computed(() => {
-  return effectObj.value?.tex?.image.src || ''
+  return effectObj.value?.tex?.image?.src || ''
 })
 
 </script>
