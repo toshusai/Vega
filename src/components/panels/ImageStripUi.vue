@@ -28,6 +28,10 @@ const overLeft = computed(() => {
 
 const markerSize = 12
 
+const imageSrc = computed(() => {
+  return effectObj.value?.tex?.image.src || ''
+})
+
 </script>
 
 <template>
@@ -43,7 +47,7 @@ const markerSize = 12
     "
   >
     <div style="overflow: hidden">
-      <img v-if="effectObj" style="height: 100%;" :src="effectObj?.tex?.image.src">
+      <img v-if="effectObj" style="height: 100%;" :src="imageSrc">
     </div>
     <div>
       <v-icons
