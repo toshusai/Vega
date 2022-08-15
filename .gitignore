@@ -6,7 +6,4 @@ node_modules
 .output
 .env
 .DS_Store
-*.mp4
 dist/*
-*.png
-*.mp3
