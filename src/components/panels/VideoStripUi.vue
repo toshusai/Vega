@@ -27,11 +27,13 @@ const videoSrc = computed(() => {
 const el = ref<HTMLElement | null>(null)
 
 const pixScale = computed(() => {
-  const width =
-    el.value?.parentElement?.parentElement?.getBoundingClientRect().width || 1
-  const viewScale =
-    (timeline.value.end - timeline.value.start) / timeline.value.length
-  return width / timeline.value.scale / viewScale
+  // const width =
+  //   el.value?.parentElement?.parentElement?.getBoundingClientRect().width || 1
+  // const viewScale =
+  //   (timeline.value.end - timeline.value.start) / timeline.value.length
+  // return width / timeline.value.scale / viewScale
+
+  return usePixPerSecTimeline(el.value?.parentElement?.parentElement)
 })
 
 const effectObj = computed(() => {
@@ -59,7 +61,7 @@ function updateVideoArray () {
 
   videoWidth.value = videoHeight / ratio
 
-  const newArray = Array(Math.ceil(parentRect.width / videoWidth.value)).map(
+  const newArray = Array(Math.ceil(parentRect.width / videoWidth.value) + 1).map(
     (_, i) => i
   )
 
@@ -72,12 +74,14 @@ const videoHeight = 40
 const thumbnailVideo = getThumbnailVideo(props.strip.id)
 onMounted(() => {
   ctx.value = canvas.value?.getContext('2d') || null
-  thumbnailVideo.src = videoSrc.value
+
   if (!effectObj.value) {
     return
   }
   effectObj.value.video.addEventListener('loadedmetadata', () => {
+    thumbnailVideo.src = videoSrc.value
     updateVideoArray()
+    getBuffer(true)
   })
 })
 
@@ -101,7 +105,6 @@ const updateVideoStart = async () => {
 
   let i = 0
   canvas.value.width = rect.width + 50
-  getBuffer()
   imageEls.value.forEach((imageEl) => {
     if (!imageEl) {
       return
@@ -111,9 +114,6 @@ const updateVideoStart = async () => {
     }
     const rect = imageEl.getBoundingClientRect()
     const startPx = 8 + videoWidth.value * i // rect.left - parentRect.left;
-    if (i === 0) {
-      // console.log(rect.left, startPx);
-    }
 
     promises.push(
       () =>
@@ -167,7 +167,7 @@ const updateVideoStart = async () => {
             (props.strip.start - timeline.value.start) * pixScale.value
 
           if (left < -50) {
-            rootOffset.value = (left + 50) % rect.width
+            rootOffset.value = (left + 50) % videoWidth.value
             const l = Math.floor((left + 50) / rect.width) + 1
             const delta = (l * videoWidth.value) / pixScale.value
             currentTime -= delta
@@ -194,17 +194,17 @@ const updateVideoStart = async () => {
   getBuffer()
 }
 
-let audioBuffer: AudioBuffer | null = null
-let loading = false
-function getBuffer () {
-  if (audioBuffer) {
+const audioBuffer = ref<AudioBuffer | null>(null)
+const loading = ref(false)
+function getBuffer (force = false) {
+  if (audioBuffer.value && !force) {
     draw()
     return
   }
-  if (loading) {
+  if (loading.value) {
     return
   }
-  loading = true
+  loading.value = true
   fetch(videoSrc.value)
     .then(response => response.arrayBuffer())
     .then(async (arrayBuffer) => {
@@ -219,11 +219,14 @@ function getBuffer () {
       if (!rect) {
         return
       }
-      // Ref: https://css-tricks.com/making-an-audio-waveform-visualizer-with-vanilla-javascript/
-      audioCtx.decodeAudioData(arrayBuffer).then((_audioBuffer) => {
-        audioBuffer = _audioBuffer
-        draw()
-      })
+      try {
+        // Ref: https://css-tricks.com/making-an-audio-waveform-visualizer-with-vanilla-javascript/
+        audioCtx.decodeAudioData(arrayBuffer).then((_audioBuffer) => {
+          audioBuffer.value = _audioBuffer
+          loading.value = false
+          draw()
+        })
+      } catch (e) { }
     })
 }
 
@@ -245,16 +248,16 @@ function draw () {
   if (!elrect) {
     return
   }
-  if (!audioBuffer) {
+  if (!audioBuffer.value) {
     return
   }
-  const lengthPerSec = audioBuffer.sampleRate
-  const data = audioBuffer.getChannelData(0)
+  const lengthPerSec = audioBuffer.value.sampleRate
+  const data = audioBuffer.value.getChannelData(0)
 
   // console.log("ok");
 
   // 表示されている時間
-  const visualTime = elrect.width / pixScale.value
+  const visualTime = (elrect.width) / pixScale.value
   // 表示されているデータ配列の数
   const visualData = Math.floor(visualTime * lengthPerSec)
   // １ピクセルあたりのデータ数
@@ -271,15 +274,15 @@ function draw () {
   let start = Math.floor(videoEffect.value.start * lengthPerSec)
 
   if (overLeft.value < -50) {
-    const l = Math.floor((overLeft.value + 50) / videoWidth.value) + 1
-    start = Math.floor(dataPerPixel * -(l * videoWidth.value))
+    // const l = Math.floor((overLeft.value + 50) / videoWidth.value) + 1
+    start = Math.floor(dataPerPixel * (-50 - overLeft.value))
     // console.log(start);
   }
 
   function clamp (v: number, min: number, max: number) {
     return Math.max(min, Math.min(max, v))
   }
-  for (let i = start; i < visualData + start; i++) {
+  for (let i = start; i < visualData + start + 100; i++) {
     sum += Math.abs(clamp(data[i], -1, 1))
     pixel++
     if (pixel >= dataPerPixel) {
@@ -336,10 +339,7 @@ watch(timeline.value, () => {
       width: 100%;
     "
   >
-    <div
-      :style="`margin-left: ${rootOffset + 4}px`"
-      style="display: flex; pointer-events: none; position: relative;"
-    >
+    <div :style="`left: ${rootOffset + 4}px`" style="display: flex; pointer-events: none; position: absolute;">
       <img
         v-for="(_, i) in videoArray"
         :key="i"
@@ -352,6 +352,11 @@ watch(timeline.value, () => {
         :height="videoHeight"
         class="video"
       >
+    </div>
+    <div
+      :style="`margin-left: ${0 + 4
+      }px; display: flex; pointer-events: none;`"
+    >
       <canvas ref="canvas" class="canvas" height="40" />
     </div>
   </div>
@@ -363,6 +368,7 @@ watch(timeline.value, () => {
   display: flex;
   pointer-events: none;
 }
+
 .video {
   height: 100%;
   max-width: none;
