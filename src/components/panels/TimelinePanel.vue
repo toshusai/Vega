@@ -10,6 +10,7 @@ import { Strip } from '~~/src/core/Strip'
 import { VideoStripEffect } from '~~/src/core/VideoStripEffect'
 import { ImageStripEffect } from '~~/src/core/ImageStripEffect'
 import { AudioStripEffect } from '~~/src/core/AudioStripEffect'
+import { TextStripEffect } from '~~/src/core/TextStripEffect'
 const {
   timeline,
   addStrip,
@@ -218,6 +219,33 @@ function mouseup () {
 
       const newStrip: Strip = {
         effects: [audioEffect],
+        layer: 0,
+        start: dummyStrip.value.start,
+        length: dummyStrip.value.length,
+        id: uuid()
+      }
+
+      addStrip(newStrip)
+    } else if (asset?.type === 'Text') {
+      const textEffect: TextStripEffect = {
+        type: 'Text',
+        characterSpace: 0,
+        text: 'Text',
+        color: '#fff',
+        family: 'Arial',
+        outlineColor: '#000',
+        outlineWidth: 1,
+        size: 24,
+        animations: [],
+        id: uuid(),
+        position: { x: 0, y: 0, z: 0 },
+        shadowBlur: 0,
+        shadowColor: '#000',
+        style: 'normal'
+      }
+
+      const newStrip: Strip = {
+        effects: [textEffect],
         layer: 0,
         start: dummyStrip.value.start,
         length: dummyStrip.value.length,
