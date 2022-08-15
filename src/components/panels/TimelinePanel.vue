@@ -9,6 +9,7 @@ import TimelineCursor from './TimelineCursor.vue'
 import { Strip } from '~~/src/core/Strip'
 import { VideoStripEffect } from '~~/src/core/VideoStripEffect'
 import { ImageStripEffect } from '~~/src/core/ImageStripEffect'
+import { AudioStripEffect } from '~~/src/core/AudioStripEffect'
 const {
   timeline,
   addStrip,
@@ -205,6 +206,25 @@ function mouseup () {
       }
 
       addStrip(newStrip)
+    } else if (asset?.type === 'Audio') {
+      const audioEffect: AudioStripEffect = {
+        type: 'Audio',
+        audioAssetId: assetId,
+        animations: [],
+        id: uuid(),
+        volume: 1,
+        start: 0
+      }
+
+      const newStrip: Strip = {
+        effects: [audioEffect],
+        layer: 0,
+        start: dummyStrip.value.start,
+        length: dummyStrip.value.length,
+        id: uuid()
+      }
+
+      addStrip(newStrip)
     }
   }
   dummyStrip.value = null
@@ -249,10 +269,7 @@ const pixScale = computed(() => {
 
 <template>
   <div ref="el" class="timeline-root" tabindex="0">
-    <div
-      ref="timelineBody"
-      style="width: calc(100%); position: relative; overflow: hidden"
-    >
+    <div ref="timelineBody" style="width: calc(100%); position: relative; overflow: hidden">
       <div style="display: flex; height: 20px">
         <div
           style="
@@ -332,12 +349,7 @@ const pixScale = computed(() => {
             class="layer"
             :style="`top: ${i * 50 - scrollTop}px`"
           />
-          <panels-strip-ui
-            v-for="strip in strips"
-            :key="strip.id"
-            :strip="strip.strip"
-            :top="scrollTop"
-          />
+          <panels-strip-ui v-for="strip in strips" :key="strip.id" :strip="strip.strip" :top="scrollTop" />
           <panels-strip-ui v-if="dummyStrip" key="dummy" :strip="dummyStrip" />
         </div>
       </div>
