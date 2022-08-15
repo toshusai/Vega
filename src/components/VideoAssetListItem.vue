@@ -8,25 +8,24 @@ const video = ref<HTMLVideoElement | null>(null)
 
 const error = ref<boolean>(false)
 
-onMounted(() => {
+function checkAsset () {
+  error.value = false
   if (video.value) {
     video.value.src = props.asset.path
     video.value.onerror = () => {
       error.value = true
     }
   }
-})
+}
+
+onMounted(checkAsset)
+watch(() => props.asset, checkAsset)
 </script>
 
 <template>
-  <div style="display: flex; min-width: 32px; position: relative;">
-    <v-icons style="margin: auto" fill="white" :path="mdiFileVideo" />
-    <asset-list-item-error-icon v-if="error" />
-  </div>
+  <v-icons style="margin: auto" fill="white" :path="mdiFileVideo" />
+  <asset-list-item-error-icon v-if="error" />
   <video ref="video" style="display: none;" />
-  <div style="margin: auto 0">
-    {{ asset.name }}
-  </div>
 </template>
 
 <style scoped>
