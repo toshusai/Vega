@@ -1,9 +1,10 @@
 name: cd
 
-on: [push, pull_request]
+on: push
 
 jobs:
   cd:
+    if: github.ref == 'refs/heads/master'
     runs-on: ${{ matrix.os }}
 
     strategy:
