@@ -25,89 +25,12 @@ export const initialTimelineState: Timeline = {
   isPlay: false,
   width: 1920,
   height: 1080,
-  length: 20,
+  length: 15,
   curent: 3,
   end: 15,
   scale: 20,
   start: 0,
-  strips: [
-    {
-      id: 'strip1',
-      start: 2.5,
-      length: 4,
-      layer: 1,
-      effects: [
-        {
-          id: 'effect1',
-          type: 'Text',
-          text: 'Hello',
-          position: {
-            x: 10,
-            y: -10,
-            z: 0
-          },
-          color: '#fff',
-          family: 'Arial',
-          outlineColor: '#f00',
-          outlineWidth: 10,
-          shadowBlur: 20,
-          shadowColor: '#000000',
-          style: 'normal',
-          size: 200,
-          animations: [
-            {
-              id: 'animation1',
-              time: 3,
-              key: 'position.x',
-              value: -100
-            },
-            {
-              id: 'animation2',
-              time: 5,
-              key: 'position.x',
-              value: 100
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'strip2',
-      start: 2,
-      layer: 0,
-      length: 6,
-      effects: [
-        {
-          id: 'effect2',
-          type: 'Video',
-          start: 0,
-          position: {
-            x: 10,
-            y: -10,
-            z: 0
-          },
-          videoAssetId: 'asset1',
-          animations: []
-        }
-      ]
-    },
-    {
-      id: 'strip3',
-      start: 0,
-      layer: 2,
-      length: 10,
-      effects: [
-        {
-          id: 'effect3',
-          type: 'Audio',
-          start: 0,
-          audioAssetId: 'asset2',
-          animations: [],
-          volume: 0.5
-        }
-      ]
-    }
-  ]
+  strips: []
 }
 
 function findStripById (id: string, timeline: Timeline) {
