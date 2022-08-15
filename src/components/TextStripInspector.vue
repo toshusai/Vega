@@ -106,21 +106,9 @@ function hasKeyframe (key: string) {
         @input="n => changeText(n, 'size')"
         @key-frame="() => addKeyframe('size', effect?.size)"
       />
-      <inspector-color-input
-        label="color"
-        :value="effect.color"
-        @update-color="e => changeText(e, 'color')"
-      />
-      <inspector-string-input
-        label="style"
-        :value="effect.style"
-        @input="e => changeText(eventToString(e), 'style')"
-      />
-      <inspector-string-input
-        label="Family"
-        :value="effect.family"
-        @input="e => changeText(eventToString(e), 'family')"
-      />
+      <inspector-color-input label="color" :value="effect.color" @update-color="e => changeText(e, 'color')" />
+      <inspector-string-input label="style" :value="effect.style" @input="e => changeText((e), 'style')" />
+      <inspector-string-input label="Family" :value="effect.family" @input="e => changeText((e), 'family')" />
       <inspector-input
         :key-frame="hasKeyframe('characterSpace')"
         label="characterSpace"
@@ -143,11 +131,7 @@ function hasKeyframe (key: string) {
         :value="effect.outlineColor"
         @update-color="e => changeText(e, 'outlineColor')"
       />
-      <inspector-input
-        label="outlineWidth"
-        :value="effect.outlineWidth"
-        @input="n => changeText(n, 'outlineWidth')"
-      />
+      <inspector-input label="outlineWidth" :value="effect.outlineWidth" @input="n => changeText(n, 'outlineWidth')" />
     </div>
   </div>
 </template>
