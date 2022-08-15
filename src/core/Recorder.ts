@@ -7,7 +7,7 @@ import { VideoStripEffectObject } from './VideoStripEffectObject'
 export class Recorder {
   data: Blob[] = []
   audioNodes: AudioNode[] = []
-  audioCtx: AudioContext = new AudioContext()
+  audioCtx!: AudioContext
   elNodeMap: WeakMap<HTMLMediaElement, AudioNode> = new WeakMap()
 
   recorder?: MediaRecorder
@@ -24,10 +24,15 @@ export class Recorder {
   }
 
   start (strips: Strip[]) {
-    const stream = this.canvas.captureStream()
-    if (!this.dst) { this.dst = this.audioCtx.createMediaStreamDestination() }
+    this.stream = this.canvas.captureStream()
+    if (!this.audioCtx) {
+      this.audioCtx = new AudioContext()
+    }
+    if (!this.dst) {
+      this.dst = this.audioCtx.createMediaStreamDestination()
+    }
 
-    this.recorder = new MediaRecorder(stream, {
+    this.recorder = new MediaRecorder(this.stream, {
       mimeType: 'video/webm;codecs=vp9',
       audioBitsPerSecond: 16 * 1000
     })
@@ -50,30 +55,28 @@ export class Recorder {
           }
           let node = this.elNodeMap.get(mediaEl)
           if (!node) {
-            node = this.audioCtx.createMediaElementSource(mediaEl)
+            node = this.audioCtx?.createMediaElementSource(mediaEl)
           }
           node.connect(this.dst)
           this.audioNodes.push(node)
           this.elNodeMap.set(mediaEl, node)
           const ts = this.dst.stream.getAudioTracks()
           ts.forEach((t) => {
-            stream.addTrack(t)
+            this.stream?.addTrack(t)
           })
         }
       })
     })
 
-    this.stream = stream
-
-    this.recorder.ondataavailable = (ev: BlobEvent) => {
-      this.data.push(ev.data)
-    }
-
     this.recorder.addEventListener('stop', () => {
       this.onEnd?.(new Blob(this.data))
     })
 
-    this.recorder.start()
+    this.recorder.addEventListener('dataavailable', (ev) => {
+      this.data.push(ev.data)
+    })
+
+    this.recorder.start(1000)
   }
 
   stop () {
