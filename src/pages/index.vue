@@ -19,7 +19,7 @@ onMounted(async () => {
   init()
   const project = localStorage.getItem('save')
   if (project === null && route.query.demo === 'true') {
-    const text = await (await fetch('/demo/project.json')).text()
+    const text = await (await fetch('/vega/demo/project.json')).text()
     const p = JSON.parse(text)
     setAssets(p.assets)
     setTimeline(p.timeline)
