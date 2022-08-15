@@ -273,7 +273,14 @@ export function useTimeline () {
             view.scene.add(textObj.obj)
           }
         } else if (isVideo(effect)) {
-          if (!effectObjectMap.has(effect.id)) {
+          const veo = effectObjectMap.get(effect.id)
+          const assetPath = assets.assets.value.assets.find(
+            a => a.id === effect.videoAssetId
+          )?.path || ''
+
+          if (veo instanceof VideoStripEffectObject) {
+            veo.updateAsset(assetPath)
+          } else {
             const videoObj = new VideoStripEffectObject(
               effect,
               assets.assets.value.assets.find(

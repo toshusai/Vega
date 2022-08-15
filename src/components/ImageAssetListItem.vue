@@ -21,12 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="display: flex; min-width: 32px; position: relative;">
-    <v-icons style="margin: auto" fill="white" :path="mdiFileImage" />
-    <asset-list-item-error-icon v-if="error" />
-  </div>
+  <v-icons style="margin: auto" fill="white" :path="mdiFileImage" />
+  <asset-list-item-error-icon v-if="error" />
   <img ref="img" style="display: none;">
-  <div style="margin: auto 0">
-    {{ asset.name }}
-  </div>
 </template>

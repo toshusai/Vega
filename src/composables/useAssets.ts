@@ -26,6 +26,7 @@ const initialAssetsState: AssetState = {
 
 export function useAssets () {
   const assets = useState('assets', () => initialAssetsState)
+  // const { init } = useTimeline()
 
   return {
     assets,
@@ -39,6 +40,17 @@ export function useAssets () {
     addAsset: ((state: Ref<AssetState>) => {
       return (asset: IAsset) => {
         state.value.assets = [...state.value.assets, asset]
+      }
+    })(assets),
+
+    updateAsset: ((state: Ref<AssetState>) => {
+      return (asset: IAsset) => {
+        state.value.assets = state.value.assets.map((a) => {
+          if (a.id === asset.id) {
+            return asset
+          }
+          return a
+        })
       }
     })(assets),
 

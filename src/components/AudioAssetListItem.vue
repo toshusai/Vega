@@ -20,14 +20,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="display: flex; min-width: 32px; position: relative;">
-    <v-icons style="margin: auto" fill="white" :path="mdiFileMusic" />
-    <asset-list-item-error-icon v-if="error" />
-  </div>
+  <v-icons style="margin: auto" fill="white" :path="mdiFileMusic" />
+  <asset-list-item-error-icon v-if="error" />
   <audio ref="audio" style="display: none;" />
-  <div style="margin: auto 0">
-    {{ asset.name }}
-  </div>
 </template>
 
 <style scoped>

@@ -72,6 +72,8 @@ onMounted(() => {
     }
   })
 })
+
+const isOpenInspector = ref<boolean>(false)
 </script>
 
 <template>
@@ -94,11 +96,9 @@ onMounted(() => {
       @click="() => selectAsset(asset)"
       @mousedown="e => dragstart(e, asset.id)"
     >
-      <component
-        :is="asset.type.toLowerCase() + '-asset-list-item'"
-        :asset="asset"
-      />
+      <asset-list-item-base :asset="asset" @click-dots="() => isOpenInspector = true" />
     </div>
+    <asset-inspector-modal :is-open="isOpenInspector" @close="() => isOpenInspector = false" />
   </div>
 </template>
 
