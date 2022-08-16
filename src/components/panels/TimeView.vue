@@ -68,7 +68,6 @@ onMounted(() => {
     class="view"
     style="
       height: 20px;
-      font-size: 4px;
       line-height: 20px;
       border-bottom: 1px solid;
       width: 100%;
