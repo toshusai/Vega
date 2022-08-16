@@ -2,6 +2,8 @@
 import { onDragStart } from '~~/src/utils/onDragStart'
 import { snap } from '~~/src/utils/snap'
 
+const { addEventListener } = useContainer()
+
 const emits = defineEmits<{
   (e: 'move', t: number): void
 }>()
@@ -13,12 +15,22 @@ const props = defineProps<{
 
 const el = ref<HTMLElement | null>(null)
 
-const pixScale = computed(() => usePixPerSec(el.value, props.length))
+const pixScale = ref(0)
 
-const r = [...Array(10)].map((_, i) => 2 ** i)
+const updatePixScale = () => {
+  pixScale.value = usePixPerSec(el.value, props.length)
+}
+
+onMounted(() => {
+  updatePixScale()
+  addEventListener('resize', updatePixScale)
+})
+watch(() => [props.start, props.length], updatePixScale)
+
+const r = [...Array(10)].map((_, i) => 2 ** (i - 5))
 const secs = computed(() => {
   const times = []
-  const x = Math.ceil(pixScale.value / 80)
+  const x = (pixScale.value / 80)
   const nx = r.find(r => r >= x) || 1
   const step = (1 / nx)
   let j = 0
