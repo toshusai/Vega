@@ -2,8 +2,12 @@
 import { uuid } from 'short-uuid'
 import { IAsset } from '~~/src/core/IAsset'
 
+import { getIsElectron } from '~~/src/utils/getIsElectron()'
+
 const { assets, addAsset, removeAsset } = useAssets()
 const { startDad } = useDragAndDrop()
+
+const isElectron = getIsElectron()
 
 function drop (e: DragEvent) {
   e.preventDefault()
@@ -15,7 +19,7 @@ function drop (e: DragEvent) {
   addAsset({
     id: uuid(),
     name: file.name,
-    path: file.name,
+    path: (isElectron ? 'file:' : '') + file.path,
     type: extentionToType(getExt(file.name))
   })
 }
