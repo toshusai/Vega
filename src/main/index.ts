@@ -25,41 +25,30 @@ if (isDev) {
 } else {
   const server = http.createServer(function (req, res) {
     const baseDir = path.resolve(__dirname, '../.output/public')
-    // redirect Docs to docs (for docsify)
-    // if (!req.url?.match(/^\/docs/)) {
-    //   req.url = "/static/docs/index.html";
-    // }
-    // redirect Nuxt pages to index.html
-    if (req.url === '/BigBuckBunny.mp4') {
-      req.url = '/BigBuckBunny.mp4'
-      if (req.url.match(/(\.mp4|\.webm)$/)) {
-        res.setHeader('Content-Type', 'video/mp4')
-      }
-      const responseContent = fs.readFileSync(baseDir + req.url)
-      res.write(responseContent)
-      res.end()
-      return
+    const url = req.url?.replace(/^\/vega\//, '/') || '/'
+
+    let filePath = baseDir + url
+    if (!fs.statSync(filePath).isFile()) {
+      filePath = baseDir + '/index.html'
     }
 
-    if (!req.url?.match(/^\/_nuxt|\/static/)) {
-      req.url = '/index.html'
-    }
-    const responseContent = fs.readFileSync(baseDir + req.url)
+    const responseContent = fs.readFileSync(filePath)
     // set script header
-    if (req.url.match(/(\.js|\.mjs)$/)) {
+    if (url.match(/(\.js|\.mjs)$/)) {
       res.setHeader('Content-Type', 'text/javascript')
     }
-    if (req.url.match(/(\.mp4|\.webm)$/)) {
+    if (url.match(/(\.mp4|\.webm)$/)) {
       res.setHeader('Content-Type', 'video/mp4')
     }
-
     res.write(responseContent)
     res.end()
   })
 
   server.listen()
-  const port = server.address()
-  indexUrl = `http://localhost:${port}`
+  const address = server.address()
+  if (typeof address === 'object') {
+    indexUrl = `http://localhost:${address?.port}`
+  }
 }
 
 let win: electron.BrowserWindow | null = null
