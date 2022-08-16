@@ -19,7 +19,8 @@ const {
   changeView,
   play,
   update,
-  changeTimelineTool
+  changeTimelineTool,
+  init
 } = useTimeline()
 
 const { assets } = useAssets()
@@ -187,6 +188,7 @@ function mouseup () {
       }
 
       addStrip(newStrip)
+      init()
     } else if (asset?.type === 'Image') {
       const imageEffect: ImageStripEffect = {
         type: 'Image',
@@ -207,6 +209,7 @@ function mouseup () {
       }
 
       addStrip(newStrip)
+      init()
     } else if (asset?.type === 'Audio') {
       const audioEffect: AudioStripEffect = {
         type: 'Audio',
@@ -226,6 +229,7 @@ function mouseup () {
       }
 
       addStrip(newStrip)
+      init()
     } else if (asset?.type === 'Text') {
       const textEffect: TextStripEffect = {
         type: 'Text',
@@ -253,6 +257,7 @@ function mouseup () {
       }
 
       addStrip(newStrip)
+      init()
     }
   }
   dummyStrip.value = null
