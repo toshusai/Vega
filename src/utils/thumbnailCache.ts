@@ -25,7 +25,6 @@ export function getThumbnailVideo (stripId:string) {
   return video
 }
 
-const isInited = false
 function init () {
   if (!drawCanvas) {
     drawCanvas = document.createElement('canvas')
