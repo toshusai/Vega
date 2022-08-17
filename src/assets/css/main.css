@@ -24,10 +24,16 @@ div:focus {
 input {
     border: 1px solid;
     padding-left: 4px;
-    border-radius: 4px;
+    border-radius: 2px;
+    height: 14px;
     width: 100%;
     background: none;
     line-height: 1;
     font-size: 12px;
     color: var(--text1);
+    box-sizing: border-box;
+}
+
+input:focus {
+    outline: 1px solid orange;
 }

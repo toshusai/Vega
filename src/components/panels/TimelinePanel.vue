@@ -323,11 +323,10 @@ const pixScale = computed(() => {
 <template>
   <div ref="el" class="timeline-root" tabindex="0">
     <div ref="timelineBody" style="width: calc(100%); position: relative; overflow: hidden">
-      <div style="display: flex; height: 20px">
+      <div style="display: flex; height: 20px; border-bottom: 1px solid white;">
         <div
           style="
             width: 100px;
-            border-bottom: 1px solid white;
             border-right: 1px solid white;
           "
         />

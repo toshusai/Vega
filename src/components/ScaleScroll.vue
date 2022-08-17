@@ -57,11 +57,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    ref="el"
-    style="height: 12px; width: 100%; position: relative"
-    @mousedown.stop="() => {}"
-  >
+  <div ref="el" style="height: 12px; width: 100%; position: relative; background: #222" @mousedown.stop="() => { }">
     <div
       class="bg"
       :style="{
@@ -72,15 +68,12 @@ onMounted(() => {
     >
       <div
         class="handle"
-        :style="{
-          left: `1px`
-        }"
         @mousedown="moveStart"
       />
       <div
         class="handle"
         :style="{
-          right: `1px`
+          right: `0px`
         }"
         @mousedown="moveEnd"
       />
@@ -91,24 +84,27 @@ onMounted(() => {
 <style scoped>
 .bg {
   position: absolute;
-  background: #222;
+  background: #333;
   height: 12px;
+  cursor: pointer;
+}
+
+.bg:hover {
+  background: #444;
 }
 
 .handle {
   position: absolute;
-  background: #333;
-  height: 10px;
-  width: 10px;
-
-  top: 1px;
+  background: #555;
+  height: 12px;
+  width: 12px;
   cursor: pointer;
   box-sizing: border-box;
   user-select: none;
 }
 
 .handle:hover {
-  background-color: var(--teal-800);
+  background-color: #666;
 }
 
 .fill {

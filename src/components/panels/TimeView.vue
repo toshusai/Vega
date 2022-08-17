@@ -33,7 +33,7 @@ watch(() => [props.start, props.length], updatePixScale)
 const r = [...Array(10)].map((_, i) => 2 ** (i - 5))
 const secs = computed(() => {
   const times = []
-  const x = (pixScale.value / 80)
+  const x = (pixScale.value / 100)
   const nx = r.find(r => r >= x) || 1
   const step = (1 / nx)
   let j = 0
@@ -84,7 +84,6 @@ onMounted(() => {
     style="
       height: 20px;
       line-height: 20px;
-      border-bottom: 1px solid;
       width: 100%;
       position: relative;
       overflow: hidden;

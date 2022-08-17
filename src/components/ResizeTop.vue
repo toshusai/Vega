@@ -10,7 +10,7 @@
   left: 0;
   transition-property: all;
   width: 100%;
-  background: var(--bg2);
+  background: #eee;
   cursor: ns-resize;
   user-select: none;
 }
