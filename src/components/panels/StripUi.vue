@@ -254,7 +254,6 @@ function selectStripClick (strip: Strip) {
 }
 
 .strip-selected {
-  /* background-color: var(--teal-500); */
   border: 4px solid var(--teal-50);
   box-sizing: border-box;
 }
@@ -266,7 +265,6 @@ function selectStripClick (strip: Strip) {
   background-color: var(--teal-300);
   height: 100%;
   cursor: ew-resize;
-  /* z-index: 1; */
   user-select: none;
 }
 </style>
