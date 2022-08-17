@@ -104,7 +104,6 @@ export class ImageStripEffectObject extends EffectObject {
   ) {
     this.obj.position.set(effect.position.x, effect.position.y, strip.layer)
     this.obj.scale.set(effect.scale.x, effect.scale.y, 1)
-    this.obj.position.setZ(strip.layer)
 
     if (strip.start <= time && time < strip.start + strip.length) {
       this.obj.visible = true
