@@ -143,12 +143,13 @@ function mousemove (e: MouseEvent) {
   const secPerPx = visibleSec / rect.width
 
   if (dad.value.key === 'assets') {
+    const layer = Math.floor((e.clientY - rect.top) / 50)
     dummyStrip.value = {
       effects: [],
-      layer: 0,
+      layer,
       start: (e.clientX - rect.left) * secPerPx + timeline.value.start,
-      length: 1,
-      id: 'x'
+      length: 5,
+      id: 'dummy'
     }
   }
 }
@@ -169,7 +170,6 @@ function mouseup () {
       return
     }
     const asset = assets.value.assets.find(a => a.id === assetId)
-    console.warn('TODO add three.js object to scene')
     if (asset?.type === 'Video') {
       const ve: VideoStripEffect = {
         type: 'Video',
@@ -182,10 +182,8 @@ function mouseup () {
         volume: 1
       }
       const newStrip: Strip = {
+        ...dummyStrip.value,
         effects: [ve],
-        layer: 0,
-        start: dummyStrip.value.start,
-        length: dummyStrip.value.length,
         id: uuid()
       }
 
@@ -203,10 +201,8 @@ function mouseup () {
       }
 
       const newStrip: Strip = {
+        ...dummyStrip.value,
         effects: [imageEffect],
-        layer: 0,
-        start: dummyStrip.value.start,
-        length: dummyStrip.value.length,
         id: uuid()
       }
 
@@ -223,10 +219,8 @@ function mouseup () {
       }
 
       const newStrip: Strip = {
+        ...dummyStrip.value,
         effects: [audioEffect],
-        layer: 0,
-        start: dummyStrip.value.start,
-        length: dummyStrip.value.length,
         id: uuid()
       }
 
@@ -251,10 +245,8 @@ function mouseup () {
       }
 
       const newStrip: Strip = {
+        ...dummyStrip.value,
         effects: [textEffect],
-        layer: 0,
-        start: dummyStrip.value.start,
-        length: dummyStrip.value.length,
         id: uuid()
       }
 
