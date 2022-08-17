@@ -2,6 +2,7 @@
 import { CSSProperties, PropType } from 'vue'
 import { Strip } from '~~/src/core/Strip'
 import undo from '~~/src/core/Undo'
+import { clone } from '~~/src/utils/clone'
 import { onDragStart } from '~~/src/utils/onDragStart'
 import { snap } from '~~/src/utils/snap'
 const props = defineProps({
@@ -72,19 +73,19 @@ function drag (e: MouseEvent) {
     id: props.strip.id,
     layer: props.strip.layer
   }
-  let startStart = startProps.start
+  const startStart = startProps.start
   let finalProps = { ...startProps }
 
   let otherStrips = timeline.value.selectedStrips.filter(
     strip => strip.id !== props.strip.id
   )
-  const otherStripsStart = otherStrips.map(strip => strip.start)
+  const otherStartStrips = otherStrips.map(strip => clone(strip))
 
   clickEvent.value = true
 
   onDragStart(
     e,
-    (d, e) => {
+    (_, e, sd) => {
       // 自分が選択されていないで他に選択中のストリップがあったら自分だけ選択する
       // 複数選択なら自分を加える
       if (!timeline.value.selectedStrips.find(s => s.id === props.strip.id)) {
@@ -100,11 +101,10 @@ function drag (e: MouseEvent) {
       if (layerIndex < 0) {
         return
       }
-      startStart += d.x / pixScale.value
       finalProps = {
         id: startProps.id,
         layer: layerIndex,
-        start: startStart,
+        start: startStart + sd.x / pixScale.value,
         length: startProps.length
       }
       moveStrip(
@@ -114,12 +114,13 @@ function drag (e: MouseEvent) {
         finalProps.layer
       )
 
-      otherStrips.forEach((strip) => {
+      otherStrips.forEach((strip, i) => {
+        const diff = -startProps.layer + otherStartStrips[i].layer
         moveStrip(
           strip.id,
-          strip.start + d.x / pixScale.value,
+          otherStartStrips[i].start + sd.x / pixScale.value,
           strip.length,
-          strip.layer
+          layerIndex + diff
         )
       })
     },
