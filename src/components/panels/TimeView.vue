@@ -25,6 +25,9 @@ onMounted(() => {
   updatePixScale()
   addEventListener('resize', updatePixScale)
 })
+onUpdated(() => {
+  updatePixScale()
+})
 watch(() => [props.start, props.length], updatePixScale)
 
 const r = [...Array(10)].map((_, i) => 2 ** (i - 5))

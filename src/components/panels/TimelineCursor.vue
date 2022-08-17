@@ -1,7 +1,3 @@
-<script setup lang="ts">
-const { timeline } = useTimeline()
-</script>
-
 <template>
   <div
     v-bind="$attrs"
