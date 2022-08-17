@@ -9,7 +9,7 @@
   position: absolute;
   top: 0;
   transition-property: all;
-  background: var(--bg2);
+  background: #eee;
   height: 100%;
   cursor: ew-resize;
   user-select: none;

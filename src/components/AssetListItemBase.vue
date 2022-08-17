@@ -32,6 +32,6 @@ const emits = defineEmits<{
 
 .icon-button:hover {
     cursor: pointer;
-    background-color: gray;
+    background-color: #444;
 }
 </style>

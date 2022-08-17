@@ -2,7 +2,6 @@
 import { Container } from '../core/Container'
 import { onDragStart } from '../utils/onDragStart'
 import { IVector2 } from '../core/IVector2'
-import PanelUI from './PanelUI.vue'
 import ResizeTop from './ResizeTop.vue'
 import ResizeLeft from './ResizeLeft.vue'
 import RectUI from './RectUI.vue'

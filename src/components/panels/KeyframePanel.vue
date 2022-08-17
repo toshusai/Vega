@@ -153,7 +153,7 @@ function updateTime (t: number) {
 <template>
   <div v-if="strip" ref="el" style="display: flex; height: 100%">
     <div style="height: 100%; border-right: solid 1px white">
-      <div style="border-bottom: 1px solid; height: 24px">
+      <div style="border-bottom: 1px solid; height: 20px">
         Properties
       </div>
       <div style="width: 200px; height: 100%">
@@ -163,7 +163,7 @@ function updateTime (t: number) {
           style="
             display: flex;
             overflow: hidden;
-            height: 24px;
+            height: 20px;
             white-space: nowrap;
             box-sizing: border-box;
             border-bottom: 1px solid var(--border-grey);
@@ -196,7 +196,7 @@ function updateTime (t: number) {
           style="
             display: flex;
             position: relative;
-            height: 24px;
+            height: 20px;
             border-bottom: 1px solid;
           "
         >

@@ -99,19 +99,7 @@ function pointerdown () {
 
 <template>
   <div ref="el" style="height: 100%; width: 100%; overflow: hidden">
-    <div style="display: flex; white-space: nowrap">
-      <div>Zoom :</div>
-      <v-input
-        :value="scale"
-        :scale="0.01"
-        :step="0.01"
-        :min="0.1"
-        :max="1"
-        :view="n => n.toFixed(2)"
-        @input="n => (scale = n)"
-      />
-    </div>
-    <div style="display: flex; height: calc(100% - 32px)">
+    <div style="display: flex; height: calc(100% - 24px); overflow: hidden">
       <div style="margin: auto; position: relative">
         <preview-gizmo :scale="scale" />
         <canvas
@@ -121,8 +109,23 @@ function pointerdown () {
         />
       </div>
     </div>
-    <div style="line-height: 12px; height: 12px; text-align: center;">
-      {{ timestamp }}
+    <div style="line-height: 12px; height: 24px; text-align: center; display: flex; border-top: 1px solid white;">
+      <div style="display: flex; white-space: nowrap; margin: auto">
+        <v-input
+          style="height: 16px"
+          :value="scale"
+          :scale="0.01"
+          :step="0.01"
+          :min="0.1"
+          :max="1"
+          :view="n => n.toFixed(2)"
+          @input="n => (scale = n)"
+        />
+      </div>
+
+      <div style="margin: auto">
+        {{ timestamp }}
+      </div>
     </div>
   </div>
 </template>

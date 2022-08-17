@@ -107,8 +107,8 @@ function updateStyle (): CSSProperties {
     const videoH = obj.video.videoHeight * effect.value.scale.y
 
     return {
-      left: (width / 2 + x - videoW / 2) * props.scale + 'px',
-      bottom: (height / 2 + y - videoH / 2) * props.scale + 'px',
+      left: (width / 2 + x - videoW / 2) * props.scale - 1 + 'px',
+      bottom: (height / 2 + y - videoH / 2) * props.scale + 2 + 'px',
       width: videoW * props.scale + 'px',
       height: videoH * props.scale + 'px'
     }

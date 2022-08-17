@@ -95,7 +95,7 @@ const isOpenInspector = ref<boolean>(false)
       :key="i"
       class="asset-list-item"
       :style="{
-        backgroundColor: isSelectedAsset(asset) ? 'darkgray' : 'transparent'
+        backgroundColor: isSelectedAsset(asset) ? '#333' : 'black'
       }"
       @click="() => selectAsset(asset)"
       @mousedown="e => dragstart(e, asset.id)"

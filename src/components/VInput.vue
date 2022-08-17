@@ -80,8 +80,8 @@ function inputByInputEvent (e: Event) {
           margin: auto 4px;
           border-radius: 4px;
           border: 1px solid var(--border-grey);
-          width: 16px;
-          height: 16px;
+          width: 14px;
+          height: 14px;
           user-select: none;
           fill: white;
         "

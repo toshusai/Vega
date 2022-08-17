@@ -23,12 +23,7 @@ const upTop = (e: MouseEvent, pos: Position) => {
 </script>
 
 <template>
-  <div
-    :id="containerId"
-    class="panel"
-    @mouseenter="mouseenter"
-    @mouseleave="mouseleave"
-  >
+  <div :id="containerId" class="panel" @mouseenter="mouseenter" @mouseleave="mouseleave">
     <layout-change-area
       v-if="dad.key === 'layout' && enter && dad.payload !== props.containerId"
       @top="e => upTop(e, 'top')"
@@ -37,10 +32,7 @@ const upTop = (e: MouseEvent, pos: Position) => {
       @bottom="e => upTop(e, 'bottom')"
     />
     <div>
-      <div
-        class="name"
-        @mousedown="e => startDad(e, 'layout', props.containerId)"
-      >
+      <div class="name" @mousedown="e => startDad(e, 'layout', props.containerId)">
         {{ props.name }}
       </div>
     </div>
@@ -55,15 +47,17 @@ const upTop = (e: MouseEvent, pos: Position) => {
   display: block;
   width: 100%;
   overflow: hidden;
-  border: 1px solid;
+  border: 1px solid white;
   box-sizing: border-box;
   height: 100%;
 }
 
 .name {
   border-bottom: 1px solid;
-  font-size: 12px;
-  line-height: 12px;
+  font-size: 8px;
+  padding-top: 1px;
+  padding-left: 2px;
+  height: 12px;
   cursor: pointer;
   box-sizing: border-box;
 }
