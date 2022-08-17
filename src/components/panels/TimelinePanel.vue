@@ -13,6 +13,9 @@ import { ImageStripEffect } from '~~/src/core/ImageStripEffect'
 import { AudioStripEffect } from '~~/src/core/AudioStripEffect'
 import { TextStripEffect } from '~~/src/core/TextStripEffect'
 import { clone } from '~~/src/utils/clone'
+import { TextStripEffectObject } from '~~/src/core/TextStripEffectObject'
+import { VideoStripEffectObject } from '~~/src/core/VideoStripEffectObject'
+import { ImageStripEffectObject } from '~~/src/core/ImageStripEffectObject'
 const {
   timeline,
   addStrip,
@@ -277,14 +280,29 @@ onMounted(() => {
     if (e.key === 'x') {
       const cloneStrip = clone(timeline.value.selectedStrips.map(s => s)) as Strip[]
       if (timeline.value.selectedStrips.length > 0) {
-        removeStrips(cloneStrip.map(s => s.id))
+        const redo = () => {
+          removeStrips(cloneStrip.map(s => s.id))
+          cloneStrip.forEach((s) => {
+            s.effects.forEach((effect) => {
+              const obj = effectObjectMap.get(effect.id)
+              if (
+                obj instanceof TextStripEffectObject ||
+                obj instanceof VideoStripEffectObject ||
+                obj instanceof ImageStripEffectObject
+              ) {
+                obj.obj.removeFromParent()
+                effectObjectMap.delete(effect.id)
+              }
+            })
+          })
+        }
+        redo()
         undo.push(() => {
           cloneStrip.forEach((s) => {
             addStrip(s)
           })
-        }, () => {
-          removeStrips(cloneStrip.map(s => s.id))
-        })
+          init()
+        }, redo)
       }
     }
   })
