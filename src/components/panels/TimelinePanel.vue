@@ -6,11 +6,13 @@ import SelectRect from '../SelectRect.vue'
 import { getScrollbarWidth } from '../../utils/getScrollbarWidth'
 import TimeView from './TimeView.vue'
 import TimelineCursor from './TimelineCursor.vue'
+import undo from '~~/src/core/Undo'
 import { Strip } from '~~/src/core/Strip'
 import { VideoStripEffect } from '~~/src/core/VideoStripEffect'
 import { ImageStripEffect } from '~~/src/core/ImageStripEffect'
 import { AudioStripEffect } from '~~/src/core/AudioStripEffect'
 import { TextStripEffect } from '~~/src/core/TextStripEffect'
+import { clone } from '~~/src/utils/clone'
 const {
   timeline,
   addStrip,
@@ -281,8 +283,16 @@ onMounted(() => {
   })
   el.value?.addEventListener('keydown', (e) => {
     if (e.key === 'x') {
+      const cloneStrip = clone(timeline.value.selectedStrips.map(s => s)) as Strip[]
       if (timeline.value.selectedStrips.length > 0) {
-        removeStrips(timeline.value.selectedStrips.map(s => s.id))
+        removeStrips(cloneStrip.map(s => s.id))
+        undo.push(() => {
+          cloneStrip.forEach((s) => {
+            addStrip(s)
+          })
+        }, () => {
+          removeStrips(cloneStrip.map(s => s.id))
+        })
       }
     }
   })
