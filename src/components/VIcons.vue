@@ -12,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-  <svg :width="size" :viewBox="`0 0 ${size} ${size}`" :height="size" v-bind="$attrs">
+  <svg :width="size" :height="size" :viewBox="`0 0 24 24`" v-bind="$attrs">
     <path :d="path" />
   </svg>
 </template>

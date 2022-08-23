@@ -31,15 +31,15 @@ const up = () => {
 
 <template>
   <div v-if="isOpen" class="overlay" @pointerdown="isDown = true" @pointerup="up">
-    <div class="modal" @click.prevent.stop="() => {}" @pointerdown.prevent.stop="()=>{}">
+    <div class="modal" @pointerdown.stop="()=>{}">
       <div class="header">
         <button
           v-if="showClose"
           :disabled="!closable"
-          style="margin-left: auto; padding: 0"
+          style="margin-left: auto; padding: 0; height: 16px"
           @click="emit('close')"
         >
-          <v-icons fill="white" :path="mdiClose" />
+          <v-icons :size="16" fill="white" :path="mdiClose" />
         </button>
       </div>
       <slot />
@@ -60,7 +60,8 @@ const up = () => {
 
 .modal {
   width: 500px;
-  padding: 8px;
+  padding: 4px;
+  padding-bottom: 16px;
   background: gray;
 }
 
