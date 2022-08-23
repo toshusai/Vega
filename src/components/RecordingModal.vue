@@ -23,12 +23,14 @@ const emit = defineEmits<{
     :closable="!isRecording"
     @close="() => emit('close')"
   >
-    <button v-if="!isRecording" @click="emit('start-recording')">
-      export
-    </button>
-    <button v-else @click="emit('stop-recording')">
-      cancel
-    </button>
+    <div style="display: flex;">
+      <v-button v-if="!isRecording" style="margin: auto" @click="emit('start-recording')">
+        export
+      </v-button>
+      <v-button v-else style="margin: auto" @click="emit('stop-recording')">
+        cancel
+      </v-button>
+    </div>
     <div />
   </v-modal>
 </template>

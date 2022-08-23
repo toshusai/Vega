@@ -7,7 +7,7 @@ const inputLenght = (v: number) => {
 
 <template>
   <v-modal v-bind="$attrs">
-    <v-input :value="timeline.length" @input="inputLenght" />
+    <v-input-base :value="timeline.length" @input="inputLenght" />
   </v-modal>
 </template>
 
