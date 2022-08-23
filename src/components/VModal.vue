@@ -19,16 +19,24 @@ defineProps({
 const emit = defineEmits<{
   (e: 'close'): void
 }>()
+
+const isDown = ref(false)
+const up = () => {
+  if (isDown.value) {
+    emit('close')
+  }
+  isDown.value = false
+}
 </script>
 
 <template>
-  <div v-if="isOpen" class="overlay" @click="emit('close')">
-    <div class="modal" @click.stop="() => {}">
+  <div v-if="isOpen" class="overlay" @pointerdown="isDown = true" @pointerup="up">
+    <div class="modal" @click.prevent.stop="() => {}" @pointerdown.prevent.stop="()=>{}">
       <div class="header">
         <button
           v-if="showClose"
           :disabled="!closable"
-          style="margin-left: auto"
+          style="margin-left: auto; padding: 0"
           @click="emit('close')"
         >
           <v-icons fill="white" :path="mdiClose" />
@@ -52,7 +60,7 @@ const emit = defineEmits<{
 
 .modal {
   width: 500px;
-  padding: 16px;
+  padding: 8px;
   background: gray;
 }
 
