@@ -11,6 +11,7 @@
   ],
   "main": "dist/index.js",
   "scripts": {
+    "postinstall": "electron-builder install-app-deps",
     "lint": "eslint --ext .vue,.ts src/",
     "dev:nuxt": "nuxt dev",
     "build:nuxt": "nuxt build",
@@ -19,7 +20,7 @@
     "preview:nuxt": "nuxt preview",
     "dev:electron": "yarn tsc:electron && NODE_ENV='development' electron .",
     "build:electron": "tsc -p ./src/main/tsconfig.json",
-    "build-all": "yarn build:nuxt && yarn build:electron && electron-builder"
+    "build": "yarn build:nuxt && yarn build:electron && electron-builder"
   },
   "build": {
     "appId": "com.toshusai.vega",
