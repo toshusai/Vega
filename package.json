@@ -11,16 +11,18 @@
   ],
   "main": "dist/index.js",
   "scripts": {
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "tsc:electron": "tsc -p ./src/main/tsconfig.json",
-    "electron:dev": "yarn build:electron && NODE_ENV='development' electron .",
-    "electron:run": "yarn build:electron && electron .",
     "lint": "eslint --ext .vue,.ts src/",
-    "preview": "nuxt preview",
-    "build:electron": "electron-builder"
+
+    "dev:nuxt": "nuxt dev",
+    "build:nuxt": "nuxt build",
+    "start:nuxt": "nuxt start",
+    "generate:nuxt": "nuxt generate",
+    "preview:nuxt": "nuxt preview",
+
+    "dev:electron": "yarn tsc:electron && NODE_ENV='development' electron .",
+    "build:electron": "tsc -p ./src/main/tsconfig.json",
+
+    "build-all": "yarn build:nuxt && yarn build:electron && electron-builder"
   },
   "build": {
     "appId": "com.toshusai.vega",

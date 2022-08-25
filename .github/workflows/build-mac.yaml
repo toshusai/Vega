@@ -15,10 +15,10 @@ jobs:
 
       - name: yarn install
         run: yarn install
-      - name: yarn build
-        run: yarn build
-      - name: yarn build:electron
-        run: yarn build:electron --mac
+
+      - name: yarn build-all
+        run: yarn build-all
+
       - name: create release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
