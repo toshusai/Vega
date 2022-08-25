@@ -15,11 +15,27 @@
     "start": "nuxt start",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "build:electron": "tsc -p ./src/main/tsconfig.json",
+    "tsc:electron": "tsc -p ./src/main/tsconfig.json",
     "electron:dev": "yarn build:electron && NODE_ENV='development' electron .",
     "electron:run": "yarn build:electron && electron .",
     "lint": "eslint --ext .vue,.ts src/",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "build:electron": "electron-builder"
+  },
+  "build": {
+    "appId": "com.toshusai.vega",
+    "asar": true,
+    "directories": {
+      "output": "build/"
+    },
+    "mac": {
+      "target": {
+        "target": "default",
+        "arch": [
+          "arm64"
+        ]
+      }
+    }
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^10.0.0",
@@ -28,6 +44,8 @@
     "@types/three": "^0.139.0",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
     "@typescript-eslint/parser": "^5.26.0",
+    "electron": "^20.1.0",
+    "electron-builder": "^23.3.3",
     "eslint": "^8.16.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-nuxt": "^3.0.0",
@@ -43,8 +61,6 @@
   "dependencies": {
     "@ckpack/vue-color": "^1.1.9",
     "@mdi/js": "^7.0.96",
-    "electron": "^18.2.4",
-    "electron-builder": "^23.0.3",
     "electron-devtools-installer": "^3.2.0",
     "install": "^0.13.0",
     "npm": "^8.17.0",
