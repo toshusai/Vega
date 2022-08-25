@@ -1,6 +1,6 @@
 {
   "name": "vega",
-  "version": "2.0.0",
+  "version": "2.0.1-0",
   "license": "MIT",
   "author": "toshusai",
   "description": "Browser-based video editing software.",
@@ -12,16 +12,13 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "eslint --ext .vue,.ts src/",
-
     "dev:nuxt": "nuxt dev",
     "build:nuxt": "nuxt build",
     "start:nuxt": "nuxt start",
     "generate:nuxt": "nuxt generate",
     "preview:nuxt": "nuxt preview",
-
     "dev:electron": "yarn tsc:electron && NODE_ENV='development' electron .",
     "build:electron": "tsc -p ./src/main/tsconfig.json",
-
     "build-all": "yarn build:nuxt && yarn build:electron && electron-builder"
   },
   "build": {
