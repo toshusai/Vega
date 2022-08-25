@@ -133,7 +133,7 @@ const rootContainer = computed(() => container.value as Container)
         <show-stats-button />
       </div>
       <container-ui :container="rootContainer" />
-      <panels-operation-history-panel />
+      <operation-history-panel />
     </div>
   </div>
 </template>

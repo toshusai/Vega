@@ -190,13 +190,13 @@ function getComponentNameFromStrip (strip: Strip) {
   for (let i = 0; i < strip.effects.length; i++) {
     const effect = strip.effects[i]
     if (effect.type === 'Text') {
-      return 'panels-text-strip-ui'
+      return 'text-strip-ui'
     } else if (effect.type === 'Video') {
-      return 'panels-video-strip-ui'
+      return 'video-strip-ui'
     } else if (effect.type === 'Audio') {
-      return 'panels-audio-strip-ui'
+      return 'audio-strip-ui'
     } else if (effect.type === 'Image') {
-      return 'panels-image-strip-ui'
+      return 'image-strip-ui'
     }
     // eslint-disable-next-line no-console
     console.warn('unknown effect type', effect.type)

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { time } from 'console'
-import KeyframeMarker from '../KeyframeMarker.vue'
-import KeyframeSelectRect from '../KeyframeSelectRect.vue'
+import KeyframeMarker from './KeyframeMarker.vue'
+import KeyframeSelectRect from './KeyframeSelectRect.vue'
 import { Animation } from '~~/src/core/TextStripEffect'
 import { calcAnimationValue } from '~~/src/utils/calcAnimationValue'
 import { StripEffect } from '~~/src/core/StripEffect'
@@ -200,13 +199,13 @@ function updateTime (t: number) {
             border-bottom: 1px solid;
           "
         >
-          <panels-time-view
+          <time-view
             :start="start * strip.length"
             :length="(end - start) * strip.length"
             @move="updateTime"
           />
         </div>
-        <panels-timeline-cursor
+        <timeline-cursor
           :style="{
             left:
               (timeline.curent - strip.start - start * strip.length) *
