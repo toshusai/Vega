@@ -4,6 +4,7 @@ import '~/assets/css/main.css'
 import undo from '../core/Undo'
 import ButtonMenu from '../components/ButtonMenu.vue'
 import SettingsButton from '../components/SettingsButton.vue'
+import ProjectModal from '../components/ProjectModal.vue'
 const { container, setContainer } = useContainer()
 
 const { init: initTimeline, timeline, setTimeline } = useTimeline()
@@ -30,6 +31,7 @@ onMounted(async () => {
     setTimeline(p.timeline)
     setContainer(p.container)
   }
+
   let prev = 0
   const mainUpdate = (t: number) => {
     update(t - prev)
@@ -110,6 +112,7 @@ function projectFromJsonString (json: string) {
 }
 
 const rootContainer = computed(() => container.value as Container)
+const isOpenProjectModal = ref(true)
 </script>
 
 <template>
@@ -135,6 +138,7 @@ const rootContainer = computed(() => container.value as Container)
       <container-ui :container="rootContainer" />
       <operation-history-panel />
     </div>
+    <project-modal :is-open="isOpenProjectModal" />
   </div>
 </template>
 

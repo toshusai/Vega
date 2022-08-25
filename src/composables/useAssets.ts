@@ -1,27 +1,14 @@
 import { Ref } from 'nuxt/dist/app/compat/capi'
 import { IAsset } from '../core/IAsset'
 
-interface AssetState {
+export interface AssetState {
   assets: IAsset[];
   selectedAssets: IAsset[];
 }
 
 const initialAssetsState: AssetState = {
   selectedAssets: [],
-  assets: [
-    // {
-    //   id: 'asset1',
-    //   type: 'Video',
-    //   path: './sample_1280x720_surfing_with_audio.mp4',
-    //   name: 'Big Buck Bunny'
-    // },
-    // {
-    //   id: 'asset2',
-    //   type: 'Audio',
-    //   path: './tsudumi-japan.wav',
-    //   name: 'Tsu-dumi Japan'
-    // }
-  ]
+  assets: []
 }
 
 export function useAssets () {

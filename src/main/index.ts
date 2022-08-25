@@ -2,6 +2,7 @@ import http from 'http'
 import fs from 'fs'
 import path from 'path'
 import electron from 'electron'
+import { init } from './ipc'
 
 const PROXY_PORT = 3000
 
@@ -54,6 +55,7 @@ if (isDev) {
 let win: electron.BrowserWindow | null = null
 const app = electron.app
 const newWin = () => {
+  init()
   win = new electron.BrowserWindow({
     width: 1280,
     height: 720,
