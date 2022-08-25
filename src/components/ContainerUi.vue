@@ -2,15 +2,12 @@
 import { Container } from '../core/Container'
 import { onDragStart } from '../utils/onDragStart'
 import { IVector2 } from '../core/IVector2'
-import ResizeTop from './ResizeTop.vue'
-import ResizeLeft from './ResizeLeft.vue'
-import RectUI from './RectUI.vue'
 
 const props = defineProps<{ container: Container }>()
 const { resizeContainer } = useContainer()
 const rectRef = ref([] as typeof RectUI[])
 const move = (i: number) => {
-  return (delta: IVector2, e: MouseEvent) => {
+  return (delta: IVector2, _e: MouseEvent) => {
     if (!rectRef.value || rectRef.value.length === 0) { return }
 
     const rect = rectRef.value[i].el.parentElement?.getBoundingClientRect()
@@ -25,11 +22,7 @@ const move = (i: number) => {
 </script>
 
 <template>
-  <panel-ui
-    v-if="props.container.panel"
-    :name="props.container.panel.type"
-    :container-id="props.container.id"
-  />
+  <panel-ui v-if="props.container.panel" :name="props.container.panel.type" :container-id="props.container.id" />
   <template v-else>
     <div :id="props.container.id" />
     <rect-ui
@@ -44,12 +37,9 @@ const move = (i: number) => {
       <template v-if="i !== 0">
         <resize-top
           v-if="props.container.align === 'vertical'"
-          @mousedown="(e:MouseEvent) => onDragStart(e, move(i))"
+          @mousedown="(e: MouseEvent) => onDragStart(e, move(i))"
         />
-        <resize-left
-          v-else
-          @mousedown="(e:MouseEvent) => onDragStart(e, move(i))"
-        />
+        <resize-left v-else @mousedown="(e: MouseEvent) => onDragStart(e, move(i))" />
       </template>
     </rect-ui>
   </template>

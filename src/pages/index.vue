@@ -5,8 +5,10 @@ import undo from '../core/Undo'
 import ButtonMenu from '../components/ButtonMenu.vue'
 import SettingsButton from '../components/SettingsButton.vue'
 import ProjectModal from '../components/ProjectModal.vue'
+import { ipcSend } from '../utils/ipcSend'
+import { getIsElectron } from '../utils/getIsElectron()'
+import { download } from '../utils/download'
 const { container, setContainer } = useContainer()
-
 const { init: initTimeline, timeline, setTimeline } = useTimeline()
 const { assets, setAssets } = useAssets()
 const op = useOperation()
@@ -14,24 +16,10 @@ const { init } = useKeyboard()
 
 const { update } = useUpdate()
 
-const route = useRoute()
+const { project } = useProject()
 
-onMounted(async () => {
+onMounted(() => {
   init()
-  const project = localStorage.getItem('save')
-  if (project === null && route.query.demo === 'true') {
-    const text = await (await fetch('/vega/demo/project.json')).text()
-    const p = JSON.parse(text)
-    setAssets(p.assets)
-    setTimeline(p.timeline)
-    setContainer(p.container)
-  } else if (typeof project === 'string') {
-    const p = JSON.parse(project)
-    setAssets(p.assets)
-    setTimeline(p.timeline)
-    setContainer(p.container)
-  }
-
   let prev = 0
   const mainUpdate = (t: number) => {
     update(t - prev)
@@ -49,9 +37,23 @@ onMounted(async () => {
     } else if (e.keyCode === 90 && ctrlKey) {
       undo.undo()
     }
+    const isElectron = getIsElectron()
     // Cmannd + S
     if (e.keyCode === 83 && ctrlKey) {
-      localStorage.setItem('save', projectToJsonString())
+      if (isElectron) {
+        if (project.value.path) {
+          ipcSend('SAVE_FILE', { path: project.value.path, data: projectToJsonString() })
+        } else {
+          ipcSend('SAVE_NEW_FILE', projectToJsonString()).then((path) => {
+            if (path === false) { return }
+            const paths = JSON.parse(localStorage.getItem('RECENT_USED_PROJECT_PATHS_KEY') || '[]')
+            paths.push(path)
+            localStorage.setItem('RECENT_USED_PROJECT_PATHS_KEY', JSON.stringify(paths))
+          })
+        }
+      } else {
+        downloadFile()
+      }
       op.pushHistory('Save')
       e.preventDefault()
     }
@@ -113,6 +115,11 @@ function projectFromJsonString (json: string) {
 
 const rootContainer = computed(() => container.value as Container)
 const isOpenProjectModal = ref(true)
+
+function open () {
+  isOpenProjectModal.value = false
+  initTimeline()
+}
 </script>
 
 <template>
@@ -138,7 +145,7 @@ const isOpenProjectModal = ref(true)
       <container-ui :container="rootContainer" />
       <operation-history-panel />
     </div>
-    <project-modal :is-open="isOpenProjectModal" />
+    <project-modal :is-open="isOpenProjectModal" @open="open" />
   </div>
 </template>
 
