@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import shortUUID, { uuid } from 'short-uuid'
+import { uuid } from 'short-uuid'
 import { mdiCursorDefault } from '@mdi/js'
-import ScaleScroll from '../ScaleScroll.vue'
-import SelectRect from '../SelectRect.vue'
-import { getScrollbarWidth } from '../../utils/getScrollbarWidth'
+import { getScrollbarWidth } from '../utils/getScrollbarWidth'
+import ScaleScroll from './ScaleScroll.vue'
+import SelectRect from './SelectRect.vue'
 import TimeView from './TimeView.vue'
 import TimelineCursor from './TimelineCursor.vue'
 import undo from '~~/src/core/Undo'
@@ -401,8 +401,8 @@ const pixScale = computed(() => {
             class="layer"
             :style="`top: ${i * 50 - scrollTop}px`"
           />
-          <panels-strip-ui v-for="strip in strips" :key="strip.id" :strip="strip.strip" :top="scrollTop" />
-          <panels-strip-ui v-if="dummyStrip" key="dummy" :strip="dummyStrip" />
+          <strip-ui v-for="strip in strips" :key="strip.id" :strip="strip.strip" :top="scrollTop" />
+          <strip-ui v-if="dummyStrip" key="dummy" :strip="dummyStrip" />
         </div>
       </div>
       <div class="flex">
