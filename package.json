@@ -16,7 +16,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "build:electron": "tsc -p ./src/main/tsconfig.json",
-    "electron:dev": "NODE_ENV='development' electron .",
+    "electron:dev": "yarn build:electron && NODE_ENV='development' electron .",
     "electron:run": "yarn build:electron && electron .",
     "lint": "eslint --ext .vue,.ts src/",
     "preview": "nuxt preview"

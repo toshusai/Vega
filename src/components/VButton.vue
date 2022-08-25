@@ -14,5 +14,6 @@
     padding: 4px 8px;
     font-size: 12px;
     border-radius: 4px;
+    line-height: 12px;
 }
 </style>

@@ -60,7 +60,8 @@ const newWin = () => {
     width: 1280,
     height: 720,
     webPreferences: {
-      webSecurity: false
+      webSecurity: false,
+      preload: path.join(__dirname, 'preload.js')
     }
   })
   win.on('closed', () => (win = null))

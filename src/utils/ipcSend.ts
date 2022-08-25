@@ -1,9 +1,9 @@
 
-export function ipcSend (name: string, ...args: unknown[]) {
-  return new Promise((resolve) => {
-    window.ipcRenderer.on(name, (_, ...args) => {
-      resolve(args)
+export function ipcSend<T> (name: string, params: unknown) {
+  return new Promise<T>((resolve) => {
+    window.ipcRenderer.on(name, (e) => {
+      resolve(e as T)
     })
-    window.ipcRenderer.send(name, ...args)
+    window.ipcRenderer.send(name, params)
   })
 }
