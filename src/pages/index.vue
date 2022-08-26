@@ -6,7 +6,7 @@
   <div>
     <div style="justify-content: center;">
       <div class="thumbnail">
-        <img class="image" src="/vega/screenshot.png">
+        <img class="image" src="https://github.com/toshusai/vega/vega/screenshot.png">
         <div style="margin: auto; z-index: 1; text-align: center;">
           <h1 style="font-size: 32px">
             Vega
