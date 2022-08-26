@@ -12,7 +12,7 @@
   "main": "dist/index.js",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "lint": "eslint --ext .vue,.ts src/",
+    "lint": "eslint --fix --ext .vue,.ts src/",
     "dev:nuxt": "nuxt dev",
     "build:nuxt": "nuxt build",
     "start:nuxt": "nuxt start",
