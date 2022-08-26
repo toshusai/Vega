@@ -4,9 +4,10 @@
     --bg2: #444;
 }
 
-body {
+html, body, #__nuxt {
     font-size: 12px;
     overscroll-behavior-x: none;
+    height: 100%;
 }
 
 button {

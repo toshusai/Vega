@@ -1,19 +1,19 @@
 <script setup lang="ts">
-
+defineProps<{ as?: string }>()
 </script>
 
 <template>
-  <button v-bind="$attrs" class="v-btn">
+  <component :is="as ?? 'button'" v-bind="$attrs" class="v-btn">
     <slot />
-  </button>
+  </component>
 </template>
 
 <style scoped>
 .v-btn {
-    border: 1px white solid;
-    padding: 4px 8px;
-    font-size: 12px;
-    border-radius: 4px;
-    line-height: 12px;
+  border: 1px white solid;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  line-height: 12px;
 }
 </style>
