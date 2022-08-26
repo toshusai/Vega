@@ -18,7 +18,7 @@
     "start:nuxt": "nuxt start",
     "generate:nuxt": "nuxt generate",
     "preview:nuxt": "nuxt preview",
-    "dev:electron": "yarn tsc:electron && NODE_ENV='development' electron .",
+    "dev:electron": "yarn build:electron && NODE_ENV='development' electron .",
     "build:electron": "tsc -p ./src/main/tsconfig.json",
     "build": "yarn build:nuxt && yarn build:electron && electron-builder"
   },
