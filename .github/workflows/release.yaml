@@ -1,6 +1,9 @@
-name: build-mac
+name: release
 
-on: push
+on:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   build-mac:
@@ -8,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v2
