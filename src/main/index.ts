@@ -26,7 +26,11 @@ if (isDev) {
 } else {
   const server = http.createServer(function (req, res) {
     const baseDir = path.resolve(__dirname, '../.output/public')
-    const url = req.url?.replace(/^\/vega\//, '/') || '/'
+
+    let url = req.url?.replace(/^\/vega\//, '/') || '/'
+    if (url.endsWith('/app')) {
+      url = url.replace('/app', '')
+    }
 
     let filePath = baseDir + url
     if (!fs.statSync(filePath).isFile()) {
