@@ -22,7 +22,7 @@ if (isDev) {
   //   );
 
   //   proxy.listen(PROXY_PORT);
-  indexUrl = `http://localhost:${PROXY_PORT}`
+  indexUrl = `http://localhost:${PROXY_PORT}/app`
 } else {
   const server = http.createServer(function (req, res) {
     const baseDir = path.resolve(__dirname, '../.output/public')
@@ -48,7 +48,7 @@ if (isDev) {
   server.listen()
   const address = server.address()
   if (typeof address === 'object') {
-    indexUrl = `http://localhost:${address?.port}`
+    indexUrl = `http://localhost:${address?.port}/app`
   }
 }
 

@@ -2,8 +2,6 @@
     --text1: #fafafa;
     --bg1: #111;
     --bg2: #444;
-    font-size: 12px;
-    line-height: 12px;
 }
 
 body {
@@ -20,6 +18,10 @@ button {
 
 div:focus {
     outline: none;
+}
+
+a:visited {
+    color: plum;
 }
 
 input {
