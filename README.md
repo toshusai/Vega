@@ -2,24 +2,15 @@
 
 Vega is a open source web based video editor. 
 
-__This is an early project.__
-
-__[demo](https://toshusai.github.io/vega/app/?demo=true)__
+__[Home page is here](https://toshusai.github.io/vega)__  
 
 <img src="src/public/vega/screenshot.png" width="100%">
 
 
 ## Support Platforms
-- Google Chrome (Mac, Windows, Linux)
-- :construction: Mac
-
-## Features
-- Video
-- Audio
-- Image
-- Text
-- Animations
-- :construction: Plugin system
+- :white_check_mark: Mac (arm64, x64)
+- :white_check_mark: Windows
+- :construction: Linux
 
 ## License
 MIT License
