@@ -12,7 +12,7 @@
             Vega
           </h1>
           <h2>
-            a open source video editor
+            an open source video editing software.
           </h2>
           <v-button
             style="background-color: rgba(0,0,0,0.5);"
