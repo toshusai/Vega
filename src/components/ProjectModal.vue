@@ -26,7 +26,7 @@ async function fetchGet (url: string): Promise<Project> {
 
 function getProjects (): Promise<Project>[] {
   const isE = getIsElectron()
-  const paths: string[] = JSON.parse(localStorage.getItem(RECENT_USED_PROJECT_PATHS_KEY) || (isE ? '[]' : '["/vega/demo/demo_project.json"]'))
+  const paths: string[] = JSON.parse(localStorage.getItem(RECENT_USED_PROJECT_PATHS_KEY) || (isE ? '[]' : '["/Vega/demo/demo_project.json"]'))
   return paths.map(async (path) => {
     const project = isE ? await ipcSend<Project>('getProjectById', path) : await fetchGet(path)
     const p = {
