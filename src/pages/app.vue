@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Container } from '../core/Container'
-import '~/assets/css/main.css'
-import undo from '../core/Undo'
-import ButtonMenu from '../components/ButtonMenu.vue'
-import SettingsButton from '../components/SettingsButton.vue'
-import ProjectModal from '../components/ProjectModal.vue'
-import { ipcSend } from '../utils/ipcSend'
-import { getIsElectron } from '../utils/getIsElectron()'
+import { Container } from '@/core/Container'
+import '@/assets/css/main.css'
+import undo from '@/core/Undo'
+import ButtonMenu from '@/components/ButtonMenu.vue'
+import SettingsButton from '@/components/SettingsButton.vue'
+import ProjectModal from '@/components/ProjectModal.vue'
+import { ipcSend } from '@/utils/ipcSend'
+import { getIsElectron } from '@/utils/getIsElectron'
 const { container, setContainer } = useContainer()
 const { init: initTimeline, timeline, setTimeline } = useTimeline()
 const { assets, setAssets } = useAssets()

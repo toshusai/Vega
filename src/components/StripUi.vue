@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { CSSProperties, PropType } from 'vue'
-import { Strip } from '~~/src/core/Strip'
-import undo from '~~/src/core/Undo'
-import { clone } from '~~/src/utils/clone'
-import { onDragStart } from '~~/src/utils/onDragStart'
-import { snap } from '~~/src/utils/snap'
+import { Strip } from '@//core/Strip'
+import undo from '@//core/Undo'
+import { clone } from '@//utils/clone'
+import { onDragStart } from '@//utils/onDragStart'
+import { snap } from '@//utils/snap'
 const props = defineProps({
   strip: {
     type: Object as PropType<Strip>,

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import * as THREE from 'three'
-import { view } from '~~/src/composables/useTimeline'
-import { Recorder } from '~~/src/core/Recorder'
-import { timeFormat } from '~~/src/utils/formatTime'
+import { view } from '@/composables/useTimeline'
+import { Recorder } from '@/core/Recorder'
+import { timeFormat } from '@/utils/formatTime'
 
 const canvas = ref<HTMLCanvasElement | null>(null)
 

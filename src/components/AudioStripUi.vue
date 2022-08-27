@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Strip } from '~~/src/core/Strip'
-import { VideoStripEffectObject } from '~~/src/core/VideoStripEffectObject'
-import { AudioStripEffect } from '~~/src/core/AudioStripEffect'
-import { audioCtx, waitForFirstInterfact } from '~/core/Global'
+import { Strip } from '@//core/Strip'
+import { VideoStripEffectObject } from '@//core/VideoStripEffectObject'
+import { AudioStripEffect } from '@//core/AudioStripEffect'
+import { audioCtx, waitForFirstInterfact } from '@/core/Global'
 
 const props = defineProps<{ strip: Strip }>()
 const { timeline } = useTimeline()

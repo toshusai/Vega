@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getIsElectron } from '../utils/getIsElectron()'
-import { ipcSend } from '~/utils/ipcSend'
-import { getEmptyProject, Project } from '~/core/Project'
+import { getIsElectron } from '@/utils/getIsElectron'
+import { ipcSend } from '@/utils/ipcSend'
+import { getEmptyProject, Project } from '@/core/Project'
 
 const { setContainer } = useContainer()
 const { setTimeline } = useTimeline()

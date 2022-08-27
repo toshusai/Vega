@@ -1,6 +1,6 @@
-import { Animation } from '../core/TextStripEffect'
 import { easeInOutCubic } from './easeInOutCubic'
 import { normalize } from './normalize'
+import { Animation } from '@/core/Animation'
 
 export function findBetween (
   animations: Animation[],

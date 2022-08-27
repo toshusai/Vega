@@ -1,5 +1,5 @@
 import { Ref } from 'nuxt/dist/app/compat/capi'
-import { IAsset } from '../core/IAsset'
+import { IAsset } from '@/core/IAsset'
 
 export interface AssetState {
   assets: IAsset[];

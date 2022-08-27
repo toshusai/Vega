@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import '~/assets/css/main.css'
+import '@/assets/css/main.css'
 import { Recorder } from '../core/Recorder'
 import { Strip } from '../core/Strip'
 import { download } from '../utils/download'

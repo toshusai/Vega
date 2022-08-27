@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
-import { Container, Position } from '../core/Container'
-import { IVector2 } from '../core/IVector2'
+import { Container, Position } from '@/core/Container'
+import { IVector2 } from '@/core/IVector2'
 
 export const initialContaerState: Container = {
   id: 'root',

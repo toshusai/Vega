@@ -2,9 +2,9 @@
 import { ComputedRef } from 'vue'
 import { isText, isVideo } from '../../composables/useTimeline'
 import TextStripInspector from '../TextStripInspector.vue'
-import { Strip } from '~~/src/core/Strip'
-import { TextStripEffect } from '~~/src/core/TextStripEffect'
-import { getEffect } from '~~/src/utils/getEffect'
+import { Strip } from '@//core/Strip'
+import { TextStripEffect } from '@//core/TextStripEffect'
+import { getEffect } from '@//utils/getEffect'
 const { timeline, updateEffect } = useTimeline()
 
 const strip = computed(() => {
