@@ -7,9 +7,9 @@ import { StripEffect } from '../core/StripEffect'
 import { setAnimation } from '../utils/setAnimation'
 import { calcAnimationValue } from '../utils/calcAnimationValue'
 import InspectorInput from './InspectorInput.vue'
-import { Strip } from '~/core/Strip'
-import { ImageStripEffect } from '~/core/ImageStripEffect'
-import { isImage } from '~/composables/useTimeline'
+import { Strip } from '@/core/Strip'
+import { ImageStripEffect } from '@/core/ImageStripEffect'
+import { isImage } from '@/composables/useTimeline'
 // var colors = "#194d33";
 const { timeline, updateEffect } = useTimeline()
 

@@ -1,4 +1,4 @@
-import { getEmptyProject } from '../core/Project'
+import { getEmptyProject } from '@/core/Project'
 
 /**
  * Do not use, use useTimeline

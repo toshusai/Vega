@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { mdiRhombus } from '@mdi/js'
-import { ImageStripEffect } from '~~/src/core/ImageStripEffect'
-import { ImageStripEffectObject } from '~~/src/core/ImageStripEffectObject'
-import { Strip } from '~~/src/core/Strip'
+import { ImageStripEffect } from '@//core/ImageStripEffect'
+import { ImageStripEffectObject } from '@//core/ImageStripEffectObject'
+import { Strip } from '@//core/Strip'
 
 const props = defineProps<{ strip: Strip }>()
 const { timeline } = useTimeline()

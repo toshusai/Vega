@@ -1,4 +1,4 @@
-import { Animation } from '../core/TextStripEffect'
+import { Animation } from '@/core/Animation'
 
 export function setAnimation (animations: Animation[], newAnimation: Animation) {
   for (let i = 0; i < animations.length; i++) {

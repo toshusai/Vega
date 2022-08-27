@@ -1,5 +1,5 @@
 import { Strip } from './Strip'
-import { Animation } from './TextStripEffect'
+import { Animation } from './Animation'
 
 export interface Timeline {
   selectedStrips: Strip[];

@@ -1,12 +1,6 @@
+import { Animation } from './Animation'
 import { IVector3 } from './IVector3'
 import { StripEffect } from './StripEffect'
-
-export interface Animation {
-  id: string;
-  time: number;
-  key: string;
-  value: number ;
-}
 
 export type TextStripEffect = StripEffect & {
   position: IVector3;

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { audioCtx, waitForFirstInterfact } from '~~/src/core/Global'
-import { Strip } from '~~/src/core/Strip'
-import { VideoStripEffect } from '~~/src/core/VideoStripEffect'
-import { VideoStripEffectObject } from '~~/src/core/VideoStripEffectObject'
-import { getCache, setCache, drawCtx, drawCanvas, getThumbnailVideo } from '~~/src/utils/thumbnailCache'
+import { audioCtx, waitForFirstInterfact } from '@//core/Global'
+import { Strip } from '@//core/Strip'
+import { VideoStripEffect } from '@//core/VideoStripEffect'
+import { VideoStripEffectObject } from '@//core/VideoStripEffectObject'
+import { getCache, setCache, drawCtx, drawCanvas, getThumbnailVideo } from '@//utils/thumbnailCache'
 
 const props = defineProps<{ strip: Strip }>()
 const { timeline } = useTimeline()

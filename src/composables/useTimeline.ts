@@ -1,19 +1,20 @@
 import { Ref } from 'nuxt/dist/app/compat/capi'
 import * as THREE from 'three'
-import { Timeline } from '../core/Timeline'
-import { EffectObject } from '../core/EffectObject'
-import { Animation, TextStripEffect } from '../core/TextStripEffect'
-import { StripEffect } from '../core/StripEffect'
-import { TextStripEffectObject } from '../core/TextStripEffectObject'
+import { Timeline } from '@/core/Timeline'
+import { EffectObject } from '@/core/EffectObject'
+import { TextStripEffect } from '@/core/TextStripEffect'
+import { StripEffect } from '@/core/StripEffect'
+import { TextStripEffectObject } from '@/core/TextStripEffectObject'
 
-import { VideoStripEffect } from '../core/VideoStripEffect'
-import { VideoStripEffectObject } from '../core/VideoStripEffectObject'
-import { Strip } from '../core/Strip'
-import { AudioStripEffect } from '../core/AudioStripEffect'
-import { AudioStripEffectObject } from '../core/AudioStripEffectObject'
-import { snap } from '../utils/snap'
-import { ImageStripEffect } from '../core/ImageStripEffect'
-import { ImageStripEffectObject } from '../core/ImageStripEffectObject'
+import { VideoStripEffect } from '@/core/VideoStripEffect'
+import { VideoStripEffectObject } from '@/core/VideoStripEffectObject'
+import { snap } from '@/utils/snap'
+import { Strip } from '@/core/Strip'
+import { AudioStripEffect } from '@/core/AudioStripEffect'
+import { AudioStripEffectObject } from '@/core/AudioStripEffectObject'
+import { ImageStripEffect } from '@/core/ImageStripEffect'
+import { ImageStripEffectObject } from '@/core/ImageStripEffectObject'
+import { Animation } from '@/core/Animation'
 
 export const initialTimelineState: Timeline = {
   isRecording: false,
@@ -197,9 +198,9 @@ export function useTimeline () {
           }
         } else if (isVideo(effect)) {
           const veo = effectObjectMap.get(effect.id)
-          const assetPath = assets.assets.value.assets.find(
-            a => a.id === effect.videoAssetId
-          )?.path || ''
+          const assetPath =
+            assets.assets.value.assets.find(a => a.id === effect.videoAssetId)
+              ?.path || ''
 
           if (veo instanceof VideoStripEffectObject) {
             veo.updateAsset(assetPath)

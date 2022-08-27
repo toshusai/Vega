@@ -1,5 +1,5 @@
-import { Timeline } from '../core/Timeline'
-import { initialTimelineState } from './useTimeline'
+import { Timeline } from '@/core/Timeline'
+import { initialTimelineState } from '@/composables/useTimeline'
 
 interface AppState {
     timeline: Timeline

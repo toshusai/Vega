@@ -1,6 +1,6 @@
-import { Strip } from '../core/Strip'
-import { TextStripEffectObject } from '../core/TextStripEffectObject'
 import { calcAnimationValue } from './calcAnimationValue'
+import { Strip } from '@/core/Strip'
+import { TextStripEffectObject } from '@/core/TextStripEffectObject'
 
 /**
  * Stripからフルサイズの矩形を取得する

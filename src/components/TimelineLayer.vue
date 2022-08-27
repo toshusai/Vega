@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Strip } from '~~/src/core/Strip'
+import { Strip } from '@//core/Strip'
 
 const props = defineProps<{ strips: Strip[] }>()
 

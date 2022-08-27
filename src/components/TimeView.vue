@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onDragStart } from '~~/src/utils/onDragStart'
-import { snap } from '~~/src/utils/snap'
+import { onDragStart } from '@//utils/onDragStart'
+import { snap } from '@//utils/snap'
 
 const { addEventListener } = useContainer()
 
