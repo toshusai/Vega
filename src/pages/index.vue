@@ -6,7 +6,7 @@
   <div style="display: flex; flex-direction: column; height: 100%;">
     <div style="justify-content: center;">
       <div class="thumbnail">
-        <img class="image" src="https://toshusai.github.io/vega/vega/screenshot.png">
+        <img class="image" src="https://toshusai.github.io/Vega/Vega/screenshot.png">
         <div style="margin: auto; z-index: 1; text-align: center;">
           <h1 style="font-size: 32px">
             Vega
@@ -16,7 +16,7 @@
           </h2>
           <v-button
             style="background-color: rgba(0,0,0,0.5);"
-            href="https://github.com/toshusai/vega/releases"
+            href="https://github.com/toshusai/Vega/releases"
             as="a"
           >
             Download
@@ -29,7 +29,7 @@
         Open Source
       </div>
       <div class="section">
-        <div>All source code is available on <a href="https://github.com/toshusai/vega">GitHub</a></div>
+        <div>All source code is available on <a href="https://github.com/toshusai/Vega">GitHub</a></div>
         <div>You can use it for any purpose under the MIT License.</div>
       </div>
 
@@ -39,7 +39,7 @@
       <div class="section">
         <div>It is made with web technology and works on many platforms including Mac, Windows, and Linux.</div>
         <div>
-          <a href="https://toshusai.github.io/vega/app?demo=true">Demo</a> is here (only Google Chrome 103 or
+          <a href="https://toshusai.github.io/Vega/app?demo=true">Demo</a> is here (only Google Chrome 103 or
           later).
         </div>
       </div>
