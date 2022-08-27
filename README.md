@@ -23,4 +23,4 @@ __This project is still under development and has many bugs. If you like it, ple
 MIT License
 
 ## Motivation
-I see potential in web technology and believe that even video editing software can be created. I aim for this software to replace software such as AviUtil (a free video editing software made in Japan) and After Effects.
+I see potential in web technology and believe that even video editing software can be created. I aim for this software to replace software such as AviUtl (a free video editing software made in Japan) and After Effects.
