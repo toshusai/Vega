@@ -1,7 +1,9 @@
-import { TextStripEffect } from './TextStripEffect'
-import { StripEffect } from './StripEffect'
-import { VideoStripEffect } from './VideoStripEffect'
-import { AudioStripEffect } from './AudioStripEffect'
+import {
+  TextStripEffect,
+  VideoStripEffect,
+  AudioStripEffect,
+  StripEffect
+} from './stripEffect'
 
 export interface Strip {
   id: string;

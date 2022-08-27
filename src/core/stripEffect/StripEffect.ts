@@ -1,4 +1,4 @@
-import { Animation } from './Animation'
+import { Animation } from '../Animation'
 
 export interface StripEffect {
   id: string;

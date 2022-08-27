@@ -1,5 +1,5 @@
+import { Animation } from '../Animation'
 import { StripEffect } from './StripEffect'
-import { Animation } from './Animation'
 
 export type AudioStripEffect = StripEffect & {
   /**

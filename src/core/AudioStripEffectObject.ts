@@ -1,4 +1,4 @@
-import { AudioStripEffect } from './AudioStripEffect'
+import { AudioStripEffect } from './stripEffect/AudioStripEffect'
 import { firstInterfact } from './Global'
 import { Strip } from './Strip'
 

@@ -1,12 +1,12 @@
-import { IVector3 } from './IVector3'
+import { IVector3 } from '../IVector3'
+import { Animation } from '../Animation'
 import { StripEffect } from './StripEffect'
-import { Animation } from './Animation'
 
 export type VideoStripEffect = StripEffect & {
   start: number;
   position: IVector3;
   videoAssetId: string;
   volume: number;
-  scale: IVector3
+  scale: IVector3;
   animations: Animation[];
 };
