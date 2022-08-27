@@ -1,5 +1,5 @@
 {
-  "name": "vega",
+  "name": "Vega",
   "version": "3.0.0-alpha.2",
   "license": "MIT",
   "author": "toshusai",
@@ -24,7 +24,7 @@
     "build": "yarn build:nuxt && yarn build:electron && electron-builder"
   },
   "build": {
-    "appId": "com.toshusai.vega",
+    "appId": "com.toshusai.Vega",
     "asar": true,
     "directories": {
       "output": "build/"

@@ -27,7 +27,7 @@ if (isDev) {
   const server = http.createServer(function (req, res) {
     const baseDir = path.resolve(__dirname, '../.output/public')
 
-    let url = req.url?.replace(/^\/vega\//, '/') || '/'
+    let url = req.url?.replace(/^\/Vega\//, '/') || '/'
     if (url.endsWith('/app')) {
       url = url.replace('/app', '')
     }

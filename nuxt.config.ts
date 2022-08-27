@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   srcDir: './src',
   ssr: false,
   app: {
-    baseURL: '/vega'
+    baseURL: '/Vega'
   },
   components: {
     global: true,

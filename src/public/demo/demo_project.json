@@ -396,31 +396,31 @@
       {
         "id": "asset2",
         "type": "Audio",
-        "path": "/vega/demo/tsudumi-japan.mp3",
+        "path": "/Vega/demo/tsudumi-japan.mp3",
         "name": "Tsu-dumi Japan"
       },
       {
         "id": "6728cd58-26a6-4c98-bc09-50075101f52f",
         "name": "cat_in_the_sun.mp4",
-        "path": "/vega/demo/cat_in_the_sun.mp4",
+        "path": "/Vega/demo/cat_in_the_sun.mp4",
         "type": "Video"
       },
       {
         "id": "1e8d97ec-c1cb-4596-a315-b5e50e2b087f",
         "name": "zunmon001.png",
-        "path": "/vega/demo/zunmon001.png",
+        "path": "/Vega/demo/zunmon001.png",
         "type": "Image"
       },
       {
         "id": "9105bf2d-cf90-4c04-ba0a-d11bc8e86be2",
         "name": "zunmon_demo_voice.wav",
-        "path": "/vega/demo/zunmon_demo_voice.wav",
+        "path": "/Vega/demo/zunmon_demo_voice.wav",
         "type": "Audio"
       },
       {
         "id": "5a51f01a-ce56-4880-8049-61345499d1a2",
         "name": "zunmon_3001.png",
-        "path": "/vega/demo/zunmon_3001.png",
+        "path": "/Vega/demo/zunmon_3001.png",
         "type": "Image"
       }
     ],
@@ -428,7 +428,7 @@
       {
         "id": "asset2",
         "type": "Audio",
-        "path": ".//vega/demo/tsudumi-japan.mp3",
+        "path": ".//Vega/demo/tsudumi-japan.mp3",
         "name": "Tsu-dumi Japan"
       }
     ]
