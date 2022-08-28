@@ -2,7 +2,7 @@ import * as T from 'three'
 import { Vector3 } from 'three'
 import { firstInterfact } from './Global'
 import { Strip } from './Strip'
-import { VideoStripEffect } from './VideoStripEffect'
+import { VideoStripEffect } from './stripEffect'
 
 export class VideoStripEffectObject {
   type = 'Video'

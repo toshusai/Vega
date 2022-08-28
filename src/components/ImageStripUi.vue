@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { mdiRhombus } from '@mdi/js'
-import { ImageStripEffect } from '@//core/ImageStripEffect'
+import { ImageStripEffect } from '@//core/stripEffect'
 import { ImageStripEffectObject } from '@//core/ImageStripEffectObject'
 import { Strip } from '@//core/Strip'
 

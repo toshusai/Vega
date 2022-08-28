@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { audioCtx, waitForFirstInterfact } from '@//core/Global'
 import { Strip } from '@//core/Strip'
-import { VideoStripEffect } from '@//core/VideoStripEffect'
+import { VideoStripEffect } from '@//core/stripEffect'
 import { VideoStripEffectObject } from '@//core/VideoStripEffectObject'
 import { getCache, setCache, drawCtx, drawCanvas, getThumbnailVideo } from '@//utils/thumbnailCache'
 
