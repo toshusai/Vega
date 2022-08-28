@@ -3,7 +3,7 @@ import { getIsElectron } from '@/utils/getIsElectron'
 import { ipcSend } from '@/utils/ipcSend'
 import { getEmptyProject, Project } from '@/core/Project'
 
-const { setContainer } = useContainer()
+const { setContainer, resize } = useContainer()
 const { setTimeline } = useTimeline()
 const { setAssets } = useAssets()
 const { project } = useProject()
@@ -73,6 +73,7 @@ function createNewProject () {
   setTimeline(p.timeline)
   setContainer(p.container)
   emit('open')
+  resize()
 }
 
 function openProject (p: Project) {
@@ -81,6 +82,7 @@ function openProject (p: Project) {
   setContainer(p.container)
   emit('open')
   project.value = p
+  resize()
 }
 
 </script>
