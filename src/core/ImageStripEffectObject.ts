@@ -1,12 +1,7 @@
 import * as THREE from 'three'
-import { easeInOutCubic } from '../utils/easeInOutCubic'
-import { normalize } from '../utils/normalize'
-import { calcAnimationValue, findBetween } from '../utils/calcAnimationValue'
-import { ImageStripEffect } from './ImageStripEffect'
+import { ImageStripEffect } from './stripEffect'
 import { EffectObject } from './EffectObject'
-import { TextStripEffect } from './TextStripEffect'
 import { Strip } from './Strip'
-import { Timeline } from './Timeline'
 
 export class ImageStripEffectObject extends EffectObject {
   type = 'Image'

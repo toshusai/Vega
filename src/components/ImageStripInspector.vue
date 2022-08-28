@@ -3,12 +3,11 @@ import { ComputedRef } from 'vue'
 import { uuid } from 'short-uuid'
 import { clone } from '../utils/clone'
 import { eventToString } from '../utils/eventToString'
-import { StripEffect } from '../core/StripEffect'
+import { StripEffect, ImageStripEffect } from '../core/stripEffect'
 import { setAnimation } from '../utils/setAnimation'
 import { calcAnimationValue } from '../utils/calcAnimationValue'
 import InspectorInput from './InspectorInput.vue'
 import { Strip } from '@/core/Strip'
-import { ImageStripEffect } from '@/core/stripEffect'
 import { isImage } from '@/composables/useTimeline'
 // var colors = "#194d33";
 const { timeline, updateEffect } = useTimeline()

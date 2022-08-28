@@ -85,12 +85,7 @@ function changeColorByInputEvent (e: Event) {
 
       <div
         v-if="isOpenPicker"
-        :style="{
-          left: `${left}px`,
-          top: `${top}px`,
-          position: 'fixed',
-          zIndex: '10'
-        }"
+        :style="` left: ${left}px; top: ${top}px; position: fixed; zIndex: 10`"
       >
         <chrome :model-value="colors" @update:model-value="changeColor" />
       </div>

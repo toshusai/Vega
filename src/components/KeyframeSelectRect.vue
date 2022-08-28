@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Animation } from '../core/TextStripEffect'
+import { Animation } from '@/core/Animation'
 
 const { timeline, selectStrip, selectKeyframe } = useTimeline()
 

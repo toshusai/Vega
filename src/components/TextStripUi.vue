@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { mdiRhombus } from '@mdi/js'
 import { Strip } from '@//core/Strip'
-import { TextStripEffect } from '@//core/TextStripEffect'
+import { TextStripEffect } from '@//core/stripEffect'
 import { TextStripEffectObject } from '@//core/TextStripEffectObject'
 
 const props = defineProps<{ strip: Strip }>()

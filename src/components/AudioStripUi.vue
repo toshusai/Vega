@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Strip } from '@//core/Strip'
 import { VideoStripEffectObject } from '@//core/VideoStripEffectObject'
-import { AudioStripEffect } from '@//core/AudioStripEffect'
+import { AudioStripEffect } from '@//core/stripEffect'
 import { audioCtx, waitForFirstInterfact } from '@/core/Global'
 
 const props = defineProps<{ strip: Strip }>()

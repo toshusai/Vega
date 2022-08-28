@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { Container } from '../core/Container'
-import { onDragStart } from '../utils/onDragStart'
-import { IVector2 } from '../core/IVector2'
+import { Container } from '@/core/Container'
+import { onDragStart } from '@/utils/onDragStart'
+import { IVector2 } from '@/core/IVector2'
+import RectUi from '@/components/RectUi.vue'
 
 const props = defineProps<{ container: Container }>()
 const { resizeContainer } = useContainer()
-const rectRef = ref([] as typeof RectUI[])
+const rectRef = ref([] as typeof RectUi[])
+
 const move = (i: number) => {
   return (delta: IVector2, _e: MouseEvent) => {
     if (!rectRef.value || rectRef.value.length === 0) { return }
@@ -33,7 +35,7 @@ const move = (i: number) => {
       :align="child.align"
       :parent-align="props.container.align"
     >
-      <container-ui :container="child" />
+      <component :is="'container-ui'" :container="child" />
       <template v-if="i !== 0">
         <resize-top
           v-if="props.container.align === 'vertical'"

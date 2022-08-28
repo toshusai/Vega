@@ -7,9 +7,8 @@ import { VideoStripEffectObject } from '../core/VideoStripEffectObject'
 import { calcAnimationValue } from '../utils/calcAnimationValue'
 import { onDragStart } from '../utils/onDragStart'
 import { setAnimation } from '../utils/setAnimation'
-import { StripEffect } from '../core/StripEffect'
+import { StripEffect, TextStripEffect } from '../core/stripEffect'
 import { snap } from '../utils/snap'
-import { TextStripEffect } from '../core/TextStripEffect'
 import { ImageStripEffectObject } from '../core/ImageStripEffectObject'
 
 const { timeline, updateEffect, setFocusStripId } = useTimeline()

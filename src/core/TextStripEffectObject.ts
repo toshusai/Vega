@@ -1,9 +1,7 @@
 import * as THREE from 'three'
-import { easeInOutCubic } from '../utils/easeInOutCubic'
-import { normalize } from '../utils/normalize'
-import { calcAnimationValue, findBetween } from '../utils/calcAnimationValue'
+import { calcAnimationValue } from '../utils/calcAnimationValue'
 import { EffectObject } from './EffectObject'
-import { TextStripEffect } from './TextStripEffect'
+import { TextStripEffect } from './stripEffect'
 import { Strip } from './Strip'
 import { Timeline } from './Timeline'
 

@@ -13,6 +13,7 @@
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "lint": "eslint --fix --ext .vue,.ts src/",
+    "typecheck": "nuxt typecheck",
     "dev:nuxt": "nuxt dev",
     "build:nuxt": "nuxt build",
     "start:nuxt": "nuxt start",
