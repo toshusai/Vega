@@ -1,4 +1,5 @@
 import { Ref } from 'nuxt/dist/app/compat/capi'
+import { uuid } from 'short-uuid'
 import { EffectUpdateContext, EffectObject } from './../core/EffectObject'
 import { Renderer } from '@/core/Renderer'
 import { Timeline } from '@/core/Timeline'
@@ -97,7 +98,32 @@ function update (timeline: Ref<Timeline>) {
           assets: { assets: [], selectedAssets: [] },
           jump,
           scene: Renderer.scene,
-          isPlay: timeline.value.isPlay
+          isPlay: timeline.value.isPlay,
+          // TODO add more functions to this context
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          updateStrip: (stripId: string, effect: StripEffect) => {
+            const strip = findStripById(stripId, timeline.value)
+            if (!strip) {
+              return
+            }
+            const index = strip.effects.findIndex(e => e.id === effect.id)
+            if (index === -1) {
+              return
+            }
+            const newAnimations: Animation[] = []
+            effect.animations.forEach((a) => {
+              if (
+                !newAnimations.find(
+                  na => na.key === a.key && na.time === a.time
+                )
+              ) {
+                newAnimations.push(a)
+              }
+            })
+            effect.animations = newAnimations
+            strip.effects[index] = effect
+          }
         }
         Renderer.effectObjectMap.get(effect.id)?.update(context)
       }
@@ -132,12 +158,19 @@ export function setTimeline (state: Ref<Timeline>) {
   }
 }
 
-const constructorMap: Record<string, new (ctx: EffectUpdateContext) => EffectObject> = {
+export const constructorMap: Record<
+  string,
+  new (ctx: EffectUpdateContext) => EffectObject
+> = {
   Video: VideoStripEffectObject,
   Text: TextStripEffectObject,
   Image: ImageStripEffectObject,
   Audio: AudioStripEffectObject
 }
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+declare function require(args: string[], cb: (result: unknown) => void): void;
 
 export function useTimeline () {
   const timeline = useState('timeline', () => initialTimelineState)
@@ -157,7 +190,36 @@ export function useTimeline () {
         }
         const veo = Renderer.effectObjectMap.get(effect.id)
         if (!veo) {
-          Renderer.effectObjectMap.set(effect.id, new constructorMap[effect.type](context))
+          if (effect.type === 'Plugin' && 'name' in effect) {
+            // TODO fix to id base search
+            const asset = context.assets.assets.find(
+              a => a.name === effect.name
+            )
+            if (!asset) {
+              return
+            }
+            if (!constructorMap[asset.name]) {
+              require([asset.path], () => {
+                require([asset.name], (result: any) => {
+                  constructorMap[asset.name] = result.default
+                  Renderer.effectObjectMap.set(
+                    effect.id,
+                    new constructorMap[effect.name](context)
+                  )
+                })
+              })
+            } else {
+              Renderer.effectObjectMap.set(
+                effect.id,
+                new constructorMap[effect.name](context)
+              )
+            }
+          } else {
+            Renderer.effectObjectMap.set(
+              effect.id,
+              new constructorMap[effect.type](context)
+            )
+          }
         } else {
           veo.updateStrip(context)
         }
@@ -166,7 +228,7 @@ export function useTimeline () {
   }
 
   return {
-    timeline: readonly(timeline),
+    timeline,
     init,
     addStrip: ((state: Ref<Timeline>) => {
       return (strip: Strip) => {
@@ -219,6 +281,17 @@ export function useTimeline () {
           })
           .filter(strip => strip) as Strip[]
         state.value.selectedStrips = strips
+      }
+    })(timeline),
+
+    updateStrip: ((state: Ref<Timeline>) => {
+      return (strip: Strip) => {
+        state.value.strips = state.value.strips.map((s) => {
+          if (s.id === strip.id) {
+            return strip
+          }
+          return s
+        })
       }
     })(timeline),
 

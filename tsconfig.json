@@ -4,6 +4,7 @@
   "compilerOptions": {
     "strict": true,
     "outDir": "./dist",
+    "typeRoots": ["src/@types"],
     "paths": {
       "@/*": ["src/*"]
     }

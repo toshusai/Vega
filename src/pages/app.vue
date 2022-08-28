@@ -18,6 +18,12 @@ const { project } = useProject()
 const rootContainer = computed(() => container.value as Container)
 const isOpenProjectModal = ref(true)
 
+useHead({
+  script: [
+    { src: '/scripts/require.js' }
+  ]
+})
+
 onMounted(() => {
   init()
   let prev = 0
