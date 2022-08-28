@@ -24,13 +24,14 @@ const upTop = (e: MouseEvent, pos: Position) => {
 
 <template>
   <div :id="containerId" class="panel" @mouseenter="mouseenter" @mouseleave="mouseleave">
-    <layout-change-area
+    <!-- TODO implement all direction -->
+    <!-- <layout-change-area
       v-if="dad.key === 'layout' && enter && dad.payload !== props.containerId"
       @top="e => upTop(e, 'top')"
       @left="e => upTop(e, 'left')"
       @right="e => upTop(e, 'right')"
       @bottom="e => upTop(e, 'bottom')"
-    />
+    /> -->
     <div>
       <div class="name" @mousedown="e => startDad(e, 'layout', props.containerId)">
         {{ props.name }}
