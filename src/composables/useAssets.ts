@@ -18,6 +18,13 @@ const systemTextAsset: IAsset = {
   type: 'Text'
 }
 
+const pluginAsset: IAsset = {
+  id: 'timestamp-plugin',
+  name: 'TimeStamp',
+  path: '/scripts/plugins/timestamp.js',
+  type: 'Plugin'
+}
+
 export function useAssets () {
   const assets = useState('assets', () => initialAssetsState)
 
@@ -26,7 +33,7 @@ export function useAssets () {
 
     setAssets: ((state: Ref<AssetState>) => {
       return (assets: AssetState) => {
-        const newAssets = [systemTextAsset, ...assets.assets.map(x => x)].filter((x, i, self) => self.findIndex(y => y.id === x.id) === i)
+        const newAssets = [systemTextAsset, pluginAsset, ...assets.assets.map(x => x)].filter((x, i, self) => self.findIndex(y => y.id === x.id) === i)
         state.value = {
           assets: newAssets,
           selectedAssets: assets.selectedAssets

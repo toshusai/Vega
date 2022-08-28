@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "AMD",
+    "target": "ES5",
+    "moduleResolution": "Node",
+    "outFile": "../../../src/public/scripts/plugins/timestamp.js",
+    "typeRoots": ["./node_modules/@types"],
+    "noImplicitAny": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "strict": false
+  }
+}
