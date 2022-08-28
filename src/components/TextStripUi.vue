@@ -3,6 +3,7 @@ import { mdiRhombus } from '@mdi/js'
 import { Strip } from '@//core/Strip'
 import { TextStripEffect } from '@//core/stripEffect'
 import { TextStripEffectObject } from '@//core/TextStripEffectObject'
+import { Renderer } from '@/core/Renderer'
 
 const props = defineProps<{ strip: Strip }>()
 const { timeline } = useTimeline()
@@ -24,7 +25,7 @@ const pixScale = computed(() => {
 const canvas = ref<HTMLCanvasElement | null>(null)
 
 const effectObj = computed(() => {
-  const effectObj = effectObjectMap.get(
+  const effectObj = Renderer.effectObjectMap.get(
     textEffect.value.id
   ) as TextStripEffectObject | null
   return effectObj

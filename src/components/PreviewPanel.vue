@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import * as THREE from 'three'
-import { view } from '@/composables/useTimeline'
+import { Renderer } from '@/core/Renderer'
 import { Recorder } from '@/core/Recorder'
 import { timeFormat } from '@/utils/formatTime'
 
@@ -30,13 +30,13 @@ onMounted(() => {
   const height = timeline.value.height
   renderer.setSize(width, height)
 
-  if (view.camera.left === 0) {
-    view.camera.left = -width / 2
-    view.camera.right = width / 2
-    view.camera.top = height / 2
-    view.camera.bottom = -height / 2
-    view.camera.near = -100
-    view.camera.far = 1000
+  if (Renderer.camera.left === 0) {
+    Renderer.camera.left = -width / 2
+    Renderer.camera.right = width / 2
+    Renderer.camera.top = height / 2
+    Renderer.camera.bottom = -height / 2
+    Renderer.camera.near = -100
+    Renderer.camera.far = 1000
   }
 
   addUpdate(() => {
@@ -49,9 +49,9 @@ onMounted(() => {
 
     canvas.value.style.width = `${width * scale.value}px`
     canvas.value.style.height = ''
-    view.camera.updateProjectionMatrix()
+    Renderer.camera.updateProjectionMatrix()
 
-    renderer.render(view.scene, view.camera)
+    renderer.render(Renderer.scene, Renderer.camera)
     if (timeline.value.isRecording) {
       if (timeline.value.curent > timeline.value.length) {
         recorder.value?.stop()

@@ -1,8 +1,14 @@
 import { Ref } from 'nuxt/dist/app/compat/capi'
-import * as THREE from 'three'
+import { Renderer } from '@/core/Renderer'
 import { Timeline } from '@/core/Timeline'
 import { EffectObject } from '@/core/EffectObject'
-import { TextStripEffect, VideoStripEffect, ImageStripEffect, StripEffect, AudioStripEffect } from '@/core/stripEffect'
+import {
+  TextStripEffect,
+  VideoStripEffect,
+  ImageStripEffect,
+  StripEffect,
+  AudioStripEffect
+} from '@/core/stripEffect'
 import { TextStripEffectObject } from '@/core/TextStripEffectObject'
 
 import { VideoStripEffectObject } from '@/core/VideoStripEffectObject'
@@ -85,14 +91,20 @@ function update (timeline: Ref<Timeline>) {
       for (let k = 0; k < strip.effects.length; k++) {
         const effect = strip.effects[k]
         if (isText(effect)) {
-          const textObj = effectObjectMap.get(
+          const textObj = Renderer.effectObjectMap.get(
             effect.id
           ) as TextStripEffectObject
           if (textObj) {
-            textObj.update(strip, effect, timeline.value.curent, timeline.value.isPlay, jump)
+            textObj.update(
+              strip,
+              effect,
+              timeline.value.curent,
+              timeline.value.isPlay,
+              jump
+            )
           }
         } else if (isVideo(effect)) {
-          const videoObj = effectObjectMap.get(
+          const videoObj = Renderer.effectObjectMap.get(
             effect.id
           ) as VideoStripEffectObject
           if (videoObj) {
@@ -105,7 +117,7 @@ function update (timeline: Ref<Timeline>) {
             )
           }
         } else if (isAudio(effect)) {
-          const audioObj = effectObjectMap.get(
+          const audioObj = Renderer.effectObjectMap.get(
             effect.id
           ) as AudioStripEffectObject
           if (audioObj) {
@@ -118,7 +130,7 @@ function update (timeline: Ref<Timeline>) {
             )
           }
         } else if (isImage(effect)) {
-          const imageObj = effectObjectMap.get(
+          const imageObj = Renderer.effectObjectMap.get(
             effect.id
           ) as ImageStripEffectObject
           if (imageObj) {
@@ -138,8 +150,6 @@ function update (timeline: Ref<Timeline>) {
     }
   }
 }
-
-export const effectObjectMap = new Map<string, EffectObject>()
 
 function play (timeline: Ref<Timeline>) {
   return (state: boolean) => {
@@ -162,17 +172,6 @@ export function isImage (effect: StripEffect): effect is ImageStripEffect {
   return effect.type === 'Image'
 }
 
-export interface State {
-  scene: THREE.Scene;
-  camera: THREE.OrthographicCamera;
-  // renderer?: THREE.WebGLRenderer | null;
-}
-
-export const view: State = {
-  scene: new THREE.Scene(),
-  camera: new THREE.OrthographicCamera(0, 0, 200, 200)
-}
-
 export function setTimeline (state: Ref<Timeline>) {
   return (timeline: Timeline) => {
     state.value = timeline
@@ -187,13 +186,13 @@ export function useTimeline () {
     for (const strip of timeline.value.strips) {
       for (const effect of strip.effects) {
         if (isText(effect)) {
-          if (!effectObjectMap.has(effect.id)) {
+          if (!Renderer.effectObjectMap.has(effect.id)) {
             const textObj = new TextStripEffectObject(effect)
-            effectObjectMap.set(effect.id, textObj)
-            view.scene.add(textObj.obj)
+            Renderer.effectObjectMap.set(effect.id, textObj)
+            Renderer.scene.add(textObj.obj)
           }
         } else if (isVideo(effect)) {
-          const veo = effectObjectMap.get(effect.id)
+          const veo = Renderer.effectObjectMap.get(effect.id)
           const assetPath =
             assets.assets.value.assets.find(a => a.id === effect.videoAssetId)
               ?.path || ''
@@ -207,29 +206,29 @@ export function useTimeline () {
                 a => a.id === effect.videoAssetId
               )?.path || ''
             )
-            effectObjectMap.set(effect.id, videoObj)
-            view.scene.add(videoObj.obj)
+            Renderer.effectObjectMap.set(effect.id, videoObj)
+            Renderer.scene.add(videoObj.obj)
           }
         } else if (isAudio(effect)) {
-          if (!effectObjectMap.has(effect.id)) {
+          if (!Renderer.effectObjectMap.has(effect.id)) {
             const audioObj = new AudioStripEffectObject(
               effect,
               assets.assets.value.assets.find(
                 a => a.id === effect.audioAssetId
               )?.path || ''
             )
-            effectObjectMap.set(effect.id, audioObj)
+            Renderer.effectObjectMap.set(effect.id, audioObj)
           }
         } else if (isImage(effect)) {
-          if (!effectObjectMap.has(effect.id)) {
+          if (!Renderer.effectObjectMap.has(effect.id)) {
             const audioObj = new ImageStripEffectObject(
               effect,
               assets.assets.value.assets.find(
                 a => a.id === effect.imageAssetId
               )?.path || ''
             )
-            effectObjectMap.set(effect.id, audioObj)
-            view.scene.add(audioObj.obj)
+            Renderer.effectObjectMap.set(effect.id, audioObj)
+            Renderer.scene.add(audioObj.obj)
           }
         } else {
           // eslint-disable-next-line no-console

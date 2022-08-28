@@ -4,6 +4,7 @@ import { Strip } from '@//core/Strip'
 import { VideoStripEffect } from '@//core/stripEffect'
 import { VideoStripEffectObject } from '@//core/VideoStripEffectObject'
 import { getCache, setCache, drawCtx, drawCanvas, getThumbnailVideo } from '@//utils/thumbnailCache'
+import { Renderer } from '@/core/Renderer'
 
 const props = defineProps<{ strip: Strip }>()
 const { timeline } = useTimeline()
@@ -37,7 +38,7 @@ const pixScale = computed(() => {
 })
 
 const effectObj = computed(() => {
-  const effectObj = effectObjectMap.get(
+  const effectObj = Renderer.effectObjectMap.get(
     videoEffect.value.id
   ) as VideoStripEffectObject | null
   return effectObj

@@ -1,8 +1,7 @@
-import { effectObjectMap } from '../composables/useTimeline'
 import { AudioStripEffectObject } from './AudioStripEffectObject'
-import { audioCtx } from './Global'
 import { Strip } from './Strip'
 import { VideoStripEffectObject } from './VideoStripEffectObject'
+import { Renderer } from '@/core/Renderer'
 
 export class Recorder {
   data: Blob[] = []
@@ -39,7 +38,7 @@ export class Recorder {
 
     strips.forEach((strip) => {
       strip.effects.forEach((effect) => {
-        const stripObj = effectObjectMap.get(effect.id)
+        const stripObj = Renderer.effectObjectMap.get(effect.id)
         if (
           stripObj instanceof AudioStripEffectObject ||
           stripObj instanceof VideoStripEffectObject

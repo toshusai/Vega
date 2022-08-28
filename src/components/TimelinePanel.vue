@@ -13,6 +13,7 @@ import { clone } from '@//utils/clone'
 import { TextStripEffectObject } from '@//core/TextStripEffectObject'
 import { VideoStripEffectObject } from '@//core/VideoStripEffectObject'
 import { ImageStripEffectObject } from '@//core/ImageStripEffectObject'
+import { Renderer } from '@/core/Renderer'
 const {
   timeline,
   addStrip,
@@ -281,14 +282,14 @@ onMounted(() => {
           removeStrips(cloneStrip.map(s => s.id))
           cloneStrip.forEach((s) => {
             s.effects.forEach((effect) => {
-              const obj = effectObjectMap.get(effect.id)
+              const obj = Renderer.effectObjectMap.get(effect.id)
               if (
                 obj instanceof TextStripEffectObject ||
                 obj instanceof VideoStripEffectObject ||
                 obj instanceof ImageStripEffectObject
               ) {
                 obj.obj.removeFromParent()
-                effectObjectMap.delete(effect.id)
+                Renderer.effectObjectMap.delete(effect.id)
               }
             })
           })

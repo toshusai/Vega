@@ -1,4 +1,5 @@
 import { calcAnimationValue } from './calcAnimationValue'
+import { Renderer } from '@/core/Renderer'
 import { Strip } from '@/core/Strip'
 import { TextStripEffectObject } from '@/core/TextStripEffectObject'
 
@@ -21,7 +22,7 @@ export function stripToRect (
   }
   const effect = strip.effects[0]
   if (isText(effect)) {
-    const obj = effectObjectMap.get(effect.id)
+    const obj = Renderer.effectObjectMap.get(effect.id)
     if (!(obj instanceof TextStripEffectObject)) { return { display: 'none' } }
 
     const x = calcAnimationValue(
