@@ -11,16 +11,26 @@ const initialAssetsState: AssetState = {
   assets: []
 }
 
+const systemTextAsset: IAsset = {
+  id: 'system-text',
+  name: 'System Text',
+  path: '',
+  type: 'Text'
+}
+
 export function useAssets () {
   const assets = useState('assets', () => initialAssetsState)
-  // const { init } = useTimeline()
 
   return {
     assets,
 
     setAssets: ((state: Ref<AssetState>) => {
       return (assets: AssetState) => {
-        state.value = assets
+        const newAssets = [systemTextAsset, ...assets.assets.map(x => x)].filter((x, i, self) => self.findIndex(y => y.id === x.id) === i)
+        state.value = {
+          assets: newAssets,
+          selectedAssets: assets.selectedAssets
+        }
       }
     })(assets),
 
