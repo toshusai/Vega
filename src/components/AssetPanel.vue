@@ -102,8 +102,8 @@ const isOpenInspector = ref<boolean>(false)
     >
       <asset-list-item-base :asset="asset" @click-dots="() => isOpenInspector = true" />
     </div>
-    <asset-inspector-modal :is-open="isOpenInspector" @close="() => isOpenInspector = false" />
   </div>
+  <asset-inspector-modal :is-open="isOpenInspector" @close="() => isOpenInspector = false" />
 </template>
 
 <style scoped>
