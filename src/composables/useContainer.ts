@@ -127,16 +127,10 @@ export const initialContaerState: Container = {
 
 const event = new EventTarget()
 
-const minPercent = 10
-function calculateMinMaxPercent () {
-  // minPercent = (MIN_PIXEL / window.innerHeight) * 100;
-}
-
-window.addEventListener('resize', calculateMinMaxPercent)
-window.addEventListener('load', calculateMinMaxPercent)
+const MIN_PERCENT = 10
 
 function minMax (value: number) {
-  return Math.max(Math.min(value, 100 - minPercent), minPercent)
+  return Math.max(Math.min(value, 100 - MIN_PERCENT), MIN_PERCENT)
 }
 
 export default function useContainer () {
@@ -154,8 +148,12 @@ export default function useContainer () {
       const container = findContainer(state.value, id)
       const parent = findParent(state.value, id)
       const current = parent?.children
-      if (!parent || !current || !container) { return }
-      if (current.length <= 1) { return }
+      if (!parent || !current || !container) {
+        return
+      }
+      if (current.length <= 1) {
+        return
+      }
       const i = current.findIndex(c => c.id === id)
 
       if (parent.align === 'vertical') {
@@ -195,15 +193,25 @@ export default function useContainer () {
     return (payload: { from: string; to: string; pos: Position }) => {
       const { from, to, pos } = payload
       const fromContainer = findContainer(state.value, from)
-      if (!fromContainer) { return }
+      if (!fromContainer) {
+        return
+      }
       const fromParent = findParent(state.value, from)
-      if (!fromParent) { return }
+      if (!fromParent) {
+        return
+      }
       const index = fromParent?.children.findIndex(c => c.id === from)
-      if (index === -1) { return }
+      if (index === -1) {
+        return
+      }
       const toContainer = findContainer(state.value, to)
-      if (!toContainer) { return }
+      if (!toContainer) {
+        return
+      }
       const toParent = findParent(state.value, to)
-      if (!toParent) { return }
+      if (!toParent) {
+        return
+      }
 
       fromParent.children.splice(index, 1)
 
@@ -246,7 +254,8 @@ export default function useContainer () {
         toContainer.children = newChildren
         toContainer.panel = null
 
-        fromContainer.rect.width = toContainer.align === 'horizontal' ? 50 : 100
+        fromContainer.rect.width =
+          toContainer.align === 'horizontal' ? 50 : 100
         fromContainer.rect.height =
           toContainer.align === 'horizontal' ? 100 : 50
       } else {
@@ -287,6 +296,9 @@ export default function useContainer () {
         event.addEventListener(type, listener)
       }
     })(container),
+    resize: () => {
+      event.dispatchEvent(new CustomEvent('resize'))
+    },
     setContainer: ((state: Ref<Container>) => {
       return (value: Container) => {
         state.value = value
