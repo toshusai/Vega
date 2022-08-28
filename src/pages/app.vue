@@ -5,18 +5,18 @@ import undo from '@/core/Undo'
 import ButtonMenu from '@/components/ButtonMenu.vue'
 import SettingsButton from '@/components/SettingsButton.vue'
 import ProjectModal from '@/components/ProjectModal.vue'
-import { ipcSend } from '@/utils/ipcSend'
-import { getIsElectron } from '@/utils/getIsElectron'
-import { clone } from '@/utils/clone'
-const { container, setContainer } = useContainer()
-const { init: initTimeline, timeline, setTimeline } = useTimeline()
-const { assets, setAssets } = useAssets()
+import { ipcSend, getIsElectron, filePick, download, getIsOSX, clone } from '@/utils'
+
+const { container } = useContainer()
+const { init: initTimeline, timeline } = useTimeline()
+const { assets } = useAssets()
 const op = useOperation()
 const { init } = useKeyboard()
-
 const { update } = useUpdate()
-
 const { project } = useProject()
+
+const rootContainer = computed(() => container.value as Container)
+const isOpenProjectModal = ref(true)
 
 onMounted(() => {
   init()
@@ -30,7 +30,7 @@ onMounted(() => {
 
   window.addEventListener('keydown', (e) => {
     // if mac ctrl = command
-    const ctrlKey = isOSX() ? e.metaKey : e.ctrlKey
+    const ctrlKey = getIsOSX() ? e.metaKey : e.ctrlKey
     //  Shift + Command + Z
     if (e.keyCode === 90 && e.shiftKey && ctrlKey) {
       undo.redo()
@@ -67,39 +67,9 @@ onMounted(() => {
   initTimeline()
 })
 
-function isOSX () {
-  return navigator.platform.toUpperCase().includes('MAC')
-}
-
-function openfile () {
-  const fileInput = document.createElement('input')
-  fileInput.type = 'file'
-  fileInput.accept = '.json'
-  fileInput.click()
-  fileInput.onchange = () => {
-    if (!fileInput.files) {
-      return
-    }
-    const file = fileInput.files[0]
-    if (!file) {
-      return
-    }
-    const reader = new FileReader()
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        projectFromJsonString(reader.result)
-      }
-    }
-    reader.readAsText(file)
-  }
-}
-
 function downloadFile () {
-  const project = projectToJsonString()
-  const a = document.createElement('a')
-  a.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(project)
-  a.download = 'project.json'
-  a.click()
+  const json = projectToJsonString()
+  download(json, 'project.json')
 }
 
 function projectToJsonString () {
@@ -111,20 +81,15 @@ function projectToJsonString () {
   return JSON.stringify(project)
 }
 
-function projectFromJsonString (json: string) {
-  const project = JSON.parse(json)
-  setContainer(project.container)
-  setTimeline(project.timeline)
-  setAssets(project.assets)
-  return project
-}
-
-const rootContainer = computed(() => container.value as Container)
-const isOpenProjectModal = ref(true)
-
 function open () {
   isOpenProjectModal.value = false
   initTimeline()
+}
+
+const openFile = () => {
+  filePick((str) => {
+    useSetProject(str)
+  })
 }
 </script>
 
@@ -141,7 +106,7 @@ function open () {
         <button-menu
           label="File"
           :items="[
-            { name: 'Open', onClick: openfile },
+            { name: 'Open', onClick: openFile },
             { name: 'Save', onClick: downloadFile }
           ]"
         />
