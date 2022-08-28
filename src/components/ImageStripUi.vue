@@ -3,6 +3,7 @@ import { mdiRhombus } from '@mdi/js'
 import { ImageStripEffect } from '@//core/stripEffect'
 import { ImageStripEffectObject } from '@//core/ImageStripEffectObject'
 import { Strip } from '@//core/Strip'
+import { Renderer } from '@/core/Renderer'
 
 const props = defineProps<{ strip: Strip }>()
 const { timeline } = useTimeline()
@@ -17,7 +18,7 @@ const el = ref<HTMLElement | null>(null)
 const pixScale = computed(() => usePixPerSecTimeline(el.value?.parentElement?.parentElement))
 
 const effectObj = computed(() => {
-  const effectObj = effectObjectMap.get(
+  const effectObj = Renderer.effectObjectMap.get(
     imageEffect.value.id
   ) as ImageStripEffectObject | null
   return effectObj

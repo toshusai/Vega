@@ -3,6 +3,7 @@ import { Strip } from '@//core/Strip'
 import { VideoStripEffectObject } from '@//core/VideoStripEffectObject'
 import { AudioStripEffect } from '@//core/stripEffect'
 import { audioCtx, waitForFirstInterfact } from '@/core/Global'
+import { Renderer } from '@/core/Renderer'
 
 const props = defineProps<{ strip: Strip }>()
 const { timeline } = useTimeline()
@@ -32,7 +33,7 @@ const pixScale = computed(() => {
 })
 
 const effectObj = computed(() => {
-  const effectObj = effectObjectMap.get(
+  const effectObj = Renderer.effectObjectMap.get(
     audioEffect.value.id
   ) as VideoStripEffectObject | null
   return effectObj

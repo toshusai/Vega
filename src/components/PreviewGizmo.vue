@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { log } from 'console'
 import { CSSProperties } from 'vue'
 import { uuid } from 'short-uuid'
 import { TextStripEffectObject } from '../core/TextStripEffectObject'
@@ -10,6 +9,7 @@ import { setAnimation } from '../utils/setAnimation'
 import { StripEffect, TextStripEffect } from '../core/stripEffect'
 import { snap } from '../utils/snap'
 import { ImageStripEffectObject } from '../core/ImageStripEffectObject'
+import { Renderer } from '@/core/Renderer'
 
 const { timeline, updateEffect, setFocusStripId } = useTimeline()
 
@@ -61,7 +61,7 @@ function updateStyle (): CSSProperties {
   const height = timeline.value.height
 
   if (isText(effect.value)) {
-    const obj = effectObjectMap.get(effect.value.id)
+    const obj = Renderer.effectObjectMap.get(effect.value.id)
     if (!(obj instanceof TextStripEffectObject)) { return { display: 'none' } }
 
     const x = calcAnimationValue(
@@ -85,7 +85,7 @@ function updateStyle (): CSSProperties {
       height: obj.mesureHeight * props.scale + 'px'
     }
   } else if (isVideo(effect.value)) {
-    const obj = effectObjectMap.get(effect.value.id)
+    const obj = Renderer.effectObjectMap.get(effect.value.id)
     if (!(obj instanceof VideoStripEffectObject)) { return { display: 'none' } }
 
     const x = calcAnimationValue(
@@ -112,7 +112,7 @@ function updateStyle (): CSSProperties {
       height: videoH * props.scale + 'px'
     }
   } else if (isImage(effect.value)) {
-    const obj = effectObjectMap.get(effect.value.id)
+    const obj = Renderer.effectObjectMap.get(effect.value.id)
     if (!(obj instanceof ImageStripEffectObject)) { return { display: 'none' } }
     const x = calcAnimationValue(
       effect.value.animations,
