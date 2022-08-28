@@ -6,11 +6,13 @@ const props = defineProps<{
   value: number | string
 }>()
 
-const emit = defineEmits<{(e: 'updateColor', value: string): void }>()
+const emit = defineEmits<{ (e: 'updateColor', value: string): void }>()
 
 function changeColor (c: { hex8: string }) {
   emit('updateColor', c.hex8)
 }
+
+const PICKER_WIDTH = 225
 
 const isOpenPicker = ref(false)
 const left = ref(0)
@@ -31,11 +33,11 @@ function openPicker (e: MouseEvent) {
   isOpenPicker.value = true
   const rect = el.value?.getBoundingClientRect()
   if (rect) {
-    left.value = rect.left + rect.width + 8
+    left.value = rect.left - PICKER_WIDTH
     top.value = rect.top
   }
+  window.addEventListener('pointerdown', e => closePicker(e))
   e.stopPropagation()
-  window.addEventListener('pointerdown', closePicker)
 }
 const colors = computed(() => {
   return props.value.toString()
@@ -60,15 +62,9 @@ function changeColorByInputEvent (e: Event) {
 
 <template>
   <div style="display: flex; width: 100%">
-    <v-input-base
-      v-bind="$attrs"
-      :value="value"
-      :invalid="invalid"
-      @input="changeColorByInputEvent"
-    />
-    <div style="display: flex; position: relative; cursor: pointer">
+    <v-input-base v-bind="$attrs" :value="value" :invalid="invalid" @input="changeColorByInputEvent" />
+    <div ref="el" style="display: flex; position: relative; cursor: pointer">
       <v-icons
-        ref="el"
         :path="mdiPalette"
         style="
           margin: auto 4px;
@@ -83,10 +79,7 @@ function changeColorByInputEvent (e: Event) {
         @click="openPicker"
       />
 
-      <div
-        v-if="isOpenPicker"
-        :style="` left: ${left}px; top: ${top}px; position: fixed; zIndex: 10`"
-      >
+      <div v-if="isOpenPicker" :style="`left: ${left}px; top: ${top}px; position: fixed; z-index: 10`">
         <chrome :model-value="colors" @update:model-value="changeColor" />
       </div>
     </div>
