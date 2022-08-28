@@ -132,6 +132,10 @@ export function setTimeline (state: Ref<Timeline>) {
   }
 }
 
+const constructorMap: Record<string, new (ctx: EffectUpdateContext) => EffectObject> = {
+  Video: VideoStripEffectObject
+}
+
 export function useTimeline () {
   const timeline = useState('timeline', () => initialTimelineState)
   const assets = useAssets()
@@ -139,6 +143,16 @@ export function useTimeline () {
   const init = () => {
     for (const strip of timeline.value.strips) {
       for (const effect of strip.effects) {
+        const context: EffectUpdateContext = {
+          strip,
+          effect,
+          timeline: timeline.value,
+          assets: assets.assets.value,
+          jump: false,
+          scene: Renderer.scene,
+          isPlay: timeline.value.isPlay
+        }
+
         if (isText(effect)) {
           if (!Renderer.effectObjectMap.has(effect.id)) {
             const textObj = new TextStripEffectObject(effect)
@@ -147,21 +161,10 @@ export function useTimeline () {
           }
         } else if (isVideo(effect)) {
           const veo = Renderer.effectObjectMap.get(effect.id)
-          const assetPath =
-            assets.assets.value.assets.find(a => a.id === effect.videoAssetId)
-              ?.path || ''
-
-          if (veo instanceof VideoStripEffectObject) {
-            veo.updateAsset(assetPath)
+          if (!veo) {
+            Renderer.effectObjectMap.set(effect.id, new constructorMap[effect.type](context))
           } else {
-            const videoObj = new VideoStripEffectObject(
-              effect,
-              assets.assets.value.assets.find(
-                a => a.id === effect.videoAssetId
-              )?.path || ''
-            )
-            Renderer.effectObjectMap.set(effect.id, videoObj)
-            Renderer.scene.add(videoObj.obj)
+            veo.updateStrip(context)
           }
         } else if (isAudio(effect)) {
           if (!Renderer.effectObjectMap.has(effect.id)) {
