@@ -388,12 +388,6 @@
   "assets": {
     "assets": [
       {
-        "id": "system_font",
-        "path": "",
-        "name": "System Font",
-        "type": "Text"
-      },
-      {
         "id": "asset2",
         "type": "Audio",
         "path": "/Vega/demo/tsudumi-japan.mp3",
