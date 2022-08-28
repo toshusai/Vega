@@ -28,8 +28,16 @@ export class VideoStripEffectObject extends EffectObject {
     return this.video.src
   }
 
-  constructor (iface: VideoStripEffect, src: string) {
-    super()
+  updateStrip (ctx: EffectUpdateContext): void {
+    const effect = ctx.effect as VideoStripEffect
+    const src = ctx.assets.assets.find(a => a.id === effect.videoAssetId)?.path || ''
+    this.updateAsset(src)
+  }
+
+  constructor (ctx:EffectUpdateContext) {
+    super(ctx)
+    const iface = ctx.effect as VideoStripEffect
+    const src = ctx.assets.assets.find(a => a.id === iface.videoAssetId)?.path || ''
     this.video = document.createElement('video')
 
     this.video.controls = true
@@ -65,6 +73,8 @@ export class VideoStripEffectObject extends EffectObject {
       this.obj.uuid = iface.id
     }
     this.updateAsset(src)
+
+    ctx.scene.add(this.obj)
 
     // const cube = new T.Mesh(
     //   new T.BoxGeometry(100, 100, 100),
