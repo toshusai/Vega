@@ -1,8 +1,9 @@
 import { AudioStripEffect } from './stripEffect/AudioStripEffect'
 import { firstInterfact } from './Global'
 import { Strip } from './Strip'
+import { EffectObject } from './EffectObject'
 
-export class AudioStripEffectObject {
+export class AudioStripEffectObject extends EffectObject {
   type = 'Audio'
   loaded = false
   videoOffset = 0
@@ -10,6 +11,7 @@ export class AudioStripEffectObject {
   audio: HTMLAudioElement
 
   constructor (iface: AudioStripEffect, src: string) {
+    super()
     this.audio = document.createElement('audio')
     document.body.append(this.audio)
 

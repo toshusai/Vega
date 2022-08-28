@@ -190,13 +190,13 @@ export class TextStripEffectObject extends EffectObject {
     this.ctx.fillStyle = 'red'
   }
 
-  public async update (
+  public update (
     strip: Strip,
     itext: TextStripEffect,
-    timeline: Timeline
+    time : number,
+    isPlay: boolean,
+    jump: boolean
   ) {
-    const time = timeline.curent
-
     // keyframe calculation
     const x = calcAnimationValue(
       itext.animations,
@@ -220,15 +220,8 @@ export class TextStripEffectObject extends EffectObject {
       this.obj.visible = false
     }
 
-    if (timeline.focusStripId === strip.id) {
-      this.obj.visible = false
-    }
-    return await new Promise<void>((resolve, reject) => {
-      try {
-        return resolve()
-      } catch (e) {
-        reject(e)
-      }
-    })
+    // if (timeline.focusStripId === strip.id) {
+    //   this.obj.visible = false
+    // }
   }
 }
