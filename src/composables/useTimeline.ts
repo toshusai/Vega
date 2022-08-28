@@ -89,7 +89,7 @@ function update (timeline: Ref<Timeline>) {
             effect.id
           ) as TextStripEffectObject
           if (textObj) {
-            textObj.update(strip, effect, timeline.value)
+            textObj.update(strip, effect, timeline.value.curent, timeline.value.isPlay, jump)
           }
         } else if (isVideo(effect)) {
           const videoObj = effectObjectMap.get(

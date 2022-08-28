@@ -1,10 +1,11 @@
 import * as T from 'three'
 import { Vector3 } from 'three'
+import { EffectObject } from './EffectObject'
 import { firstInterfact } from './Global'
 import { Strip } from './Strip'
 import { VideoStripEffect } from './stripEffect'
 
-export class VideoStripEffectObject {
+export class VideoStripEffectObject extends EffectObject {
   type = 'Video'
 
   loaded = false
@@ -28,6 +29,7 @@ export class VideoStripEffectObject {
   }
 
   constructor (iface: VideoStripEffect, src: string) {
+    super()
     this.video = document.createElement('video')
 
     this.video.controls = true
