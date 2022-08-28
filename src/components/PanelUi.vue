@@ -55,10 +55,11 @@ const upTop = (e: MouseEvent, pos: Position) => {
 
 .name {
   border-bottom: 1px solid;
-  font-size: 8px;
+  font-size: 12px;
+  line-height: 12px;
   padding-top: 1px;
   padding-left: 2px;
-  height: 12px;
+  height: 16px;
   cursor: pointer;
   box-sizing: border-box;
 }
