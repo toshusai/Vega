@@ -25,6 +25,10 @@ a:visited {
     color: plum;
 }
 
+a {
+    color: lightblue;
+}
+
 input {
     border: 1px solid;
     padding-left: 4px;
