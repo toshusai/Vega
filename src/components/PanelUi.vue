@@ -37,7 +37,7 @@ const upTop = (e: MouseEvent, pos: Position) => {
         {{ props.name }}
       </div>
     </div>
-    <div style="height: calc(100% - 12px)">
+    <div style="height: calc(100% - 16px)">
       <component :is="'' + props.name.toLowerCase() + '-panel'" />
     </div>
   </div>
