@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { ImageStripEffect } from './stripEffect'
-import { EffectObject } from './EffectObject'
+import { EffectObject, EffectUpdateContext } from './EffectObject'
 import { Strip } from './Strip'
 
 export class ImageStripEffectObject extends EffectObject {
@@ -90,13 +90,9 @@ export class ImageStripEffectObject extends EffectObject {
     })
   }
 
-  public update (
-    strip: Strip,
-    effect: ImageStripEffect,
-    time: number,
-    isPlay: boolean,
-    jump: boolean
-  ) {
+  public update ({ strip, effect: _effect, timeline, isPlay, jump }: EffectUpdateContext) {
+    const effect = _effect as ImageStripEffect
+    const time = timeline.curent
     this.obj.position.set(effect.position.x, effect.position.y, strip.layer)
     this.obj.scale.set(effect.scale.x, effect.scale.y, 1)
 
