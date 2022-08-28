@@ -133,7 +133,10 @@ export function setTimeline (state: Ref<Timeline>) {
 }
 
 const constructorMap: Record<string, new (ctx: EffectUpdateContext) => EffectObject> = {
-  Video: VideoStripEffectObject
+  Video: VideoStripEffectObject,
+  Text: TextStripEffectObject,
+  Image: ImageStripEffectObject,
+  Audio: AudioStripEffectObject
 }
 
 export function useTimeline () {
@@ -152,44 +155,11 @@ export function useTimeline () {
           scene: Renderer.scene,
           isPlay: timeline.value.isPlay
         }
-
-        if (isText(effect)) {
-          if (!Renderer.effectObjectMap.has(effect.id)) {
-            const textObj = new TextStripEffectObject(effect)
-            Renderer.effectObjectMap.set(effect.id, textObj)
-            Renderer.scene.add(textObj.obj)
-          }
-        } else if (isVideo(effect)) {
-          const veo = Renderer.effectObjectMap.get(effect.id)
-          if (!veo) {
-            Renderer.effectObjectMap.set(effect.id, new constructorMap[effect.type](context))
-          } else {
-            veo.updateStrip(context)
-          }
-        } else if (isAudio(effect)) {
-          if (!Renderer.effectObjectMap.has(effect.id)) {
-            const audioObj = new AudioStripEffectObject(
-              effect,
-              assets.assets.value.assets.find(
-                a => a.id === effect.audioAssetId
-              )?.path || ''
-            )
-            Renderer.effectObjectMap.set(effect.id, audioObj)
-          }
-        } else if (isImage(effect)) {
-          if (!Renderer.effectObjectMap.has(effect.id)) {
-            const audioObj = new ImageStripEffectObject(
-              effect,
-              assets.assets.value.assets.find(
-                a => a.id === effect.imageAssetId
-              )?.path || ''
-            )
-            Renderer.effectObjectMap.set(effect.id, audioObj)
-            Renderer.scene.add(audioObj.obj)
-          }
+        const veo = Renderer.effectObjectMap.get(effect.id)
+        if (!veo) {
+          Renderer.effectObjectMap.set(effect.id, new constructorMap[effect.type](context))
         } else {
-          // eslint-disable-next-line no-console
-          console.warn('Unknown effect type: ' + effect.type)
+          veo.updateStrip(context)
         }
       }
     }

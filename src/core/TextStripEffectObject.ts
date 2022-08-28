@@ -22,8 +22,9 @@ export class TextStripEffectObject extends EffectObject {
   mesureWidth = 0
   mesureHeight = 0
 
-  constructor (itext: TextStripEffect) {
-    super()
+  constructor (ctx:EffectUpdateContext) {
+    super(ctx)
+    const itext = ctx.effect as TextStripEffect
     this.text = itext.text
     // this.fontFamily = itext.fontFamily;
     this.canvas = document.createElement('canvas')
@@ -57,6 +58,7 @@ export class TextStripEffectObject extends EffectObject {
     this.obj.position.setY(itext.position.y)
     // this.obj.rotateY(Math.PI);
     this.obj.position.setZ(itext.position.z)
+    ctx.scene.add(this.obj)
     // this.obj.renderOrder = 10;
 
     // this.outlineColor = itext.outlineColor;

@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import { ImageStripEffect } from './stripEffect'
 import { EffectObject, EffectUpdateContext } from './EffectObject'
-import { Strip } from './Strip'
 
 export class ImageStripEffectObject extends EffectObject {
   type = 'Image'
@@ -32,8 +31,10 @@ export class ImageStripEffectObject extends EffectObject {
     return this.tex?.image ? this.tex.image.height : 0
   }
 
-  constructor (iface: ImageStripEffect, src: string) {
-    super()
+  constructor (ctx:EffectUpdateContext) {
+    super(ctx)
+    const effect = ctx.effect as ImageStripEffect
+    const src = ctx.assets.assets.find(a => a.id === effect.imageAssetId)?.path || ''
 
     this.tex = new THREE.TextureLoader().load(src, () => {
       if (this.obj) {
@@ -60,11 +61,18 @@ export class ImageStripEffectObject extends EffectObject {
     })
     this.geometry = new THREE.PlaneBufferGeometry(1, 1, 1, 1)
     this.obj = new THREE.Mesh(this.geometry, this.material)
-    if (iface.id) {
-      this.obj.uuid = iface.id
+    if (effect.id) {
+      this.obj.uuid = effect.id
     }
 
-    this.obj.position.set(iface.position.x, iface.position.y, 0)
+    this.obj.position.set(effect.position.x, effect.position.y, 0)
+    this.updateAsset(src)
+    ctx.scene.add(this.obj)
+  }
+
+  updateStrip (ctx: EffectUpdateContext): void {
+    const effect = ctx.effect as ImageStripEffect
+    const src = ctx.assets.assets.find(a => a.id === effect.imageAssetId)?.path || ''
     this.updateAsset(src)
   }
 

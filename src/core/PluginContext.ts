@@ -1,7 +1,6 @@
 import { AssetState } from '../composables/useAssets'
 import { Timeline } from './Timeline'
-import { EffectObject } from './EffectObject'
-import { Strip } from './Strip'
+import { EffectObject, EffectUpdateContext } from './EffectObject'
 import { StripEffect } from '@/core/StripEffect'
 
 export interface PluginContext {
@@ -12,7 +11,7 @@ export interface PluginContext {
 export type PluginEffect = StripEffect;
 
 export class PluginEffectObject extends EffectObject {
-  update (strip: Strip, effect: StripEffect, time: number, isPlay: boolean, jump: boolean): void {
+  update (ctx: EffectUpdateContext): void {
     //
   }
 }

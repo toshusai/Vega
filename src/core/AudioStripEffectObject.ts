@@ -10,12 +10,20 @@ export class AudioStripEffectObject extends EffectObject {
   inProgress = false
   audio: HTMLAudioElement
 
-  constructor (iface: AudioStripEffect, src: string) {
-    super()
+  constructor (ctx:EffectUpdateContext) {
+    super(ctx)
+    const effect = ctx.effect as AudioStripEffect
     this.audio = document.createElement('audio')
     document.body.append(this.audio)
+    const src = ctx.assets.assets.find(a => a.id === effect.audioAssetId)?.path || ''
 
-    this.audio.volume = iface.volume
+    this.audio.volume = effect.volume
+    this.updateAsset(src)
+  }
+
+  updateStrip (ctx: EffectUpdateContext): void {
+    const effect = ctx.effect as AudioStripEffect
+    const src = ctx.assets.assets.find(a => a.id === effect.audioAssetId)?.path || ''
     this.updateAsset(src)
   }
 
