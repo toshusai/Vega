@@ -1,7 +1,7 @@
 import { AudioStripEffect } from './stripEffect/AudioStripEffect'
 import { firstInterfact } from './Global'
 import { Strip } from './Strip'
-import { EffectObject } from './EffectObject'
+import { EffectObject, EffectUpdateContext } from './EffectObject'
 
 export class AudioStripEffectObject extends EffectObject {
   type = 'Audio'
@@ -32,13 +32,9 @@ export class AudioStripEffectObject extends EffectObject {
 
   prevTime = 0
 
-  public update (
-    strip: Strip,
-    effect: AudioStripEffect,
-    time: number,
-    isPlay: boolean,
-    jump: boolean
-  ) {
+  public update ({ strip, effect: _effect, timeline, isPlay, jump }: EffectUpdateContext) {
+    const effect = _effect as AudioStripEffect
+    const time = timeline.curent
     if (!this.loaded) {
       this.audio.volume = 0
       return

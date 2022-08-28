@@ -1,7 +1,7 @@
 import { Ref } from 'nuxt/dist/app/compat/capi'
+import { EffectUpdateContext, EffectObject } from './../core/EffectObject'
 import { Renderer } from '@/core/Renderer'
 import { Timeline } from '@/core/Timeline'
-import { EffectObject } from '@/core/EffectObject'
 import {
   TextStripEffect,
   VideoStripEffect,
@@ -90,62 +90,16 @@ function update (timeline: Ref<Timeline>) {
 
       for (let k = 0; k < strip.effects.length; k++) {
         const effect = strip.effects[k]
-        if (isText(effect)) {
-          const textObj = Renderer.effectObjectMap.get(
-            effect.id
-          ) as TextStripEffectObject
-          if (textObj) {
-            textObj.update(
-              strip,
-              effect,
-              timeline.value.curent,
-              timeline.value.isPlay,
-              jump
-            )
-          }
-        } else if (isVideo(effect)) {
-          const videoObj = Renderer.effectObjectMap.get(
-            effect.id
-          ) as VideoStripEffectObject
-          if (videoObj) {
-            videoObj.update(
-              strip,
-              effect,
-              timeline.value.curent,
-              timeline.value.isPlay,
-              jump
-            )
-          }
-        } else if (isAudio(effect)) {
-          const audioObj = Renderer.effectObjectMap.get(
-            effect.id
-          ) as AudioStripEffectObject
-          if (audioObj) {
-            audioObj.update(
-              strip,
-              effect,
-              timeline.value.curent,
-              timeline.value.isPlay,
-              jump
-            )
-          }
-        } else if (isImage(effect)) {
-          const imageObj = Renderer.effectObjectMap.get(
-            effect.id
-          ) as ImageStripEffectObject
-          if (imageObj) {
-            imageObj.update(
-              strip,
-              effect,
-              timeline.value.curent,
-              timeline.value.isPlay,
-              jump
-            )
-          }
-        } else {
-          // eslint-disable-next-line no-console
-          console.warn('Unknown effect type')
+        const context: EffectUpdateContext = {
+          strip,
+          effect,
+          timeline: timeline.value,
+          assets: { assets: [], selectedAssets: [] },
+          jump,
+          scene: Renderer.scene,
+          isPlay: timeline.value.isPlay
         }
+        Renderer.effectObjectMap.get(effect.id)?.update(context)
       }
     }
   }

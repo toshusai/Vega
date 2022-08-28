@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { calcAnimationValue } from '../utils/calcAnimationValue'
-import { EffectObject } from './EffectObject'
-import { TextStripEffect } from './stripEffect'
+import { EffectObject, EffectUpdateContext } from './EffectObject'
+import { TextStripEffect, VideoStripEffect } from './stripEffect'
 import { Strip } from './Strip'
 import { Timeline } from './Timeline'
 
@@ -190,32 +190,29 @@ export class TextStripEffectObject extends EffectObject {
     this.ctx.fillStyle = 'red'
   }
 
-  public update (
-    strip: Strip,
-    itext: TextStripEffect,
-    time : number,
-    isPlay: boolean,
-    jump: boolean
-  ) {
+  public update ({ strip, effect: _effect, timeline, isPlay, jump }: EffectUpdateContext) {
+    const effect = _effect as TextStripEffect
+    const time = timeline.curent
+
     // keyframe calculation
     const x = calcAnimationValue(
-      itext.animations,
+      effect.animations,
       time - strip.start,
       'position.x',
-      itext.position.x
+      effect.position.x
     )
     const y = calcAnimationValue(
-      itext.animations,
+      effect.animations,
       time - strip.start,
       'position.y',
-      itext.position.y
+      effect.position.y
     )
 
     this.obj.position.set(x, y, strip.layer)
 
     if (strip.start <= time && time < strip.start + strip.length) {
       this.obj.visible = true
-      this.draw(itext, strip, time)
+      this.draw(effect, strip, time)
     } else {
       this.obj.visible = false
     }

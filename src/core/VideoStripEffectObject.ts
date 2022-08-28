@@ -1,6 +1,6 @@
 import * as T from 'three'
 import { Vector3 } from 'three'
-import { EffectObject } from './EffectObject'
+import { EffectObject, EffectUpdateContext } from './EffectObject'
 import { firstInterfact } from './Global'
 import { Strip } from './Strip'
 import { VideoStripEffect } from './stripEffect'
@@ -105,13 +105,10 @@ export class VideoStripEffectObject extends EffectObject {
 
   prevTime = 0
 
-  public update (
-    strip: Strip,
-    effect: VideoStripEffect,
-    time: number,
-    isPlay: boolean,
-    jump: boolean
-  ) {
+  public update ({ strip, effect: _effect, timeline, isPlay, jump }: EffectUpdateContext) {
+    const effect = _effect as VideoStripEffect
+    const time = timeline.curent
+
     if (this.tex) {
       this.tex.needsUpdate = true
     }
