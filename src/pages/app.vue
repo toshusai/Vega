@@ -7,6 +7,7 @@ import SettingsButton from '@/components/SettingsButton.vue'
 import ProjectModal from '@/components/ProjectModal.vue'
 import { ipcSend } from '@/utils/ipcSend'
 import { getIsElectron } from '@/utils/getIsElectron'
+import { clone } from '@/utils/clone'
 const { container, setContainer } = useContainer()
 const { init: initTimeline, timeline, setTimeline } = useTimeline()
 const { assets, setAssets } = useAssets()
@@ -43,11 +44,17 @@ onMounted(() => {
         if (project.value.path) {
           ipcSend('SAVE_FILE', { path: project.value.path, data: projectToJsonString() })
         } else {
-          ipcSend('SAVE_NEW_FILE', projectToJsonString()).then((path) => {
+          ipcSend<false | string>('SAVE_NEW_FILE', projectToJsonString()).then((path) => {
             if (path === false) { return }
             const paths = JSON.parse(localStorage.getItem('RECENT_USED_PROJECT_PATHS_KEY') || '[]')
             paths.push(path)
             localStorage.setItem('RECENT_USED_PROJECT_PATHS_KEY', JSON.stringify(paths))
+            project.value = {
+              assets: clone(assets.value),
+              container: clone(container.value),
+              timeline: clone(timeline.value),
+              path
+            }
           })
         }
       } else {
