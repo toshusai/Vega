@@ -1,5 +1,5 @@
-import { easeInOutCubic } from './easeInOutCubic'
 import { normalize } from './normalize'
+import { easeInOutCubic } from './easeInOutCubic'
 import { Animation } from '@/core/Animation'
 
 export function findBetween (
@@ -9,7 +9,9 @@ export function findBetween (
 ) {
   let prev = -1
   for (let i = 0; i < animations.length; i++) {
-    if (animations[i].key !== key) { continue }
+    if (animations[i].key !== key) {
+      continue
+    }
     if (animations[i].time <= time) {
       prev = i
     }
@@ -19,7 +21,9 @@ export function findBetween (
 
   let next = -1
   for (let i = animations.length - 1; i >= 0; i--) {
-    if (animations[i].key !== key) { continue }
+    if (animations[i].key !== key) {
+      continue
+    }
     if (animations[i].time >= time) {
       next = i
     }
@@ -31,7 +35,7 @@ export function findBetween (
   return [prevAnimation, nextAnimation]
 }
 
-const animFuncMap:Record<string, (x:number)=>number> = {
+const animFuncMap: Record<string, (x: number) => number> = {
   easeInOutCubic,
   liner: x => x
 }
@@ -43,7 +47,9 @@ export function calcAnimationValue (
   defaultValue = 0,
   animFunc = 'liner'
 ) {
-  if (animations.filter(a => a.key === key).length === 0) { return defaultValue }
+  if (animations.filter(a => a.key === key).length === 0) {
+    return defaultValue
+  }
   const [prev, next] = findBetween(animations, time, key)
 
   let v = defaultValue

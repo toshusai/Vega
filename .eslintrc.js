@@ -3,6 +3,7 @@ module.exports = {
     browser: true,
     es2021: true
   },
+  ignorePatterns: ['src/public/**/*'],
   extends: [
     'plugin:vue/vue3-recommended',
     'prettier',
