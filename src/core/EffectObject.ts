@@ -12,6 +12,7 @@ export interface EffectUpdateContext {
   effect: StripEffect;
   isPlay: boolean;
   jump: boolean;
+  updateEffect: (stripId: string, effect: StripEffect) => void;
 }
 
 export class EffectObject {

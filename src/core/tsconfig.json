@@ -6,7 +6,7 @@
     "strict": false,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "declarationDir": "./dist",
+    "declarationDir": "./@types",
     "paths": {
       "@/*": ["../*"]
     }

@@ -1,6 +1,7 @@
 {
   "name": "@toshusai/vega-core",
   "version": "1.0.0",
+  "types": "./@types/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.json "
   },
