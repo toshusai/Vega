@@ -1,4 +1,4 @@
-import { calcAnimationValue } from './calcAnimationValue'
+import { calcAnimationValue } from '../core/utils/calcAnimationValue'
 import { Renderer } from '@/core/Renderer'
 import { Strip } from '@/core/Strip'
 import { TextStripEffectObject } from '@/core/TextStripEffectObject'

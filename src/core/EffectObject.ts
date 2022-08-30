@@ -1,5 +1,5 @@
 import { Scene } from 'three'
-import { AssetState } from '../composables/useAssets'
+import { AssetState } from './AssetState'
 import { Strip } from './Strip'
 import { StripEffect } from './stripEffect'
 import { Timeline } from './Timeline'

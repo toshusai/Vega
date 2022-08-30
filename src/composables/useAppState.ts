@@ -1,10 +1,10 @@
+import { initialTimelineState } from '@/core/const'
 import { Timeline } from '@/core/Timeline'
-import { initialTimelineState } from '@/composables/useTimeline'
 
 interface AppState {
-    timeline: Timeline
+  timeline: Timeline;
 }
-const initialAppState:AppState = {
+const initialAppState: AppState = {
   timeline: initialTimelineState
 }
 

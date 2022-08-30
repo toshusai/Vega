@@ -2,7 +2,7 @@
 import KeyframeMarker from './KeyframeMarker.vue'
 import KeyframeSelectRect from './KeyframeSelectRect.vue'
 import { StripEffect } from '@//core/stripEffect'
-import { calcAnimationValue } from '@//utils/calcAnimationValue'
+import { calcAnimationValue } from '@/core/utils/calcAnimationValue'
 import { Animation } from '@/core/Animation'
 
 const { timeline, updateEffect, update } = useTimeline()

@@ -1,0 +1,12 @@
+{
+  "name": "@toshusai/vega-core",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json "
+  },
+  "author": "tosuhsai",
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^4.8.2"
+  }
+}

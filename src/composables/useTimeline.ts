@@ -1,6 +1,6 @@
 import { Ref } from 'nuxt/dist/app/compat/capi'
-import { uuid } from 'short-uuid'
 import { EffectUpdateContext, EffectObject } from './../core/EffectObject'
+import { initialTimelineState } from '@/core/const'
 import { Renderer } from '@/core/Renderer'
 import { Timeline } from '@/core/Timeline'
 import {
@@ -18,24 +18,6 @@ import { Strip } from '@/core/Strip'
 import { AudioStripEffectObject } from '@/core/AudioStripEffectObject'
 import { ImageStripEffectObject } from '@/core/ImageStripEffectObject'
 import { Animation } from '@/core/Animation'
-
-export const initialTimelineState: Timeline = {
-  isRecording: false,
-  selectedStrips: [],
-  selectedKeyframes: [],
-  focusStripId: '',
-  previewTool: 'cursor',
-  timelineTool: 'cursor',
-  isPlay: false,
-  width: 1920,
-  height: 1080,
-  length: 15,
-  curent: 3,
-  end: 15,
-  scale: 20,
-  start: 0,
-  strips: []
-}
 
 function findStripById (id: string, timeline: Timeline) {
   for (const strip of timeline.strips) {
