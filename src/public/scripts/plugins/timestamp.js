@@ -3,7 +3,6 @@ define("TimeStamp", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.name = void 0;
-    var fetched = false;
     var TimeStampEffectObject = /** @class */ (function () {
         function TimeStampEffectObject() {
         }
@@ -20,14 +19,6 @@ define("TimeStamp", ["require", "exports"], function (require, exports) {
                     textEffect.text = text;
                 }
                 ctx.updateEffect(strip.id, textEffect);
-                if (!fetched) {
-                    fetched = true;
-                    fetch('https://api.open-meteo.com/v1/forecast?latitude=35.6785&longitude=139.6823').then(function (x) {
-                        x.json().then(function (body) {
-                            console.log(body);
-                        });
-                    });
-                }
             }
         };
         return TimeStampEffectObject;
