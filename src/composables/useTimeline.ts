@@ -81,31 +81,7 @@ function update (timeline: Ref<Timeline>) {
           jump,
           scene: Renderer.scene,
           isPlay: timeline.value.isPlay,
-          // TODO add more functions to this context
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          updateStrip: (stripId: string, effect: StripEffect) => {
-            const strip = findStripById(stripId, timeline.value)
-            if (!strip) {
-              return
-            }
-            const index = strip.effects.findIndex(e => e.id === effect.id)
-            if (index === -1) {
-              return
-            }
-            const newAnimations: Animation[] = []
-            effect.animations.forEach((a) => {
-              if (
-                !newAnimations.find(
-                  na => na.key === a.key && na.time === a.time
-                )
-              ) {
-                newAnimations.push(a)
-              }
-            })
-            effect.animations = newAnimations
-            strip.effects[index] = effect
-          }
+          updateEffect: createUpdateEffect(timeline)
         }
         Renderer.effectObjectMap.get(effect.id)?.update(context)
       }
@@ -140,6 +116,40 @@ export function setTimeline (state: Ref<Timeline>) {
   }
 }
 
+const createUpdateStrip = (state: Ref<Timeline>) => {
+  return (strip: Strip) => {
+    state.value.strips = state.value.strips.map((s) => {
+      if (s.id === strip.id) {
+        return strip
+      }
+      return s
+    })
+  }
+}
+
+const createUpdateEffect = (state: Ref<Timeline>) => {
+  return <T extends StripEffect>(stripId: string, effect: T) => {
+    const strip = findStripById(stripId, state.value)
+    if (!strip) {
+      return
+    }
+    const index = strip.effects.findIndex(e => e.id === effect.id)
+    if (index === -1) {
+      return
+    }
+    const newAnimations: Animation[] = []
+    effect.animations.forEach((a) => {
+      if (
+        !newAnimations.find(na => na.key === a.key && na.time === a.time)
+      ) {
+        newAnimations.push(a)
+      }
+    })
+    effect.animations = newAnimations
+    strip.effects[index] = effect
+  }
+}
+
 export const constructorMap: Record<
   string,
   new (ctx: EffectUpdateContext) => EffectObject
@@ -168,7 +178,8 @@ export function useTimeline () {
           assets: assets.assets.value,
           jump: false,
           scene: Renderer.scene,
-          isPlay: timeline.value.isPlay
+          isPlay: timeline.value.isPlay,
+          updateEffect: createUpdateEffect(timeline)
         }
         const veo = Renderer.effectObjectMap.get(effect.id)
         if (!veo) {
@@ -266,39 +277,9 @@ export function useTimeline () {
       }
     })(timeline),
 
-    updateStrip: ((state: Ref<Timeline>) => {
-      return (strip: Strip) => {
-        state.value.strips = state.value.strips.map((s) => {
-          if (s.id === strip.id) {
-            return strip
-          }
-          return s
-        })
-      }
-    })(timeline),
+    updateStrip: createUpdateStrip(timeline),
 
-    updateEffect: ((state: Ref<Timeline>) => {
-      return <T extends StripEffect>(stripId: string, effect: T) => {
-        const strip = findStripById(stripId, state.value)
-        if (!strip) {
-          return
-        }
-        const index = strip.effects.findIndex(e => e.id === effect.id)
-        if (index === -1) {
-          return
-        }
-        const newAnimations: Animation[] = []
-        effect.animations.forEach((a) => {
-          if (
-            !newAnimations.find(na => na.key === a.key && na.time === a.time)
-          ) {
-            newAnimations.push(a)
-          }
-        })
-        effect.animations = newAnimations
-        strip.effects[index] = effect
-      }
-    })(timeline),
+    updateEffect: createUpdateEffect(timeline),
 
     selectKeyframe: ((state: Ref<Timeline>) => {
       return (animations: Animation[]) => {
