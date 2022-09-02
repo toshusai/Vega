@@ -210,10 +210,15 @@ function selectStripClick (strip: Strip) {
     selectStrip([strip.id])
   }
 }
+
+const show = computed(() => {
+  return props.strip.start < timeline.value.end
+})
 </script>
 
 <template>
   <div
+    v-if="show"
     :id="'strip-' + strip.id"
     ref="el"
     :style="style"
