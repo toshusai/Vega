@@ -4,7 +4,7 @@ import {
   AudioStripEffect,
   StripEffect
 } from './stripEffect'
-import { PluginStripEffect } from './stripEffect/PlulginStripEffect'
+import { PluginStripEffect } from './stripEffect/PluginStripEffect'
 
 export interface Strip {
   id: string;
