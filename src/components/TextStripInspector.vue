@@ -80,7 +80,8 @@ function hasKeyframe (key: string) {
             effect.position.x
           ) as number
         "
-        :key-frame="hasKeyframe('position.x')"
+        :has-key-frame="hasKeyframe('position.x')"
+        :key-frame="true"
         @input="num => changeText(num, 'position.x')"
         @key-frame="() => addKeyframe('position.x', effect?.position.x)"
       />
