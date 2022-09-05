@@ -42,7 +42,7 @@ const secs = computed(() => {
     i < props.start + props.length;
     i += step
   ) {
-    const time = snap(Math.floor(props.start) + j * step)
+    const time = snap(Math.floor(props.start - props.start % step) + j * step)
     let str = time.toFixed(0)
     str += '.'
     times.push({
