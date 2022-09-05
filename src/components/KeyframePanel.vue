@@ -19,9 +19,21 @@ const keys = ref(new Map<string, Animation[]>())
 
 const animationIdEffectIdMap = ref(new Map<string, StripEffect>())
 
-const times = computed(() =>
-  [...Array(Math.floor(maxTime.value))].map((_, i) => i)
-)
+const times = computed(() => {
+  // 1秒間隔
+  // length
+  let pps = pixPerSec.value
+  let span = 1
+  while (pps < 30) {
+    span = span * 2
+    pps = pixPerSec.value * span
+  }
+  if (!strip.value) { return [] }
+
+  const length = Math.ceil((end.value - start.value) * (strip.value?.length || 0))
+  const startPx = start.value * strip.value.length * pixPerSec.value
+  return [...Array(length)].map((_, i) => i * span * pixPerSec.value - startPx % (span * pixPerSec.value))
+})
 const start = ref(0)
 const end = ref(1)
 
@@ -52,20 +64,9 @@ function updateKeys () {
 }
 
 const timeArea = ref<HTMLDivElement | null>(null)
-const pixPerSec = ref(0)
-function updatePixPerSec () {
-  if (!strip.value) {
-    pixPerSec.value = 1
-    return
-  }
-  const rect = timeArea.value?.getBoundingClientRect()
-  const width = rect?.width || 0
-  // 3 / (1.5 - 1)
-  pixPerSec.value = width / strip.value.length / (end.value - start.value)
-}
+const pixPerSec = computed(() => usePixPerSec(timeArea.value, (end.value - start.value) * (strip.value?.length || 0)))
 
 function resize () {
-  updatePixPerSec()
   updateStartOffset()
 }
 onUpdated(resize)
@@ -215,9 +216,9 @@ function updateTime (t: number) {
         />
 
         <div
-          v-for="i in times"
-          :key="i"
-          :style="{ left: `${startOffset + i * pixPerSec}px` }"
+          v-for="px in times"
+          :key="px"
+          :style="{ left: `${px}px` }"
           style="
             display: flex;
             position: absolute;
