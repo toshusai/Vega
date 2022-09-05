@@ -142,7 +142,7 @@ export class VideoStripEffectObject extends EffectObject {
 
     if (strip.start <= time && time < strip.start + strip.length) {
       this.obj.visible = true
-      this.video.volume = effect.volume || 1
+      this.video.volume = effect.volume !== undefined ? Math.min(Math.max(effect.volume, 0), 1) : 1
 
       // When move strip and
       if (this.prevTime !== strip.start) {
