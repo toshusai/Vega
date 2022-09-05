@@ -234,6 +234,9 @@ const ctx = ref<CanvasRenderingContext2D | null>(null)
 const overLeft = computed(() => {
   return (props.strip.start - timeline.value.start) * pixScale.value
 })
+function clamp (v: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, v))
+}
 function draw () {
   // console.log("ok");
   if (!ctx.value) {
@@ -278,9 +281,6 @@ function draw () {
     // console.log(start);
   }
 
-  function clamp (v: number, min: number, max: number) {
-    return Math.max(min, Math.min(max, v))
-  }
   for (let i = start; i < visualData + start + 100; i++) {
     sum += Math.abs(clamp(data[i], -1, 1))
     pixel++
@@ -319,7 +319,8 @@ watch(props.strip, () => {
   updateVideoArray()
   updateVideoStart()
 })
-watch(timeline.value, () => {
+
+watch(() => [timeline.value.start, timeline.value.end], (newT, oldT) => {
   updateVideoArray()
   updateVideoStart()
 })
