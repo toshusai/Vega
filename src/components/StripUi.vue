@@ -33,7 +33,12 @@ const MIN_VISIBLE_WIDTH = 28 // border 4 * 2 + handle 8 * 2 + middle space 4
 const hiddenWidth = ref(0)
 const style = computed<CSSProperties>(() => {
   let left = (props.strip.start - timeline.value.start) * pixScale.value
-  let width = props.strip.length * pixScale.value
+  const end = props.strip.start + props.strip.length
+  let length = props.strip.length
+  if (end > timeline.value.end) {
+    length = timeline.value.end - props.strip.start + 50 / pixScale.value
+  }
+  let width = length * pixScale.value
   if (left < -CUT_LEFT_PX) {
     width += left + CUT_LEFT_PX
     left = -CUT_LEFT_PX
