@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { calcAnimationValue } from './utils/calcAnimationValue'
-import { EffectObject, EffectUpdateContext } from './EffectObject'
+import { EffectObject } from './EffectObject'
+import { EffectUpdateContext } from './EffectUpdateContext'
 import { TextStripEffect, VideoStripEffect } from './stripEffect'
 import { Strip } from './Strip'
 import { Timeline } from './Timeline'
