@@ -11,11 +11,11 @@ export class PluginEffectObject extends EffectObject {
     // should implement
   }
 
-  onMounted (el: HTMLElement, effect: PluginStripEffect) {
+  mounted (el: HTMLElement, effect: PluginStripEffect) {
     // should implement
   }
 
-  onUnMounted (el: HTMLElement, effect: PluginStripEffect) {
+  unMounted (el: HTMLElement, effect: PluginStripEffect) {
     // should implement
   }
 }
