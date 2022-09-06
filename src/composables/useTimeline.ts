@@ -1,4 +1,5 @@
 import { Ref } from 'nuxt/dist/app/compat/capi'
+import { IAsset } from './../core/IAsset'
 import {
   EffectObject,
   EffectUpdateContext,
@@ -182,28 +183,32 @@ export function useTimeline () {
         }
         const veo = Renderer.effectObjectMap.get(effect.id)
         if (!veo) {
-          if (effect.type === 'Plugin' && 'name' in effect) {
-            // TODO fix to id base search
+          if (
+            effect.type !== 'Video' &&
+            effect.type !== 'Audio' &&
+            effect.type !== 'Text'
+          ) {
             const asset = context.assets.assets.find(
-              a => a.name === effect.name
+              (a: IAsset) => a.name === effect.type
             )
             if (!asset) {
-              return
+              continue
             }
-            if (!constructorMap[asset.name]) {
+            const className = asset.name
+            if (!constructorMap[className]) {
               require([asset.path], () => {
                 require([asset.name], (result: any) => {
                   constructorMap[asset.name] = result.default
                   Renderer.effectObjectMap.set(
                     effect.id,
-                    new constructorMap[effect.name](context)
+                    new constructorMap[className](context)
                   )
                 })
               })
             } else {
               Renderer.effectObjectMap.set(
                 effect.id,
-                new constructorMap[effect.name](context)
+                new constructorMap[className](context)
               )
             }
           } else {

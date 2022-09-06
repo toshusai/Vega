@@ -5,9 +5,7 @@ const props = defineProps<{ effect: StripEffect & { name: string } }>()
 </script>
 
 <template>
-  <div class="p-4">
-    <div>{{ props.effect.name }}</div>
-  </div>
+  <div class="p-4" />
 </template>
 
 <style scoped>
