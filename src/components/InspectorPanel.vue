@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { uuid } from 'short-uuid'
-import { Strip, StripEffect } from '@/core'
+import { PluginStripEffect, Strip, StripEffect } from '@/core'
 const { init, timeline, updateStrip, selectStrip } = useTimeline()
 const { dad } = useDragAndDrop()
 const { assets } = useAssets()
@@ -17,6 +17,11 @@ function getComponentName (effect: StripEffect) {
 // @ts-ignore
 declare function require(args: string[], cb: (result: unknown) => void): void;
 
+/**
+ * mouse up on inspector panel
+ *
+ * it can add new effects
+ */
 function mouseup () {
   if (dad.value.key === 'assets') {
     const assetId = dad.value.payload
@@ -29,16 +34,16 @@ function mouseup () {
     }
     require([asset.path], () => {
       require([asset.name], (result: any) => {
+        const newPluginEffect: PluginStripEffect = {
+          id: uuid(),
+          type: asset.name,
+          animations: []
+        }
         const newStrip = {
           ...strip.value,
           effects: [
             ...(strip.value?.effects || []),
-            {
-              id: uuid(),
-              type: 'Plugin',
-              name: asset.name,
-              animations: []
-            }
+            newPluginEffect
           ]
         } as Strip
         constructorMap[asset.name] = result.default
@@ -55,7 +60,7 @@ function mouseup () {
 <template>
   <div v-if="strip" style="height: 100%; overflow-y: scroll; padding-right: 16px;" @pointerup="mouseup">
     <div v-for="effect in strip.effects" :key="effect.id">
-      <inspector-container :name="effect.type">
+      <inspector-container :strip="strip" :effect="effect">
         <component :is="getComponentName(effect)" :strip="strip" :effect="effect" />
       </inspector-container>
     </div>
