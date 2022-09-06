@@ -36,31 +36,28 @@ return effect
 
 <template>
   <div v-if="effect && isAudio(effect)">
-    <div class="p-4">
-      <div>AudioEffect</div>
-      <inspector-input
-        label="start"
-        :value="effect.start"
-        :step="0.01"
-        :scale="0.01"
-        @input="
-          (num) =>
-            changeText(num, 'start')
-        "
-      />
+    <inspector-input
+      label="start"
+      :value="effect.start"
+      :step="0.01"
+      :scale="0.01"
+      @input="
+        (num) =>
+          changeText(num, 'start')
+      "
+    />
 
-      <inspector-input
-        label="volume"
-        :value="effect.volume"
-        :step="0.1"
-        :scale="0.1"
-        :min="0"
-        :max="1"
-        @input="
-          (num) =>
-            changeText(num, 'volume')
-        "
-      />
-    </div>
+    <inspector-input
+      label="volume"
+      :value="effect.volume"
+      :step="0.1"
+      :scale="0.1"
+      :min="0"
+      :max="1"
+      @input="
+        (num) =>
+          changeText(num, 'volume')
+      "
+    />
   </div>
 </template>
