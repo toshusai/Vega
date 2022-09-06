@@ -1,6 +1,9 @@
 /// <amd-module name='TimeStamp'/>
-
 import { EffectUpdateContext, TextStripEffect } from '@toshusai/vega-core'
+
+type TimeStampEffect = {
+  format: 'normal' | 'hhmmss'
+}
 
 export default class TimeStampEffectObject {
   update (ctx: EffectUpdateContext) {
@@ -21,6 +24,20 @@ export default class TimeStampEffectObject {
       ctx.updateEffect(strip.id, textEffect)
     }
   }
+
+  onMounted (el: HTMLElement, effect: TimeStampEffect) {
+    console.log('mount')
+    el.innerHTML = `<div>${JSON.stringify(effect)}</div>`
+  }
+
+  onUnMounted () {
+    console.log('onUnmounted')
+  }
 }
 
+export function getInitialState (): TimeStampEffect {
+  return {
+    format: 'normal'
+  }
+}
 export const name = 'TimeStamp'

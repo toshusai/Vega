@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { uuid } from 'short-uuid'
+import { Result } from 'postcss'
 import { PluginStripEffect, Strip, StripEffect } from '@/core'
 const { init, timeline, updateStrip, selectStrip } = useTimeline()
 const { dad } = useDragAndDrop()
@@ -10,7 +11,12 @@ const strip = computed(() => {
 })
 
 function getComponentName (effect: StripEffect) {
-  return `${effect.type.toLowerCase()}-strip-inspector`
+  if (
+    effect.type === 'Video' ||
+    effect.type === 'Audio' ||
+    effect.type === 'Text'
+  ) { return `${effect.type.toLowerCase()}-strip-inspector` }
+  return 'plugin-strip-inspector'
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -34,10 +40,11 @@ function mouseup () {
     }
     require([asset.path], () => {
       require([asset.name], (result: any) => {
-        const newPluginEffect: PluginStripEffect = {
+        const newPluginEffect = {
           id: uuid(),
           type: asset.name,
-          animations: []
+          animations: [],
+          ...result.getInitialState()
         }
         const newStrip = {
           ...strip.value,
