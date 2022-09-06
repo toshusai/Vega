@@ -1,8 +1,7 @@
-/// <amd-module name='TimeStamp'/>
 define("TimeStamp", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.name = void 0;
+    exports.name = exports.getInitialState = void 0;
     var TimeStampEffectObject = /** @class */ (function () {
         function TimeStampEffectObject() {
         }
@@ -21,8 +20,21 @@ define("TimeStamp", ["require", "exports"], function (require, exports) {
                 ctx.updateEffect(strip.id, textEffect);
             }
         };
+        TimeStampEffectObject.prototype.onMounted = function (el, effect) {
+            console.log('mount');
+            el.innerHTML = "<div>".concat(JSON.stringify(effect), "</div>");
+        };
+        TimeStampEffectObject.prototype.onUnMounted = function () {
+            console.log('onUnmounted');
+        };
         return TimeStampEffectObject;
     }());
     exports.default = TimeStampEffectObject;
+    function getInitialState() {
+        return {
+            format: 'normal'
+        };
+    }
+    exports.getInitialState = getInitialState;
     exports.name = 'TimeStamp';
 });
