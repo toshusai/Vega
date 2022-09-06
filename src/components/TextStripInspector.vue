@@ -68,70 +68,67 @@ function hasKeyframe (key: string) {
 
 <template>
   <div v-if="effect && isText(effect)">
-    <div style="padding: 4px">
-      <div>TextEffect</div>
-      <inspector-input
-        label="x"
-        :value="
-          calcAnimationValue(
-            effect.animations,
-            timeline.curent - strip.start,
-            'position.x',
-            effect.position.x
-          ) as number
-        "
-        :has-key-frame="hasKeyframe('position.x')"
-        :key-frame="true"
-        @input="num => changeText(num, 'position.x')"
-        @key-frame="() => addKeyframe('position.x', effect?.position.x)"
-      />
-      <inspector-input
-        label="y"
-        :value="
-          calcAnimationValue(
-            effect.animations,
-            timeline.curent - strip.start,
-            'position.y',
-            effect.position.y
-          ) as number
-        "
-        :key-frame="hasKeyframe('position.y')"
-        @input="e => changeText({ ...effect?.position, y: e }, 'position')"
-        @key-frame="() => addKeyframe('position.y', effect?.position.y)"
-      />
-      <inspector-input
-        :key-frame="hasKeyframe('size')"
-        label="fontSize"
-        :value="effect.size"
-        @input="n => changeText(n, 'size')"
-        @key-frame="() => addKeyframe('size', effect?.size)"
-      />
-      <inspector-color-input label="color" :value="effect.color" @update-color="e => changeText(e, 'color')" />
-      <inspector-string-input label="style" :value="effect.style" @input="e => changeText((e), 'style')" />
-      <inspector-string-input label="Family" :value="effect.family" @input="e => changeText((e), 'family')" />
-      <inspector-input
-        :key-frame="hasKeyframe('characterSpace')"
-        label="characterSpace"
-        :value="effect.characterSpace"
-        @input="n => changeText(n, 'characterSpace')"
-      />
-      <inspector-color-input
-        label="shadowColor"
-        :value="effect.shadowColor"
-        @update-color="e => changeText(e, 'shadowColor')"
-      />
-      <inspector-input
-        :key-frame="hasKeyframe('shadowBlur')"
-        label="shadowBlur"
-        :value="effect.shadowBlur"
-        @input="n => changeText(n, 'shadowBlur')"
-      />
-      <inspector-color-input
-        label="outlineColor"
-        :value="effect.outlineColor"
-        @update-color="e => changeText(e, 'outlineColor')"
-      />
-      <inspector-input label="outlineWidth" :value="effect.outlineWidth" @input="n => changeText(n, 'outlineWidth')" />
-    </div>
+    <inspector-input
+      label="x"
+      :value="
+        calcAnimationValue(
+          effect.animations,
+          timeline.curent - strip.start,
+          'position.x',
+          effect.position.x
+        ) as number
+      "
+      :has-key-frame="hasKeyframe('position.x')"
+      :key-frame="true"
+      @input="num => changeText(num, 'position.x')"
+      @key-frame="() => addKeyframe('position.x', effect?.position.x)"
+    />
+    <inspector-input
+      label="y"
+      :value="
+        calcAnimationValue(
+          effect.animations,
+          timeline.curent - strip.start,
+          'position.y',
+          effect.position.y
+        ) as number
+      "
+      :key-frame="hasKeyframe('position.y')"
+      @input="e => changeText({ ...effect?.position, y: e }, 'position')"
+      @key-frame="() => addKeyframe('position.y', effect?.position.y)"
+    />
+    <inspector-input
+      :key-frame="hasKeyframe('size')"
+      label="fontSize"
+      :value="effect.size"
+      @input="n => changeText(n, 'size')"
+      @key-frame="() => addKeyframe('size', effect?.size)"
+    />
+    <inspector-color-input label="color" :value="effect.color" @update-color="e => changeText(e, 'color')" />
+    <inspector-string-input label="style" :value="effect.style" @input="e => changeText((e), 'style')" />
+    <inspector-string-input label="Family" :value="effect.family" @input="e => changeText((e), 'family')" />
+    <inspector-input
+      :key-frame="hasKeyframe('characterSpace')"
+      label="characterSpace"
+      :value="effect.characterSpace"
+      @input="n => changeText(n, 'characterSpace')"
+    />
+    <inspector-color-input
+      label="shadowColor"
+      :value="effect.shadowColor"
+      @update-color="e => changeText(e, 'shadowColor')"
+    />
+    <inspector-input
+      :key-frame="hasKeyframe('shadowBlur')"
+      label="shadowBlur"
+      :value="effect.shadowBlur"
+      @input="n => changeText(n, 'shadowBlur')"
+    />
+    <inspector-color-input
+      label="outlineColor"
+      :value="effect.outlineColor"
+      @update-color="e => changeText(e, 'outlineColor')"
+    />
+    <inspector-input label="outlineWidth" :value="effect.outlineWidth" @input="n => changeText(n, 'outlineWidth')" />
   </div>
 </template>

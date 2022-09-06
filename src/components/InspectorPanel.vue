@@ -55,12 +55,10 @@ function mouseup () {
 
 <template>
   <div v-if="strip" style="height: 100%; overflow-y: scroll; padding-right: 16px;" @pointerup="mouseup">
-    <component
-      :is="getComponentName(effect)"
-      v-for="effect in strip.effects"
-      :key="effect.id"
-      :strip="strip"
-      :effect="effect"
-    />
+    <div v-for="effect in strip.effects" :key="effect.id">
+      <inspector-container :name="effect.type">
+        <component :is="getComponentName(effect)" :strip="strip" :effect="effect" />
+      </inspector-container>
+    </div>
   </div>
 </template>
