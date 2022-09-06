@@ -10,7 +10,7 @@ export const getCache = (id: string) => {
   if (v === undefined) {
     return true
   }
-  return false
+  return v
 }
 
 export const setCache = (id: string, v: boolean) => {
