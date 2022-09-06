@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Position } from '../core/Container'
+import { Position } from '../core'
 
 const props = defineProps<{ name: string; containerId: string }>()
 const { dad, startDad } = useDragAndDrop()

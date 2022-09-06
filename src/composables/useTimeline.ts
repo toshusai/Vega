@@ -1,23 +1,24 @@
 import { Ref } from 'nuxt/dist/app/compat/capi'
-import { EffectUpdateContext, EffectObject } from './../core/EffectObject'
-import { initialTimelineState } from '@/core/const'
-import { Renderer } from '@/core/Renderer'
-import { Timeline } from '@/core/Timeline'
 import {
+  EffectObject,
+  EffectUpdateContext,
+  TextStripEffectObject,
+  VideoStripEffectObject,
+  AudioStripEffectObject,
+  ImageStripEffectObject,
+  Strip,
+  initialTimelineState,
+  Renderer,
+  Timeline,
   TextStripEffect,
   VideoStripEffect,
   ImageStripEffect,
   StripEffect,
-  AudioStripEffect
-} from '@/core/stripEffect'
-import { TextStripEffectObject } from '@/core/TextStripEffectObject'
+  AudioStripEffect,
+  Animation
+} from '@/core'
 
-import { VideoStripEffectObject } from '@/core/VideoStripEffectObject'
 import { snap } from '@/utils/snap'
-import { Strip } from '@/core/Strip'
-import { AudioStripEffectObject } from '@/core/AudioStripEffectObject'
-import { ImageStripEffectObject } from '@/core/ImageStripEffectObject'
-import { Animation } from '@/core/Animation'
 
 function findStripById (id: string, timeline: Timeline) {
   for (const strip of timeline.strips) {
@@ -139,9 +140,7 @@ const createUpdateEffect = (state: Ref<Timeline>) => {
     }
     const newAnimations: Animation[] = []
     effect.animations.forEach((a) => {
-      if (
-        !newAnimations.find(na => na.key === a.key && na.time === a.time)
-      ) {
+      if (!newAnimations.find(na => na.key === a.key && na.time === a.time)) {
         newAnimations.push(a)
       }
     })

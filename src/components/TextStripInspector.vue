@@ -3,12 +3,9 @@ import { ComputedRef } from 'vue'
 import { uuid } from 'short-uuid'
 import { clone } from '../utils/clone'
 import { setAnimation } from '../utils/setAnimation'
-import { calcAnimationValue } from '../core/utils/calcAnimationValue'
+import { calcAnimationValue, Strip, TextStripEffect, Animation } from '../core'
 import InspectorInput from './InspectorInput.vue'
-import { Strip } from '@/core/Strip'
-import { TextStripEffect } from '@/core/stripEffect'
 import { isText } from '@/composables/useTimeline'
-import { Animation } from '@/core/Animation'
 // var colors = "#194d33";
 const { timeline, updateEffect } = useTimeline()
 

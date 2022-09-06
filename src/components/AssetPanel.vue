@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { uuid } from 'short-uuid'
-import { IAsset } from '@//core/IAsset'
+import { IAsset } from '@/core'
 
-import { getIsElectron } from '@//utils/getIsElectron'
+import { getIsElectron } from '@/utils/getIsElectron'
 
 const { assets, addAsset, removeAsset } = useAssets()
 const { startDad } = useDragAndDrop()

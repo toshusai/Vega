@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { Container } from '@/core/Container'
+import { Undo, Container } from '@/core'
 import '@/assets/css/main.css'
-import undo from '@/core/Undo'
 import ButtonMenu from '@/components/ButtonMenu.vue'
 import SettingsButton from '@/components/SettingsButton.vue'
 import ProjectModal from '@/components/ProjectModal.vue'
@@ -14,6 +13,7 @@ const op = useOperation()
 const { init } = useKeyboard()
 const { update } = useUpdate()
 const { project } = useProject()
+const undo = Undo.main
 
 const rootContainer = computed(() => container.value as Container)
 const isOpenProjectModal = ref(true)

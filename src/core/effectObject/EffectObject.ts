@@ -1,4 +1,4 @@
-import { EffectUpdateContext } from './EffectUpdateContext'
+import { EffectUpdateContext } from '../EffectUpdateContext'
 
 export class EffectObject {
   // eslint-disable-next-line no-useless-constructor

@@ -1,5 +1,7 @@
 export * from './AudioStripEffect'
 export * from './ImageStripEffect'
+export * from './PluginEffect'
+export * from './PluginStripEffect'
 export * from './StripEffect'
 export * from './TextStripEffect'
 export * from './VideoStripEffect'

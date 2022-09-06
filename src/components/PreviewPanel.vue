@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as THREE from 'three'
-import { Renderer } from '@/core/Renderer'
-import { Recorder } from '@/core/Recorder'
+import { Renderer } from '@/core'
+import { Recorder } from '@/core'
 import { timeFormat } from '@/utils/formatTime'
 
 const canvas = ref<HTMLCanvasElement | null>(null)

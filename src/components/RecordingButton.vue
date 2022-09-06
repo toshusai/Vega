@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import '@/assets/css/main.css'
-import { Recorder } from '../core/Recorder'
-import { Strip } from '../core/Strip'
+import { Recorder } from '../core'
+import { Strip } from '../core'
 import { download } from '../utils/download'
 import RecordingModal from './RecordingModal.vue'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { StripEffect } from '@/core/stripEffect'
+import { StripEffect } from '@/core'
 
 const props = defineProps<{ effect: StripEffect & { name: string } }>()
 </script>

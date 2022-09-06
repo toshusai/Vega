@@ -1,0 +1,6 @@
+export * from './AudioStripEffectObject'
+export * from './EffectObject'
+export * from './ImageStripEffectObject'
+export * from './PluginEffectObject'
+export * from './TextStripEffectObject'
+export * from './VideoStripEffectObject'

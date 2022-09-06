@@ -1,4 +1,4 @@
-import { Animation } from '@/core/Animation'
+import { Animation } from '@/core'
 
 export function setAnimation (animations: Animation[], newAnimation: Animation) {
   for (let i = 0; i < animations.length; i++) {

@@ -2,11 +2,10 @@
 import { ComputedRef } from 'vue'
 import { eventToFloat } from '../utils/eventToFloat'
 import { eventToString } from '../utils/eventToString'
-import { VideoStripEffect, AudioStripEffect, StripEffect, TextStripEffect } from '../core/stripEffect'
+import { VideoStripEffect, AudioStripEffect, StripEffect, TextStripEffect, Strip } from '../core'
 import { getEffect } from '../utils/getEffect'
 import InspectorInput from './InspectorInput.vue'
 import { isText, isVideo, isAudio } from '@/composables/useTimeline'
-import { Strip } from '@/core/Strip'
 
 const { updateEffect } = useTimeline()
 const props = defineProps<{ strip: Strip }>()

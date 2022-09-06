@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import KeyframeMarker from './KeyframeMarker.vue'
 import KeyframeSelectRect from './KeyframeSelectRect.vue'
-import { StripEffect } from '@//core/stripEffect'
-import { calcAnimationValue } from '@/core/utils/calcAnimationValue'
-import { Animation } from '@/core/Animation'
+import { StripEffect, calcAnimationValue, Animation } from '@/core'
 
 const { timeline, updateEffect, update } = useTimeline()
 const { addEventListener } = useContainer()

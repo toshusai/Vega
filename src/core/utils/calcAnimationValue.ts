@@ -1,6 +1,6 @@
 import { normalize } from './normalize'
 import { easeInOutCubic } from './easeInOutCubic'
-import { Animation } from '@/core/Animation'
+import { Animation } from '@/core'
 
 export function findBetween (
   animations: Animation[],

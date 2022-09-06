@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IAsset } from '../core/IAsset'
+import { IAsset } from '../core'
 
 const props = defineProps<{ isOpen: boolean, }>()
 const { assets, updateAsset } = useAssets()

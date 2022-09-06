@@ -6,14 +6,9 @@ import ScaleScroll from './ScaleScroll.vue'
 import SelectRect from './SelectRect.vue'
 import TimeView from './TimeView.vue'
 import TimelineCursor from './TimelineCursor.vue'
-import undo from '@//core/Undo'
-import { Strip } from '@//core/Strip'
-import { VideoStripEffect, ImageStripEffect, AudioStripEffect, TextStripEffect } from '@//core/stripEffect'
-import { clone } from '@//utils/clone'
-import { TextStripEffectObject } from '@//core/TextStripEffectObject'
-import { VideoStripEffectObject } from '@//core/VideoStripEffectObject'
-import { ImageStripEffectObject } from '@//core/ImageStripEffectObject'
-import { Renderer } from '@/core/Renderer'
+import { Strip, VideoStripEffect, ImageStripEffect, AudioStripEffect, TextStripEffect, TextStripEffectObject, VideoStripEffectObject, ImageStripEffectObject, Renderer, Undo } from '@/core'
+import { clone } from '@/utils/clone'
+const undo = Undo.main
 const {
   timeline,
   addStrip,

@@ -1,5 +1,4 @@
-import { initialTimelineState } from '@/core/const'
-import { Timeline } from '@/core/Timeline'
+import { initialTimelineState, Timeline } from '@/core'
 
 interface AppState {
   timeline: Timeline;
