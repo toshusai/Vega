@@ -26,6 +26,7 @@
   },
   "build": {
     "appId": "com.toshusai.Vega",
+    "productName": "Vega",
     "asar": true,
     "directories": {
       "output": "build/"
