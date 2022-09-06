@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { mdiDotsHorizontal } from '@mdi/js'
-import { IAsset } from '../core/IAsset'
+import { IAsset } from '../core'
 const props = defineProps<{ asset: IAsset }>()
 const emits = defineEmits<{
     (e: 'click-dots'): void

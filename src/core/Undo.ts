@@ -1,7 +1,13 @@
 export class Undo {
+  public static main
+
   private index = -1
   private undoStack: (() => void)[] = []
   private redoStack: (() => void)[] = []
+
+  static init () {
+    Undo.main = new Undo()
+  }
 
   public push (undo: () => void, redo: () => void) {
     this.undoStack.push(undo)
@@ -44,8 +50,7 @@ export class Undo {
   }
 }
 
-const undo = new Undo()
-export default undo
+Undo.init()
 
 // var undos = [A, B, C, D]
 // undos.pop() // exec D, push D' ([A, B, C])

@@ -1,10 +1,10 @@
 import * as THREE from 'three'
-import { calcAnimationValue } from './utils/calcAnimationValue'
+import { calcAnimationValue } from '../utils/calcAnimationValue'
+import { EffectUpdateContext } from '../EffectUpdateContext'
+import { TextStripEffect, VideoStripEffect } from '../stripEffect'
+import { Strip } from '../Strip'
+import { Timeline } from '../Timeline'
 import { EffectObject } from './EffectObject'
-import { EffectUpdateContext } from './EffectUpdateContext'
-import { TextStripEffect, VideoStripEffect } from './stripEffect'
-import { Strip } from './Strip'
-import { Timeline } from './Timeline'
 
 export class TextStripEffectObject extends EffectObject {
   // id: string;

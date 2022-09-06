@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { Scene } from 'three'
-import { EffectObject } from '@/core/EffectObject'
+import { EffectObject } from './effectObject/EffectObject'
 
 export class Renderer {
   static scene = new Scene()

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { CSSProperties } from 'vue'
 import { uuid } from 'short-uuid'
-import { TextStripEffectObject } from '../core/TextStripEffectObject'
-import { VideoStripEffectObject } from '../core/VideoStripEffectObject'
-import { calcAnimationValue } from '../core/utils/calcAnimationValue'
+import { TextStripEffectObject } from '../core'
+import { VideoStripEffectObject } from '../core'
+import { calcAnimationValue } from '../core'
 import { onDragStart } from '../utils/onDragStart'
 import { setAnimation } from '../utils/setAnimation'
-import { StripEffect, TextStripEffect } from '../core/stripEffect'
+import { StripEffect, TextStripEffect } from '../core'
 import { snap } from '../utils/snap'
-import { ImageStripEffectObject } from '../core/ImageStripEffectObject'
-import { Renderer } from '@/core/Renderer'
+import { ImageStripEffectObject } from '../core'
+import { Renderer } from '@/core'
 
 const { timeline, updateEffect, setFocusStripId } = useTimeline()
 

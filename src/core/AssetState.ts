@@ -1,4 +1,4 @@
-import { IAsset } from '@/core/IAsset'
+import { IAsset } from '@/core'
 
 export interface AssetState {
   assets: IAsset[];

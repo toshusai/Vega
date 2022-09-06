@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { mdiFileCode } from '@mdi/js'
-import { IAsset } from '../core/IAsset'
+import { IAsset } from '../core'
 
 const props = defineProps<{ asset: IAsset }>()
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Align } from '../core/Container'
-import { Rect } from '../core/Rect'
+import { Align } from '../core'
+import { Rect } from '../core'
 
 const props = defineProps<{ align: Align; rect: Rect; parentAlign: Align }>()
 

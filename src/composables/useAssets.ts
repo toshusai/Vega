@@ -1,6 +1,6 @@
 import { Ref } from 'nuxt/dist/app/compat/capi'
-import { AssetState } from '../core/AssetState'
-import { IAsset } from '@/core/IAsset'
+import { AssetState } from '../core'
+import { IAsset } from '@/core'
 
 const initialAssetsState: AssetState = {
   selectedAssets: [],

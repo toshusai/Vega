@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
-import { initialContaerState } from './../core/const'
-import { Container, Position } from '@/core/Container'
-import { IVector2 } from '@/core/IVector2'
+import { initialContaerState } from './../core'
+import { Container, Position } from '@/core'
+import { IVector2 } from '@/core'
 
 const event = new EventTarget()
 

@@ -1,7 +1,7 @@
-import { AudioStripEffectObject } from './AudioStripEffectObject'
+import { AudioStripEffectObject } from './effectObject/AudioStripEffectObject'
 import { Strip } from './Strip'
-import { VideoStripEffectObject } from './VideoStripEffectObject'
-import { Renderer } from '@/core/Renderer'
+import { VideoStripEffectObject } from './effectObject/VideoStripEffectObject'
+import { Renderer } from '@/core'
 
 export class Recorder {
   data: Blob[] = []

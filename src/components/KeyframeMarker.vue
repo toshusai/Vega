@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { StripEffect } from '../core/stripEffect'
+import { StripEffect } from '../core'
 import { onDragStart } from '../utils/onDragStart'
 import { snap } from '../utils/snap'
-import { Animation } from '@/core/Animation'
+import { Animation } from '@/core'
 
 const props = defineProps<{ animation: Animation; scale: number, left: number, stripId: string, effect?: StripEffect }>()
 

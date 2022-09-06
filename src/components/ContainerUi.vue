@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Container } from '@/core/Container'
+import { Container } from '@/core'
 import { onDragStart } from '@/utils/onDragStart'
-import { IVector2 } from '@/core/IVector2'
+import { IVector2 } from '@/core'
 import RectUi from '@/components/RectUi.vue'
 
 const props = defineProps<{ container: Container }>()

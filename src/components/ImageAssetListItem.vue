@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { mdiFileImage } from '@mdi/js'
-import { IAsset } from '../core/IAsset'
+import { IAsset } from '../core'
 import AssetListItemErrorIcon from './AssetListItemErrorIcon.vue'
 
 const props = defineProps<{ asset: IAsset }>()

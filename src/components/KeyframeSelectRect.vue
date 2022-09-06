@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Animation } from '@/core/Animation'
+import { Animation } from '@/core'
 
 const { timeline, selectStrip, selectKeyframe } = useTimeline()
 

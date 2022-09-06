@@ -1,10 +1,10 @@
 import * as T from 'three'
 import { Vector3 } from 'three'
+import { EffectUpdateContext } from '../EffectUpdateContext'
+import { firstInterfact } from '../Global'
+import { Strip } from '../Strip'
+import { VideoStripEffect } from '../stripEffect'
 import { EffectObject } from './EffectObject'
-import { EffectUpdateContext } from './EffectUpdateContext'
-import { firstInterfact } from './Global'
-import { Strip } from './Strip'
-import { VideoStripEffect } from './stripEffect'
 
 export class VideoStripEffectObject extends EffectObject {
   type = 'Video'

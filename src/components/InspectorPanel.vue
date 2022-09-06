@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { uuid } from 'short-uuid'
-import { Strip } from '@//core/Strip'
-import { StripEffect } from '@/core/stripEffect'
+import { Strip, StripEffect } from '@/core'
 const { init, timeline, updateStrip, selectStrip } = useTimeline()
 const { dad } = useDragAndDrop()
 const { assets } = useAssets()
