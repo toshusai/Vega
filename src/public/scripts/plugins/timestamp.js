@@ -20,11 +20,11 @@ define("TimeStamp", ["require", "exports"], function (require, exports) {
                 ctx.updateEffect(strip.id, textEffect);
             }
         };
-        TimeStampEffectObject.prototype.onMounted = function (el, effect) {
+        TimeStampEffectObject.prototype.mounted = function (el, effect) {
             console.log('mount');
             el.innerHTML = "<div>".concat(JSON.stringify(effect), "</div>");
         };
-        TimeStampEffectObject.prototype.onUnMounted = function () {
+        TimeStampEffectObject.prototype.unMounted = function () {
             console.log('onUnmounted');
         };
         return TimeStampEffectObject;

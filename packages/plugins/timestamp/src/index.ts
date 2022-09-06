@@ -25,12 +25,12 @@ export default class TimeStampEffectObject {
     }
   }
 
-  onMounted (el: HTMLElement, effect: TimeStampEffect) {
+  mounted (el: HTMLElement, effect: TimeStampEffect) {
     console.log('mount')
     el.innerHTML = `<div>${JSON.stringify(effect)}</div>`
   }
 
-  onUnMounted () {
+  unMounted () {
     console.log('onUnmounted')
   }
 }

@@ -7,12 +7,12 @@ const el = ref<HTMLElement | null>(null)
 onMounted(() => {
   if (!el.value) { return }
   const effect = Renderer.effectObjectMap.get(props.effect.id) as PluginEffectObject | undefined
-  effect?.onMounted(el.value, props.effect)
+  effect?.mounted(el.value, props.effect)
 })
 onUnmounted(() => {
   if (!el.value) { return }
   const effect = Renderer.effectObjectMap.get(props.effect.id) as PluginEffectObject | undefined
-  effect?.onUnMounted(el.value, props.effect)
+  effect?.unMounted(el.value, props.effect)
 })
 </script>
 
