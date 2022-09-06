@@ -1,7 +1,8 @@
 import { AudioStripEffect } from './stripEffect/AudioStripEffect'
 import { firstInterfact } from './Global'
 import { Strip } from './Strip'
-import { EffectObject, EffectUpdateContext } from './EffectObject'
+import { EffectObject } from './EffectObject'
+import { EffectUpdateContext } from './EffectUpdateContext'
 
 export class AudioStripEffectObject extends EffectObject {
   type = 'Audio'

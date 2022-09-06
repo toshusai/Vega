@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { ImageStripEffect } from './stripEffect'
-import { EffectObject, EffectUpdateContext } from './EffectObject'
+import { EffectObject } from './EffectObject'
+import { EffectUpdateContext } from './EffectUpdateContext'
 
 export class ImageStripEffectObject extends EffectObject {
   type = 'Image'

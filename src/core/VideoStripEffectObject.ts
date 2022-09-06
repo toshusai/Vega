@@ -1,6 +1,7 @@
 import * as T from 'three'
 import { Vector3 } from 'three'
-import { EffectObject, EffectUpdateContext } from './EffectObject'
+import { EffectObject } from './EffectObject'
+import { EffectUpdateContext } from './EffectUpdateContext'
 import { firstInterfact } from './Global'
 import { Strip } from './Strip'
 import { VideoStripEffect } from './stripEffect'
