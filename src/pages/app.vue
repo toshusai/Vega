@@ -20,7 +20,7 @@ const isOpenProjectModal = ref(true)
 
 useHead({
   script: [
-    { src: '/scripts/require.js' }
+    { src: '/Vega/scripts/require.js' }
   ]
 })
 
