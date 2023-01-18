@@ -2,16 +2,20 @@ import { GlobalStyle } from "../components/core/GlobalStyle";
 import styled from "styled-components";
 import { Panel } from "../components/core/Panel";
 import { Timeline } from "../components/Timeline";
+import { Provider } from "react-redux";
+import store from "../store";
 
 const IndexPage = () => {
   return (
     <>
       <GlobalStyle />
-      <PanelBox>
-        <Timeline />
-        <PanelDivider />
-        <Panel />
-      </PanelBox>
+      <Provider store={store}>
+        <PanelBox>
+          <Timeline />
+          <PanelDivider />
+          <Panel />
+        </PanelBox>
+      </Provider>
     </>
   );
 };
