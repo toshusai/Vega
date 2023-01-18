@@ -1,4 +1,4 @@
-import { FC, useRef } from "react";
+import { FC, memo, useRef } from "react";
 import styled from "styled-components";
 import { getDragHander } from "./StripUI";
 
@@ -78,3 +78,11 @@ const ScaleScrollBarHandle = styled.div`
   background-color: var(--color-strip-handle);
   cursor: ew-resize;
 `;
+
+export const MemoScaleScrollBar = memo(ScaleScrollBar, (prev, next) => {
+  return (
+    prev.start === next.start &&
+    prev.end === next.end &&
+    prev.onScaleChange === next.onScaleChange
+  );
+});

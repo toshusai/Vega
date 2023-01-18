@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, memo, useEffect, useRef, useState } from "react";
 import { useWidth } from "../hooks/useWidth";
 
 type TimeViewProps = {
@@ -118,3 +118,13 @@ const TimeText: FC<{
     </div>
   );
 };
+
+export const MemoTimeView = memo(TimeView, (prev, next) => {
+  return (
+    prev.offsetSec === next.offsetSec &&
+    prev.endSec === next.endSec &&
+    prev.pxPerSec === next.pxPerSec &&
+    prev.fps === next.fps &&
+    prev.frameMode === next.frameMode
+  );
+});
