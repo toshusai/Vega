@@ -34,7 +34,6 @@ export const StripUI: FC<
 > = (props) => {
   const height = 40;
   const gap = 4;
-  console.log("render");
 
   const handleMouseDownLeftHandle = getDragHander((diffX) => {
     const newStart = props.start + diffX / props.pxPerSec;
