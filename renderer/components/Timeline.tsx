@@ -1,9 +1,12 @@
-import { FC, useEffect, useState } from "react";
+import { FC, memo, useEffect, useMemo, useReducer, useState } from "react";
 import { TimeView } from "./TimeView";
 import { Panel, PanelInner } from "../components/core/Panel";
-import { getDragHander, StripUI } from "./StripUI";
+import { getDragHander, MemoStripUI, StripUI } from "./StripUI";
 import { ScaleScrollBar } from "./ScaleScrollBar";
 import { useWidth } from "../hooks/useWidth";
+import { useDispatch, useSelector } from "react-redux";
+import { SceneState, setCurrentTime } from "../store/scene";
+import { SelectorType } from "../store";
 
 export function roundToFrame(time: number, fps: number) {
   return Math.round(time * fps) / fps;
@@ -36,14 +39,17 @@ export const Timeline: FC = () => {
     setPxPerSec(width / ((end - start) * timelineLength));
   }, [width, start, end, timelineLength]);
 
-  const [currentTime, setCurrentTime] = useState(1);
+  const currentTime = useSelector<SelectorType, number>((state) => {
+    return state.scene.currentTime;
+  });
+  const dispatch = useDispatch();
 
   let newt = 0;
   const handleMouseDownTimeView = getDragHander(
     (diffX) => {
       const newCurrentTime = newt + diffX / pxPerSec;
       if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
-        setCurrentTime(roundToFrame(newCurrentTime, fps));
+        dispatch(setCurrentTime(roundToFrame(newCurrentTime, fps)));
       }
     },
     (e) => {
@@ -51,7 +57,7 @@ export const Timeline: FC = () => {
         (e.clientX - 4) / pxPerSec + start * timelineLength;
       newt = newCurrentTime;
       if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
-        setCurrentTime(roundToFrame(newCurrentTime, fps));
+        dispatch(setCurrentTime(roundToFrame(newCurrentTime, fps)));
       }
     }
   );
@@ -59,8 +65,8 @@ export const Timeline: FC = () => {
   const fps = 60;
 
   return (
-    <Panel ref={ref}>
-      <PanelInner>
+    <Panel>
+      <PanelInner ref={ref}>
         <TimeView
           offsetSec={start * timelineLength}
           endSec={timelineLength}
@@ -73,11 +79,10 @@ export const Timeline: FC = () => {
         <div
           style={{
             position: "relative",
-            width: "300px",
           }}
         >
           {strips.map((strip) => (
-            <StripUI
+            <MemoStripUI
               {...strip}
               onStripChange={(strip) => {
                 setStrips((strips) =>
