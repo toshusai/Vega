@@ -1,32 +1,34 @@
-import { useEffect } from 'react'
-import Link from 'next/link'
-import Layout from '../components/Layout'
+import { GlobalStyle } from "../components/core/GlobalStyle";
+import styled from "styled-components";
+import { Panel } from "../components/core/Panel";
+import { Timeline } from "../components/Timeline";
 
 const IndexPage = () => {
-  useEffect(() => {
-    const handleMessage = (_event, args) => alert(args)
-
-    // add a listener to 'message' channel
-    global.ipcRenderer.addListener('message', handleMessage)
-
-    return () => {
-      global.ipcRenderer.removeListener('message', handleMessage)
-    }
-  }, [])
-
-  const onSayHiClick = () => {
-    global.ipcRenderer.send('message', 'hi from next')
-  }
-
   return (
-    <Layout title="Home | Next.js + TypeScript + Electron Example">
-      <h1>Hello Next.js 👋</h1>
-      <button onClick={onSayHiClick}>Say hi to electron</button>
-      <p>
-        <Link href="/about">About</Link>
-      </p>
-    </Layout>
-  )
-}
+    <>
+      <GlobalStyle />
+      <PanelBox>
+        <Timeline />
+        <PanelDivider />
+        <Panel />
+      </PanelBox>
+    </>
+  );
+};
 
-export default IndexPage
+const PanelDivider = styled.div`
+  width: 100%;
+  height: 8px;
+  background-color: var(--color-panel-divider);
+  cursor: row-resize;
+  user-select: none;
+`;
+
+const PanelBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+`;
+
+export default IndexPage;
