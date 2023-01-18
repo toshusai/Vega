@@ -1,47 +1,35 @@
-import { FC, memo, useEffect, useMemo, useReducer, useState } from "react";
-import { MemoTimeView, TimeView } from "./TimeView";
+import { FC, useEffect, useState } from "react";
+import { MemoTimeView } from "./TimeView";
 import { Panel, PanelInner } from "../components/core/Panel";
-import { getDragHander, MemoStripUI, StripUI } from "./StripUI";
-import { MemoScaleScrollBar, ScaleScrollBar } from "./ScaleScrollBar";
+import { getDragHander, MemoStripUI } from "./StripUI";
+import { MemoScaleScrollBar } from "./ScaleScrollBar";
 import { useWidth } from "../hooks/useWidth";
-import { useDispatch, useSelector } from "react-redux";
-import { SceneState, setCurrentTime } from "../store/scene";
-import { SelectorType } from "../store";
+import { useDispatch } from "react-redux";
+import { actions } from "../store/scene";
+import { useSelector } from "../store/useSelector";
 
 export function roundToFrame(time: number, fps: number) {
   return Math.round(time * fps) / fps;
 }
 
 export const Timeline: FC = () => {
-  const [strips, setStrips] = useState([
-    {
-      id: "1",
-      start: 0,
-      length: 5,
-      effects: [],
-      layer: 1,
-    },
-    {
-      id: "2",
-      start: 1,
-      length: 2.5,
-      effects: [],
-      layer: 0,
-    },
-  ]);
-  const [start, setStart] = useState(0);
-  const [end, setEnd] = useState(0.5);
-  const [timelineLength, setTimelineLength] = useState(10);
+  const strips = useSelector((state) => state.scene.strips);
+  const start = useSelector((state) => state.scene.viewStartRate);
+  const end = useSelector((state) => state.scene.viewEndRate);
+  const timelineLength = useSelector((state) => state.scene.length);
+  const fps = useSelector((state) => state.scene.fps);
+  const currentTime = useSelector((state) => {
+    return state.scene.currentTime;
+  });
+
   const [pxPerSec, setPxPerSec] = useState(1);
 
   const [width, ref] = useWidth();
+
   useEffect(() => {
     setPxPerSec(width / ((end - start) * timelineLength));
   }, [width, start, end, timelineLength]);
 
-  const currentTime = useSelector<SelectorType, number>((state) => {
-    return state.scene.currentTime;
-  });
   const dispatch = useDispatch();
 
   let newt = 0;
@@ -49,7 +37,7 @@ export const Timeline: FC = () => {
     (diffX) => {
       const newCurrentTime = newt + diffX / pxPerSec;
       if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
-        dispatch(setCurrentTime(roundToFrame(newCurrentTime, fps)));
+        dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
       }
     },
     (e) => {
@@ -57,12 +45,10 @@ export const Timeline: FC = () => {
         (e.clientX - 4) / pxPerSec + start * timelineLength;
       newt = newCurrentTime;
       if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
-        dispatch(setCurrentTime(roundToFrame(newCurrentTime, fps)));
+        dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
       }
     }
   );
-
-  const fps = 60;
 
   return (
     <Panel>
@@ -85,9 +71,7 @@ export const Timeline: FC = () => {
             <MemoStripUI
               {...strip}
               onStripChange={(strip) => {
-                setStrips((strips) =>
-                  strips.map((s) => (s.id === strip.id ? strip : s))
-                );
+                dispatch(actions.updateStrip(strip));
               }}
               key={strip.id}
               fps={fps}
@@ -100,8 +84,8 @@ export const Timeline: FC = () => {
           start={start}
           end={end}
           onScaleChange={(start, end) => {
-            setStart(start);
-            setEnd(end);
+            dispatch(actions.setViewStartRate(start));
+            dispatch(actions.setViewEndRate(end));
           }}
         />
       </PanelInner>

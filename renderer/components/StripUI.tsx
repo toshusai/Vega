@@ -40,7 +40,9 @@ export const StripUI: FC<
     const newLength = props.length - diffX / props.pxPerSec;
     if (newStart >= 0 && newLength > 0) {
       props.onStripChange({
-        ...props,
+        effects: props.effects,
+        layer: props.layer,
+        id: props.id,
         start: roundToFrame(newStart, props.fps),
         length: roundToFrame(newLength, props.fps),
       });
@@ -51,7 +53,10 @@ export const StripUI: FC<
     const newLength = props.length + diffX / props.pxPerSec;
     if (newLength > 0) {
       props.onStripChange({
-        ...props,
+        effects: props.effects,
+        layer: props.layer,
+        id: props.id,
+        start: props.start,
         length: roundToFrame(newLength, props.fps),
       });
     }
@@ -61,8 +66,11 @@ export const StripUI: FC<
     const newStart = props.start + diffX / props.pxPerSec;
     if (newStart >= 0) {
       props.onStripChange({
-        ...props,
+        effects: props.effects,
+        layer: props.layer,
+        id: props.id,
         start: roundToFrame(newStart, props.fps),
+        length: props.length,
       });
     }
   });
