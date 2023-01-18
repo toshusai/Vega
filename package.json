@@ -1,75 +1,42 @@
 {
-  "name": "vega",
-  "version": "3.0.0-alpha.3",
-  "license": "MIT",
-  "author": "toshusai",
-  "description": "Browser-based video editing software.",
-  "keywords": [
-    "video editor",
-    "nuxt",
-    "ffmpeg"
-  ],
-  "main": "dist/index.js",
+  "private": true,
+  "main": "main/index.js",
+  "productName": "ElectronTypescriptNext",
   "scripts": {
-    "postinstall": "electron-builder install-app-deps",
-    "lint": "eslint --fix --ext .vue,.ts src/",
-    "typecheck": "nuxt typecheck",
-    "dev:nuxt": "nuxt dev",
-    "build:nuxt": "nuxt build",
-    "start:nuxt": "nuxt start",
-    "generate:nuxt": "nuxt generate",
-    "preview:nuxt": "nuxt preview",
-    "dev:electron": "yarn build:electron && NODE_ENV='development' electron .",
-    "start:electron": "electron .",
-    "build:electron": "tsc -p ./src/main/tsconfig.json",
-    "build": "yarn build:nuxt && yarn build:electron && electron-builder"
-  },
-  "build": {
-    "appId": "com.toshusai.Vega",
-    "productName": "Vega",
-    "asar": true,
-    "directories": {
-      "output": "build/"
-    },
-    "mac": {
-      "target": {
-        "target": "default",
-        "arch": [
-          "arm64",
-          "x64"
-        ]
-      }
-    }
-  },
-  "devDependencies": {
-    "@nuxtjs/eslint-config-typescript": "^10.0.0",
-    "@nuxtjs/eslint-module": "^3.0.2",
-    "@types/stats.js": "^0.17.0",
-    "@types/three": "^0.139.0",
-    "@typescript-eslint/eslint-plugin": "^5.26.0",
-    "@typescript-eslint/parser": "^5.26.0",
-    "electron": "^20.1.0",
-    "electron-builder": "^23.3.3",
-    "eslint": "^8.16.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-nuxt": "^3.0.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^9.0.1",
-    "nuxt": "^3.0.0-rc.6",
-    "postcss-custom-properties": "^12.1.7",
-    "prettier": "^2.5.1",
-    "typescript": "^4.7.2",
-    "typescript-eslint": "^0.0.1-alpha.0",
-    "vite-plugin-eslint": "^1.6.1"
+    "clean": "rimraf dist main renderer/out renderer/.next",
+    "dev": "npm run build-electron && electron .",
+    "build-renderer": "next build renderer && next export renderer",
+    "build-electron": "tsc -p electron-src",
+    "build": "npm run build-renderer && npm run build-electron",
+    "pack-app": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder",
+    "type-check": "tsc -p ./renderer/tsconfig.json && tsc -p ./electron-src/tsconfig.json"
   },
   "dependencies": {
-    "@ckpack/vue-color": "^1.1.9",
-    "@mdi/js": "^7.0.96",
-    "electron-devtools-installer": "^3.2.0",
-    "install": "^0.13.0",
-    "npm": "^8.17.0",
-    "short-uuid": "^4.2.0",
-    "stats.js": "^0.17.0",
-    "three": "^0.139.2"
+    "@reduxjs/toolkit": "^1.9.1",
+    "electron-is-dev": "^1.1.0",
+    "electron-next": "^3.1.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5",
+    "styled-components": "^5.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.6",
+    "@types/react": "^16.9.9",
+    "@types/react-dom": "^16.9.9",
+    "@types/styled-components": "^5.1.26",
+    "electron": "^13",
+    "electron-builder": "^23.0.3",
+    "next": "latest",
+    "rimraf": "^3.0.0",
+    "typescript": "^4.0.5"
+  },
+  "build": {
+    "asar": true,
+    "files": [
+      "main",
+      "renderer/out"
+    ]
   }
 }
