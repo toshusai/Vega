@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import styled from "styled-components";
 import { Strip } from "../interfaces/Strip";
 import { roundToFrame } from "./Timeline";
@@ -34,6 +34,7 @@ export const StripUI: FC<
 > = (props) => {
   const height = 40;
   const gap = 4;
+  console.log("render");
 
   const handleMouseDownLeftHandle = getDragHander((diffX) => {
     const newStart = props.start + diffX / props.pxPerSec;
@@ -107,3 +108,13 @@ const StripHandle = styled.div`
   background-color: var(--color-strip-handle);
   cursor: ew-resize;
 `;
+
+export const MemoStripUI = memo(StripUI, (prev, next) => {
+  return (
+    prev.start === next.start &&
+    prev.length === next.length &&
+    prev.pxPerSec === next.pxPerSec &&
+    prev.offset === next.offset &&
+    prev.layer === next.layer
+  );
+});
