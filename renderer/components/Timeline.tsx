@@ -1,8 +1,8 @@
 import { FC, memo, useEffect, useMemo, useReducer, useState } from "react";
-import { TimeView } from "./TimeView";
+import { MemoTimeView, TimeView } from "./TimeView";
 import { Panel, PanelInner } from "../components/core/Panel";
 import { getDragHander, MemoStripUI, StripUI } from "./StripUI";
-import { ScaleScrollBar } from "./ScaleScrollBar";
+import { MemoScaleScrollBar, ScaleScrollBar } from "./ScaleScrollBar";
 import { useWidth } from "../hooks/useWidth";
 import { useDispatch, useSelector } from "react-redux";
 import { SceneState, setCurrentTime } from "../store/scene";
@@ -67,7 +67,7 @@ export const Timeline: FC = () => {
   return (
     <Panel>
       <PanelInner ref={ref}>
-        <TimeView
+        <MemoTimeView
           offsetSec={start * timelineLength}
           endSec={timelineLength}
           pxPerSec={pxPerSec}
@@ -96,7 +96,7 @@ export const Timeline: FC = () => {
             />
           ))}
         </div>
-        <ScaleScrollBar
+        <MemoScaleScrollBar
           start={start}
           end={end}
           onScaleChange={(start, end) => {
