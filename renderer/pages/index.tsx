@@ -4,6 +4,7 @@ import { Panel } from "../components/core/Panel";
 import { Timeline } from "../components/Timeline";
 import { Provider } from "react-redux";
 import store from "../store";
+import { Preview } from "../components/Preview";
 
 const IndexPage = () => {
   return (
@@ -13,7 +14,7 @@ const IndexPage = () => {
         <PanelBox>
           <Timeline />
           <PanelDivider />
-          <Panel />
+          <Preview />
         </PanelBox>
       </Provider>
     </>
