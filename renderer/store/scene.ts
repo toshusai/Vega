@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Asset } from "../interfaces/Asset";
 import { Strip } from "../interfaces/Strip";
 import { TextEffect } from "../interfaces/TextEffect";
 
@@ -10,6 +11,7 @@ export type SceneState = {
   length: number;
   strips: Strip[];
   fps: number;
+  assets: Asset[];
 };
 
 export const sceneSlice = createSlice({
@@ -53,6 +55,14 @@ export const sceneSlice = createSlice({
       },
     ],
     fps: 60,
+    assets: [
+      {
+        id: "1",
+        name: "font",
+        type: "font",
+        path: "/RictyDiminished-Regular.ttf",
+      },
+    ],
   } as SceneState,
   reducers: {
     setInitialized: (state, action: { payload: boolean }) => {
