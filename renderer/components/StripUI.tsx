@@ -107,7 +107,7 @@ export const StripUI: FC<
         backgroundColor: "var(--color-text-strip)",
         border: props.selected
           ? "2px solid var(--color-strip-selected)"
-          : "2px solid gray",
+          : "2px solid var(--color-text-strip-border)",
         borderRadius: "4px",
         userSelect: "none",
         boxSizing: "border-box",
