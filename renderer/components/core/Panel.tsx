@@ -1,6 +1,15 @@
+import { FC } from "react";
 import styled from "styled-components";
 
-export const Panel = styled.div`
+export const Panel: FC = (props) => {
+  return (
+    <PanelRoot>
+      <PanelInner>{props.children}</PanelInner>
+    </PanelRoot>
+  );
+};
+
+export const PanelRoot = styled.div`
   background-color: var(--color-background);
   border-radius: 8px;
   overflow: hidden;

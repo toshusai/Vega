@@ -50,9 +50,5 @@ export const Preview: FC = () => {
   const memolizedCanvas = useMemo(() => {
     return <canvas ref={canvasRef} />;
   }, []);
-  return (
-    <Panel>
-      <PanelInner>{memolizedCanvas}</PanelInner>
-    </Panel>
-  );
+  return <Panel>{memolizedCanvas}</Panel>;
 };

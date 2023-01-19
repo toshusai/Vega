@@ -52,7 +52,7 @@ export const Timeline: FC = () => {
 
   return (
     <Panel>
-      <PanelInner ref={ref}>
+      <div ref={ref}>
         <MemoTimeView
           offsetSec={start * timelineLength}
           endSec={timelineLength}
@@ -88,7 +88,7 @@ export const Timeline: FC = () => {
             dispatch(actions.setViewEndRate(end));
           }}
         />
-      </PanelInner>
+      </div>
     </Panel>
   );
 };
