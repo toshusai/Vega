@@ -14,11 +14,13 @@ export type SceneState = {
   fps: number;
   assets: Asset[];
   isPlaying: boolean;
+  selectedStripIds: string[];
 };
 
 export const sceneSlice = createSlice({
   name: "scene",
   initialState: {
+    selectedStripIds: [],
     isPlaying: false,
     initialized: false,
     currentTime: 0,
@@ -90,6 +92,9 @@ export const sceneSlice = createSlice({
     ],
   } as SceneState,
   reducers: {
+    setSelectedStripIds: (state, action: { payload: string[] }) => {
+      state.selectedStripIds = action.payload;
+    },
     setInitialized: (state, action: { payload: boolean }) => {
       state.initialized = action.payload;
     },

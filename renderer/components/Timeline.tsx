@@ -21,6 +21,7 @@ export const Timeline: FC = () => {
   const currentTime = useSelector((state) => {
     return state.scene.currentTime;
   });
+  const selectedStripIds = useSelector((state) => state.scene.selectedStripIds);
 
   const [pxPerSec, setPxPerSec] = useState(1);
 
@@ -77,6 +78,10 @@ export const Timeline: FC = () => {
               fps={fps}
               offset={start * timelineLength}
               pxPerSec={pxPerSec}
+              onClick={() => {
+                dispatch(actions.setSelectedStripIds([strip.id]));
+              }}
+              selected={selectedStripIds.includes(strip.id)}
             />
           ))}
         </div>
