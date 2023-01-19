@@ -40,46 +40,52 @@ export const StripUI: FC<
   const gap = 4;
 
   const handleMouseDownLeftHandle = getDragHander((diffX) => {
-    const newStart = props.start + diffX / props.pxPerSec;
-    const newLength = props.length - diffX / props.pxPerSec;
-    if (newStart >= 0 && newLength > 0) {
-      props.onStripChange({
-        effects: props.effects,
-        layer: props.layer,
-        id: props.id,
-        start: roundToFrame(newStart, props.fps),
-        length: roundToFrame(newLength, props.fps),
-      });
+    let newStart = props.start + diffX / props.pxPerSec;
+    let newLength = props.length - diffX / props.pxPerSec;
+    if (newStart < 0) {
+      newLength += newStart;
+      newStart = 0;
     }
+    if (newLength < 0) {
+      newStart += newLength;
+      newLength = 0;
+    }
+    props.onStripChange({
+      effects: props.effects,
+      layer: props.layer,
+      id: props.id,
+      start: roundToFrame(newStart, props.fps),
+      length: roundToFrame(newLength, props.fps),
+    });
   });
 
   const handleMouseDownRightHandle = getDragHander((diffX) => {
-    const newLength = props.length + diffX / props.pxPerSec;
-    if (newLength > 0) {
-      props.onStripChange({
-        effects: props.effects,
-        layer: props.layer,
-        id: props.id,
-        start: props.start,
-        length: roundToFrame(newLength, props.fps),
-      });
-    }
+    let newLength = props.length + diffX / props.pxPerSec;
+    if (newLength < 0) newLength = 0;
+
+    props.onStripChange({
+      effects: props.effects,
+      layer: props.layer,
+      id: props.id,
+      start: props.start,
+      length: roundToFrame(newLength, props.fps),
+    });
   });
 
   const handleMouseDownStrip = getDragHander(
     (diffX, diffY) => {
       // TODO: move drag handler to parant for support multiple selection
-      const newStart = props.start + diffX / props.pxPerSec;
-      const layer = Math.round((props.layer * height + diffY) / (height + gap));
-      if (newStart >= 0 && layer >= 0) {
-        props.onStripChange({
-          effects: props.effects,
-          layer: layer,
-          id: props.id,
-          start: roundToFrame(newStart, props.fps),
-          length: props.length,
-        });
-      }
+      let newStart = props.start + diffX / props.pxPerSec;
+      let layer = Math.round((props.layer * height + diffY) / (height + gap));
+      if (newStart < 0) newStart = 0;
+      if (layer < 0) layer = 0;
+      props.onStripChange({
+        effects: props.effects,
+        layer: layer,
+        id: props.id,
+        start: roundToFrame(newStart, props.fps),
+        length: props.length,
+      });
     },
     () => {
       props.onClick();
