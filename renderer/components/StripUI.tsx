@@ -32,6 +32,8 @@ export const StripUI: FC<
     onStripChange: (strip: Strip) => void;
     offset: number;
     fps: number;
+    selected: boolean;
+    onClick: () => void;
   }
 > = (props) => {
   const height = 40;
@@ -64,19 +66,25 @@ export const StripUI: FC<
     }
   });
 
-  const handleMouseDownStrip = getDragHander((diffX, diffY) => {
-    const newStart = props.start + diffX / props.pxPerSec;
-    const layer = Math.round((props.layer * height + diffY) / (height + gap));
-    if (newStart >= 0 && layer >= 0) {
-      props.onStripChange({
-        effects: props.effects,
-        layer: layer,
-        id: props.id,
-        start: roundToFrame(newStart, props.fps),
-        length: props.length,
-      });
+  const handleMouseDownStrip = getDragHander(
+    (diffX, diffY) => {
+      // TODO: move drag handler to parant for support multiple selection
+      const newStart = props.start + diffX / props.pxPerSec;
+      const layer = Math.round((props.layer * height + diffY) / (height + gap));
+      if (newStart >= 0 && layer >= 0) {
+        props.onStripChange({
+          effects: props.effects,
+          layer: layer,
+          id: props.id,
+          start: roundToFrame(newStart, props.fps),
+          length: props.length,
+        });
+      }
+    },
+    () => {
+      props.onClick();
     }
-  });
+  );
 
   const left = (props.start - props.offset) * props.pxPerSec;
   const width = props.length * props.pxPerSec;
@@ -91,8 +99,12 @@ export const StripUI: FC<
         height: `${height}px`,
         top: `${props.layer * 40 + gap * (props.layer + 1)}px`,
         backgroundColor: "var(--color-text-strip)",
+        border: props.selected
+          ? "2px solid var(--color-strip-selected)"
+          : "2px solid gray",
         borderRadius: "4px",
         userSelect: "none",
+        boxSizing: "border-box",
       }}
       onMouseDown={handleMouseDownStrip}
     >
@@ -114,7 +126,7 @@ const StripHandle = styled.div`
   width: 6px;
   top: 4px;
   border-radius: 8px;
-  height: 32px;
+  height: 28px;
   background-color: var(--color-strip-handle);
   cursor: ew-resize;
 `;
@@ -125,6 +137,7 @@ export const MemoStripUI = memo(StripUI, (prev, next) => {
     prev.length === next.length &&
     prev.pxPerSec === next.pxPerSec &&
     prev.offset === next.offset &&
-    prev.layer === next.layer
+    prev.layer === next.layer &&
+    prev.selected === next.selected
   );
 });

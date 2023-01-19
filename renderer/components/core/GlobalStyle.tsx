@@ -14,6 +14,7 @@ export const GlobalStyle = createGlobalStyle`
 
   --color-text-strip: #b3f9b7;
   --color-strip-handle: #55555570;
+  --color-strip-selected: red;
 }
 
 body{
