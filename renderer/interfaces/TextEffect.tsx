@@ -6,6 +6,7 @@ export type TextEffect = {
   text: string;
   x: number;
   y: number;
+  fontAssetId: string;
 };
 
 export const isTextEffect = (effect: Effect): effect is TextEffect => {

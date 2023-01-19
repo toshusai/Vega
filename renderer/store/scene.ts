@@ -34,6 +34,7 @@ export const sceneSlice = createSlice({
             x: 10,
             y: 50,
             text: "Hello",
+            fontAssetId: "1",
           } as TextEffect,
         ],
         layer: 1,

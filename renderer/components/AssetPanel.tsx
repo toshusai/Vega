@@ -8,7 +8,7 @@ export const AssetPanel: FC = () => {
     <Panel>
       <div>Asset Panel</div>
       {assets.map((asset) => {
-        return <div>{asset.name}</div>;
+        return <div key={asset.id}>{asset.name}</div>;
       })}
     </Panel>
   );
