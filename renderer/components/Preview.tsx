@@ -5,6 +5,7 @@ import store from "../store";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { Panel, PanelInner } from "./core/Panel";
+import { updateTextEffect } from "./updateTextEffect";
 
 export const Preview: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -27,18 +28,9 @@ export const Preview: FC = () => {
       const scene = store.getState().scene;
 
       for (const strip of scene.strips) {
-        if (
-          scene.currentTime < strip.start ||
-          scene.currentTime > strip.start + strip.length
-        ) {
-          continue;
-        }
-
         for (const effect of strip.effects) {
           if (isTextEffect(effect)) {
-            ctx.fillStyle = "black";
-            ctx.font = "30px Arial";
-            ctx.fillText(effect.text, effect.x, effect.y);
+            updateTextEffect(ctx, effect, strip, scene);
           }
         }
       }
