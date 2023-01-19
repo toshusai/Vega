@@ -1,11 +1,13 @@
 import { FC, useEffect, useMemo, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { isTextEffect } from "../interfaces/TextEffect";
+import { isVideoEffect } from "../interfaces/VideoEffect";
 import store from "../store";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { Panel, PanelInner } from "./core/Panel";
-import { updateTextEffect } from "./updateTextEffect";
+import { updateTextEffect } from "../rendering/updateTextEffect";
+import { updateVideoEffect } from "../rendering/updateVideoEffect";
 
 export const Preview: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -27,10 +29,21 @@ export const Preview: FC = () => {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       const scene = store.getState().scene;
 
-      for (const strip of scene.strips) {
+      const layerOrderedIndeiexes = scene.strips
+        .map((s, i) => ({
+          layer: s.layer,
+          i,
+        }))
+        .sort((a, b) => a.layer - b.layer)
+        .map((s) => s.i);
+
+      for (const i of layerOrderedIndeiexes) {
+        const strip = scene.strips[i];
         for (const effect of strip.effects) {
           if (isTextEffect(effect)) {
             updateTextEffect(ctx, effect, strip, scene);
+          } else if (isVideoEffect(effect)) {
+            updateVideoEffect(ctx, effect, strip, scene);
           }
         }
       }
