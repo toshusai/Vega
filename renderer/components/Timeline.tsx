@@ -53,7 +53,14 @@ export const Timeline: FC = () => {
 
   return (
     <Panel>
-      <div ref={ref}>
+      <div
+        ref={ref}
+        style={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <MemoTimeView
           offsetSec={start * timelineLength}
           endSec={timelineLength}
@@ -66,6 +73,10 @@ export const Timeline: FC = () => {
         <div
           style={{
             position: "relative",
+            boxSizing: "border-box",
+            height: "100%",
+            border: "1px solid white",
+            overflow: "hidden",
           }}
         >
           {strips.map((strip) => (

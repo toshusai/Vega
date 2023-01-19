@@ -34,11 +34,9 @@ export const ScaleScrollBar: FC<{
     <div
       ref={ref}
       style={{
-        position: "absolute",
         left: `${props.start}px`,
-        bottom: "0",
         width: `100%`,
-        height: "16px",
+        minHeight: "16px",
         backgroundColor: "gray",
         userSelect: "none",
         borderRadius: "8px",
