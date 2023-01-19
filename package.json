@@ -14,12 +14,15 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",
+    "add": "^2.0.6",
     "electron-is-dev": "^1.1.0",
     "electron-next": "^3.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "tabler-icons-react": "^1.56.0",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@types/node": "^14.14.6",

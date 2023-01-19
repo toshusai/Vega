@@ -92,6 +92,12 @@ export const sceneSlice = createSlice({
     ],
   } as SceneState,
   reducers: {
+    setIsPlaying: (state, action: { payload: boolean }) => {
+      state.isPlaying = action.payload;
+    },
+    toggleIsPlaying: (state) => {
+      state.isPlaying = !state.isPlaying;
+    },
     setSelectedStripIds: (state, action: { payload: string[] }) => {
       state.selectedStripIds = action.payload;
     },
