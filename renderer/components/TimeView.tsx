@@ -56,7 +56,7 @@ export const TimeView: FC<TimeViewProps> = (props) => {
         overflow: "hidden",
         fontSize: "12px",
         boxSizing: "border-box",
-        border: "1px solid white",
+        borderBottom: "1px solid white",
         userSelect: "none",
         color: "white",
       }}

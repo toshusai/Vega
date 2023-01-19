@@ -1,9 +1,17 @@
 import { FC } from "react";
 import styled from "styled-components";
 
-export const Panel: FC = (props) => {
+export const Panel: FC<{
+  width?: number;
+  height?: number;
+}> = (props) => {
   return (
-    <PanelRoot>
+    <PanelRoot
+      style={{
+        width: props.width + "%",
+        height: props.height + "%",
+      }}
+    >
       <PanelInner>{props.children}</PanelInner>
     </PanelRoot>
   );

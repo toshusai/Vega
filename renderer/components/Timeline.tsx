@@ -52,7 +52,7 @@ export const Timeline: FC = () => {
   );
 
   return (
-    <Panel>
+    <Panel width={50}>
       <div
         ref={ref}
         style={{
@@ -75,7 +75,7 @@ export const Timeline: FC = () => {
             position: "relative",
             boxSizing: "border-box",
             height: "100%",
-            border: "1px solid white",
+            // border: "1px solid white",
             overflow: "hidden",
           }}
         >
@@ -116,10 +116,11 @@ const TimeCursor: FC<{
     <div
       style={{
         position: "absolute",
-        height: "100%",
+        height: "calc(100% - 16px)", // 16px is the height of the scrollbar
         width: "1px",
         top: 0,
-        backgroundColor: "white",
+        backgroundColor: "red",
+        zIndex: 100,
         left: props.left,
         pointerEvents: "none",
       }}
