@@ -13,8 +13,8 @@ export const GlobalStyle = createGlobalStyle`
   --color-text: #ffffff;
 
   --color-text-strip: #b3f9b7;
-  --color-strip-handle: #55555570;
-  --color-strip-selected: red;
+  --color-strip-handle: #2d2d2dbc;
+  --color-strip-selected: #fa4949;
 }
 
 body{

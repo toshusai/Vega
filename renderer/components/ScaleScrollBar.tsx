@@ -9,25 +9,29 @@ export const ScaleScrollBar: FC<{
 }> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
   const handleMouseDownLeftHandle = getDragHander((diffX) => {
-    const newStart = props.start + diffX / ref.current!.clientWidth;
-    if (newStart >= 0) {
-      props.onScaleChange?.(newStart, props.end);
-    }
+    const newStart = Math.max(
+      props.start + diffX / ref.current!.clientWidth,
+      0
+    );
+    props.onScaleChange?.(newStart, props.end);
   });
 
   const handleMouseDownRightHandle = getDragHander((diffX) => {
-    const newEnd = props.end + diffX / ref.current!.clientWidth;
-    if (newEnd <= 1) {
-      props.onScaleChange?.(props.start, newEnd);
-    }
+    const newEnd = Math.min(props.end + diffX / ref.current!.clientWidth, 1);
+    props.onScaleChange?.(props.start, newEnd);
   });
 
   const handleMouseDownStrip = getDragHander((diffX) => {
     const newStart = props.start + diffX / ref.current!.clientWidth;
     const newEnd = props.end + diffX / ref.current!.clientWidth;
-    if (newStart >= 0 && newEnd <= 1) {
-      props.onScaleChange?.(newStart, newEnd);
+    if (newStart < 0) {
+      props.onScaleChange?.(0, newEnd - newStart);
+      return;
+    } else if (newEnd > 1) {
+      props.onScaleChange?.(newStart - (newEnd - 1), 1);
+      return;
     }
+    props.onScaleChange?.(newStart, newEnd);
   });
 
   return (
