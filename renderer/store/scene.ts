@@ -115,6 +115,23 @@ export const sceneSlice = createSlice({
       }
     ) => {
       const strip = action.payload;
+
+      // check strip can move
+      const isOverlapped = state.strips.some((s) => {
+        if (s.id === strip.id) {
+          return false;
+        }
+        const isOverlapped =
+          s.layer === strip.layer &&
+          s.start < strip.start + strip.length &&
+          strip.start < s.start + s.length;
+        return isOverlapped;
+      });
+
+      if (isOverlapped) {
+        return;
+      }
+
       const index = state.strips.findIndex((s) => s.id === strip.id);
       if (index >= 0) {
         state.strips[index] = strip;

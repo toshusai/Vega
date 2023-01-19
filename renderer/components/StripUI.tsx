@@ -4,16 +4,18 @@ import { Strip } from "../interfaces/Strip";
 import { roundToFrame } from "./Timeline";
 
 export const getDragHander = (
-  cb: (x: number) => void,
+  cb: (x: number, y: number) => void,
   onDown?: (e: MouseEvent) => void
 ) => {
   return (e: React.MouseEvent) => {
     onDown?.(e.nativeEvent);
     e.stopPropagation();
     const startX = e.clientX;
+    const startY = e.clientY;
     const handleMouseMove = (e: MouseEvent) => {
       const diffX = e.clientX - startX;
-      cb(diffX);
+      const diffY = e.clientY - startY;
+      cb(diffX, diffY);
     };
     const handleMouseUp = (e: MouseEvent) => {
       window.removeEventListener("mousemove", handleMouseMove);
@@ -62,12 +64,13 @@ export const StripUI: FC<
     }
   });
 
-  const handleMouseDownStrip = getDragHander((diffX) => {
+  const handleMouseDownStrip = getDragHander((diffX, diffY) => {
     const newStart = props.start + diffX / props.pxPerSec;
-    if (newStart >= 0) {
+    const layer = Math.round((props.layer * height + diffY) / (height + gap));
+    if (newStart >= 0 && layer >= 0) {
       props.onStripChange({
         effects: props.effects,
-        layer: props.layer,
+        layer: layer,
         id: props.id,
         start: roundToFrame(newStart, props.fps),
         length: props.length,
