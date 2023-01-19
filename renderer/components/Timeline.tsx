@@ -7,6 +7,13 @@ import { useWidth } from "../hooks/useWidth";
 import { useDispatch } from "react-redux";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
+import {
+  ArrowBadgeDown,
+  Cut,
+  PlayerPause,
+  PlayerPlay,
+  TriangleInverted,
+} from "tabler-icons-react";
 
 export function roundToFrame(time: number, fps: number) {
   return Math.round(time * fps) / fps;
@@ -22,6 +29,7 @@ export const Timeline: FC = () => {
     return state.scene.currentTime;
   });
   const selectedStripIds = useSelector((state) => state.scene.selectedStripIds);
+  const isPlaying = useSelector((state) => state.scene.isPlaying);
 
   const [pxPerSec, setPxPerSec] = useState(1);
 
@@ -61,6 +69,45 @@ export const Timeline: FC = () => {
           flexDirection: "column",
         }}
       >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "2px",
+          }}
+        >
+          <button
+            onClick={() => {
+              dispatch(actions.toggleIsPlaying());
+            }}
+            style={{
+              padding: "0",
+              width: "16px",
+              minHeight: "16px",
+              border: "1px solid var(--color-border)",
+              cursor: "pointer",
+              display: "flex",
+              borderRadius: "4px",
+              backgroundColor: "var(--color-input-background)",
+            }}
+          >
+            {isPlaying ? (
+              <PlayerPause
+                style={{ margin: "auto" }}
+                strokeWidth={2}
+                color="white"
+                size={12}
+              />
+            ) : (
+              <PlayerPlay
+                style={{ margin: "auto" }}
+                strokeWidth={2}
+                color="white"
+                size={12}
+              />
+            )}
+          </button>
+        </div>
         <MemoTimeView
           offsetSec={start * timelineLength}
           endSec={timelineLength}
@@ -116,14 +163,27 @@ const TimeCursor: FC<{
     <div
       style={{
         position: "absolute",
-        height: "calc(100% - 16px)", // 16px is the height of the scrollbar
+        // 16px is the height of the scrollbar,
+        // 18px is the height of the timeview
+        height: "calc(100% - 16px - 18px - 2px)",
         width: "1px",
-        top: 0,
+        top: "18px",
         backgroundColor: "red",
         zIndex: 100,
         left: props.left,
         pointerEvents: "none",
       }}
-    />
+    >
+      <div
+        style={{
+          position: "absolute",
+          background: "red",
+          left: "0px",
+          top: "0px",
+          width: "8px",
+          height: "8px",
+        }}
+      />
+    </div>
   );
 };

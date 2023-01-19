@@ -24,10 +24,18 @@ export const Preview: FC = () => {
     }
     dispatch(actions.setInitialized(true));
     const ctx = canvas.getContext("2d");
-    const update = () => {
+    let prevTime = 0;
+    const update = (t) => {
+      const delta = t - prevTime;
+      prevTime = t;
+
+      const scene = store.getState().scene;
+      if (scene.isPlaying) {
+        dispatch(actions.setCurrentTime(scene.currentTime + delta / 1000));
+      }
+
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      const scene = store.getState().scene;
 
       const layerOrderedIndeiexes = scene.strips
         .map((s, i) => ({
@@ -50,7 +58,7 @@ export const Preview: FC = () => {
 
       requestAnimationFrame(update);
     };
-    update();
+    update(0);
   }, []);
   const memolizedCanvas = useMemo(() => {
     return <canvas ref={canvasRef} />;

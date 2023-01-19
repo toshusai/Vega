@@ -8,7 +8,7 @@ enum VideoStatus {
   Loading,
   Playing,
   Paused,
-  Seeking
+  Seeking,
 }
 const modeLoadingBlack = false;
 
@@ -18,13 +18,22 @@ export function updateVideoEffect(
   strip: Strip,
   scene: SceneState
 ) {
-  if (scene.currentTime < strip.start ||
-    scene.currentTime > strip.start + strip.length) {
-    return;
-  }
   const videoAsset = scene.assets.find(
     (asset) => asset.id === effect.videoAssetId
   );
+  if (
+    scene.currentTime < strip.start ||
+    scene.currentTime > strip.start + strip.length
+  ) {
+    videoStatusMap.set(effect.videoAssetId, VideoStatus.Paused);
+    let videoElement = loadedVideoElementMap.get(videoAsset.id);
+    if (!videoElement) {
+      return;
+    }
+    videoElement.pause();
+    videoElement.currentTime = 0;
+    return;
+  }
   if (videoAsset) {
     let videoElement = loadedVideoElementMap.get(videoAsset.id);
     if (!videoElement) {
@@ -32,26 +41,47 @@ export function updateVideoEffect(
       loadedVideoElementMap.set(videoAsset.id, videoElement);
       videoElement.src = videoAsset.path;
       videoElement.autoplay = true;
+      videoStatusMap.set(videoAsset.id, VideoStatus.Loading);
     }
-    videoStatusMap.set(videoAsset.id, VideoStatus.Loading);
     videoElement.onloadeddata = () => {
       videoStatusMap.set(videoAsset.id, VideoStatus.Paused);
       videoElement.pause();
     };
+    const currentStatus = videoStatusMap.get(videoAsset.id);
+    if (currentStatus === VideoStatus.Loading) {
+      return;
+    }
     videoElement.onseeked = () => {
-      if (videoStatusMap.get(videoAsset.id) === VideoStatus.Seeking) {
+      if (scene.isPlaying) {
+        videoElement.play();
+        videoStatusMap.set(videoAsset.id, VideoStatus.Playing);
+      } else {
+        videoElement.pause();
         videoStatusMap.set(videoAsset.id, VideoStatus.Paused);
       }
     };
+    videoElement.onplay = () => {
+      videoStatusMap.set(videoAsset.id, VideoStatus.Playing);
+    };
+    videoElement.onpause = () => {
+      videoStatusMap.set(videoAsset.id, VideoStatus.Paused);
+    };
+    const gapFrames = 5;
     const diff = Math.abs(
       videoElement.currentTime - scene.currentTime + strip.start
     );
-    if (diff > 1 / scene.fps) {
+    if (currentStatus === VideoStatus.Playing && !scene.isPlaying) {
+      videoElement.pause();
+    } else if (currentStatus === VideoStatus.Paused && scene.isPlaying) {
+      videoElement.play();
+    } else if (
+      diff > (1 / scene.fps) * gapFrames &&
+      currentStatus !== VideoStatus.Seeking
+    ) {
+      // should seek if video currentTime is too far from scene currentTime
       videoElement.currentTime = scene.currentTime - strip.start;
       videoStatusMap.set(videoAsset.id, VideoStatus.Seeking);
-    }
-    if (videoStatusMap.get(videoAsset.id) === VideoStatus.Seeking &&
-      modeLoadingBlack) {
+    } else if (currentStatus === VideoStatus.Seeking && modeLoadingBlack) {
       ctx.fillStyle = "black";
       ctx.fillRect(
         effect.x,
@@ -59,18 +89,20 @@ export function updateVideoEffect(
         videoElement.videoWidth,
         videoElement.videoHeight
       );
-    } else {
-      ctx.drawImage(
-        videoElement,
-        effect.x,
-        effect.y,
-        videoElement.videoWidth,
-        videoElement.videoHeight,
-        effect.x,
-        effect.y,
-        ctx.canvas.width,
-        ctx.canvas.height
-      );
     }
+    if (currentStatus === VideoStatus.Seeking) {
+      return;
+    }
+    ctx.drawImage(
+      videoElement,
+      effect.x,
+      effect.y,
+      videoElement.videoWidth,
+      videoElement.videoHeight,
+      effect.x,
+      effect.y,
+      ctx.canvas.width,
+      ctx.canvas.height
+    );
   }
 }
