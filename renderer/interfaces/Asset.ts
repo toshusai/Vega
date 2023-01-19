@@ -9,3 +9,8 @@ export type FontAsset = Asset & {
   type: "font";
   path: string;
 };
+
+export type VideoAsset = Asset & {
+  type: "video";
+  path: string;
+};
