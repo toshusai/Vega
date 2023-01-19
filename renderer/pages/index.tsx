@@ -13,25 +13,43 @@ const IndexPage = () => {
       <GlobalStyle />
       <Provider store={store}>
         <VPanelBox>
-          <HPanelBox>
-            <VPanelBox>
-              <Panel />
-              <VPanelDivider />
-              <Panel />
-            </VPanelBox>
-            <HPanelDivider />
-            <Preview />
-          </HPanelBox>
-          <VPanelDivider />
-          <HPanelBox>
-            <Timeline />
-            <HPanelDivider />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              padding: "4px",
+              height: "calc(100% - 8px)",
+              width: "calc(100% - 8px)",
+            }}
+          >
             <HPanelBox>
-              <Panel />
+              <VPanelBox
+                style={{
+                  width: "40%",
+                }}
+              >
+                <Panel />
+                <VPanelDivider />
+                <Panel />
+              </VPanelBox>
               <HPanelDivider />
-              <AssetPanel />
+              <Preview />
             </HPanelBox>
-          </HPanelBox>
+            <VPanelDivider />
+            <HPanelBox>
+              <Timeline />
+              <HPanelDivider />
+              <HPanelBox
+                style={{
+                  width: "50%",
+                }}
+              >
+                <Panel />
+                <HPanelDivider />
+                <AssetPanel />
+              </HPanelBox>
+            </HPanelBox>
+          </div>
         </VPanelBox>
       </Provider>
     </>
@@ -40,14 +58,14 @@ const IndexPage = () => {
 
 const VPanelDivider = styled.div`
   width: 100%;
-  height: 8px;
+  min-height: 4px;
   background-color: var(--color-panel-divider);
   cursor: row-resize;
   user-select: none;
 `;
 
 const HPanelDivider = styled.div`
-  width: 8px;
+  min-width: 4px;
   height: 100%;
   background-color: var(--color-panel-divider);
   cursor: col-resize;
