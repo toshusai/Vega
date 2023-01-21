@@ -9,28 +9,10 @@ import { useDispatch } from "react-redux";
 import { actions } from "../store/scene";
 import { checkOverlap } from "./checkOverlap";
 import { useSelector } from "../store/useSelector";
-import {
-  ArrowBadgeDown,
-  Cut,
-  PlayerPause,
-  PlayerPlay,
-  TriangleInverted,
-} from "tabler-icons-react";
+import { Cut, PlayerPause, PlayerPlay } from "tabler-icons-react";
 import styled from "styled-components";
 import { Strip } from "../interfaces/Strip";
 import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
-
-function chooseAbsSmall(a: number, b: number) {
-  const absA = Math.abs(a);
-  const absB = Math.abs(b);
-  if (absA < absB) {
-    return a < 0 ? -absA : absA;
-  }
-  if (absA > absB) {
-    return b < 0 ? -absB : absB;
-  }
-  return 0;
-}
 
 export function roundToFrame(time: number, fps: number) {
   return Math.floor(time * fps) / fps;
