@@ -3,21 +3,37 @@ import styled from "styled-components";
 import { Strip } from "../interfaces/Strip";
 import { roundToFrame } from "./Timeline";
 
+type DragHanderContext = {
+  startX: number;
+  startY: number;
+  diffX: number;
+  diffY: number;
+  startEvent: React.MouseEvent;
+};
+
 export const getDragHander = (
-  cb: (x: number, y: number) => void,
-  onDown?: (e: MouseEvent) => void
+  cb: (context: DragHanderContext) => void,
+  onDown?: (e: MouseEvent) => void,
+  onUp?: (e: MouseEvent) => void
 ) => {
-  return (e: React.MouseEvent) => {
-    onDown?.(e.nativeEvent);
-    e.stopPropagation();
-    const startX = e.clientX;
-    const startY = e.clientY;
+  return (downEvent: React.MouseEvent) => {
+    onDown?.(downEvent.nativeEvent);
+    downEvent.stopPropagation();
+    const startX = downEvent.clientX;
+    const startY = downEvent.clientY;
     const handleMouseMove = (e: MouseEvent) => {
       const diffX = e.clientX - startX;
       const diffY = e.clientY - startY;
-      cb(diffX, diffY);
+      cb({
+        startX,
+        startY,
+        diffX,
+        diffY,
+        startEvent: downEvent,
+      });
     };
     const handleMouseUp = (e: MouseEvent) => {
+      onUp?.(e);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
@@ -39,7 +55,7 @@ export const StripUI: FC<
   const height = 40;
   const gap = 4;
 
-  const handleMouseDownLeftHandle = getDragHander((diffX) => {
+  const handleMouseDownLeftHandle = getDragHander(({ diffX }) => {
     let newStart = props.start + diffX / props.pxPerSec;
     let newLength = props.length - diffX / props.pxPerSec;
     if (newStart < 0) {
@@ -59,7 +75,7 @@ export const StripUI: FC<
     });
   });
 
-  const handleMouseDownRightHandle = getDragHander((diffX) => {
+  const handleMouseDownRightHandle = getDragHander(({ diffX }) => {
     let newLength = props.length + diffX / props.pxPerSec;
     if (newLength < 0) newLength = 0;
 
@@ -73,7 +89,7 @@ export const StripUI: FC<
   });
 
   const handleMouseDownStrip = getDragHander(
-    (diffX, diffY) => {
+    ({ diffX, diffY }) => {
       // TODO: move drag handler to parant for support multiple selection
       let newStart = props.start + diffX / props.pxPerSec;
       let layer = Math.round((props.layer * height + diffY) / (height + gap));
