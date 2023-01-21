@@ -8,7 +8,13 @@ import { useWidth } from "../hooks/useWidth";
 import { useDispatch } from "react-redux";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
-import { Magnet, MagnetOff, PlayerPause, PlayerPlay } from "tabler-icons-react";
+import {
+  Cut,
+  Magnet,
+  MagnetOff,
+  PlayerPause,
+  PlayerPlay,
+} from "tabler-icons-react";
 import { Strip } from "../interfaces/Strip";
 import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
 import { roundToFrame } from "./roundToFrame";
@@ -19,6 +25,7 @@ import { SelectRect } from "./SelectRect";
 import { iconProps } from "./iconProps";
 import { IconButton } from "./IconButton";
 import { ContextMenu, StyledContextMenuButton } from "./ContextMenu";
+import { uuid } from "short-uuid";
 
 export const Timeline: FC = () => {
   const strips = useSelector((state) => state.scene.strips);
@@ -246,6 +253,37 @@ export const Timeline: FC = () => {
     MouseEvent
   > | null>();
 
+  const handleCutStrip = () => {
+    const selectedStrips = strips.filter((strip) =>
+      selectedStripIds.includes(strip.id)
+    );
+    selectedStrips.forEach((strip) => {
+      if (
+        currentTime > strip.start &&
+        currentTime < strip.start + strip.length
+      ) {
+        const newStrips = [
+          {
+            ...strip,
+            length: currentTime - strip.start,
+          },
+          {
+            ...strip,
+            id: uuid(),
+            start: currentTime,
+            length: strip.length - (currentTime - strip.start),
+            effects: strip.effects.map((effect) => ({
+              ...effect,
+              id: uuid(),
+            })),
+          },
+        ];
+        console.log(newStrips);
+        dispatch(actions.updateStrip(newStrips));
+      }
+    });
+  };
+
   return (
     <Panel width={50}>
       <ContextMenu
@@ -300,6 +338,9 @@ export const Timeline: FC = () => {
               {...iconProps}
               color={isSnap ? "var(--color-primary)" : "white"}
             />
+          </IconButton>
+          <IconButton onClick={handleCutStrip}>
+            <Cut {...iconProps} />
           </IconButton>
         </div>
         <MemoTimeView
