@@ -3,6 +3,7 @@ import { TextEffect } from "../interfaces/TextEffect";
 import { SceneState } from "../store/scene";
 
 const loadedFontAssetMap = new Map<string, boolean>();
+export const measureMap = new Map<string, TextMetrics>();
 
 export function updateTextEffect(
   ctx: CanvasRenderingContext2D,
@@ -33,4 +34,6 @@ export function updateTextEffect(
   ctx.fillStyle = "black";
   ctx.font = "30px " + fontAsset?.name || "sans-serif";
   ctx.fillText(effect.text, effect.x, effect.y);
+  const measure = ctx.measureText(effect.text);
+  measureMap.set(effect.id, measure);
 }

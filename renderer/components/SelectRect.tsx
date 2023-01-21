@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
-type SelectRectProps = {
+export type SelectRectProps = {
   $left: number;
   $width: number;
   $top: number;
   $height: number;
 };
+
 export const SelectRect = styled.div.attrs<SelectRectProps>((props) => ({
   style: {
     left: props.$left + "px",
