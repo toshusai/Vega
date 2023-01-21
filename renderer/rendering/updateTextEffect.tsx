@@ -1,3 +1,4 @@
+import { Ease, easeOutBack, getEasingFunction } from "../components/easing";
 import { Asset, FontAsset, VideoAsset } from "../interfaces/Asset";
 import { Strip } from "../interfaces/Strip";
 import { KeyFrame, TextEffect } from "../interfaces/TextEffect";
@@ -74,8 +75,10 @@ const caclulateKeyFrameValue = (
     const ratio =
       (currentTime - prevKeyframe.time) /
       (nextKeyframe.time - prevKeyframe.time);
+    const ease = getEasingFunction(prevKeyframe.ease || Ease.Linear);
     return (
-      prevKeyframe.value + (nextKeyframe.value - prevKeyframe.value) * ratio
+      prevKeyframe.value +
+      (nextKeyframe.value - prevKeyframe.value) * ease(ratio)
     );
   }
   return defaultValue;

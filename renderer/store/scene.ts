@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Ease } from "../components/easing";
 import { roundToFrame } from "../components/roundToFrame";
 import { Asset } from "../interfaces/Asset";
 import { Strip } from "../interfaces/Strip";
@@ -73,11 +74,13 @@ export const sceneSlice = createSlice({
                 property: "x",
                 value: 10,
                 time: 0,
+                ease: Ease.EaseInCubic,
               },
               {
                 property: "x",
                 value: 1000,
                 time: 5,
+                ease: Ease.EaseInCubic,
               },
             ],
           } as TextEffect,
