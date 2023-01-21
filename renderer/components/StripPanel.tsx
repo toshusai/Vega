@@ -3,15 +3,18 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Effect } from "../interfaces/Effect";
 import { Strip } from "../interfaces/Strip";
-import { isTextEffect, TextEffect } from "../interfaces/TextEffect";
+import { isTextEffect } from "../interfaces/TextEffect";
+import { isVideoEffect, VideoEffect } from "../interfaces/VideoEffect";
 import { UndoManager } from "../KeyboardInput";
+import { isVideoAsset } from "../rendering/updateTextEffect";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { PanelBody } from "./AssetDetailsPanel";
-import { ClickEditInput, MemoClickEditInput } from "./core/ClickEditInput";
+import { MemoClickEditInput } from "./core/ClickEditInput";
 import { NumberEditInput } from "./core/NumberEditInput";
 import { Panel } from "./core/Panel";
 import { Select } from "./core/Select";
+import { TextEffectView } from "./TextEffectView";
 
 export const StripPanel: FC = () => {
   const selectedStripIds = useSelector((state) => state.scene.selectedStripIds);
@@ -58,56 +61,50 @@ const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
             />
           );
         }
+        if (isVideoEffect(effect)) {
+          return (
+            <VideoEffectView
+              key={effect.id}
+              videoEffect={effect}
+              strip={props.strip}
+            />
+          );
+        }
       })}
     </div>
   );
 };
 
-const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
-  props
-) => {
-  const { textEffect } = props;
+export const VideoEffectView: FC<{
+  videoEffect: VideoEffect;
+  strip: Strip;
+}> = (props) => {
+  const { videoEffect } = props;
   const dispatch = useDispatch();
 
-  const emit = (partial: Partial<TextEffect>) => {
+  const emit = (partial: Partial<VideoEffect>) => {
     dispatch(
       actions.updateEddect({
-        effect: { ...textEffect, ...partial },
+        effect: { ...videoEffect, ...partial },
         stripId: props.strip.id,
       })
     );
   };
-  const undo = () => emit({ text: textEffect.text });
+  const undo = () => emit({ ...videoEffect });
 
   const assets = useSelector((state) => state.scene.assets);
-  const fontAssets = assets.filter((a) => a.type === "font");
+  const videoAssets = assets.filter(isVideoAsset);
 
-  const fontAssetItems = fontAssets.map((a) => ({
+  const videoAssetItems = videoAssets.map((a) => ({
     value: a.id,
     label: a.name,
   }));
-
   return (
     <>
       <Row>
-        <PropertyName>text</PropertyName>
-        <ClickEditInput
-          value={textEffect.text}
-          onInput={(value) => emit({ text: value })}
-          onChange={(value) =>
-            UndoManager.main
-              .add({
-                undo,
-                redo: () => emit({ text: value }),
-              })
-              .run()
-          }
-        />
-      </Row>
-      <Row>
         <PropertyName>x</PropertyName>
         <NumberEditInput
-          value={textEffect.x}
+          value={videoEffect.x}
           onInput={(value) => emit({ x: value })}
           onChange={(value) =>
             UndoManager.main
@@ -122,7 +119,7 @@ const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
       <Row>
         <PropertyName>y</PropertyName>
         <NumberEditInput
-          value={textEffect.y}
+          value={videoEffect.y}
           onInput={(value) => emit({ y: value })}
           onChange={(value) =>
             UndoManager.main
@@ -134,37 +131,23 @@ const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
           }
         />
       </Row>
+
       <Row>
-        <PropertyName>font size</PropertyName>
-        <NumberEditInput
-          value={textEffect.fontSize}
-          onInput={(value) => emit({ fontSize: value })}
-          onChange={(value) =>
-            UndoManager.main
-              .add({
-                undo,
-                redo: () => emit({ fontSize: value }),
-              })
-              .run()
-          }
-        />
-      </Row>
-      <Row>
-        <PropertyName>font</PropertyName>
+        <PropertyName>video</PropertyName>
         <Select
-          items={fontAssetItems}
-          onChange={(value) => emit({ fontAssetId: value })}
-          value={textEffect.fontAssetId}
+          items={videoAssetItems}
+          onChange={(value) => emit({ videoAssetId: value })}
+          value={videoEffect.videoAssetId}
         />
       </Row>
     </>
   );
 };
 
-const Row = styled.div`
+export const Row = styled.div`
   display: flex;
 `;
 
-const PropertyName = styled.div`
+export const PropertyName = styled.div`
   margin-right: auto;
 `;
