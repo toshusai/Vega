@@ -110,9 +110,15 @@ export const sceneSlice = createSlice({
       },
       {
         id: "2",
-        name: "video",
+        name: "cat in the sun",
         type: "video",
         path: "/cat_in_the_sun.mp4",
+      },
+      {
+        id: "5",
+        name: "splatoon",
+        type: "video",
+        path: "/lazer-DQd5U0Wlq8E_2.mp4",
       },
     ],
   } as SceneState,
