@@ -20,6 +20,7 @@ export const AssetPanel: FC = () => {
       {assets.map((asset) => {
         return (
           <AssetListItem
+            key={asset.id}
             asset={asset}
             selected={selectedAssetIds.includes(asset.id)}
             onClick={() => handleSelectAsset(asset)}
