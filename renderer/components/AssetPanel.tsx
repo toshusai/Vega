@@ -45,9 +45,9 @@ const AssetListItem: FC<{
       }}
     >
       {props.asset.type === "video" ? (
-        <Video style={{ margin: "auto 2px" }} size={16} />
+        <Video style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
       ) : props.asset.type === "font" ? (
-        <Tex style={{ margin: "auto 2px" }} size={16} />
+        <Tex style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
       ) : null}
       <div>{props.asset.name}</div>
     </Div>
@@ -57,6 +57,8 @@ const AssetListItem: FC<{
 const Div = styled.div`
   display: flex;
   color: white;
+  white-space: nowrap;
+  overflow: hidden;
   font-family: "Ricty Diminished";
   line-height: 16px;
   height: 16px;
