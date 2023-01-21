@@ -51,14 +51,16 @@ export function updateTextEffect(
     effect.keyframes,
     scene.currentTime - strip.start,
     "x",
-    effect.x
+    effect.x,
+    scene.fps
   );
 
   const y = caclulateKeyFrameValue(
     effect.keyframes,
     scene.currentTime - strip.start,
     "y",
-    effect.y
+    effect.y,
+    scene.fps
   );
 
   ctx.fillText(effect.text, x, y);
@@ -70,19 +72,37 @@ export const caclulateKeyFrameValue = (
   keyframes: KeyFrame[],
   currentTime: number,
   property: string,
-  defaultValue: number
+  defaultValue: number,
+  fps: number
 ) => {
-  const prevKeyframe = keyframes.find(
-    (k) => k.property === property && k.time < currentTime
-  );
-  const nextKeyframe = keyframes.find(
-    (k) => k.property === property && k.time > currentTime
-  );
+  // const prevKeyframe = keyframes
+  //   .find((k) => k.property === property && k.time < currentTime + 1 / fps);
+  // const nextKeyframe = keyframes
+  //   .find((k) => k.property === property && k.time > currentTime - 1 / fps);
+
+  // get nearest prev keyframe
+  const prevKeyframe = keyframes
+    .filter((k) => k.property === property && k.time < currentTime + 1 / fps)
+    .sort((a, b) => b.time - a.time)[0];
+  // get nearest next keyframe
+  const nextKeyframe = keyframes
+    .filter((k) => k.property === property && k.time > currentTime - 1 / fps)
+    .sort((a, b) => a.time - b.time)[0];
+
+  if (!prevKeyframe && nextKeyframe) {
+    return nextKeyframe.value;
+  }
+  if (prevKeyframe && !nextKeyframe) {
+    return prevKeyframe.value;
+  }
   if (prevKeyframe && nextKeyframe) {
-    const ratio =
+    let ratio =
       (currentTime - prevKeyframe.time) /
       (nextKeyframe.time - prevKeyframe.time);
     const ease = getEasingFunction(prevKeyframe.ease || Ease.Linear);
+    if (isNaN(ratio) || ratio === Infinity || ratio === -Infinity) {
+      ratio = 0;
+    }
     return (
       prevKeyframe.value +
       (nextKeyframe.value - prevKeyframe.value) * ease(ratio)

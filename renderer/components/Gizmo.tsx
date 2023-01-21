@@ -19,6 +19,7 @@ export const Gizmo: FC<{
   const strips = useSelector((state) => state.scene.strips);
   const selectedStrips = strips.filter((s) => selectedStripIds.includes(s.id));
   const currentTime = useSelector((state) => state.scene.currentTime);
+  const fps = useSelector((state) => state.scene.fps);
   const dispatch = useDispatch();
 
   if (selectedStrips.length !== 1) {
@@ -38,7 +39,8 @@ export const Gizmo: FC<{
     props.scale,
     props.left,
     props.top,
-    currentTime - strip.start
+    currentTime - strip.start,
+    fps
   );
   if (!rect) return null;
 

@@ -25,6 +25,7 @@ export const Preview: FC = () => {
   const rootRef = useRef<HTMLDivElement>(null);
 
   const strips = useSelector((state) => state.scene.strips);
+  const fps = useSelector((state) => state.scene.fps);
 
   const [left, setLeft] = useState(0);
   const [top, setTop] = useState(0);
@@ -96,7 +97,8 @@ export const Preview: FC = () => {
               scale,
               left,
               top,
-              currentTime - strip.start
+              currentTime - strip.start,
+              fps
             );
             if (
               rect &&
