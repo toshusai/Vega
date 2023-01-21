@@ -24,6 +24,7 @@ export const Preview: FC = () => {
   const [left, setLeft] = useState(0);
   const [top, setTop] = useState(0);
   const [scale, setScale] = useState(0.3);
+  const [dragging, setDragging] = useState(false);
 
   const changeScale = (newScale: number, center?: boolean) => {
     if (newScale < 0.1) {
@@ -59,8 +60,10 @@ export const Preview: FC = () => {
 
   const handleMouseDown = getDragHander<{ left: number; top: number }, null>(
     (ctx) => {
-      setLeft(ctx.diffX + ctx.pass.left);
-      setTop(ctx.diffY + ctx.pass.top);
+      if (dragging) {
+        setLeft(ctx.diffX + ctx.pass.left);
+        setTop(ctx.diffY + ctx.pass.top);
+      }
       return null;
     },
     (ctx) => {
@@ -91,13 +94,15 @@ export const Preview: FC = () => {
     setLeft(rect.width / 2 - (width * scale) / 2);
     setTop(rect.height / 2 - (height * scale) / 2);
 
-    KeyboardInput.addKeyDownListener(Key.Space, () => {
+    KeyboardInput.addKeyDownListener(Key.Alt, () => {
       const el = rootRef.current as HTMLDivElement;
       el.style.cursor = "grab";
+      setDragging(true);
     });
-    KeyboardInput.addKeyUpListener(Key.Space, () => {
+    KeyboardInput.addKeyUpListener(Key.Alt, () => {
       const el = rootRef.current as HTMLDivElement;
       el.style.cursor = "";
+      setDragging(false);
     });
     dispatch(actions.setInitialized(true));
     const ctx = canvas.getContext("2d");
