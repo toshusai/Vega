@@ -9,7 +9,7 @@ export function isTextAsset(asset: Asset): asset is FontAsset {
   return asset.type === "font";
 }
 
-function loadFont(fontAsset: FontAsset) {
+export function loadFont(fontAsset: FontAsset) {
   if (!loadedFontAssetMap.has(fontAsset.id) && fontAsset) {
     const style = document.createElement("style");
     style.innerHTML = `@font-face {

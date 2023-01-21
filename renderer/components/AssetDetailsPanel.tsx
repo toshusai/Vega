@@ -1,7 +1,7 @@
 import { FC } from "react";
 import styled from "styled-components";
 import { FontAsset } from "../interfaces/Asset";
-import { isTextAsset } from "../rendering/updateTextEffect";
+import { isTextAsset, loadFont } from "../rendering/updateTextEffect";
 import { useSelector } from "../store/useSelector";
 import { ClickEditInput } from "./core/ClickEditInput";
 import { Panel } from "./core/Panel";
@@ -53,6 +53,7 @@ export const PanelBody = styled.div`
 const TextAssetDetailsPanel: FC<{
   asset: FontAsset;
 }> = (props) => {
+  loadFont(props.asset);
   return (
     <div>
       <div
