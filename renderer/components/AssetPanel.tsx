@@ -61,6 +61,7 @@ const Div = styled.div`
   line-height: 20px;
   height: 20px;
   cursor: default;
+  user-select: none;
 
   :hover {
     background-color: #333;
