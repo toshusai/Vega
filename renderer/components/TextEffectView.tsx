@@ -34,6 +34,16 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     label: a.name,
   }));
 
+  const numberKeys: (keyof TextEffect)[] = ["x", "y"];
+  const scaleKeysMap = {
+    x: 1,
+    y: 1,
+  };
+  const viewKeysMap = {
+    x: (v) => v.toFixed(0),
+    y: (v) => v.toFixed(0),
+  };
+
   return (
     <>
       <Row>
@@ -51,36 +61,27 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
           }
         />
       </Row>
-      <Row>
-        <PropertyName>x</PropertyName>
-        <NumberEditInput
-          value={textEffect.x}
-          onInput={(value) => emit({ x: value })}
-          onChange={(value) =>
-            UndoManager.main
-              .add({
-                undo,
-                redo: () => emit({ x: value }),
-              })
-              .run()
-          }
-        />
-      </Row>
-      <Row>
-        <PropertyName>y</PropertyName>
-        <NumberEditInput
-          value={textEffect.y}
-          onInput={(value) => emit({ y: value })}
-          onChange={(value) =>
-            UndoManager.main
-              .add({
-                undo,
-                redo: () => emit({ y: value }),
-              })
-              .run()
-          }
-        />
-      </Row>
+      {numberKeys.map((key) => {
+        return (
+          <Row key={key}>
+            <PropertyName>{key}</PropertyName>
+            <NumberEditInput
+              value={textEffect[key] as number}
+              scale={scaleKeysMap[key]}
+              view={viewKeysMap[key]}
+              onInput={(value) => emit({ [key]: value })}
+              onChange={(value) =>
+                UndoManager.main
+                  .add({
+                    undo,
+                    redo: () => emit({ [key]: value }),
+                  })
+                  .run()
+              }
+            />
+          </Row>
+        );
+      })}
       <Row>
         <PropertyName>font size</PropertyName>
         <NumberEditInput
