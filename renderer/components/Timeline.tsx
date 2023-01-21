@@ -40,10 +40,9 @@ export const Timeline: FC = () => {
     setPxPerSec(width / ((end - start) * timelineLength));
   }, [width, start, end, timelineLength]);
 
-  let newt = 0;
-  const handleMouseDownTimeView = getDragHander(
-    ({ diffX }) => {
-      const newCurrentTime = newt + diffX / pxPerSec;
+  const handleMouseDownTimeView = getDragHander<number, void>(
+    ({ diffX, pass }) => {
+      const newCurrentTime = pass + diffX / pxPerSec;
       if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
         dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
       }
@@ -51,10 +50,10 @@ export const Timeline: FC = () => {
     ({ startEvent: e }) => {
       const newCurrentTime =
         (e.clientX - 4) / pxPerSec + start * timelineLength;
-      newt = newCurrentTime;
       if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
         dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
       }
+      return newCurrentTime;
     }
   );
 
