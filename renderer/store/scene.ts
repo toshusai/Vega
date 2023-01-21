@@ -17,11 +17,15 @@ export type SceneState = {
   isPlaying: boolean;
   selectedStripIds: string[];
   selectedAssetIds: string[];
+  canvasWidth: number;
+  canvasHeight: number;
 };
 
 export const sceneSlice = createSlice({
   name: "scene",
   initialState: {
+    canvasHeight: 720,
+    canvasWidth: 1280,
     selectedStripIds: [],
     selectedAssetIds: [],
     isPlaying: false,
