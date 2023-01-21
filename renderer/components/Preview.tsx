@@ -63,6 +63,14 @@ export const Preview: FC = () => {
     setTop(top + distanceY * (1 - deltaScale));
   };
 
+  const resetScale = () => {
+    changeScale(0.3, true);
+    const el = rootRef.current as HTMLDivElement;
+    const rect = el.getBoundingClientRect();
+    setLeft(rect.width / 2 - (width * 0.3) / 2);
+    setTop(rect.height / 2 - (height * 0.3) / 2);
+  };
+
   const handleMouseDown = getDragHander<{ left: number; top: number }, null>(
     (ctx) => {
       if (dragging) {
@@ -117,11 +125,7 @@ export const Preview: FC = () => {
         dispatch(actions.toggleIsPlaying());
       }
     });
-    const el = rootRef.current as HTMLDivElement;
-    const rect = el.getBoundingClientRect();
-    setLeft(rect.width / 2 - (width * scale) / 2);
-    setTop(rect.height / 2 - (height * scale) / 2);
-
+    resetScale();
     KeyboardInput.addKeyDownListener(Key.Alt, () => {
       const el = rootRef.current as HTMLDivElement;
       el.style.cursor = "grab";
@@ -220,7 +224,11 @@ export const Preview: FC = () => {
             <ZoomIn {...iconProps} />
           </IconButton>
 
-          <IconButton onClick={() => {}}>
+          <IconButton
+            onClick={() => {
+              resetScale();
+            }}
+          >
             <ZoomReset {...iconProps} />
           </IconButton>
         </div>
