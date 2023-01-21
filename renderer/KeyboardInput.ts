@@ -16,7 +16,7 @@ export class KeyboardInput {
 
   static addKeyDownListener(key: Key, listener: () => void) {
     document.addEventListener("keydown", (e) => {
-      if (e.key === key) {
+      if (e.key.toLowerCase() === key.toLowerCase()) {
         listener();
       }
     });

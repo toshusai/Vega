@@ -130,6 +130,7 @@ export const Timeline: FC = () => {
             if (snapPoints.length > 0) {
               return snapPoints[0];
             }
+            return null;
           };
 
           const snapEndPositionToOtherStrips = () => {
@@ -139,9 +140,10 @@ export const Timeline: FC = () => {
             if (snapPoints.length > 0) {
               return snapPoints[0];
             }
+            return null;
           };
           const snapStart = snapStartPositionToOtherStrips();
-          if (snapStart && !keepStart) {
+          if (snapStart !== null && !keepStart) {
             newStart = snapStart;
             const snapDiff = snapStart - strip.start;
             if (keepEnd) {
@@ -149,7 +151,7 @@ export const Timeline: FC = () => {
             }
           } else {
             const snapEnd = snapEndPositionToOtherStrips();
-            if (snapEnd && !keepEnd) {
+            if (snapEnd !== null && !keepEnd) {
               if (!keepStart) {
                 newStart = roundToFrame(snapEnd - newLength, fps);
               }

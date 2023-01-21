@@ -11,8 +11,15 @@ import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
 const IndexPage = () => {
   KeyboardInput.init(() => {
     KeyboardInput.addKeyDownListener(Key.KeyZ, () => {
-      if (KeyboardInput.isPressed(Key.Control)) {
-        UndoManager.main.undo();
+      if (
+        KeyboardInput.isPressed(Key.Shift) &&
+        KeyboardInput.isPressed(Key.Control)
+      ) {
+        UndoManager.main.redo();
+      } else {
+        if (KeyboardInput.isPressed(Key.Control)) {
+          UndoManager.main.undo();
+        }
       }
     });
   });
