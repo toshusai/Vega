@@ -32,7 +32,7 @@ export function updateTextEffect(
   }
 
   ctx.fillStyle = "black";
-  ctx.font = "30px " + fontAsset?.name || "sans-serif";
+  ctx.font = effect.fontSize + "px " + fontAsset?.name || "sans-serif";
   ctx.fillText(effect.text, effect.x, effect.y);
   const measure = ctx.measureText(effect.text);
   measureMap.set(effect.id, measure);
