@@ -44,15 +44,17 @@ export const ScaleScrollBar: FC<{
         backgroundColor: "gray",
         userSelect: "none",
         borderRadius: "8px",
+        border: "1px solid var(--color-border)",
+        boxSizing: "border-box",
       }}
     >
       <div
         style={{
           position: "absolute",
           borderRadius: "8px",
-          left: `${props.start * 100}%`,
-          width: `${(props.end - props.start) * 100}%`,
-          height: "16px",
+          left: `calc(${props.start * 100}% + 1px)`,
+          width: `calc(${(props.end - props.start) * 100}% - 2px)`,
+          height: "14px",
           backgroundColor: "var(--color-text-strip)",
         }}
         onMouseDown={handleMouseDownStrip}
@@ -73,10 +75,10 @@ const ScaleScrollBarHandle = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 8px;
-  top: 4px;
+  width: 6px;
+  top: 2px;
   border-radius: 8px;
-  height: 8px;
+  height: 10px;
   background-color: var(--color-strip-handle);
   cursor: ew-resize;
 `;
