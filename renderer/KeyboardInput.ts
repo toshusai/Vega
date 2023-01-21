@@ -14,22 +14,25 @@ export class KeyboardInput {
     cb();
   }
 
-  static listners = new Map<string, (() => void)[]>();
+  static listners = new Map<string, ((e: KeyboardEvent) => void)[]>();
   static id = 0;
 
-  static addKeyDownListener(key: Key, listener: () => void) {
+  static addKeyDownListener(key: Key, listener: (e: KeyboardEvent) => void) {
     const [id, f] = KeyboardInput.getIdAndHandler(key, listener);
-    document.addEventListener("keydown", listener);
+    document.addEventListener("keydown", f);
     return id;
   }
 
-  private static getIdAndHandler(key: Key, listener: () => void) {
+  private static getIdAndHandler(
+    key: Key,
+    listener: (e: KeyboardEvent) => void
+  ): [string, (e: KeyboardEvent) => void] {
     const id = key + KeyboardInput.id++;
     return [
       id,
       (e: KeyboardEvent) => {
-        if (e.key.toLowerCase() === id.toLowerCase()) {
-          listener();
+        if (e.key.toLowerCase() === key.toLowerCase()) {
+          listener(e);
           if (!KeyboardInput.listners.has(id)) {
             KeyboardInput.listners.set(id, []);
           }
@@ -41,7 +44,7 @@ export class KeyboardInput {
 
   static addKeyUpListener(key: Key, listener: () => void) {
     const [id, f] = KeyboardInput.getIdAndHandler(key, listener);
-    document.addEventListener("keyup", listener);
+    document.addEventListener("keyup", f);
     return id;
   }
 

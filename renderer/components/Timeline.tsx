@@ -147,9 +147,11 @@ export const Timeline: FC = () => {
           return;
         }
 
+        const updatedStrips = ctx.movePass?.updatedStrips ?? [];
+
         UndoManager.main.add({
           redo: () => {
-            dispatch(actions.updateStrip(ctx.movePass.updatedStrips || []));
+            dispatch(actions.updateStrip(updatedStrips));
           },
           undo: () => {
             dispatch(actions.updateStrip(ctx.pass.firstStrips));

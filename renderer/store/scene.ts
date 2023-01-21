@@ -129,6 +129,27 @@ export const sceneSlice = createSlice({
     setStrips: (state, action: { payload: Strip[] }) => {
       state.strips = action.payload;
     },
+    updateEddect: (
+      state,
+      action: {
+        payload: {
+          stripId: string;
+          effect: TextEffect | VideoEffect;
+        };
+      }
+    ) => {
+      const { stripId, effect } = action.payload;
+      const strip = state.strips.find((s) => s.id === stripId);
+      if (!strip) {
+        throw new Error("strip not found");
+      }
+
+      const index = strip.effects.findIndex((e) => e.id === effect.id);
+      if (index >= 0) {
+        strip.effects[index] = effect;
+      }
+    },
+
     updateStrip: (
       state,
       action: {

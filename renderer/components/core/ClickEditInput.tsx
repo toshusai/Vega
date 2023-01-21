@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 const StyledInput = styled.input`
@@ -25,10 +25,49 @@ const StyledInput = styled.input`
 `;
 
 type Props = {
-  value: string;
-  style: React.CSSProperties;
+  value?: string | number;
+  style?: React.CSSProperties;
+  onChange?: (value: string) => void;
+  onInput?: (value: string) => void;
 };
 
 export const ClickEditInput: FC<Props> = (props) => {
-  return <StyledInput style={props.style} value={props.value} />;
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const onChange = (e: InputEvent) => {
+      const target = e.target as HTMLInputElement;
+      props.onChange?.(target.value);
+    };
+    if (inputRef.current) {
+      inputRef.current.addEventListener("change", onChange);
+    }
+    return () => {
+      if (inputRef.current) {
+        inputRef.current.removeEventListener("change", onChange);
+      }
+    };
+  }, [props.value]);
+  const [value, setValue] = useState(props.value);
+  useEffect(() => {
+    if (props.value !== value) {
+      setValue(props.value);
+    }
+  }, [props.value]);
+  return (
+    <>
+      <StyledInput
+        onChange={(e) => {
+          props.onInput?.(e.target.value);
+          setValue(e.target.value);
+        }}
+        ref={inputRef}
+        style={props.style}
+        value={value}
+      />
+    </>
+  );
 };
+
+export const MemoClickEditInput = memo(ClickEditInput, (prev, next) => {
+  return prev.value === next.value && prev.onChange === next.onChange;
+});
