@@ -8,17 +8,19 @@ import { Preview } from "../components/Preview";
 import { AssetPanel } from "../components/AssetPanel";
 import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
 import { AssetDetailsPanel } from "../components/AssetDetailsPanel";
+import { StripPanel } from "../components/StripPanel";
 
 const IndexPage = () => {
   KeyboardInput.init(() => {
-    KeyboardInput.addKeyDownListener(Key.KeyZ, () => {
+    KeyboardInput.addKeyDownListener(Key.KeyZ, (e) => {
+      e.preventDefault();
       if (
         KeyboardInput.isPressed(Key.Shift) &&
-        KeyboardInput.isPressed(Key.Control)
+        KeyboardInput.isPressed(Key.Meta)
       ) {
         UndoManager.main.redo();
       } else {
-        if (KeyboardInput.isPressed(Key.Control)) {
+        if (KeyboardInput.isPressed(Key.Meta)) {
           UndoManager.main.undo();
         }
       }
@@ -44,7 +46,7 @@ const IndexPage = () => {
                   width: "40%",
                 }}
               >
-                <Panel />
+                <StripPanel />
                 <VPanelDivider />
                 <Panel />
               </VPanelBox>
