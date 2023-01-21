@@ -57,6 +57,29 @@ export const Timeline: FC = () => {
     }
   );
 
+  const handleWheelTimeView = (e: React.WheelEvent<HTMLDivElement>) => {
+    const value = e.deltaY * 0.0001;
+    if (KeyboardInput.isPressed(Key.Alt)) {
+      const newStart = start - value;
+      const newEnd = end + value;
+      dispatch(actions.setViewStartRate(newStart));
+      dispatch(actions.setViewEndRate(newEnd));
+    } else {
+      let newStart = start + value;
+      let newEnd = end + value;
+      if (start + value < 0) {
+        newStart = 0;
+        newEnd = end - start;
+      }
+      if (end + value > 1) {
+        newEnd = 1;
+        newStart = start - (end - 1);
+      }
+      dispatch(actions.setViewStartRate(newStart));
+      dispatch(actions.setViewEndRate(newEnd));
+    }
+  };
+
   const handleMouseDownStrip = (
     strip: Strip,
     keepStart: boolean,
@@ -225,6 +248,7 @@ export const Timeline: FC = () => {
           display: "flex",
           flexDirection: "column",
         }}
+        onWheel={handleWheelTimeView}
       >
         <div
           style={{

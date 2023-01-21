@@ -123,9 +123,21 @@ export const sceneSlice = createSlice({
       state.currentTime = action.payload;
     },
     setViewStartRate: (state, action: { payload: number }) => {
+      if (action.payload < 0) {
+        action.payload = 0;
+      }
+      if (action.payload > 1) {
+        action.payload = 1;
+      }
       state.viewStartRate = action.payload;
     },
     setViewEndRate: (state, action: { payload: number }) => {
+      if (action.payload < 0) {
+        action.payload = 0;
+      }
+      if (action.payload > 1) {
+        action.payload = 1;
+      }
       state.viewEndRate = action.payload;
     },
     setLength: (state, action: { payload: number }) => {
