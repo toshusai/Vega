@@ -1,7 +1,11 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { FontAsset } from "../interfaces/Asset";
-import { isTextAsset, loadFont } from "../rendering/updateTextEffect";
+import { FontAsset, VideoAsset } from "../interfaces/Asset";
+import {
+  isTextAsset,
+  isVideoAsset,
+  loadFont,
+} from "../rendering/updateTextEffect";
 import { useSelector } from "../store/useSelector";
 import { ClickEditInput } from "./core/ClickEditInput";
 import { Panel } from "./core/Panel";
@@ -37,6 +41,9 @@ export const AssetDetailsPanel: FC = () => {
         {isTextAsset(selectedAsset) && (
           <TextAssetDetailsPanel asset={selectedAsset} />
         )}
+        {isVideoAsset(selectedAsset) && (
+          <VideoAssetDetailsPanel asset={selectedAsset} />
+        )}
       </PanelBody>
     </Panel>
   );
@@ -65,6 +72,23 @@ const TextAssetDetailsPanel: FC<{
       >
         {sampleText}
       </div>
+    </div>
+  );
+};
+
+const VideoAssetDetailsPanel: FC<{
+  asset: VideoAsset;
+}> = (props) => {
+  return (
+    <div>
+      <video
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+        src={props.asset.path}
+        controls
+      />
     </div>
   );
 };
