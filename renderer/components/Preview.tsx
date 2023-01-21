@@ -10,6 +10,8 @@ import { updateTextEffect } from "../rendering/updateTextEffect";
 import { updateVideoEffect } from "../rendering/updateVideoEffect";
 import { Key, KeyboardInput } from "../KeyboardInput";
 import { getDragHander } from "./getDragHander";
+import { Focus, ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
+import styled from "styled-components";
 
 export const Preview: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -23,19 +25,32 @@ export const Preview: FC = () => {
   const [top, setTop] = useState(0);
   const [scale, setScale] = useState(0.3);
 
+  const changeScale = (newScale: number, center?: boolean) => {
+    if (newScale < 0.1) {
+      newScale = 0.1;
+    }
+    if (newScale > 2) {
+      newScale = 2;
+    }
+    setScale(newScale);
+    if (center) {
+      const el = rootRef.current as HTMLDivElement;
+      const rect = el.getBoundingClientRect();
+      const deltaScale = newScale / scale;
+      const distanceX = rect.width / 2 - left;
+      const distanceY = rect.height / 2 - top;
+      setLeft(left + distanceX * (1 - deltaScale));
+      setTop(top + distanceY * (1 - deltaScale));
+    }
+    return newScale;
+  };
+
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     const el = rootRef.current as HTMLDivElement;
     const rect = el.getBoundingClientRect();
-    const newScale = scale + e.deltaY * 0.001 * scale;
-    if (newScale < 0.1) {
-      return;
-    }
-    if (newScale > 2) {
-      return;
-    }
+    let newScale = scale + e.deltaY * 0.001 * scale;
+    newScale = changeScale(newScale);
     const deltaScale = newScale / scale;
-    setScale(newScale);
-
     const distanceX = e.clientX - rect.left - left;
     const distanceY = e.clientY - rect.top - top;
     setLeft(left + distanceX * (1 - deltaScale));
@@ -127,6 +142,63 @@ export const Preview: FC = () => {
         onMouseDown={handleMouseDown}
         onWheel={handleWheel}
       >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "2px",
+            zIndex: 2,
+            position: "relative",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <IconButton
+            onClick={() => {
+              changeScale(scale * 0.9, true);
+            }}
+          >
+            <ZoomOut
+              style={{ margin: "auto" }}
+              strokeWidth={2}
+              color="white"
+              size={12}
+            />
+          </IconButton>
+          <div
+            style={{
+              height: "16px",
+              display: "flex",
+              fontSize: "12px",
+              margin: "auto 4px",
+              alignItems: "center",
+              fontFamily: "Ricty Diminished",
+              color: "white",
+            }}
+          >
+            {(scale * 100).toFixed(0) + "%"}
+          </div>
+          <IconButton
+            onClick={() => {
+              changeScale(scale * 1.1, true);
+            }}
+          >
+            <ZoomIn
+              style={{ margin: "auto" }}
+              strokeWidth={2}
+              color="white"
+              size={12}
+            />
+          </IconButton>
+
+          <IconButton onClick={() => {}}>
+            <ZoomReset
+              style={{ margin: "auto" }}
+              strokeWidth={2}
+              color="white"
+              size={12}
+            />
+          </IconButton>
+        </div>
         <canvas
           style={{
             position: "absolute",
@@ -135,6 +207,7 @@ export const Preview: FC = () => {
             left: left + "px",
             top: top + "px",
             transform: `scale(${scale})`,
+            imageRendering: "pixelated",
           }}
           width={width}
           height={height}
@@ -144,3 +217,14 @@ export const Preview: FC = () => {
     </Panel>
   );
 };
+
+const IconButton = styled.button`
+  padding: 0;
+  width: 16px;
+  min-height: 16px;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  display: flex;
+  border-radius: 4px;
+  background-color: var(--color-input-background);
+`;
