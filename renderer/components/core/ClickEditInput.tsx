@@ -20,8 +20,15 @@ const StyledInput = styled.input`
     border-radius: 8px;
     background-color: var(--color-input-background-focus);
   }
+
+  font-family: "Ricty Diminished";
 `;
 
-export const ClickEditInput: FC = () => {
-  return <StyledInput />;
+type Props = {
+  value: string;
+  style: React.CSSProperties;
+};
+
+export const ClickEditInput: FC<Props> = (props) => {
+  return <StyledInput style={props.style} value={props.value} />;
 };
