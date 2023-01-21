@@ -190,6 +190,19 @@ export const sceneSlice = createSlice({
       }
     },
 
+    removeStrip: (
+      state,
+      action: {
+        payload: string | string[];
+      }
+    ) => {
+      const stripIds = Array.isArray(action.payload)
+        ? action.payload
+        : [action.payload];
+
+      state.strips = state.strips.filter((s) => !stripIds.includes(s.id));
+    },
+
     updateStrip: (
       state,
       action: {
