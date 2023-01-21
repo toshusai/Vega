@@ -136,6 +136,7 @@ export class UndoManager {
       this.stack.shift();
       this.index--;
     }
+    return { run: () => undoable.redo() };
   }
 
   undo() {
