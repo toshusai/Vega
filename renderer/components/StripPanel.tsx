@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Effect } from "../interfaces/Effect";
@@ -84,6 +84,7 @@ const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
         <PropertyName>text</PropertyName>
         <ClickEditInput
           value={textEffect.text}
+          onInput={(value) => emit({ text: value })}
           onChange={(value) =>
             UndoManager.main
               .add({
