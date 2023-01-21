@@ -78,7 +78,11 @@ export const Timeline: FC = () => {
 
   const [invalidStripIds, setInvalidStripIds] = useState<string[]>([]);
 
-  const handleMouseDownStrip = (strip: Strip) =>
+  const handleMouseDownStrip = (
+    strip: Strip,
+    keepStart: boolean,
+    keepEnd: boolean
+  ) =>
     getDragHander<
       {
         updatedStripIds: string[];
@@ -101,6 +105,17 @@ export const Timeline: FC = () => {
         );
         const newStrips = selectedStrips.map((strip) => {
           let newStart = roundToFrame(strip.start + diffX / pxPerSec, fps);
+          let newLength = strip.length;
+          if (keepEnd) {
+            newLength = roundToFrame(strip.length - diffX / pxPerSec, fps);
+          }
+          if (keepStart) {
+            newLength = roundToFrame(strip.length + diffX / pxPerSec, fps);
+            newStart = strip.start;
+          }
+
+          // handle snap
+
           let allSnapPoints: number[] = [0, timelineLength];
           withoutSelectedStrips.forEach((s) => {
             allSnapPoints.push(s.start);
@@ -119,16 +134,27 @@ export const Timeline: FC = () => {
 
           const snapEndPositionToOtherStrips = () => {
             const snapPoints = allSnapPoints.filter(
-              (p) => Math.abs(p - (newStart + strip.length)) < 0.4
+              (p) => Math.abs(p - (newStart + newLength)) < 0.4
             );
             if (snapPoints.length > 0) {
               return snapPoints[0];
             }
           };
-          newStart = snapStartPositionToOtherStrips() ?? newStart;
-          const newEnd = snapEndPositionToOtherStrips();
-          if (newEnd) {
-            newStart = newEnd - strip.length;
+          const snapStart = snapStartPositionToOtherStrips();
+          if (snapStart && !keepStart) {
+            newStart = snapStart;
+            const snapDiff = snapStart - strip.start;
+            if (keepEnd) {
+              newLength = roundToFrame(strip.length - snapDiff, fps);
+            }
+          } else {
+            const snapEnd = snapEndPositionToOtherStrips();
+            if (snapEnd && !keepEnd) {
+              if (!keepStart) {
+                newStart = roundToFrame(snapEnd - newLength, fps);
+              }
+              newLength = roundToFrame(snapEnd - newStart, fps);
+            }
           }
 
           const newLayer = roundToFrame(
@@ -138,6 +164,7 @@ export const Timeline: FC = () => {
           const newStrip = {
             ...strip,
             start: newStart,
+            length: newLength,
             layer: newLayer,
           };
           return newStrip;
@@ -153,7 +180,7 @@ export const Timeline: FC = () => {
             newStrip.start < 0 ||
             newStrip.start + newStrip.length > timelineLength ||
             newStrip.layer < 0 ||
-            newStrip.layer > 4
+            newStrip.layer > 3
           ) {
             invalidIds.push(strip.id);
           }
@@ -356,7 +383,9 @@ export const Timeline: FC = () => {
               onStripChange={(strip) => {
                 dispatch(actions.updateStrip(strip));
               }}
-              onMouseDown={handleMouseDownStrip(strip)}
+              onMouseDown={handleMouseDownStrip(strip, false, false)}
+              onMouseDownLeftHandle={handleMouseDownStrip(strip, false, true)}
+              onMouseDownRightHandle={handleMouseDownStrip(strip, true, false)}
               onClick={() => {}}
             />
           ))}
