@@ -1,4 +1,4 @@
-import { Asset, FontAsset } from "../interfaces/Asset";
+import { Asset, FontAsset, VideoAsset } from "../interfaces/Asset";
 import { Strip } from "../interfaces/Strip";
 import { TextEffect } from "../interfaces/TextEffect";
 import { SceneState } from "../store/scene";
@@ -7,6 +7,9 @@ const loadedFontAssetMap = new Map<string, boolean>();
 
 export function isTextAsset(asset: Asset): asset is FontAsset {
   return asset.type === "font";
+}
+export function isVideoAsset(asset: Asset): asset is VideoAsset {
+  return asset.type === "video";
 }
 
 export function loadFont(fontAsset: FontAsset) {
