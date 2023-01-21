@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { roundToFrame } from "../components/Timeline";
+import { roundToFrame } from "../components/roundToFrame";
 import { Asset } from "../interfaces/Asset";
 import { Strip } from "../interfaces/Strip";
 import { TextEffect } from "../interfaces/TextEffect";

@@ -1,22 +1,21 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { MemoTimeView } from "./TimeView";
-import { Panel, PanelInner } from "../components/core/Panel";
+import { Panel } from "../components/core/Panel";
 import { MemoStripUI } from "./StripUI";
 import { getDragHander } from "./getDragHander";
 import { MemoScaleScrollBar } from "./ScaleScrollBar";
 import { useWidth } from "../hooks/useWidth";
 import { useDispatch } from "react-redux";
 import { actions } from "../store/scene";
-import { checkOverlap } from "./checkOverlap";
 import { useSelector } from "../store/useSelector";
-import { Cut, PlayerPause, PlayerPlay } from "tabler-icons-react";
-import styled from "styled-components";
+import { PlayerPause, PlayerPlay } from "tabler-icons-react";
 import { Strip } from "../interfaces/Strip";
 import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
-
-export function roundToFrame(time: number, fps: number) {
-  return Math.floor(time * fps) / fps;
-}
+import { roundToFrame } from "./roundToFrame";
+import { canMove } from "./canMove";
+import { moveStrip } from "./moveStrip";
+import { TimeCursor } from "./TimeCursor";
+import { SelectRect } from "./SelectRect";
 
 export const Timeline: FC = () => {
   const strips = useSelector((state) => state.scene.strips);
@@ -29,16 +28,15 @@ export const Timeline: FC = () => {
   });
   const selectedStripIds = useSelector((state) => state.scene.selectedStripIds);
   const isPlaying = useSelector((state) => state.scene.isPlaying);
-
   const [pxPerSec, setPxPerSec] = useState(1);
-
   const [width, ref] = useWidth();
+  const [invalidStripIds, setInvalidStripIds] = useState<string[]>([]);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setPxPerSec(width / ((end - start) * timelineLength));
   }, [width, start, end, timelineLength]);
-
-  const dispatch = useDispatch();
 
   let newt = 0;
   const handleMouseDownTimeView = getDragHander(
@@ -58,8 +56,6 @@ export const Timeline: FC = () => {
     }
   );
 
-  const [invalidStripIds, setInvalidStripIds] = useState<string[]>([]);
-
   const handleMouseDownStrip = (
     strip: Strip,
     keepStart: boolean,
@@ -76,7 +72,6 @@ export const Timeline: FC = () => {
       } | null
     >(
       ({ diffX, diffY, pass }) => {
-        let canMove = true;
         const newSelectedStripIds = pass.updatedStripIds;
         const selectedStrips = strips
           .filter((strip) => newSelectedStripIds.includes(strip.id))
@@ -85,99 +80,34 @@ export const Timeline: FC = () => {
         const withoutSelectedStrips = strips.filter(
           (strip) => newSelectedStripIds.includes(strip.id) === false
         );
+
         const newStrips = selectedStrips.map((strip) => {
-          let newStart = roundToFrame(strip.start + diffX / pxPerSec, fps);
-          let newLength = strip.length;
-          if (keepEnd) {
-            newLength = roundToFrame(strip.length - diffX / pxPerSec, fps);
-          }
-          if (keepStart) {
-            newLength = roundToFrame(strip.length + diffX / pxPerSec, fps);
-            newStart = strip.start;
-          }
-
-          // handle snap
-
-          let allSnapPoints: number[] = [0, timelineLength];
-          withoutSelectedStrips.forEach((s) => {
-            allSnapPoints.push(s.start);
-            allSnapPoints.push(s.start + s.length);
-          });
-
-          allSnapPoints = allSnapPoints.sort((a, b) => a - b);
-          const snapStartPositionToOtherStrips = () => {
-            const snapPoints = allSnapPoints.filter(
-              (p) => Math.abs(p - newStart) < 0.4
-            );
-            if (snapPoints.length > 0) {
-              return snapPoints[0];
-            }
-            return null;
-          };
-
-          const snapEndPositionToOtherStrips = () => {
-            const snapPoints = allSnapPoints.filter(
-              (p) => Math.abs(p - (newStart + newLength)) < 0.4
-            );
-            if (snapPoints.length > 0) {
-              return snapPoints[0];
-            }
-            return null;
-          };
-          const snapStart = snapStartPositionToOtherStrips();
-          if (snapStart !== null && !keepStart) {
-            newStart = snapStart;
-            const snapDiff = snapStart - strip.start;
-            if (keepEnd) {
-              newLength = roundToFrame(strip.length - snapDiff, fps);
-            }
-          } else {
-            const snapEnd = snapEndPositionToOtherStrips();
-            if (snapEnd !== null && !keepEnd) {
-              if (!keepStart) {
-                newStart = roundToFrame(snapEnd - newLength, fps);
-              }
-              newLength = roundToFrame(snapEnd - newStart, fps);
-            }
-          }
-
-          const newLayer = roundToFrame(
-            strip.layer + Math.round(diffY / 44),
-            fps
+          return moveStrip(
+            strip,
+            diffX,
+            diffY,
+            pxPerSec,
+            fps,
+            keepEnd,
+            keepStart,
+            timelineLength,
+            withoutSelectedStrips
           );
-          const newStrip = {
-            ...strip,
-            start: newStart,
-            length: newLength,
-            layer: newLayer,
-          };
-          return newStrip;
         });
 
-        const invalidIds = [];
-
-        selectedStrips.forEach((strip) => {
-          const newStrip = newStrips.find((s) => s.id === strip.id);
-          const isOverlap = checkOverlap(withoutSelectedStrips, newStrip);
-          if (
-            isOverlap ||
-            newStrip.start < 0 ||
-            newStrip.start + newStrip.length > timelineLength ||
-            newStrip.layer < 0 ||
-            newStrip.layer > 3
-          ) {
-            invalidIds.push(strip.id);
-          }
-        });
+        const invalidIds = newStrips
+          .map((strip) =>
+            canMove(strip, withoutSelectedStrips, timelineLength)
+              ? ""
+              : strip.id
+          )
+          .filter((id) => id !== "");
         setInvalidStripIds(invalidIds);
-        if (canMove) {
-          dispatch(actions.updateStrip(newStrips));
-          return {
-            updatedStrips: newStrips,
-            invalidIds,
-          };
-        }
-        return null;
+        dispatch(actions.updateStrip(newStrips));
+        return {
+          updatedStrips: newStrips,
+          invalidIds,
+        };
       },
       () => {
         let pass = [strip.id];
@@ -384,57 +314,5 @@ export const Timeline: FC = () => {
         />
       </div>
     </Panel>
-  );
-};
-
-type SelectRectProps = {
-  $left: number;
-  $width: number;
-  $top: number;
-  $height: number;
-};
-
-const SelectRect = styled.div.attrs<SelectRectProps>((props) => ({
-  style: {
-    left: props.$left + "px",
-    width: props.$width + "px",
-    top: props.$top + "px",
-    height: props.$height + "px",
-  },
-}))<SelectRectProps>`
-  position: absolute;
-  background: rgba(110, 132, 255, 0.557);
-  pointer-events: none;
-`;
-
-const TimeCursor: FC<{
-  left: number;
-}> = (props) => {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        // 16px is the height of the scrollbar,
-        // 18px is the height of the timeview
-        height: "calc(100% - 16px - 18px - 2px)",
-        width: "1px",
-        top: "18px",
-        backgroundColor: "red",
-        zIndex: 100,
-        left: props.left,
-        pointerEvents: "none",
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          background: "red",
-          left: "0px",
-          top: "0px",
-          width: "8px",
-          height: "8px",
-        }}
-      />
-    </div>
   );
 };
