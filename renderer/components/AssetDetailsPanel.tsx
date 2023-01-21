@@ -38,12 +38,18 @@ export const AssetDetailsPanel: FC = () => {
             value={selectedAsset.path}
           />
         </div>
-        {isTextAsset(selectedAsset) && (
-          <TextAssetDetailsPanel asset={selectedAsset} />
-        )}
-        {isVideoAsset(selectedAsset) && (
-          <VideoAssetDetailsPanel asset={selectedAsset} />
-        )}
+        <div
+          style={{
+            margin: "8px",
+          }}
+        >
+          {isTextAsset(selectedAsset) && (
+            <TextAssetDetailsPanel asset={selectedAsset} />
+          )}
+          {isVideoAsset(selectedAsset) && (
+            <VideoAssetDetailsPanel asset={selectedAsset} />
+          )}
+        </div>
       </PanelBody>
     </Panel>
   );
@@ -66,8 +72,8 @@ const TextAssetDetailsPanel: FC<{
       <div
         style={{
           fontFamily: props.asset.name,
-          fontSize: "24px",
-          lineHeight: "32px",
+          fontSize: "16px",
+          lineHeight: "20px",
         }}
       >
         {sampleText}

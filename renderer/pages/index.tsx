@@ -13,7 +13,6 @@ import { actions } from "../store/scene";
 
 const IndexPage = () => {
   KeyboardInput.init(() => {
-
     KeyboardInput.addKeyDownListener(Key.KeyZ, (e) => {
       e.preventDefault();
       if (
@@ -32,7 +31,17 @@ const IndexPage = () => {
     <>
       <GlobalStyle />
       <Provider store={store}>
-        <VPanelBox>
+        <div
+          style={{
+            display: "flex",
+            height: "16px",
+          }}
+        ></div>
+        <VPanelBox
+          style={{
+            height: "calc(100% - 16px)",
+          }}
+        >
           <div
             style={{
               display: "flex",

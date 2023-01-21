@@ -58,8 +58,8 @@ const Div = styled.div`
   display: flex;
   color: white;
   font-family: "Ricty Diminished";
-  line-height: 20px;
-  height: 20px;
+  line-height: 16px;
+  height: 16px;
   cursor: default;
   user-select: none;
 
