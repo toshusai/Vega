@@ -46,7 +46,7 @@ export const Button: FC<Props> = (props) => {
           props.onChange(e.target.value);
         }}
       >
-        <option value="" disabled selected>
+        <option value="" disabled>
           Actions
         </option>
         {props.items.map((item) => {
