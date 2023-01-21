@@ -1,5 +1,7 @@
 import { FC } from "react";
 import styled from "styled-components";
+import { FontAsset } from "../interfaces/Asset";
+import { isTextAsset } from "../rendering/updateTextEffect";
 import { useSelector } from "../store/useSelector";
 import { ClickEditInput } from "./core/ClickEditInput";
 import { Panel } from "./core/Panel";
@@ -32,6 +34,9 @@ export const AssetDetailsPanel: FC = () => {
             value={selectedAsset.path}
           />
         </div>
+        {isTextAsset(selectedAsset) && (
+          <TextAssetDetailsPanel asset={selectedAsset} />
+        )}
       </PanelBody>
     </Panel>
   );
@@ -44,3 +49,23 @@ export const PanelBody = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const TextAssetDetailsPanel: FC<{
+  asset: FontAsset;
+}> = (props) => {
+  return (
+    <div>
+      <div
+        style={{
+          fontFamily: props.asset.name,
+          fontSize: "24px",
+          lineHeight: "32px",
+        }}
+      >
+        {sampleText}
+      </div>
+    </div>
+  );
+};
+
+const sampleText = `あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。`;
