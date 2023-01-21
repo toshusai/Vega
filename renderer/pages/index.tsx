@@ -6,10 +6,16 @@ import { Provider } from "react-redux";
 import store from "../store";
 import { Preview } from "../components/Preview";
 import { AssetPanel } from "../components/AssetPanel";
-import { KeyboardInput } from "../KeyboardInput";
+import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
 
 const IndexPage = () => {
-  KeyboardInput.init();
+  KeyboardInput.init(() => {
+    KeyboardInput.addKeyDownListener(Key.KeyZ, () => {
+      if (KeyboardInput.isPressed(Key.Control)) {
+        UndoManager.main.undo();
+      }
+    });
+  });
   return (
     <>
       <GlobalStyle />

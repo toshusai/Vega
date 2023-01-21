@@ -1,16 +1,17 @@
-type DragHanderContext<T> = {
+type DragHanderContext<T, U> = {
   startX: number;
   startY: number;
   diffX: number;
   diffY: number;
   startEvent: MouseEvent;
   pass?: T;
+  movePass?: U;
 };
 
-export function getDragHander<T>(
-  cb: (context: DragHanderContext<T>) => void,
-  onDown?: (context: DragHanderContext<T>) => T,
-  onUp?: (context: DragHanderContext<T>) => void
+export function getDragHander<T, U>(
+  cb: (context: DragHanderContext<T, U>) => U,
+  onDown?: (context: DragHanderContext<T, U>) => T,
+  onUp?: (context: DragHanderContext<T, U>) => void
 ) {
   return (downEvent: React.MouseEvent) => {
     const pass = onDown?.({
@@ -24,10 +25,12 @@ export function getDragHander<T>(
     const startX = downEvent.clientX;
     const startY = downEvent.clientY;
 
+    let movePass: U | undefined;
+
     const handleMouseMove = (e: MouseEvent) => {
       const diffX = e.clientX - startX;
       const diffY = e.clientY - startY;
-      cb({
+      movePass = cb({
         startX,
         startY,
         diffX,
@@ -46,6 +49,8 @@ export function getDragHander<T>(
         diffX,
         diffY,
         startEvent: e,
+        pass,
+        movePass,
       });
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
