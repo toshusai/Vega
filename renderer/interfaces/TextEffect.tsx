@@ -1,3 +1,4 @@
+import { Ease } from "../components/easing";
 import { Effect } from "./Effect";
 
 export type TextEffect = {
@@ -15,6 +16,7 @@ export type KeyFrame = {
   time: number;
   value: number;
   property: string;
+  ease: Ease;
 };
 
 export const isTextEffect = (effect: Effect): effect is TextEffect => {
