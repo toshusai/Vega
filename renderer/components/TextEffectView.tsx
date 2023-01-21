@@ -1,5 +1,7 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
+import styled from "styled-components";
+import { Key } from "tabler-icons-react";
 import { Strip } from "../interfaces/Strip";
 import { TextEffect } from "../interfaces/TextEffect";
 import { UndoManager } from "../KeyboardInput";
@@ -8,6 +10,8 @@ import { useSelector } from "../store/useSelector";
 import { ClickEditInput } from "./core/ClickEditInput";
 import { NumberEditInput } from "./core/NumberEditInput";
 import { Select } from "./core/Select";
+import { IconButton } from "./IconButton";
+import { iconProps } from "./iconProps";
 import { Row, PropertyName } from "./StripPanel";
 
 export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
@@ -79,6 +83,9 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
                   .run()
               }
             />
+            <KeyFrameIconButton>
+              <Key {...iconProps} />
+            </KeyFrameIconButton>
           </Row>
         );
       })}
@@ -108,3 +115,8 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     </>
   );
 };
+
+const KeyFrameIconButton = styled(IconButton)`
+  background: transparent;
+  border: 1px solid transparent;
+`;
