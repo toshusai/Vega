@@ -90,7 +90,7 @@ export function updateVideoEffect(
         videoElement.videoHeight
       );
     }
-    if (currentStatus === VideoStatus.Seeking) {
+    if (currentStatus === VideoStatus.Seeking && scene.isPlaying) {
       return;
     }
     ctx.drawImage(
