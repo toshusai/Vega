@@ -64,6 +64,7 @@ export const sceneSlice = createSlice({
             type: "text",
             x: 10,
             y: 100,
+            fontAssetId: "3",
             text: "hogehoge",
             fontSize: 30,
           } as TextEffect,
@@ -91,9 +92,21 @@ export const sceneSlice = createSlice({
     assets: [
       {
         id: "1",
-        name: "font",
+        name: "RictyDiminished-Regular",
         type: "font",
         path: "/RictyDiminished-Regular.ttf",
+      },
+      {
+        id: "3",
+        name: "x12y16pxMaruMonica",
+        type: "font",
+        path: "/x12y16pxMaruMonica.ttf",
+      },
+      {
+        id: "4",
+        name: "YujiBoku-Regular",
+        type: "font",
+        path: "/YujiBoku-Regular.ttf",
       },
       {
         id: "2",
