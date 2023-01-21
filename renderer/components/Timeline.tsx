@@ -27,6 +27,7 @@ import { iconProps } from "./iconProps";
 import { IconButton } from "./IconButton";
 import { ContextMenu, StyledContextMenuButton } from "./ContextMenu";
 import { uuid } from "short-uuid";
+import { Button } from "./core/DropdownLike";
 
 export const Timeline: FC = () => {
   const strips = useSelector((state) => state.scene.strips);
@@ -320,6 +321,21 @@ export const Timeline: FC = () => {
             marginBottom: "2px",
           }}
         >
+          <Button
+            onChange={(value) => {
+              console.log(value);
+            }}
+            items={[
+              {
+                value: "text",
+                label: "Add Text Strip",
+              },
+              {
+                value: "video",
+                label: "Add Video Strip",
+              },
+            ]}
+          />
           <IconButton
             onClick={() => {
               dispatch(actions.toggleIsPlaying());
