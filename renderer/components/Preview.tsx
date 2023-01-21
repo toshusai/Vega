@@ -1,18 +1,20 @@
-import { FC, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { isTextEffect, TextEffect } from "../interfaces/TextEffect";
+import { isTextEffect } from "../interfaces/TextEffect";
 import { isVideoEffect } from "../interfaces/VideoEffect";
 import store from "../store";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { Panel } from "./core/Panel";
-import { measureMap, updateTextEffect } from "../rendering/updateTextEffect";
+import { updateTextEffect } from "../rendering/updateTextEffect";
 import { updateVideoEffect } from "../rendering/updateVideoEffect";
 import { Key, KeyboardInput } from "../KeyboardInput";
 import { getDragHander } from "./getDragHander";
-import { Scale, ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
-import styled from "styled-components";
-import { SelectRectProps } from "./SelectRect";
+import { ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
+import { textEffectToRect } from "./textEffectToRect";
+import { Gizmo } from "./Gizmo";
+import { IconButton } from "./IconButton";
+import { iconProps } from "./iconProps";
 
 export const Preview: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -21,6 +23,8 @@ export const Preview: FC = () => {
   const height = useSelector((state) => state.scene.canvasHeight);
   const dispatch = useDispatch();
   const rootRef = useRef<HTMLDivElement>(null);
+
+  const strips = useSelector((state) => state.scene.strips);
 
   const [left, setLeft] = useState(0);
   const [top, setTop] = useState(0);
@@ -68,6 +72,28 @@ export const Preview: FC = () => {
       return null;
     },
     (ctx) => {
+      const el = rootRef.current as HTMLDivElement;
+      const rect = el.getBoundingClientRect();
+
+      const clickXInRootSpace = ctx.startEvent.clientX - rect.left;
+      const clickYInRootSpace = ctx.startEvent.clientY - rect.top;
+
+      strips.forEach((strip) => {
+        strip.effects.forEach((effect) => {
+          if (isTextEffect(effect)) {
+            const rect = textEffectToRect(effect, scale, left, top);
+            if (
+              clickXInRootSpace > rect.$left &&
+              clickXInRootSpace < rect.$left + rect.$width &&
+              clickYInRootSpace > rect.$top &&
+              clickYInRootSpace < rect.$top + rect.$height
+            ) {
+              dispatch(actions.setSelectedStripIds([strip.id]));
+            }
+          }
+        });
+      });
+
       return {
         left: left,
         top: top,
@@ -215,116 +241,4 @@ export const Preview: FC = () => {
       <Gizmo onWheel={handleWheel} left={left} top={top} scale={scale} />
     </Panel>
   );
-};
-
-export const Gizmo: FC<{
-  left: number;
-  top: number;
-  scale: number;
-  onWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
-}> = (props) => {
-  const selectedStripIds = useSelector((state) => state.scene.selectedStripIds);
-  const strips = useSelector((state) => state.scene.strips);
-  const selectedStrips = strips.filter((s) => selectedStripIds.includes(s.id));
-  const dispatch = useDispatch();
-
-  if (selectedStrips.length !== 1) {
-    return null;
-  }
-
-  const strip = selectedStrips[0];
-
-  const textEffects = strip.effects.filter(isTextEffect);
-
-  if (textEffects.length !== 1) {
-    return null;
-  }
-
-  const rect = textEffectToRect(
-    textEffects[0],
-    props.scale,
-    props.left,
-    props.top
-  );
-  if (!rect) return null;
-
-  const handleMouseDown = getDragHander<
-    {
-      offsetX: number;
-      offsetY: number;
-    },
-    void
-  >((ctx) => {
-    dispatch(
-      actions.updateEddect({
-        effect: {
-          ...textEffects[0],
-          x: textEffects[0].x + ctx.diffX / props.scale,
-          y: textEffects[0].y + ctx.diffY / props.scale,
-        },
-        stripId: strip.id,
-      })
-    );
-  });
-
-  return (
-    <StyledGizmo
-      {...rect}
-      onMouseDown={handleMouseDown}
-      onWheel={props.onWheel}
-    />
-  );
-};
-
-function textEffectToRect(
-  effect: TextEffect,
-  scale: number,
-  left: number,
-  top: number
-): SelectRectProps | null {
-  const { x, y } = effect;
-  const textHeight = 30;
-  const measure = measureMap.get(effect.id);
-  if (!measure) {
-    return null;
-  }
-  return {
-    $left: x * scale + left,
-    $top: y * scale + top - textHeight * scale,
-    $width: measure.width * scale,
-    $height: textHeight * scale,
-  };
-}
-
-const StyledGizmo = styled.div.attrs<SelectRectProps>((props) => ({
-  style: {
-    left: props.$left + "px",
-    top: props.$top + "px",
-    width: props.$width + "px",
-    height: props.$height + "px",
-  },
-}))<SelectRectProps>`
-  position: absolute;
-  border: 2px solid var(--color-primary);
-  box-sizing: content-box;
-  transform-origin: top left;
-  transform: translate(-1px, -1px);
-`;
-
-export const IconButton = styled.button`
-  padding: 0;
-  width: 16px;
-  min-height: 16px;
-  border: 1px solid var(--color-border);
-  cursor: pointer;
-  display: flex;
-  border-radius: 4px;
-  background-color: var(--color-input-background);
-`;
-
-export const iconProps = {
-  style: { margin: "auto" },
-  strokeWidth: 2,
-  color: "white",
-  size: 12,
 };

@@ -16,7 +16,8 @@ import { canMove } from "./canMove";
 import { moveStrip } from "./moveStrip";
 import { TimeCursor } from "./TimeCursor";
 import { SelectRect } from "./SelectRect";
-import { IconButton, iconProps } from "./Preview";
+import { iconProps } from "./iconProps";
+import { IconButton } from "./IconButton";
 
 export const Timeline: FC = () => {
   const strips = useSelector((state) => state.scene.strips);
