@@ -8,7 +8,7 @@ export function textEffectToRect(
   left: number,
   top: number): SelectRectProps | null {
   const { x, y } = effect;
-  const textHeight = 30;
+  const textHeight = effect.fontSize
   const measure = measureMap.get(effect.id);
   if (!measure) {
     return null;

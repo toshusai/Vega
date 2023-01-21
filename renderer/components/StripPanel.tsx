@@ -124,6 +124,21 @@ const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
           }
         />
       </Row>
+      <Row>
+        <PropertyName>font size</PropertyName>
+        <NumberEditInput
+          value={textEffect.fontSize}
+          onInput={(value) => emit({ fontSize: value })}
+          onChange={(value) =>
+            UndoManager.main
+              .add({
+                undo,
+                redo: () => emit({ fontSize: value }),
+              })
+              .run()
+          }
+        />
+      </Row>
     </>
   );
 };
