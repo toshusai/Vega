@@ -1,8 +1,6 @@
 import { FC, memo } from "react";
 import styled from "styled-components";
 import { Strip } from "../interfaces/Strip";
-import { getDragHander } from "./getDragHander";
-import { roundToFrame } from "./Timeline";
 
 export const StripUI: FC<
   Strip & {
@@ -14,63 +12,12 @@ export const StripUI: FC<
     onStripChange: (strip: Strip) => void;
     onClick: () => void;
     onMouseDown: (e: React.MouseEvent) => void;
+    onMouseDownLeftHandle: (e: React.MouseEvent) => void;
+    onMouseDownRightHandle: (e: React.MouseEvent) => void;
   }
 > = (props) => {
   const height = 40;
   const gap = 4;
-
-  const handleMouseDownLeftHandle = getDragHander(({ diffX }) => {
-    let newStart = props.start + diffX / props.pxPerSec;
-    let newLength = props.length - diffX / props.pxPerSec;
-    if (newStart < 0) {
-      newLength += newStart;
-      newStart = 0;
-    }
-    if (newLength < 0) {
-      newStart += newLength;
-      newLength = 0;
-    }
-    props.onStripChange({
-      effects: props.effects,
-      layer: props.layer,
-      id: props.id,
-      start: roundToFrame(newStart, props.fps),
-      length: roundToFrame(newLength, props.fps),
-    });
-  });
-
-  const handleMouseDownRightHandle = getDragHander(({ diffX }) => {
-    let newLength = props.length + diffX / props.pxPerSec;
-    if (newLength < 0) newLength = 0;
-
-    props.onStripChange({
-      effects: props.effects,
-      layer: props.layer,
-      id: props.id,
-      start: props.start,
-      length: roundToFrame(newLength, props.fps),
-    });
-  });
-
-  const handleMouseDownStrip = getDragHander(
-    ({ diffX, diffY }) => {
-      // TODO: move drag handler to parant for support multiple selection
-      let newStart = props.start + diffX / props.pxPerSec;
-      let layer = Math.round((props.layer * height + diffY) / (height + gap));
-      if (newStart < 0) newStart = 0;
-      if (layer < 0) layer = 0;
-      props.onStripChange({
-        effects: props.effects,
-        layer: layer,
-        id: props.id,
-        start: roundToFrame(newStart, props.fps),
-        length: props.length,
-      });
-    },
-    () => {
-      props.onClick();
-    }
-  );
 
   const left = (props.start - props.offset) * props.pxPerSec;
   const width = props.length * props.pxPerSec;
@@ -97,11 +44,11 @@ export const StripUI: FC<
       onMouseDown={props.onMouseDown}
     >
       <StripHandle
-        onMouseDown={handleMouseDownLeftHandle}
+        onMouseDown={props.onMouseDownLeftHandle}
         style={{ left: "4px" }}
       />
       <StripHandle
-        onMouseDown={handleMouseDownRightHandle}
+        onMouseDown={props.onMouseDownRightHandle}
         style={{ right: "4px" }}
       />
       {props.invalid && (
@@ -143,6 +90,8 @@ export const MemoStripUI = memo(StripUI, (prev, next) => {
     prev.invalid === next.invalid &&
     prev.onMouseDown === next.onMouseDown &&
     prev.onClick === next.onClick &&
-    prev.onStripChange === next.onStripChange
+    prev.onStripChange === next.onStripChange &&
+    prev.onMouseDownLeftHandle === next.onMouseDownLeftHandle &&
+    prev.onMouseDownRightHandle === next.onMouseDownRightHandle
   );
 });
