@@ -14,6 +14,7 @@ import {
   MagnetOff,
   PlayerPause,
   PlayerPlay,
+  Trash,
 } from "tabler-icons-react";
 import { Strip } from "../interfaces/Strip";
 import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
@@ -284,6 +285,10 @@ export const Timeline: FC = () => {
     });
   };
 
+  const deleteStrip = () => {
+    dispatch(actions.removeStrip(selectedStripIds));
+  };
+
   return (
     <Panel width={50}>
       <ContextMenu
@@ -341,6 +346,9 @@ export const Timeline: FC = () => {
           </IconButton>
           <IconButton onClick={handleCutStrip}>
             <Cut {...iconProps} />
+          </IconButton>
+          <IconButton onClick={deleteStrip}>
+            <Trash {...iconProps} />
           </IconButton>
         </div>
         <MemoTimeView
