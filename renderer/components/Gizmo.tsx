@@ -9,7 +9,6 @@ import styled from "styled-components";
 import { SelectRectProps } from "./SelectRect";
 import { textEffectToRect } from "./textEffectToRect";
 
-
 export const Gizmo: FC<{
   left: number;
   top: number;
@@ -19,6 +18,7 @@ export const Gizmo: FC<{
   const selectedStripIds = useSelector((state) => state.scene.selectedStripIds);
   const strips = useSelector((state) => state.scene.strips);
   const selectedStrips = strips.filter((s) => selectedStripIds.includes(s.id));
+  const currentTime = useSelector((state) => state.scene.currentTime);
   const dispatch = useDispatch();
 
   if (selectedStrips.length !== 1) {
@@ -37,10 +37,10 @@ export const Gizmo: FC<{
     textEffects[0],
     props.scale,
     props.left,
-    props.top
+    props.top,
+    currentTime - strip.start
   );
-  if (!rect)
-    return null;
+  if (!rect) return null;
 
   const emit = (partial: Partial<TextEffect>) => {
     dispatch(
@@ -74,10 +74,11 @@ export const Gizmo: FC<{
           undo: () => {
             emit(textEffects[0]);
           },
-          redo: () => emit({
-            x: Math.round(textEffects[0].x + ctx.diffX / props.scale),
-            y: Math.round(textEffects[0].y + ctx.diffY / props.scale),
-          }),
+          redo: () =>
+            emit({
+              x: Math.round(textEffects[0].x + ctx.diffX / props.scale),
+              y: Math.round(textEffects[0].y + ctx.diffY / props.scale),
+            }),
         })
         .run();
     }
@@ -87,7 +88,8 @@ export const Gizmo: FC<{
     <StyledGizmo
       {...rect}
       onMouseDown={handleMouseDown}
-      onWheel={props.onWheel} />
+      onWheel={props.onWheel}
+    />
   );
 };
 const StyledGizmo = styled.div.attrs<SelectRectProps>((props) => ({
@@ -97,7 +99,7 @@ const StyledGizmo = styled.div.attrs<SelectRectProps>((props) => ({
     width: props.$width + "px",
     height: props.$height + "px",
   },
-})) <SelectRectProps> `
+}))<SelectRectProps>`
   position: absolute;
   border: 2px solid var(--color-primary);
   box-sizing: content-box;

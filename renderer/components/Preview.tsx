@@ -71,6 +71,8 @@ export const Preview: FC = () => {
     setTop(rect.height / 2 - (height * 0.3) / 2);
   };
 
+  const currentTime = useSelector((state) => state.scene.currentTime);
+
   const handleMouseDown = getDragHander<{ left: number; top: number }, null>(
     (ctx) => {
       if (dragging) {
@@ -89,7 +91,13 @@ export const Preview: FC = () => {
       strips.forEach((strip) => {
         strip.effects.forEach((effect) => {
           if (isTextEffect(effect)) {
-            const rect = textEffectToRect(effect, scale, left, top);
+            const rect = textEffectToRect(
+              effect,
+              scale,
+              left,
+              top,
+              currentTime - strip.start
+            );
             if (
               rect &&
               clickXInRootSpace > rect.$left &&

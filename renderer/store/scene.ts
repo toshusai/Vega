@@ -82,6 +82,18 @@ export const sceneSlice = createSlice({
                 time: 5,
                 ease: Ease.EaseInCubic,
               },
+              {
+                property: "y",
+                value: 10,
+                time: 1,
+                ease: Ease.EaseInCubic,
+              },
+              {
+                property: "y",
+                value: 1000,
+                time: 3,
+                ease: Ease.EaseInCubic,
+              },
             ],
           } as TextEffect,
         ],

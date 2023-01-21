@@ -54,12 +54,19 @@ export function updateTextEffect(
     effect.x
   );
 
-  ctx.fillText(effect.text, x, effect.y);
+  const y = caclulateKeyFrameValue(
+    effect.keyframes,
+    scene.currentTime - strip.start,
+    "y",
+    effect.y
+  );
+
+  ctx.fillText(effect.text, x, y);
   const measure = ctx.measureText(effect.text);
   measureMap.set(effect.id, measure);
 }
 
-const caclulateKeyFrameValue = (
+export const caclulateKeyFrameValue = (
   keyframes: KeyFrame[],
   currentTime: number,
   property: string,
