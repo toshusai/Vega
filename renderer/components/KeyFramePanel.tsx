@@ -47,6 +47,7 @@ export const KeyFramePanel: FC = () => {
                 return Array.from(uniqueProperties).map((property, j) => {
                   return (
                     <div
+                      key={`${i}${j}`}
                       style={{
                         height: "16px",
                         color: "white",

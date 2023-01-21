@@ -10,11 +10,12 @@ export function textEffectToRect(
   scale: number,
   left: number,
   top: number,
-  currentTime: number
+  currentTime: number,
+  fps: number
 ): SelectRectProps | null {
   let { x, y } = effect;
-  x = caclulateKeyFrameValue(effect.keyframes, currentTime, "x", effect.x);
-  y = caclulateKeyFrameValue(effect.keyframes, currentTime, "y", effect.y);
+  x = caclulateKeyFrameValue(effect.keyframes, currentTime, "x", effect.x, fps);
+  y = caclulateKeyFrameValue(effect.keyframes, currentTime, "y", effect.y, fps);
 
   const textHeight = effect.fontSize;
   const measure = measureMap.get(effect.id);

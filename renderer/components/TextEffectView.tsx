@@ -5,6 +5,7 @@ import { Key } from "tabler-icons-react";
 import { Strip } from "../interfaces/Strip";
 import { TextEffect } from "../interfaces/TextEffect";
 import { UndoManager } from "../KeyboardInput";
+import { caclulateKeyFrameValue } from "../rendering/updateTextEffect";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { ClickEditInput } from "./core/ClickEditInput";
@@ -19,6 +20,8 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
 ) => {
   const { textEffect } = props;
   const dispatch = useDispatch();
+  const currentTime = useSelector((state) => state.scene.currentTime);
+  const fps = useSelector((state) => state.scene.fps);
 
   const emit = (partial: Partial<TextEffect>) => {
     dispatch(
@@ -48,6 +51,18 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     y: (v) => v.toFixed(0),
   };
 
+  const hasKeyFrame = (key: keyof TextEffect) => {
+    return textEffect.keyframes.some((k) => k.property === key);
+  };
+
+  const exactKeyFrame = (key: keyof TextEffect) => {
+    return textEffect.keyframes.find(
+      (k) =>
+        k.property === key &&
+        Math.abs(k.time - (currentTime - props.strip.start)) < Number.EPSILON
+    );
+  };
+
   return (
     <>
       <Row>
@@ -70,7 +85,13 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
           <Row key={key}>
             <PropertyName>{key}</PropertyName>
             <NumberEditInput
-              value={textEffect[key] as number}
+              value={caclulateKeyFrameValue(
+                textEffect.keyframes,
+                currentTime - props.strip.start,
+                key,
+                textEffect[key] as number,
+                fps
+              )}
               scale={scaleKeysMap[key]}
               view={viewKeysMap[key]}
               onInput={(value) => emit({ [key]: value })}
@@ -84,7 +105,16 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
               }
             />
             <KeyFrameIconButton>
-              <Key {...iconProps} />
+              <Key
+                {...iconProps}
+                color={
+                  exactKeyFrame(key)
+                    ? "var(--color-strip-selected)"
+                    : hasKeyFrame(key)
+                    ? "var(--color-primary)"
+                    : "white"
+                }
+              />
             </KeyFrameIconButton>
           </Row>
         );
