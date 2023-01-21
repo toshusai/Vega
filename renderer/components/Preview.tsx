@@ -83,6 +83,7 @@ export const Preview: FC = () => {
           if (isTextEffect(effect)) {
             const rect = textEffectToRect(effect, scale, left, top);
             if (
+              rect &&
               clickXInRootSpace > rect.$left &&
               clickXInRootSpace < rect.$left + rect.$width &&
               clickYInRootSpace > rect.$top &&

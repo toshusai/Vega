@@ -1,8 +1,26 @@
+import { Asset, FontAsset } from "../interfaces/Asset";
 import { Strip } from "../interfaces/Strip";
 import { TextEffect } from "../interfaces/TextEffect";
 import { SceneState } from "../store/scene";
 
 const loadedFontAssetMap = new Map<string, boolean>();
+
+export function isTextAsset(asset: Asset): asset is FontAsset {
+  return asset.type === "font";
+}
+
+function loadFont(fontAsset: FontAsset) {
+  if (!loadedFontAssetMap.has(fontAsset.id) && fontAsset) {
+    const style = document.createElement("style");
+    style.innerHTML = `@font-face {
+      font-family: ${fontAsset.name};
+      src: url(${fontAsset.path});
+    }`;
+    document.head.appendChild(style);
+    loadedFontAssetMap.set(fontAsset.id, true);
+  }
+}
+
 export const measureMap = new Map<string, TextMetrics>();
 
 export function updateTextEffect(
@@ -21,15 +39,7 @@ export function updateTextEffect(
     (asset) => asset.id === effect.fontAssetId
   );
 
-  if (!loadedFontAssetMap.has(effect.fontAssetId) && fontAsset) {
-    const style = document.createElement("style");
-    style.innerHTML = `@font-face {
-      font-family: ${fontAsset.name};
-      src: url(${fontAsset.path});
-    }`;
-    document.head.appendChild(style);
-    loadedFontAssetMap.set(effect.fontAssetId, true);
-  }
+  loadFont(fontAsset as FontAsset);
 
   ctx.fillStyle = "black";
   ctx.font = effect.fontSize + "px " + fontAsset?.name || "sans-serif";
