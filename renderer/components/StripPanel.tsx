@@ -11,6 +11,7 @@ import { PanelBody } from "./AssetDetailsPanel";
 import { ClickEditInput, MemoClickEditInput } from "./core/ClickEditInput";
 import { NumberEditInput } from "./core/NumberEditInput";
 import { Panel } from "./core/Panel";
+import { Select } from "./core/Select";
 
 export const StripPanel: FC = () => {
   const selectedStripIds = useSelector((state) => state.scene.selectedStripIds);
@@ -78,6 +79,14 @@ const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   };
   const undo = () => emit({ text: textEffect.text });
 
+  const assets = useSelector((state) => state.scene.assets);
+  const fontAssets = assets.filter((a) => a.type === "font");
+
+  const fontAssetItems = fontAssets.map((a) => ({
+    value: a.id,
+    label: a.name,
+  }));
+
   return (
     <>
       <Row>
@@ -138,6 +147,14 @@ const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
               })
               .run()
           }
+        />
+      </Row>
+      <Row>
+        <PropertyName>font</PropertyName>
+        <Select
+          items={fontAssetItems}
+          onChange={(value) => emit({ fontAssetId: value })}
+          value={textEffect.fontAssetId}
         />
       </Row>
     </>
