@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { roundToFrame } from "../components/Timeline";
 import { Asset } from "../interfaces/Asset";
 import { Strip } from "../interfaces/Strip";
 import { TextEffect } from "../interfaces/TextEffect";
@@ -30,8 +31,8 @@ export const sceneSlice = createSlice({
     strips: [
       {
         id: "1",
-        start: 0,
-        length: 5,
+        start: roundToFrame(0.5, 60),
+        length: roundToFrame(2.5, 60),
         effects: [
           {
             id: "1",
@@ -46,8 +47,8 @@ export const sceneSlice = createSlice({
       },
       {
         id: "2",
-        start: 1,
-        length: 2.5,
+        start: roundToFrame(1, 60),
+        length: roundToFrame(2.5, 60),
         effects: [
           {
             id: "2",
@@ -61,8 +62,8 @@ export const sceneSlice = createSlice({
       },
       {
         id: "3",
-        start: 4,
-        length: 5,
+        start: roundToFrame(4, 60),
+        length: roundToFrame(5, 60),
         effects: [
           {
             id: "3",
@@ -122,31 +123,26 @@ export const sceneSlice = createSlice({
     updateStrip: (
       state,
       action: {
-        payload: Strip;
+        payload: Strip | Strip[];
       }
     ) => {
-      const strip = action.payload;
+      const strips = Array.isArray(action.payload)
+        ? action.payload
+        : [action.payload];
 
       // check strip can move
-      const isOverlapped = state.strips.some((s) => {
-        if (s.id === strip.id) {
-          return false;
+      strips.forEach((strip) => {
+        // const isOverlapped = checkOverlap(state.strips, strip);
+        // if (isOverlapped) {
+        //   throw new Error("strip is overlapped");
+        //   return;
+        // }
+
+        const index = state.strips.findIndex((s) => s.id === strip.id);
+        if (index >= 0) {
+          state.strips[index] = strip;
         }
-        const isOverlapped =
-          s.layer === strip.layer &&
-          s.start < strip.start + strip.length &&
-          strip.start < s.start + s.length;
-        return isOverlapped;
       });
-
-      if (isOverlapped) {
-        return;
-      }
-
-      const index = state.strips.findIndex((s) => s.id === strip.id);
-      if (index >= 0) {
-        state.strips[index] = strip;
-      }
     },
   },
 });

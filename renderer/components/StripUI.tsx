@@ -1,55 +1,18 @@
 import { FC, memo } from "react";
 import styled from "styled-components";
 import { Strip } from "../interfaces/Strip";
+import { getDragHander } from "./getDragHander";
 import { roundToFrame } from "./Timeline";
-
-type DragHanderContext = {
-  startX: number;
-  startY: number;
-  diffX: number;
-  diffY: number;
-  startEvent: React.MouseEvent;
-};
-
-export const getDragHander = (
-  cb: (context: DragHanderContext) => void,
-  onDown?: (e: MouseEvent) => void,
-  onUp?: (e: MouseEvent) => void
-) => {
-  return (downEvent: React.MouseEvent) => {
-    onDown?.(downEvent.nativeEvent);
-    downEvent.stopPropagation();
-    const startX = downEvent.clientX;
-    const startY = downEvent.clientY;
-    const handleMouseMove = (e: MouseEvent) => {
-      const diffX = e.clientX - startX;
-      const diffY = e.clientY - startY;
-      cb({
-        startX,
-        startY,
-        diffX,
-        diffY,
-        startEvent: downEvent,
-      });
-    };
-    const handleMouseUp = (e: MouseEvent) => {
-      onUp?.(e);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
-  };
-};
 
 export const StripUI: FC<
   Strip & {
     pxPerSec: number;
-    onStripChange: (strip: Strip) => void;
     offset: number;
     fps: number;
     selected: boolean;
+    onStripChange: (strip: Strip) => void;
     onClick: () => void;
+    onMouseDown: (e: React.MouseEvent) => void;
   }
 > = (props) => {
   const height = 40;
@@ -128,7 +91,8 @@ export const StripUI: FC<
         userSelect: "none",
         boxSizing: "border-box",
       }}
-      onMouseDown={handleMouseDownStrip}
+      // onMouseDown={handleMouseDownStrip}
+      onMouseDown={props.onMouseDown}
     >
       <StripHandle
         onMouseDown={handleMouseDownLeftHandle}
@@ -160,6 +124,9 @@ export const MemoStripUI = memo(StripUI, (prev, next) => {
     prev.pxPerSec === next.pxPerSec &&
     prev.offset === next.offset &&
     prev.layer === next.layer &&
-    prev.selected === next.selected
+    prev.selected === next.selected &&
+    prev.onMouseDown === next.onMouseDown &&
+    prev.onClick === next.onClick &&
+    prev.onStripChange === next.onStripChange
   );
 });

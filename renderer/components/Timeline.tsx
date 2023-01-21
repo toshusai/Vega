@@ -1,11 +1,13 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { MemoTimeView } from "./TimeView";
 import { Panel, PanelInner } from "../components/core/Panel";
-import { getDragHander, MemoStripUI } from "./StripUI";
+import { MemoStripUI } from "./StripUI";
+import { getDragHander } from "./getDragHander";
 import { MemoScaleScrollBar } from "./ScaleScrollBar";
 import { useWidth } from "../hooks/useWidth";
 import { useDispatch } from "react-redux";
 import { actions } from "../store/scene";
+import { checkOverlap } from "./checkOverlap";
 import { useSelector } from "../store/useSelector";
 import {
   ArrowBadgeDown,
@@ -15,9 +17,10 @@ import {
   TriangleInverted,
 } from "tabler-icons-react";
 import styled from "styled-components";
+import { Strip } from "../interfaces/Strip";
 
 export function roundToFrame(time: number, fps: number) {
-  return Math.round(time * fps) / fps;
+  return Math.floor(time * fps) / fps;
 }
 
 export const Timeline: FC = () => {
@@ -50,7 +53,7 @@ export const Timeline: FC = () => {
         dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
       }
     },
-    (e) => {
+    ({ startEvent: e }) => {
       const newCurrentTime =
         (e.clientX - 4) / pxPerSec + start * timelineLength;
       newt = newCurrentTime;
@@ -60,22 +63,108 @@ export const Timeline: FC = () => {
     }
   );
 
-  const handleMouseDownStrip = getDragHander(({ diffX, diffY }) => {
-    const selectedStrips = strips.filter((strip) =>
-      selectedStripIds.includes(strip.id)
-    );
-    selectedStrips.forEach((strip) => {
-      const newStart = strip.start + diffX / pxPerSec;
-      if (newStart >= 0) {
-        dispatch(
-          actions.updateStrip({
+  const handleMouseDownStrip = (strip: Strip) =>
+    getDragHander<string[]>(
+      ({ diffX, diffY, pass }) => {
+        let canMove = true;
+        const updateStrips: typeof strips = [];
+        const newSelectedStripIds = pass;
+        const selectedStrips = strips
+          .filter((strip) => newSelectedStripIds.includes(strip.id))
+          .sort((a, b) => a.start - b.start);
+
+        const newStrips = selectedStrips.map((strip) => {
+          const newStart = roundToFrame(strip.start + diffX / pxPerSec, fps);
+          const newLayer = roundToFrame(
+            strip.layer + Math.round(diffY / 44),
+            fps
+          );
+          const newStrip = {
             ...strip,
             start: newStart,
-          })
-        );
+            layer: newLayer,
+          };
+          return newStrip;
+        });
+        const stripsReplacedNewStrips = strips.map((strip) => {
+          const newStrip = newStrips.find((s) => s.id === strip.id);
+          if (newStrip) {
+            return newStrip;
+          }
+          return strip;
+        });
+        selectedStrips.forEach((strip) => {
+          const newStrip = newStrips.find((s) => s.id === strip.id);
+          let newStart = newStrip.start;
+          let newLayer = newStrip.layer;
+
+          if (newStart < 0) {
+            newStart = 0;
+          }
+          if (newStart + newStrip.length > timelineLength) {
+            newStart = timelineLength - newStrip.length;
+          }
+
+          const overlapStrip = checkOverlap(stripsReplacedNewStrips, {
+            ...newStrip,
+            start: newStart,
+          });
+
+          // move to nearest
+          if (overlapStrip) {
+            let toLeft =
+              newStart + newStrip.length / 2 >
+              overlapStrip.start + overlapStrip.length / 2;
+            if (
+              newStart < overlapStrip.start &&
+              overlapStrip.start - newStrip.length < 0
+            ) {
+              newStart = roundToFrame(
+                overlapStrip.start + overlapStrip.length - 1 / fps,
+                fps
+              );
+              toLeft = true;
+            }
+            let count = 0;
+            while (checkOverlap(stripsReplacedNewStrips, newStrip)) {
+              newStart += roundToFrame((toLeft ? 1 : -1) / fps, fps);
+              newStrip.start = newStart;
+              if (count++ > 10000) {
+                break;
+              }
+            }
+          }
+
+          if (newLayer < 0 || newLayer > 10) {
+            canMove = false;
+            return;
+          }
+          updateStrips.push({
+            ...newStrip,
+            start: newStart,
+            layer: newLayer,
+          });
+        });
+        if (canMove) {
+          dispatch(actions.updateStrip(updateStrips));
+        }
+      },
+      (ctx) => {
+        let pass = [strip.id];
+        if (selectedStripIds.includes(strip.id)) {
+          pass = [...selectedStripIds];
+        } else {
+          pass = [strip.id];
+        }
+        dispatch(actions.setSelectedStripIds(pass));
+        return pass;
+      },
+      (ctx) => {
+        if (ctx.diffX === 0 && ctx.diffY === 0) {
+          dispatch(actions.setSelectedStripIds([strip.id]));
+        }
       }
-    });
-  });
+    );
 
   const [rect, setRect] = useState<{
     left: number;
@@ -103,8 +192,11 @@ export const Timeline: FC = () => {
       setRect({ left, top, width, height });
     },
     undefined,
-    () => {
+    (ctx) => {
       setRect(null);
+      if (ctx.diffX === 0 && ctx.diffY === 0) {
+        dispatch(actions.setSelectedStripIds([]));
+      }
     }
   );
 
@@ -204,19 +296,16 @@ export const Timeline: FC = () => {
           {strips.map((strip) => (
             <MemoStripUI
               {...strip}
-              onStripChange={(strip) => {
-                dispatch(actions.updateStrip(strip));
-              }}
               key={strip.id}
               fps={fps}
               offset={start * timelineLength}
               pxPerSec={pxPerSec}
-              onClick={() => {
-                if (!selectedStripIds.includes(strip.id)) {
-                  dispatch(actions.setSelectedStripIds([strip.id]));
-                }
-              }}
               selected={selectedStripIds.includes(strip.id)}
+              onStripChange={(strip) => {
+                dispatch(actions.updateStrip(strip));
+              }}
+              onMouseDown={handleMouseDownStrip(strip)}
+              onClick={() => {}}
             />
           ))}
         </div>

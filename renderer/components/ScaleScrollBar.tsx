@@ -1,6 +1,6 @@
 import { FC, memo, useRef } from "react";
 import styled from "styled-components";
-import { getDragHander } from "./StripUI";
+import { getDragHander } from "./getDragHander";
 
 export const ScaleScrollBar: FC<{
   start: number;
@@ -8,7 +8,7 @@ export const ScaleScrollBar: FC<{
   onScaleChange?: (start: number, end: number) => void;
 }> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const handleMouseDownLeftHandle = getDragHander((diffX) => {
+  const handleMouseDownLeftHandle = getDragHander(({ diffX }) => {
     const newStart = Math.max(
       props.start + diffX / ref.current!.clientWidth,
       0
@@ -16,12 +16,12 @@ export const ScaleScrollBar: FC<{
     props.onScaleChange?.(newStart, props.end);
   });
 
-  const handleMouseDownRightHandle = getDragHander((diffX) => {
+  const handleMouseDownRightHandle = getDragHander(({ diffX }) => {
     const newEnd = Math.min(props.end + diffX / ref.current!.clientWidth, 1);
     props.onScaleChange?.(props.start, newEnd);
   });
 
-  const handleMouseDownStrip = getDragHander((diffX) => {
+  const handleMouseDownStrip = getDragHander(({ diffX }) => {
     const newStart = props.start + diffX / ref.current!.clientWidth;
     const newEnd = props.end + diffX / ref.current!.clientWidth;
     if (newStart < 0) {
