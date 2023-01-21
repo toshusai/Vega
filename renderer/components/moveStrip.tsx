@@ -11,7 +11,9 @@ export function moveStrip(
   keepEnd: boolean,
   keepStart: boolean,
   timelineLength: number,
-  withoutSelectedStrips: Strip[]) {
+  withoutSelectedStrips: Strip[],
+  isSnap: boolean
+) {
   let newStart = roundToFrame(strip.start + diffX / pxPerSec, fps);
   let newLength = strip.length;
   if (keepEnd) {
@@ -28,17 +30,19 @@ export function moveStrip(
     allSnapPoints.push(s.start);
     allSnapPoints.push(s.start + s.length);
   });
-  const snaped = snap(
-    newStart,
-    newLength,
-    allSnapPoints,
-    strip,
-    fps,
-    keepStart,
-    keepEnd
-  );
-  newStart = snaped.newStart;
-  newLength = snaped.newLength;
+  if (isSnap) {
+    const snaped = snap(
+      newStart,
+      newLength,
+      allSnapPoints,
+      strip,
+      fps,
+      keepStart,
+      keepEnd
+    );
+    newStart = snaped.newStart;
+    newLength = snaped.newLength;
+  }
 
   const newLayer = roundToFrame(strip.layer + Math.round(diffY / 44), fps);
   const newStrip = {

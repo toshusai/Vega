@@ -8,7 +8,7 @@ import { useWidth } from "../hooks/useWidth";
 import { useDispatch } from "react-redux";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
-import { PlayerPause, PlayerPlay } from "tabler-icons-react";
+import { Magnet, MagnetOff, PlayerPause, PlayerPlay } from "tabler-icons-react";
 import { Strip } from "../interfaces/Strip";
 import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
 import { roundToFrame } from "./roundToFrame";
@@ -16,6 +16,7 @@ import { canMove } from "./canMove";
 import { moveStrip } from "./moveStrip";
 import { TimeCursor } from "./TimeCursor";
 import { SelectRect } from "./SelectRect";
+import { IconButton, iconProps } from "./Preview";
 
 export const Timeline: FC = () => {
   const strips = useSelector((state) => state.scene.strips);
@@ -31,6 +32,7 @@ export const Timeline: FC = () => {
   const [pxPerSec, setPxPerSec] = useState(1);
   const [width, ref] = useWidth();
   const [invalidStripIds, setInvalidStripIds] = useState<string[]>([]);
+  const isSnap = useSelector((state) => state.scene.isSnap);
 
   const dispatch = useDispatch();
 
@@ -91,7 +93,8 @@ export const Timeline: FC = () => {
             keepEnd,
             keepStart,
             timelineLength,
-            withoutSelectedStrips
+            withoutSelectedStrips,
+            isSnap
           );
         });
 
@@ -231,37 +234,30 @@ export const Timeline: FC = () => {
             marginBottom: "2px",
           }}
         >
-          <button
+          <IconButton
             onClick={() => {
               dispatch(actions.toggleIsPlaying());
             }}
-            style={{
-              padding: "0",
-              width: "16px",
-              minHeight: "16px",
-              border: "1px solid var(--color-border)",
-              cursor: "pointer",
-              display: "flex",
-              borderRadius: "4px",
-              backgroundColor: "var(--color-input-background)",
-            }}
           >
             {isPlaying ? (
-              <PlayerPause
-                style={{ margin: "auto" }}
-                strokeWidth={2}
-                color="white"
-                size={12}
-              />
+              <PlayerPause {...iconProps} />
             ) : (
-              <PlayerPlay
-                style={{ margin: "auto" }}
-                strokeWidth={2}
-                color="white"
-                size={12}
-              />
+              <PlayerPlay {...iconProps} />
             )}
-          </button>
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              dispatch(actions.toggleIsSnap());
+            }}
+            style={{
+              backgroundColor: isSnap ? "var(--color-primary-bg)" : undefined,
+            }}
+          >
+            <Magnet
+              {...iconProps}
+              color={isSnap ? "var(--color-primary)" : "white"}
+            />
+          </IconButton>
         </div>
         <MemoTimeView
           offsetSec={start * timelineLength}
