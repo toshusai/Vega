@@ -12,6 +12,7 @@ export type SceneState = {
   viewEndRate: number;
   length: number;
   strips: Strip[];
+  isSnap: boolean;
   fps: number;
   assets: Asset[];
   isPlaying: boolean;
@@ -30,6 +31,7 @@ export const sceneSlice = createSlice({
     selectedAssetIds: [],
     isPlaying: false,
     initialized: false,
+    isSnap: false,
     currentTime: 0,
     viewStartRate: 0,
     viewEndRate: 1,
@@ -101,6 +103,9 @@ export const sceneSlice = createSlice({
   reducers: {
     setIsPlaying: (state, action: { payload: boolean }) => {
       state.isPlaying = action.payload;
+    },
+    toggleIsSnap: (state) => {
+      state.isSnap = !state.isSnap;
     },
     toggleIsPlaying: (state) => {
       state.isPlaying = !state.isPlaying;

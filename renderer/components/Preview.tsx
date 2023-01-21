@@ -164,12 +164,7 @@ export const Preview: FC = () => {
               changeScale(scale * 0.9, true);
             }}
           >
-            <ZoomOut
-              style={{ margin: "auto" }}
-              strokeWidth={2}
-              color="white"
-              size={12}
-            />
+            <ZoomOut {...iconProps} />
           </IconButton>
           <div
             style={{
@@ -189,21 +184,11 @@ export const Preview: FC = () => {
               changeScale(scale * 1.1, true);
             }}
           >
-            <ZoomIn
-              style={{ margin: "auto" }}
-              strokeWidth={2}
-              color="white"
-              size={12}
-            />
+            <ZoomIn {...iconProps} />
           </IconButton>
 
           <IconButton onClick={() => {}}>
-            <ZoomReset
-              style={{ margin: "auto" }}
-              strokeWidth={2}
-              color="white"
-              size={12}
-            />
+            <ZoomReset {...iconProps} />
           </IconButton>
         </div>
         <canvas
@@ -225,7 +210,7 @@ export const Preview: FC = () => {
   );
 };
 
-const IconButton = styled.button`
+export const IconButton = styled.button`
   padding: 0;
   width: 16px;
   min-height: 16px;
@@ -235,3 +220,10 @@ const IconButton = styled.button`
   border-radius: 4px;
   background-color: var(--color-input-background);
 `;
+
+export const iconProps = {
+  style: { margin: "auto" },
+  strokeWidth: 2,
+  color: "white",
+  size: 12,
+};
