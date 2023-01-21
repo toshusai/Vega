@@ -50,6 +50,7 @@ export const sceneSlice = createSlice({
             text: "Hello",
             fontAssetId: "1",
             fontSize: 50,
+            keyframes: [],
           } as TextEffect,
         ],
         layer: 1,
@@ -67,6 +68,18 @@ export const sceneSlice = createSlice({
             fontAssetId: "3",
             text: "hogehoge",
             fontSize: 30,
+            keyframes: [
+              {
+                property: "x",
+                value: 10,
+                time: 0,
+              },
+              {
+                property: "x",
+                value: 1000,
+                time: 5,
+              },
+            ],
           } as TextEffect,
         ],
         layer: 0,

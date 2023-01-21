@@ -1,6 +1,6 @@
 import { Asset, FontAsset, VideoAsset } from "../interfaces/Asset";
 import { Strip } from "../interfaces/Strip";
-import { TextEffect } from "../interfaces/TextEffect";
+import { KeyFrame, TextEffect } from "../interfaces/TextEffect";
 import { SceneState } from "../store/scene";
 
 const loadedFontAssetMap = new Map<string, boolean>();
@@ -46,7 +46,37 @@ export function updateTextEffect(
 
   ctx.fillStyle = "black";
   ctx.font = effect.fontSize + "px " + fontAsset?.name || "sans-serif";
-  ctx.fillText(effect.text, effect.x, effect.y);
+  const x = caclulateKeyFrameValue(
+    effect.keyframes,
+    scene.currentTime - strip.start,
+    "x",
+    effect.x
+  );
+
+  ctx.fillText(effect.text, x, effect.y);
   const measure = ctx.measureText(effect.text);
   measureMap.set(effect.id, measure);
 }
+
+const caclulateKeyFrameValue = (
+  keyframes: KeyFrame[],
+  currentTime: number,
+  property: string,
+  defaultValue: number
+) => {
+  const prevKeyframe = keyframes.find(
+    (k) => k.property === property && k.time < currentTime
+  );
+  const nextKeyframe = keyframes.find(
+    (k) => k.property === property && k.time > currentTime
+  );
+  if (prevKeyframe && nextKeyframe) {
+    const ratio =
+      (currentTime - prevKeyframe.time) /
+      (nextKeyframe.time - prevKeyframe.time);
+    return (
+      prevKeyframe.value + (nextKeyframe.value - prevKeyframe.value) * ratio
+    );
+  }
+  return defaultValue;
+};
