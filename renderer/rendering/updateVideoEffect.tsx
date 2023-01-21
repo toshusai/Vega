@@ -95,14 +95,14 @@ export function updateVideoEffect(
     }
     ctx.drawImage(
       videoElement,
-      effect.x,
-      effect.y,
+      0,
+      0,
       videoElement.videoWidth,
       videoElement.videoHeight,
       effect.x,
       effect.y,
-      ctx.canvas.width,
-      ctx.canvas.height
+      videoElement.videoWidth * effect.scaleX,
+      videoElement.videoHeight * effect.scaleY
     );
   }
 }

@@ -99,38 +99,43 @@ export const VideoEffectView: FC<{
     value: a.id,
     label: a.name,
   }));
+  const numberKeys: (keyof VideoEffect)[] = ["x", "y", "scaleX", "scaleY"];
+  const scaleKeysMap = {
+    x: 1,
+    y: 1,
+    scaleX: 0.01,
+    scaleY: 0.01,
+  };
+  const viewKeysMap = {
+    x: (v) => v.toFixed(0),
+    y: (v) => v.toFixed(0),
+    scaleX: (v) => v.toFixed(2),
+    scaleY: (v) => v.toFixed(2),
+  };
+
   return (
     <>
-      <Row>
-        <PropertyName>x</PropertyName>
-        <NumberEditInput
-          value={videoEffect.x}
-          onInput={(value) => emit({ x: value })}
-          onChange={(value) =>
-            UndoManager.main
-              .add({
-                undo,
-                redo: () => emit({ x: value }),
-              })
-              .run()
-          }
-        />
-      </Row>
-      <Row>
-        <PropertyName>y</PropertyName>
-        <NumberEditInput
-          value={videoEffect.y}
-          onInput={(value) => emit({ y: value })}
-          onChange={(value) =>
-            UndoManager.main
-              .add({
-                undo,
-                redo: () => emit({ y: value }),
-              })
-              .run()
-          }
-        />
-      </Row>
+      {numberKeys.map((key) => {
+        return (
+          <Row>
+            <PropertyName>{key}</PropertyName>
+            <NumberEditInput
+              value={videoEffect[key] as number}
+              scale={scaleKeysMap[key]}
+              view={viewKeysMap[key]}
+              onInput={(value) => emit({ [key]: value })}
+              onChange={(value) =>
+                UndoManager.main
+                  .add({
+                    undo,
+                    redo: () => emit({ [key]: value }),
+                  })
+                  .run()
+              }
+            />
+          </Row>
+        );
+      })}
 
       <Row>
         <PropertyName>video</PropertyName>
