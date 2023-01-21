@@ -18,6 +18,7 @@ import { TimeCursor } from "./TimeCursor";
 import { SelectRect } from "./SelectRect";
 import { iconProps } from "./iconProps";
 import { IconButton } from "./IconButton";
+import { ContextMenu, StyledContextMenuButton } from "./ContextMenu";
 
 export const Timeline: FC = () => {
   const strips = useSelector((state) => state.scene.strips);
@@ -240,8 +241,22 @@ export const Timeline: FC = () => {
     }
   }, [rect]);
 
+  const [contextMenuEvent, setContextMenuEvent] = useState<React.MouseEvent<
+    HTMLDivElement,
+    MouseEvent
+  > | null>();
+
   return (
     <Panel width={50}>
+      <ContextMenu
+        e={contextMenuEvent}
+        onClose={() => {
+          setContextMenuEvent(null);
+        }}
+        show={contextMenuEvent != null}
+      >
+        <StyledContextMenuButton>hogehgoe</StyledContextMenuButton>
+      </ContextMenu>
       <div
         ref={ref}
         style={{
@@ -250,6 +265,10 @@ export const Timeline: FC = () => {
           flexDirection: "column",
         }}
         onWheel={handleWheelTimeView}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setContextMenuEvent(e);
+        }}
       >
         <div
           style={{
