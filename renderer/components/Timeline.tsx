@@ -20,6 +20,18 @@ import styled from "styled-components";
 import { Strip } from "../interfaces/Strip";
 import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
 
+function chooseAbsSmall(a: number, b: number) {
+  const absA = Math.abs(a);
+  const absB = Math.abs(b);
+  if (absA < absB) {
+    return a < 0 ? -absA : absA;
+  }
+  if (absA > absB) {
+    return b < 0 ? -absB : absB;
+  }
+  return 0;
+}
+
 export function roundToFrame(time: number, fps: number) {
   return Math.floor(time * fps) / fps;
 }
@@ -64,24 +76,61 @@ export const Timeline: FC = () => {
     }
   );
 
+  const [invalidStripIds, setInvalidStripIds] = useState<string[]>([]);
+
   const handleMouseDownStrip = (strip: Strip) =>
     getDragHander<
       {
         updatedStripIds: string[];
         firstStrips: Strip[];
       },
-      Strip[]
+      {
+        updatedStrips: Strip[];
+        invalidIds: string[];
+      } | null
     >(
       ({ diffX, diffY, pass }) => {
         let canMove = true;
-        const updateStrips: typeof strips = [];
         const newSelectedStripIds = pass.updatedStripIds;
         const selectedStrips = strips
           .filter((strip) => newSelectedStripIds.includes(strip.id))
           .sort((a, b) => a.start - b.start);
 
+        const withoutSelectedStrips = strips.filter(
+          (strip) => newSelectedStripIds.includes(strip.id) === false
+        );
         const newStrips = selectedStrips.map((strip) => {
-          const newStart = roundToFrame(strip.start + diffX / pxPerSec, fps);
+          let newStart = roundToFrame(strip.start + diffX / pxPerSec, fps);
+          let allSnapPoints: number[] = [0, timelineLength];
+          withoutSelectedStrips.forEach((s) => {
+            allSnapPoints.push(s.start);
+            allSnapPoints.push(s.start + s.length);
+          });
+
+          allSnapPoints = allSnapPoints.sort((a, b) => a - b);
+          const snapStartPositionToOtherStrips = () => {
+            const snapPoints = allSnapPoints.filter(
+              (p) => Math.abs(p - newStart) < 0.4
+            );
+            if (snapPoints.length > 0) {
+              return snapPoints[0];
+            }
+          };
+
+          const snapEndPositionToOtherStrips = () => {
+            const snapPoints = allSnapPoints.filter(
+              (p) => Math.abs(p - (newStart + strip.length)) < 0.4
+            );
+            if (snapPoints.length > 0) {
+              return snapPoints[0];
+            }
+          };
+          newStart = snapStartPositionToOtherStrips() ?? newStart;
+          const newEnd = snapEndPositionToOtherStrips();
+          if (newEnd) {
+            newStart = newEnd - strip.length;
+          }
+
           const newLayer = roundToFrame(
             strip.layer + Math.round(diffY / 44),
             fps
@@ -93,70 +142,31 @@ export const Timeline: FC = () => {
           };
           return newStrip;
         });
-        const stripsReplacedNewStrips = strips.map((strip) => {
-          const newStrip = newStrips.find((s) => s.id === strip.id);
-          if (newStrip) {
-            return newStrip;
-          }
-          return strip;
-        });
+
+        const invalidIds = [];
+
         selectedStrips.forEach((strip) => {
           const newStrip = newStrips.find((s) => s.id === strip.id);
-          let newStart = newStrip.start;
-          let newLayer = newStrip.layer;
-
-          if (newStart < 0) {
-            newStart = 0;
+          const isOverlap = checkOverlap(withoutSelectedStrips, newStrip);
+          if (
+            isOverlap ||
+            newStrip.start < 0 ||
+            newStrip.start + newStrip.length > timelineLength ||
+            newStrip.layer < 0 ||
+            newStrip.layer > 4
+          ) {
+            invalidIds.push(strip.id);
           }
-          if (newStart + newStrip.length > timelineLength) {
-            newStart = timelineLength - newStrip.length;
-          }
-
-          const overlapStrip = checkOverlap(stripsReplacedNewStrips, {
-            ...newStrip,
-            start: newStart,
-          });
-
-          // move to nearest
-          if (overlapStrip) {
-            let toLeft =
-              newStart + newStrip.length / 2 >
-              overlapStrip.start + overlapStrip.length / 2;
-            if (
-              newStart < overlapStrip.start &&
-              overlapStrip.start - newStrip.length < 0
-            ) {
-              newStart = roundToFrame(
-                overlapStrip.start + overlapStrip.length - 1 / fps,
-                fps
-              );
-              toLeft = true;
-            }
-            let count = 0;
-            while (checkOverlap(stripsReplacedNewStrips, newStrip)) {
-              newStart += roundToFrame((toLeft ? 1 : -1) / fps, fps);
-              newStrip.start = newStart;
-              if (count++ > 10000) {
-                break;
-              }
-            }
-          }
-
-          if (newLayer < 0 || newLayer > 10) {
-            canMove = false;
-            return [];
-          }
-          updateStrips.push({
-            ...newStrip,
-            start: newStart,
-            layer: newLayer,
-          });
         });
+        setInvalidStripIds(invalidIds);
         if (canMove) {
-          dispatch(actions.updateStrip(updateStrips));
-          return updateStrips;
+          dispatch(actions.updateStrip(newStrips));
+          return {
+            updatedStrips: newStrips,
+            invalidIds,
+          };
         }
-        return [];
+        return null;
       },
       () => {
         let pass = [strip.id];
@@ -189,9 +199,16 @@ export const Timeline: FC = () => {
           }
           dispatch(actions.setSelectedStripIds(newIds));
         }
+
+        if (ctx.movePass && ctx.movePass.invalidIds.length > 0) {
+          dispatch(actions.updateStrip(ctx.pass.firstStrips));
+          setInvalidStripIds([]);
+          return;
+        }
+
         UndoManager.main.add({
           redo: () => {
-            dispatch(actions.updateStrip(ctx.movePass || []));
+            dispatch(actions.updateStrip(ctx.movePass.updatedStrips || []));
           },
           undo: () => {
             dispatch(actions.updateStrip(ctx.pass.firstStrips));
@@ -335,6 +352,7 @@ export const Timeline: FC = () => {
               offset={start * timelineLength}
               pxPerSec={pxPerSec}
               selected={selectedStripIds.includes(strip.id)}
+              invalid={invalidStripIds.includes(strip.id)}
               onStripChange={(strip) => {
                 dispatch(actions.updateStrip(strip));
               }}

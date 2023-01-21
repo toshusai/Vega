@@ -10,6 +10,7 @@ export const StripUI: FC<
     offset: number;
     fps: number;
     selected: boolean;
+    invalid: boolean;
     onStripChange: (strip: Strip) => void;
     onClick: () => void;
     onMouseDown: (e: React.MouseEvent) => void;
@@ -90,6 +91,7 @@ export const StripUI: FC<
         borderRadius: "4px",
         userSelect: "none",
         boxSizing: "border-box",
+        zIndex: props.invalid ? 100 : 0,
       }}
       // onMouseDown={handleMouseDownStrip}
       onMouseDown={props.onMouseDown}
@@ -102,6 +104,19 @@ export const StripUI: FC<
         onMouseDown={handleMouseDownRightHandle}
         style={{ right: "4px" }}
       />
+      {props.invalid && (
+        <div
+          style={{
+            position: "absolute",
+            top: "0",
+            bottom: "0",
+            left: "0",
+            right: "0",
+            backgroundColor: "rgba(255, 0, 0, 0.64)",
+            borderRadius: "4px",
+          }}
+        ></div>
+      )}
     </div>
   );
 };
@@ -125,6 +140,7 @@ export const MemoStripUI = memo(StripUI, (prev, next) => {
     prev.offset === next.offset &&
     prev.layer === next.layer &&
     prev.selected === next.selected &&
+    prev.invalid === next.invalid &&
     prev.onMouseDown === next.onMouseDown &&
     prev.onClick === next.onClick &&
     prev.onStripChange === next.onStripChange
