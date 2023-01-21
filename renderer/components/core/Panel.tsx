@@ -10,6 +10,7 @@ export const Panel: FC<{
       style={{
         width: props.width + "%",
         height: props.height + "%",
+        overflow: "hidden",
       }}
     >
       <PanelInner>{props.children}</PanelInner>

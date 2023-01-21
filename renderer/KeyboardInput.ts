@@ -14,12 +14,44 @@ export class KeyboardInput {
     cb();
   }
 
+  static listners = new Map<string, (() => void)[]>();
+  static id = 0;
+
   static addKeyDownListener(key: Key, listener: () => void) {
-    document.addEventListener("keydown", (e) => {
-      if (e.key.toLowerCase() === key.toLowerCase()) {
-        listener();
-      }
-    });
+    const [id, f] = KeyboardInput.getIdAndHandler(key, listener);
+    document.addEventListener("keydown", listener);
+    return id;
+  }
+
+  private static getIdAndHandler(key: Key, listener: () => void) {
+    const id = key + KeyboardInput.id++;
+    return [
+      id,
+      (e: KeyboardEvent) => {
+        if (e.key.toLowerCase() === id.toLowerCase()) {
+          listener();
+          if (!KeyboardInput.listners.has(id)) {
+            KeyboardInput.listners.set(id, []);
+          }
+          KeyboardInput.listners.get(id).push(listener);
+        }
+      },
+    ];
+  }
+
+  static addKeyUpListener(key: Key, listener: () => void) {
+    const [id, f] = KeyboardInput.getIdAndHandler(key, listener);
+    document.addEventListener("keyup", listener);
+    return id;
+  }
+
+  static removeKeyDownListener(id: string) {
+    const listeners = KeyboardInput.listners.get(id);
+    if (listeners) {
+      listeners.forEach((listener) => {
+        document.removeEventListener("keydown", listener);
+      });
+    }
   }
 
   static onKeyDown(e: KeyboardEvent) {
