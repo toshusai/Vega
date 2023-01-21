@@ -2,7 +2,7 @@ export class KeyboardInput {
   static map = new Map<string, boolean>();
   static isInitialized = false;
 
-  public static init() {
+  public static init(cb: () => void) {
     if (typeof document === "undefined") {
       return;
     }
@@ -11,6 +11,15 @@ export class KeyboardInput {
     }
     document.addEventListener("keydown", KeyboardInput.onKeyDown);
     document.addEventListener("keyup", KeyboardInput.onKeyUp);
+    cb();
+  }
+
+  static addKeyDownListener(key: Key, listener: () => void) {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === key) {
+        listener();
+      }
+    });
   }
 
   static onKeyDown(e: KeyboardEvent) {
@@ -60,4 +69,57 @@ export enum Key {
 
   // Alphabet keys
   KeyA = "a",
+
+  KeyZ = "z",
+}
+
+type Undoable = {
+  undo: () => void;
+  redo: () => void;
+};
+
+export class UndoManager {
+  private stack: Undoable[] = [];
+  private index = -1;
+  private isUndoing = false;
+  private isRedoing = false;
+
+  public static main: UndoManager = new UndoManager();
+
+  constructor(private readonly maxStackSize = 100) {}
+
+  add(undoable: Undoable) {
+    if (this.isUndoing || this.isRedoing) {
+      return;
+    }
+    if (this.index < this.stack.length - 1) {
+      this.stack.splice(this.index + 1);
+    }
+    this.stack.push(undoable);
+    this.index++;
+    if (this.stack.length > this.maxStackSize) {
+      this.stack.shift();
+      this.index--;
+    }
+  }
+
+  undo() {
+    if (this.index < 0) {
+      return;
+    }
+    this.isUndoing = true;
+    this.stack[this.index].undo();
+    this.isUndoing = false;
+    this.index--;
+  }
+
+  redo() {
+    if (this.index >= this.stack.length - 1) {
+      return;
+    }
+    this.isRedoing = true;
+    this.stack[this.index + 1].redo();
+    this.isRedoing = false;
+    this.index++;
+  }
 }

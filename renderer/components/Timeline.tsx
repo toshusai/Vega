@@ -18,7 +18,7 @@ import {
 } from "tabler-icons-react";
 import styled from "styled-components";
 import { Strip } from "../interfaces/Strip";
-import { Key, KeyboardInput } from "../KeyboardInput";
+import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
 
 export function roundToFrame(time: number, fps: number) {
   return Math.floor(time * fps) / fps;
@@ -65,11 +65,17 @@ export const Timeline: FC = () => {
   );
 
   const handleMouseDownStrip = (strip: Strip) =>
-    getDragHander<string[]>(
+    getDragHander<
+      {
+        updatedStripIds: string[];
+        firstStrips: Strip[];
+      },
+      Strip[]
+    >(
       ({ diffX, diffY, pass }) => {
         let canMove = true;
         const updateStrips: typeof strips = [];
-        const newSelectedStripIds = pass;
+        const newSelectedStripIds = pass.updatedStripIds;
         const selectedStrips = strips
           .filter((strip) => newSelectedStripIds.includes(strip.id))
           .sort((a, b) => a.start - b.start);
@@ -138,7 +144,7 @@ export const Timeline: FC = () => {
 
           if (newLayer < 0 || newLayer > 10) {
             canMove = false;
-            return;
+            return [];
           }
           updateStrips.push({
             ...newStrip,
@@ -148,7 +154,9 @@ export const Timeline: FC = () => {
         });
         if (canMove) {
           dispatch(actions.updateStrip(updateStrips));
+          return updateStrips;
         }
+        return [];
       },
       () => {
         let pass = [strip.id];
@@ -162,7 +170,10 @@ export const Timeline: FC = () => {
           }
         }
         dispatch(actions.setSelectedStripIds(pass));
-        return pass;
+        return {
+          firstStrips: [...strips],
+          updatedStripIds: pass,
+        };
       },
       (ctx) => {
         if (ctx.diffX === 0 && ctx.diffY === 0) {
@@ -178,6 +189,14 @@ export const Timeline: FC = () => {
           }
           dispatch(actions.setSelectedStripIds(newIds));
         }
+        UndoManager.main.add({
+          redo: () => {
+            dispatch(actions.updateStrip(ctx.movePass || []));
+          },
+          undo: () => {
+            dispatch(actions.updateStrip(ctx.pass.firstStrips));
+          },
+        });
       }
     );
 
