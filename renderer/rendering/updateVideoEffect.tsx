@@ -21,12 +21,13 @@ export function updateVideoEffect(
   const videoAsset = scene.assets.find(
     (asset) => asset.id === effect.videoAssetId
   );
+  const elementMapKey = effect.id + effect.videoAssetId;
   if (
     scene.currentTime < strip.start ||
-    scene.currentTime > strip.start + strip.length
+    scene.currentTime > strip.start + strip.length - 1 / scene.fps
   ) {
     videoStatusMap.set(effect.videoAssetId, VideoStatus.Paused);
-    let videoElement = loadedVideoElementMap.get(videoAsset.id);
+    let videoElement = loadedVideoElementMap.get(elementMapKey);
     if (!videoElement) {
       return;
     }
@@ -35,36 +36,36 @@ export function updateVideoEffect(
     return;
   }
   if (videoAsset) {
-    let videoElement = loadedVideoElementMap.get(videoAsset.id);
+    let videoElement = loadedVideoElementMap.get(elementMapKey);
     if (!videoElement) {
       videoElement = document.createElement("video");
-      loadedVideoElementMap.set(videoAsset.id, videoElement);
+      loadedVideoElementMap.set(elementMapKey, videoElement);
       videoElement.src = videoAsset.path;
       videoElement.autoplay = true;
-      videoStatusMap.set(videoAsset.id, VideoStatus.Loading);
+      videoStatusMap.set(elementMapKey, VideoStatus.Loading);
     }
     videoElement.onloadeddata = () => {
-      videoStatusMap.set(videoAsset.id, VideoStatus.Paused);
+      videoStatusMap.set(elementMapKey, VideoStatus.Paused);
       videoElement.pause();
     };
-    const currentStatus = videoStatusMap.get(videoAsset.id);
+    const currentStatus = videoStatusMap.get(elementMapKey);
     if (currentStatus === VideoStatus.Loading) {
       return;
     }
     videoElement.onseeked = () => {
       if (scene.isPlaying) {
         videoElement.play();
-        videoStatusMap.set(videoAsset.id, VideoStatus.Playing);
+        videoStatusMap.set(elementMapKey, VideoStatus.Playing);
       } else {
         videoElement.pause();
-        videoStatusMap.set(videoAsset.id, VideoStatus.Paused);
+        videoStatusMap.set(elementMapKey, VideoStatus.Paused);
       }
     };
     videoElement.onplay = () => {
-      videoStatusMap.set(videoAsset.id, VideoStatus.Playing);
+      videoStatusMap.set(elementMapKey, VideoStatus.Playing);
     };
     videoElement.onpause = () => {
-      videoStatusMap.set(videoAsset.id, VideoStatus.Paused);
+      videoStatusMap.set(elementMapKey, VideoStatus.Paused);
     };
     const gapFrames = 5;
     const diff = Math.abs(
@@ -80,7 +81,7 @@ export function updateVideoEffect(
     ) {
       // should seek if video currentTime is too far from scene currentTime
       videoElement.currentTime = scene.currentTime - strip.start;
-      videoStatusMap.set(videoAsset.id, VideoStatus.Seeking);
+      videoStatusMap.set(elementMapKey, VideoStatus.Seeking);
     } else if (currentStatus === VideoStatus.Seeking && modeLoadingBlack) {
       ctx.fillStyle = "black";
       ctx.fillRect(

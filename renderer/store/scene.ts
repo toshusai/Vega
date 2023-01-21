@@ -211,6 +211,8 @@ export const sceneSlice = createSlice({
         const index = state.strips.findIndex((s) => s.id === strip.id);
         if (index >= 0) {
           state.strips[index] = strip;
+        } else {
+          state.strips.push(strip);
         }
       });
     },
