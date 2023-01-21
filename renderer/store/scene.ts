@@ -100,6 +100,7 @@ export const sceneSlice = createSlice({
       state.isPlaying = !state.isPlaying;
     },
     setSelectedStripIds: (state, action: { payload: string[] }) => {
+      console.log("setSelectedStripIds", action.payload);
       state.selectedStripIds = action.payload;
     },
     setInitialized: (state, action: { payload: boolean }) => {

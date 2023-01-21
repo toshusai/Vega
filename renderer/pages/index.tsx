@@ -6,8 +6,10 @@ import { Provider } from "react-redux";
 import store from "../store";
 import { Preview } from "../components/Preview";
 import { AssetPanel } from "../components/AssetPanel";
+import { KeyboardInput } from "../KeyboardInput";
 
 const IndexPage = () => {
+  KeyboardInput.init();
   return (
     <>
       <GlobalStyle />

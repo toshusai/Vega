@@ -18,6 +18,7 @@ import {
 } from "tabler-icons-react";
 import styled from "styled-components";
 import { Strip } from "../interfaces/Strip";
+import { Key, KeyboardInput } from "../KeyboardInput";
 
 export function roundToFrame(time: number, fps: number) {
   return Math.floor(time * fps) / fps;
@@ -149,19 +150,33 @@ export const Timeline: FC = () => {
           dispatch(actions.updateStrip(updateStrips));
         }
       },
-      (ctx) => {
+      () => {
         let pass = [strip.id];
         if (selectedStripIds.includes(strip.id)) {
           pass = [...selectedStripIds];
         } else {
-          pass = [strip.id];
+          if (KeyboardInput.isPressed(Key.Shift)) {
+            pass = [...selectedStripIds, strip.id];
+          } else {
+            pass = [strip.id];
+          }
         }
         dispatch(actions.setSelectedStripIds(pass));
         return pass;
       },
       (ctx) => {
         if (ctx.diffX === 0 && ctx.diffY === 0) {
-          dispatch(actions.setSelectedStripIds([strip.id]));
+          let newIds: string[] = [];
+          if (KeyboardInput.isPressed(Key.Shift)) {
+            if (selectedStripIds.includes(strip.id)) {
+              newIds = selectedStripIds.filter((id) => id !== strip.id);
+            } else {
+              newIds = [...selectedStripIds, strip.id];
+            }
+          } else {
+            newIds = [strip.id];
+          }
+          dispatch(actions.setSelectedStripIds(newIds));
         }
       }
     );
