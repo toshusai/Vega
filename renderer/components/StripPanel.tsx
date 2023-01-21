@@ -9,6 +9,7 @@ import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { PanelBody } from "./AssetDetailsPanel";
 import { ClickEditInput, MemoClickEditInput } from "./core/ClickEditInput";
+import { NumberEditInput } from "./core/NumberEditInput";
 import { Panel } from "./core/Panel";
 
 export const StripPanel: FC = () => {
@@ -67,45 +68,62 @@ const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   const { textEffect } = props;
   const dispatch = useDispatch();
 
+  const emit = (partial: Partial<TextEffect>) => {
+    dispatch(
+      actions.updateEddect({
+        effect: { ...textEffect, ...partial },
+        stripId: props.strip.id,
+      })
+    );
+  };
+  const undo = () => emit({ text: textEffect.text });
+
   return (
     <>
       <Row>
         <PropertyName>text</PropertyName>
         <ClickEditInput
           value={textEffect.text}
-          onChange={(value) => {
-            const redo = () =>
-              dispatch(
-                actions.updateEddect({
-                  effect: { ...textEffect, text: value },
-                  stripId: props.strip.id,
-                })
-              );
-
-            redo();
-
-            UndoManager.main.add({
-              undo: () => {
-                dispatch(
-                  actions.updateEddect({
-                    effect: textEffect,
-                    stripId: props.strip.id,
-                  })
-                );
-              },
-              redo,
-            });
-          }}
+          onChange={(value) =>
+            UndoManager.main
+              .add({
+                undo,
+                redo: () => emit({ text: value }),
+              })
+              .run()
+          }
         />
       </Row>
-      {/* <Row>
+      <Row>
         <PropertyName>x</PropertyName>
-        <ClickEditInput value={textEffect.x} />
+        <NumberEditInput
+          value={textEffect.x}
+          onInput={(value) => emit({ x: value })}
+          onChange={(value) =>
+            UndoManager.main
+              .add({
+                undo,
+                redo: () => emit({ x: value }),
+              })
+              .run()
+          }
+        />
       </Row>
       <Row>
         <PropertyName>y</PropertyName>
-        <ClickEditInput value={textEffect.y} />
-      </Row> */}
+        <NumberEditInput
+          value={textEffect.y}
+          onInput={(value) => emit({ y: value })}
+          onChange={(value) =>
+            UndoManager.main
+              .add({
+                undo,
+                redo: () => emit({ y: value }),
+              })
+              .run()
+          }
+        />
+      </Row>
     </>
   );
 };
