@@ -5,6 +5,8 @@ import { useNativeOnChange } from "./useNativeOnChange";
 
 type NumberEditInputProps = {
   value?: number;
+  scale?: number;
+  view?: (value: number) => string;
   style?: React.CSSProperties;
   onChange?: (value: number) => void;
   onInput?: (value: number) => void;
@@ -22,7 +24,7 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
     (ctx) => {
       ctx.startEvent.preventDefault();
       setValue(props.value + ctx.diffX);
-      props.onInput?.(props.value + ctx.diffX);
+      props.onInput?.(props.value + ctx.diffX * props.scale ?? 1);
     },
     (ctx) => {
       ctx.startEvent.preventDefault();
@@ -32,7 +34,7 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
         setIsFocused(true);
         inputRef.current?.focus();
       } else {
-        props.onChange?.(props.value + ctx.diffX);
+        props.onChange?.(props.value + ctx.diffX * props.scale ?? 1);
       }
     }
   );
@@ -42,7 +44,7 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
       ref={inputRef}
       type="number"
       readOnly={!isFocused}
-      value={value}
+      value={props.view ? props.view(value as number) : value}
       style={{
         cursor: isFocused ? "default" : "ew-resize",
         userSelect: isFocused ? "text" : "none",
