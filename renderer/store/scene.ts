@@ -16,12 +16,14 @@ export type SceneState = {
   assets: Asset[];
   isPlaying: boolean;
   selectedStripIds: string[];
+  selectedAssetIds: string[];
 };
 
 export const sceneSlice = createSlice({
   name: "scene",
   initialState: {
     selectedStripIds: [],
+    selectedAssetIds: [],
     isPlaying: false,
     initialized: false,
     currentTime: 0,
@@ -101,6 +103,9 @@ export const sceneSlice = createSlice({
     },
     setSelectedStripIds: (state, action: { payload: string[] }) => {
       state.selectedStripIds = action.payload;
+    },
+    setSelectedAssetIds: (state, action: { payload: string[] }) => {
+      state.selectedAssetIds = action.payload;
     },
     setInitialized: (state, action: { payload: boolean }) => {
       state.initialized = action.payload;

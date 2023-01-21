@@ -7,6 +7,7 @@ import store from "../store";
 import { Preview } from "../components/Preview";
 import { AssetPanel } from "../components/AssetPanel";
 import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
+import { AssetDetailsPanel } from "../components/AssetDetailsPanel";
 
 const IndexPage = () => {
   KeyboardInput.init(() => {
@@ -59,7 +60,7 @@ const IndexPage = () => {
                   width: "50%",
                 }}
               >
-                <Panel />
+                <AssetDetailsPanel />
                 <HPanelDivider />
                 <AssetPanel />
               </HPanelBox>
