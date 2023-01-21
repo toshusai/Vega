@@ -79,6 +79,13 @@ export const Preview: FC = () => {
     if (!canvas) {
       return;
     }
+
+    KeyboardInput.addKeyDownListener(Key.Space, (e) => {
+      if (document.activeElement == document.body) {
+        e.preventDefault();
+        dispatch(actions.toggleIsPlaying());
+      }
+    });
     const el = rootRef.current as HTMLDivElement;
     const rect = el.getBoundingClientRect();
     setLeft(rect.width / 2 - (width * scale) / 2);

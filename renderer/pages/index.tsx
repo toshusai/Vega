@@ -2,16 +2,18 @@ import { GlobalStyle } from "../components/core/GlobalStyle";
 import styled from "styled-components";
 import { Panel } from "../components/core/Panel";
 import { Timeline } from "../components/Timeline";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import store from "../store";
 import { Preview } from "../components/Preview";
 import { AssetPanel } from "../components/AssetPanel";
 import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
 import { AssetDetailsPanel } from "../components/AssetDetailsPanel";
 import { StripPanel } from "../components/StripPanel";
+import { actions } from "../store/scene";
 
 const IndexPage = () => {
   KeyboardInput.init(() => {
+
     KeyboardInput.addKeyDownListener(Key.KeyZ, (e) => {
       e.preventDefault();
       if (
