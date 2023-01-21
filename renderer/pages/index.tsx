@@ -10,6 +10,7 @@ import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
 import { AssetDetailsPanel } from "../components/AssetDetailsPanel";
 import { StripPanel } from "../components/StripPanel";
 import { actions } from "../store/scene";
+import { KeyFramePanel } from "../components/KeyFramePanel";
 
 const IndexPage = () => {
   KeyboardInput.init(() => {
@@ -59,7 +60,7 @@ const IndexPage = () => {
               >
                 <StripPanel />
                 <VPanelDivider />
-                <Panel />
+                <KeyFramePanel />
               </VPanelBox>
               <HPanelDivider />
               <Preview />
