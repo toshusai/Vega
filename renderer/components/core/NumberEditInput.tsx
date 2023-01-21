@@ -24,7 +24,7 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
     (ctx) => {
       ctx.startEvent.preventDefault();
       setValue(props.value + ctx.diffX);
-      props.onInput?.(props.value + ctx.diffX * props.scale ?? 1);
+      props.onInput?.(props.value + ctx.diffX * (props.scale ?? 1))
     },
     (ctx) => {
       ctx.startEvent.preventDefault();
@@ -33,8 +33,9 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
       if (ctx.diffX === 0 && ctx.diffY === 0) {
         setIsFocused(true);
         inputRef.current?.focus();
+        inputRef.current?.select();
       } else {
-        props.onChange?.(props.value + ctx.diffX * props.scale ?? 1);
+        props.onChange?.(props.value + ctx.diffX * (props.scale ?? 1));
       }
     }
   );
@@ -44,7 +45,7 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
       ref={inputRef}
       type="number"
       readOnly={!isFocused}
-      value={props.view ? props.view(value as number) : value}
+      value={props.view ? props.view(value as number) : isNaN(value as number) ? "0" : value}
       style={{
         cursor: isFocused ? "default" : "ew-resize",
         userSelect: isFocused ? "text" : "none",
