@@ -117,7 +117,7 @@ export const VideoEffectView: FC<{
     <>
       {numberKeys.map((key) => {
         return (
-          <Row>
+          <Row key={key}>
             <PropertyName>{key}</PropertyName>
             <NumberEditInput
               value={videoEffect[key] as number}
