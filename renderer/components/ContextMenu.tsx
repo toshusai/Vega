@@ -64,6 +64,7 @@ const Overlay = styled.div`
 `;
 
 export const StyledContextMenuButton = styled.div`
+  display: flex;
   font-family: "Ricty Diminished";
   color: var(--color-text);
   font-size: 12px;
