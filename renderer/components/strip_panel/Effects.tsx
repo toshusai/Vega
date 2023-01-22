@@ -7,6 +7,8 @@ import { isImageEffect } from "../../interfaces/effects/utils/isImageEffect";
 import { ImageEffectView } from "./ImageEffectView";
 import { TextEffectView } from "./TextEffectView";
 import { VideoEffectView } from "./VideoEffectView";
+import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
+import { AudioEffectView } from "./AudioEffectView";
 
 export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
   const { effects } = props;
@@ -36,6 +38,15 @@ export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
             <ImageEffectView
               key={effect.id}
               imageEffect={effect}
+              strip={props.strip}
+            />
+          );
+        }
+        if (isAudioEffect(effect)) {
+          return (
+            <AudioEffectView
+              key={effect.id}
+              audioEffect={effect}
               strip={props.strip}
             />
           );

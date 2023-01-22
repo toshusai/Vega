@@ -8,6 +8,7 @@ import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
 import { Panel } from "../core/Panel";
 import {
+  isAudioAsset,
   isImageAsset,
   updateTextEffect,
 } from "../../rendering/updateTextEffect";
@@ -20,6 +21,8 @@ import { Gizmo } from "../preview_panel/Gizmo";
 import { IconButton } from "../core/styled/IconButton";
 import { iconProps } from "../core/iconProps";
 import { updateImageEffect } from "../../rendering/updateImageEffect";
+import { updateAudioEffect } from "@/rendering/updateAudioEffect";
+import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
 
 export const Preview: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -190,6 +193,8 @@ export const Preview: FC = () => {
             updateVideoEffect(ctx, effect, strip, scene);
           } else if (isImageEffect(effect)) {
             updateImageEffect(ctx, effect, strip, scene);
+          } else if (isAudioEffect(effect)) {
+            updateAudioEffect(ctx, effect, strip, scene);
           }
         }
       }
