@@ -21,6 +21,7 @@ export type SceneState = {
   selectedAssetIds: string[];
   canvasWidth: number;
   canvasHeight: number;
+  selectedKeyframeIds: string[];
 };
 
 export const sceneSlice = createSlice({
@@ -40,6 +41,7 @@ export const sceneSlice = createSlice({
     strips: [],
     fps: 60,
     assets: [],
+    selectedKeyframeIds: [],
   } as SceneState,
   reducers: {
     setAll: (state, action: { payload: SceneState }) => {
@@ -65,6 +67,9 @@ export const sceneSlice = createSlice({
     },
     setCurrentTime: (state, action: { payload: number }) => {
       state.currentTime = action.payload;
+    },
+    setSelectKeyframeIds: (state, action: { payload: string[] }) => {
+      state.selectedKeyframeIds = action.payload;
     },
     setViewStartRate: (state, action: { payload: number }) => {
       if (action.payload < 0) {
