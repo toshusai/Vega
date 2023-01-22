@@ -38,7 +38,13 @@ export function loadFont(fontAsset: FontAsset) {
   }
 }
 
-export const measureMap = new Map<string, TextMetrics>();
+export const measureMap = new Map<
+  string,
+  {
+    width: number;
+    height: number;
+  }
+>();
 
 export function updateTextEffect(
   ctx: CanvasRenderingContext2D,
@@ -48,7 +54,7 @@ export function updateTextEffect(
 ) {
   if (
     scene.currentTime < strip.start ||
-    scene.currentTime > strip.start + strip.length
+    scene.currentTime > strip.start + strip.length - 1 / scene.fps
   ) {
     return;
   }
@@ -78,9 +84,27 @@ export function updateTextEffect(
     scene.fps
   );
 
-  ctx.fillText(effect.text, x, y);
+  let top = y;
+  let left = x;
+  let maxLeft = 0;
+  const lineHeight = effect.fontSize;
+  for (let i = 0; i < effect.text.length; i++) {
+    const char = effect.text[i];
+    if (char === "\n") {
+      top += lineHeight;
+      left = x;
+      continue;
+    }
+    const w = ctx.measureText(char).width;
+    ctx.fillText(char, left, top);
+    left += w + 0;
+    maxLeft = Math.max(maxLeft, left);
+  }
   const measure = ctx.measureText(effect.text);
-  measureMap.set(effect.id, measure);
+  measureMap.set(effect.id, {
+    width: maxLeft - x,
+    height: top - y + lineHeight,
+  });
 }
 
 export const caclulateKeyFrameValue = (

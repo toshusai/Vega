@@ -17,15 +17,15 @@ export function textEffectToRect(
   x = caclulateKeyFrameValue(effect.keyframes, currentTime, "x", effect.x, fps);
   y = caclulateKeyFrameValue(effect.keyframes, currentTime, "y", effect.y, fps);
 
-  const textHeight = effect.fontSize;
   const measure = measureMap.get(effect.id);
   if (!measure) {
     return null;
   }
+  const lineBreaks = effect.text.split("\n").length - 1;
   return {
     $left: x * scale + left,
-    $top: y * scale + top - textHeight * scale,
+    $top: y * scale + top - (measure.height - effect.fontSize * lineBreaks) * scale,
     $width: measure.width * scale,
-    $height: textHeight * scale,
+    $height: measure.height * scale,
   };
 }
