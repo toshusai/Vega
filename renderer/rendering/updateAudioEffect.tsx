@@ -72,7 +72,7 @@ export function updateAudioEffect(
     };
     const gapFrames = 5;
     const diff = Math.abs(
-      audioElement.currentTime - scene.currentTime + strip.start
+      audioElement.currentTime - scene.currentTime + strip.start + effect.offset
     );
     if (currentStatus === AudioStatus.Playing && !scene.isPlaying) {
       audioElement.pause();
@@ -83,10 +83,12 @@ export function updateAudioEffect(
       currentStatus !== AudioStatus.Seeking
     ) {
       // should seek if audio currentTime is too far from scene currentTime
-      audioElement.currentTime = scene.currentTime - strip.start;
+      audioElement.currentTime =
+        scene.currentTime - strip.start + effect.offset;
       audioStatusMap.set(elementMapKey, AudioStatus.Seeking);
     } else if (currentStatus === AudioStatus.Seeking && modeLoadingBlack) {
     }
+    audioElement.volume = effect.volume;
     if (currentStatus === AudioStatus.Seeking && scene.isPlaying) {
       return;
     }
