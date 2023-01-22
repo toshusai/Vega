@@ -27,7 +27,10 @@ import { SelectRect } from "../core/styled/SelectRect";
 import { iconProps } from "../core/iconProps";
 import { IconButton } from "../core/styled/IconButton";
 import { ToolTip } from "../core/styled/ToolTip";
-import { ContextMenu, StyledContextMenuButton } from "../core/context_menu/ContextMenu";
+import {
+  ContextMenu,
+  StyledContextMenuButton,
+} from "../core/context_menu/ContextMenu";
 import { uuid } from "short-uuid";
 import { Button } from "../core/DropdownLike";
 import { AddStripButton } from "./AddStripButton";
@@ -290,13 +293,21 @@ export const Timeline: FC = () => {
             id: uuid(),
             start: currentTime,
             length: strip.length - (currentTime - strip.start),
-            effects: strip.effects.map((effect) => ({
-              ...effect,
-              id: uuid(),
-            })),
+            effects: strip.effects.map((effect) => {
+              if ("offset" in effect && typeof effect.offset === "number") {
+                return {
+                  ...effect,
+                  id: uuid(),
+                  offset: effect.offset + (currentTime - strip.start),
+                };
+              }
+              return {
+                ...effect,
+                id: uuid(),
+              };
+            }),
           },
         ];
-        console.log(newStrips);
         dispatch(actions.updateStrip(newStrips));
       }
     });
