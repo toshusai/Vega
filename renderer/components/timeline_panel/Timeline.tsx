@@ -1,13 +1,13 @@
 import { FC, useEffect, useState } from "react";
-import { MemoTimeView } from "./TimeView";
-import { Panel } from "../components/core/Panel";
+import { MemoTimeView } from "../core/TimeView";
+import { Panel } from "../core/Panel";
 import { MemoStripUI } from "./StripUI";
-import { getDragHander } from "./getDragHander";
-import { MemoScaleScrollBar } from "./ScaleScrollBar";
-import { useWidth } from "../hooks/useWidth";
+import { getDragHander } from "../../utils/getDragHander";
+import { MemoScaleScrollBar } from "../core/ScaleScrollBar";
+import { useWidth } from "../../hooks/useWidth";
 import { useDispatch } from "react-redux";
-import { actions } from "../store/scene";
-import { useSelector } from "../store/useSelector";
+import { actions } from "../../store/scene";
+import { useSelector } from "../../store/useSelector";
 import {
   Cut,
   Magnet,
@@ -16,20 +16,20 @@ import {
   PlayerPlay,
   Trash,
 } from "tabler-icons-react";
-import { Strip } from "../interfaces/Strip";
-import { Key, KeyboardInput } from "../KeyboardInput";
-import { UndoManager } from "../UndoManager";
-import { roundToFrame } from "./roundToFrame";
-import { canMove } from "../interfaces/strips/canMove";
-import { moveStrip } from "../interfaces/strips/moveStrip";
-import { TimeCursor } from "./TimeCursor";
-import { SelectRect } from "./SelectRect";
-import { iconProps } from "./core/iconProps";
-import { IconButton } from "./IconButton";
-import { ToolTip } from "./ToolTip";
-import { ContextMenu, StyledContextMenuButton } from "./ContextMenu";
+import { Strip } from "../../interfaces/Strip";
+import { Key, KeyboardInput } from "../../KeyboardInput";
+import { UndoManager } from "../../UndoManager";
+import { roundToFrame } from "../../utils/roundToFrame";
+import { canMove } from "../../interfaces/strips/canMove";
+import { moveStrip } from "../../interfaces/strips/moveStrip";
+import { TimeCursor } from "../core/TimeCursor";
+import { SelectRect } from "../core/styled/SelectRect";
+import { iconProps } from "../core/iconProps";
+import { IconButton } from "../core/styled/IconButton";
+import { ToolTip } from "../core/styled/ToolTip";
+import { ContextMenu, StyledContextMenuButton } from "../core/context_menu/ContextMenu";
 import { uuid } from "short-uuid";
-import { Button } from "./core/DropdownLike";
+import { Button } from "../core/DropdownLike";
 import { AddStripButton } from "./AddStripButton";
 
 export const Timeline: FC = () => {

@@ -2,17 +2,17 @@ import { FC, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 import { Photo, Plus, Tex, Video } from "tabler-icons-react";
-import { Effect } from "../interfaces/effects/Effect";
-import { Strip } from "../interfaces/Strip";
-import { TextEffect } from "../interfaces/effects/TextEffect";
-import { VideoEffect } from "../interfaces/effects/VideoEffect";
-import { ImageEffect } from "../interfaces/effects/ImageEffect";
-import { DropdownMenu } from "../pages/DropdownMenu";
-import { actions } from "../store/scene";
-import { useSelector } from "../store/useSelector";
-import { StyledContextMenuButton } from "./ContextMenu";
-import { IconButton } from "./IconButton";
-import { iconProps } from "./core/iconProps";
+import { Effect } from "../../interfaces/effects/Effect";
+import { Strip } from "../../interfaces/Strip";
+import { TextEffect } from "../../interfaces/effects/TextEffect";
+import { VideoEffect } from "../../interfaces/effects/VideoEffect";
+import { ImageEffect } from "../../interfaces/effects/ImageEffect";
+import { DropdownMenu } from "../../pages/DropdownMenu";
+import { actions } from "../../store/scene";
+import { useSelector } from "../../store/useSelector";
+import { StyledContextMenuButton } from "../core/context_menu/ContextMenu";
+import { IconButton } from "../core/styled/IconButton";
+import { iconProps } from "../core/iconProps";
 
 export const AddStripButton: FC = () => {
   const [show, setShow] = useState(false);

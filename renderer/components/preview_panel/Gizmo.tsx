@@ -2,20 +2,20 @@ import { FC } from "react";
 import { useDispatch } from "react-redux";
 import {
   TextEffect,
-} from "../interfaces/effects/TextEffect";
-import { KeyFrame } from "../interfaces/effects/KeyFrame";
-import { isTextEffect } from "../interfaces/effects/utils/isTextEffect";
-import { actions } from "../store/scene";
-import { useSelector } from "../store/useSelector";
-import { UndoManager } from "../UndoManager";
-import { getDragHander } from "./getDragHander";
+} from "../../interfaces/effects/TextEffect";
+import { KeyFrame } from "../../interfaces/effects/KeyFrame";
+import { isTextEffect } from "../../interfaces/effects/utils/isTextEffect";
+import { actions } from "../../store/scene";
+import { useSelector } from "../../store/useSelector";
+import { UndoManager } from "../../UndoManager";
+import { getDragHander } from "../../utils/getDragHander";
 import styled from "styled-components";
-import { SelectRectProps } from "./SelectRect";
-import { textEffectToRect } from "./textEffectToRect";
-import { exactKeyFrame } from "./exactKeyFrame";
+import { SelectRectProps } from "../core/styled/SelectRect";
+import { textEffectToRect } from "./utils/textEffectToRect";
+import { exactKeyFrame } from "../../utils/exactKeyFrame";
 import { uuid } from "short-uuid";
-import { Ease } from "./easing";
-import { roundToFrame } from "./roundToFrame";
+import { Ease } from "../../utils/easing";
+import { roundToFrame } from "../../utils/roundToFrame";
 
 export const Gizmo: FC<{
   left: number;

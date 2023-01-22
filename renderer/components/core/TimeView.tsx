@@ -1,5 +1,5 @@
 import { FC, memo, useEffect, useRef, useState } from "react";
-import { useWidth } from "../hooks/useWidth";
+import { useWidth } from "../../hooks/useWidth";
 
 type TimeViewProps = {
   offsetSec: number;

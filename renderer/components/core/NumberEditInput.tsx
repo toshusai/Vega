@@ -1,8 +1,8 @@
 import { FC, useState } from "react";
 import { pureFinalPropsSelectorFactory } from "react-redux/es/connect/selectorFactory";
-import { getDragHander } from "../getDragHander";
-import { StyledInput } from "./StyledInput";
-import { useNativeOnChange } from "./useNativeOnChange";
+import { getDragHander } from "../../utils/getDragHander";
+import { StyledInput } from "./styled/StyledInput";
+import { useNativeOnChange } from "../../hooks/useNativeOnChange";
 
 type NumberEditInputProps = {
   value?: number;

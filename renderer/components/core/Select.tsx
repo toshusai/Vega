@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { StyledSelect } from "./StyledSelect";
+import { StyledSelect } from "./styled/StyledSelect";
 
 export type Item = {
   label: string;

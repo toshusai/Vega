@@ -1,4 +1,4 @@
-import { Ease } from "../../components/easing";
+import { Ease } from "../../utils/easing";
 
 export type KeyFrame = {
   id: string;

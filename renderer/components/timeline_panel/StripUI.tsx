@@ -1,6 +1,6 @@
 import { FC, memo } from "react";
 import styled from "styled-components";
-import { Strip } from "../interfaces/Strip";
+import { Strip } from "../../interfaces/Strip";
 
 export const StripUI: FC<
   Strip & {

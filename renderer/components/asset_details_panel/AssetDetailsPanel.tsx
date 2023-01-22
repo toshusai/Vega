@@ -1,17 +1,17 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { ImageAsset } from "../interfaces/asset/ImageAsset";
-import { VideoAsset } from "../interfaces/asset/VideoAsset";
-import { FontAsset } from "../interfaces/asset/FontAsset";
+import { ImageAsset } from "../../interfaces/asset/ImageAsset";
+import { VideoAsset } from "../../interfaces/asset/VideoAsset";
+import { FontAsset } from "../../interfaces/asset/FontAsset";
 import {
   isImageAsset,
   isTextAsset,
   isVideoAsset,
   loadFont,
-} from "../rendering/updateTextEffect";
-import { useSelector } from "../store/useSelector";
-import { ClickEditInput } from "./core/ClickEditInput";
-import { Panel } from "./core/Panel";
+} from "../../rendering/updateTextEffect";
+import { useSelector } from "../../store/useSelector";
+import { ClickEditInput } from "../core/ClickEditInput";
+import { Panel } from "../core/Panel";
 
 export const AssetDetailsPanel: FC = () => {
   const selectedAssetIds = useSelector((state) => state.scene.selectedAssetIds);

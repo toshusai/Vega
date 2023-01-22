@@ -11,18 +11,18 @@ import {
   Trash,
   Video,
 } from "tabler-icons-react";
-import { Asset } from "../interfaces/asset/Asset";
-import { ImageAsset } from "../interfaces/asset/ImageAsset";
-import { VideoAsset } from "../interfaces/asset/VideoAsset";
-import { FontAsset } from "../interfaces/asset/FontAsset";
-import { filePick } from "../pages/filePick";
-import { isImageAsset } from "../rendering/updateTextEffect";
-import { actions } from "../store/scene";
-import { useSelector } from "../store/useSelector";
-import { Panel } from "./core/Panel";
-import { IconButton } from "./IconButton";
-import { iconProps } from "./core/iconProps";
-import { ToolTip } from "./ToolTip";
+import { Asset } from "../../interfaces/asset/Asset";
+import { ImageAsset } from "../../interfaces/asset/ImageAsset";
+import { VideoAsset } from "../../interfaces/asset/VideoAsset";
+import { FontAsset } from "../../interfaces/asset/FontAsset";
+import { filePick } from "../../pages/filePick";
+import { isImageAsset } from "../../rendering/updateTextEffect";
+import { actions } from "../../store/scene";
+import { useSelector } from "../../store/useSelector";
+import { Panel } from "../core/Panel";
+import { IconButton } from "../core/styled/IconButton";
+import { iconProps } from "../core/iconProps";
+import { ToolTip } from "../core/styled/ToolTip";
 
 const supportedVideoExtensions = ["mp4", "webm"];
 const supportedFontExtensions = ["ttf"];

@@ -1,9 +1,9 @@
-import { TextEffect } from "../interfaces/effects/TextEffect";
+import { TextEffect } from "../../../interfaces/effects/TextEffect";
 import {
   caclulateKeyFrameValue,
   measureMap,
-} from "../rendering/updateTextEffect";
-import { SelectRectProps } from "./SelectRect";
+} from "../../../rendering/updateTextEffect";
+import { SelectRectProps } from "../../core/styled/SelectRect";
 
 export function textEffectToRect(
   effect: TextEffect,

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Ease } from "../components/easing";
-import { roundToFrame } from "../components/roundToFrame";
+import { Ease } from "../utils/easing";
+import { roundToFrame } from "../utils/roundToFrame";
 import { Asset } from "../interfaces/asset/Asset";
 import { Effect } from "../interfaces/effects/Effect";
 import { Strip } from "../interfaces/Strip";
