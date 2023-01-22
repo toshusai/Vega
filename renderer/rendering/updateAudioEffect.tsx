@@ -20,12 +20,10 @@ export function releaseAudioAsset(effect: AudioEffect) {
   const key = effect.id + effect.audioAssetId;
   audioStatusMap.set(key, AudioStatus.Deleted);
   const audioElement = loadedAudioElementMap.get(key);
-  console.log(loadedAudioElementMap, key)
   if (audioElement) {
     audioElement.pause();
     audioElement.remove();
     loadedAudioElementMap.delete(key);
-    console.log("delete");
   }
 }
 
@@ -41,7 +39,6 @@ export function updateAudioEffect(
   const elementMapKey = effect.id + effect.audioAssetId;
   const currentStatus = audioStatusMap.get(elementMapKey);
   let audioElement = loadedAudioElementMap.get(elementMapKey);
-  console.log(currentStatus, !!audioElement);
   if (currentStatus === AudioStatus.Deleted) {
     return;
   }
