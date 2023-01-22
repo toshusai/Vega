@@ -86,7 +86,11 @@ const IndexPage = () => {
               width: "calc(100% - 8px)",
             }}
           >
-            <HPanelBox>
+            <HPanelBox
+              style={{
+                height: "50%",
+              }}
+            >
               <VPanelBox
                 style={{
                   width: "40%",
@@ -100,7 +104,11 @@ const IndexPage = () => {
               <Preview />
             </HPanelBox>
             <VPanelDivider />
-            <HPanelBox>
+            <HPanelBox
+              style={{
+                height: "50%",
+              }}
+            >
               <Timeline />
               <HPanelDivider />
               <HPanelBox

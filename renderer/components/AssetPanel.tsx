@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 import styled from "styled-components";
 import { FilePlus, PlayerPause, Tex, Trash, Video } from "tabler-icons-react";
-import { Asset, FontAsset, VideoAsset } from "../interfaces/Asset";
+import { Asset, FontAsset, ImageAsset, VideoAsset } from "../interfaces/Asset";
 import { filePick } from "../pages/filePick";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
@@ -56,6 +56,14 @@ export const AssetPanel: FC = () => {
           id: uuid(),
           path: `file://${path}`,
           type: "video",
+          name: path.split("/").join("_"),
+        };
+        dispatch(actions.updateAssets(asset));
+      } else if (isImage(path)) {
+        const asset: ImageAsset = {
+          id: uuid(),
+          path: `file://${path}`,
+          type: "image",
           name: path.split("/").join("_"),
         };
         dispatch(actions.updateAssets(asset));

@@ -14,3 +14,8 @@ export type VideoAsset = Asset & {
   type: "video";
   path: string;
 };
+
+export type ImageAsset = Asset & {
+  type: "image";
+  path: string;
+};

@@ -1,7 +1,8 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { FontAsset, VideoAsset } from "../interfaces/Asset";
+import { FontAsset, ImageAsset, VideoAsset } from "../interfaces/Asset";
 import {
+  isImageAsset,
   isTextAsset,
   isVideoAsset,
   loadFont,
@@ -23,7 +24,12 @@ export const AssetDetailsPanel: FC = () => {
   const selectedAsset = selectedAssets[0];
   return (
     <Panel width={50} height={100}>
-      <PanelBody>
+      <PanelBody
+        style={{
+          overflow: "hidden",
+          height: "100%",
+        }}
+      >
         <div style={{ display: "flex" }}>
           <div>name:</div>
           <ClickEditInput
@@ -48,6 +54,9 @@ export const AssetDetailsPanel: FC = () => {
           )}
           {isVideoAsset(selectedAsset) && (
             <VideoAssetDetailsPanel asset={selectedAsset} />
+          )}
+          {isImageAsset(selectedAsset) && (
+            <ImageAssetDetailsPanel asset={selectedAsset} />
           )}
         </div>
       </PanelBody>
@@ -94,6 +103,22 @@ const VideoAssetDetailsPanel: FC<{
         }}
         src={props.asset.path}
         controls
+      />
+    </div>
+  );
+};
+
+const ImageAssetDetailsPanel: FC<{
+  asset: ImageAsset;
+}> = (props) => {
+  return (
+    <div>
+      <img
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+        src={props.asset.path}
       />
     </div>
   );
