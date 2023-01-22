@@ -2,15 +2,14 @@ import { FC } from "react";
 import styled from "styled-components";
 
 export const Panel: FC<{
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
 }> = (props) => {
   return (
     <PanelRoot
       style={{
         width: props.width + "%",
         height: props.height + "%",
-        overflow: "hidden",
       }}
     >
       <PanelInner>{props.children}</PanelInner>
@@ -21,7 +20,6 @@ export const Panel: FC<{
 export const PanelRoot = styled.div`
   background-color: var(--color-background);
   border-radius: 8px;
-  overflow: hidden;
   position: relative;
   height: 100%;
   width: 100%;

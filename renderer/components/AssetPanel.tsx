@@ -16,7 +16,7 @@ export const AssetPanel: FC = () => {
   };
 
   return (
-    <Panel>
+    <Panel height={100} width={50}>
       {assets.map((asset) => {
         return (
           <AssetListItem

@@ -26,6 +26,7 @@ import { TimeCursor } from "./TimeCursor";
 import { SelectRect } from "./SelectRect";
 import { iconProps } from "./iconProps";
 import { IconButton } from "./IconButton";
+import { ToolTip } from "./ToolTip";
 import { ContextMenu, StyledContextMenuButton } from "./ContextMenu";
 import { uuid } from "short-uuid";
 import { Button } from "./core/DropdownLike";
@@ -294,7 +295,7 @@ export const Timeline: FC = () => {
   };
 
   return (
-    <Panel width={50}>
+    <Panel width={50} height={100}>
       <ContextMenu
         e={contextMenuEvent}
         onClose={() => {
@@ -310,6 +311,8 @@ export const Timeline: FC = () => {
           height: "100%",
           display: "flex",
           flexDirection: "column",
+          overflow: "hidden",
+          position: "relative",
         }}
         onWheel={handleWheelTimeView}
         onContextMenu={(e) => {
@@ -349,6 +352,7 @@ export const Timeline: FC = () => {
             ) : (
               <PlayerPlay {...iconProps} />
             )}
+            <ToolTip>Play / Pause (Space)</ToolTip>
           </IconButton>
           <IconButton
             onClick={() => {
@@ -362,12 +366,21 @@ export const Timeline: FC = () => {
               {...iconProps}
               color={isSnap ? "var(--color-primary)" : "white"}
             />
+            <ToolTip>
+              Toggle Snap (current:{isSnap ? "ON" : "OFF"})
+            </ToolTip>
           </IconButton>
           <IconButton onClick={handleCutStrip}>
             <Cut {...iconProps} />
+            <ToolTip>
+              Cut Strips
+            </ToolTip>
           </IconButton>
           <IconButton onClick={deleteStrip}>
             <Trash {...iconProps} />
+            <ToolTip>
+              Delete Strips
+            </ToolTip>
           </IconButton>
         </div>
         <MemoTimeView

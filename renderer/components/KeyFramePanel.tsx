@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useWidth } from "../hooks/useWidth";
 import { Effect } from "../interfaces/Effect";
@@ -11,6 +11,7 @@ import { UndoManager } from "../UndoManager";
 import { Panel } from "./core/Panel";
 import { getEasingFunction } from "./easing";
 import { getDragHander } from "./getDragHander";
+import { MakeSVG } from "./MakeSVG";
 import { roundToFrame } from "./roundToFrame";
 import { ScaleScrollBar } from "./ScaleScrollBar";
 import { SelectRect } from "./SelectRect";
@@ -39,7 +40,7 @@ export const KeyFramePanel: FC = () => {
   const handleMouseDownTimeView = getDragHander<number, void>(
     ({ diffX, pass }) => {
       const newCurrentTime = pass + diffX / pxPerSec;
-      if (newCurrentTime >= 0 && newCurrentTime <= strip.length) {
+      if (newCurrentTime >= 0 && newCurrentTime <= strip.length + strip.start) {
         dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
       }
     },
@@ -47,7 +48,7 @@ export const KeyFramePanel: FC = () => {
       // TODO fix magic number
       const newCurrentTime =
         (e.clientX - 40) / pxPerSec + start * strip.length + strip.start;
-      if (newCurrentTime >= 0 && newCurrentTime <= strip.length) {
+      if (newCurrentTime >= 0 && newCurrentTime <= strip.length + strip.start) {
         dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
       }
       return newCurrentTime;
@@ -93,7 +94,7 @@ export const KeyFramePanel: FC = () => {
   }, [rect]);
 
   if (selectedStrips.length !== 1) {
-    return <Panel />;
+    return <Panel width={100} height={100} />;
   }
   const strip = selectedStrips[0];
 
@@ -239,7 +240,7 @@ export const KeyFramePanel: FC = () => {
   );
 
   return (
-    <Panel>
+    <Panel width={100} height={50}>
       <div
         style={{
           display: "flex",
@@ -316,7 +317,7 @@ export const KeyFramePanel: FC = () => {
                       key={`${i}${j}`}
                       onMouseDown={handleMouseDownKeyFrame(keyframe)}
                     >
-                      <MmakeSVG
+                      <MakeSVG
                         f={getEasingFunction(keyframe.ease)}
                         style={{
                           position: "absolute",
@@ -346,53 +347,5 @@ export const KeyFramePanel: FC = () => {
         </div>
       </div>
     </Panel>
-  );
-};
-
-const MmakeSVG: FC<{ f: (x: number) => number; style: CSSProperties }> = (
-  props
-) => {
-  const points = [];
-  const padding = 4;
-  const width = 16;
-  const height = 12;
-  const step = 100;
-  for (let i = 0; i < step; i++) {
-    const x = i / step;
-    const y = props.f(x);
-    points.push(`${padding + x * width} ${padding + (1 - y) * height}`);
-  }
-  const d = `M ${points.join(" ")}`;
-  return (
-    <svg
-      style={props.style}
-      width={width}
-      height={height}
-      viewBox={`0 0 ${width + padding * 2} ${height + padding * 2}`}
-      preserveAspectRatio="none"
-      strokeWidth={2}
-    >
-      <rect
-        x={0}
-        y={0}
-        width={width + padding * 2}
-        height={height + padding * 2}
-        fill="none"
-        stroke="var(--color-border)"
-      />
-      <path d={d} stroke="var(--color-primary)" fill="none" />
-      <circle
-        cx={padding}
-        cy={padding + height}
-        r="2"
-        fill="var(--color-text-strip-border)"
-      />
-      <circle
-        cx={padding + width}
-        cy={padding}
-        r="2"
-        fill="var(--color-text-strip-border)"
-      />
-    </svg>
   );
 };

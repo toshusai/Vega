@@ -186,11 +186,13 @@ export const Preview: FC = () => {
     update(0);
   }, [left, top, scale, initialized, dispatch]);
   return (
-    <Panel>
+    <Panel width={100} height={100}>
       <div
         style={{
           width: "100%",
           height: "100%",
+          overflow: "hidden",
+          position: "relative",
         }}
         ref={rootRef}
         onMouseDown={handleMouseDown}
@@ -256,8 +258,8 @@ export const Preview: FC = () => {
           height={height}
           ref={canvasRef}
         />
+        <Gizmo onWheel={handleWheel} left={left} top={top} scale={scale} />
       </div>
-      <Gizmo onWheel={handleWheel} left={left} top={top} scale={scale} />
     </Panel>
   );
 };

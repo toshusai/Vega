@@ -142,6 +142,8 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
 };
 
 const KeyFrameIconButton = styled(IconButton)`
-  background: transparent;
-  border: 1px solid transparent;
+  // FIXME: can not override without important
+  background: transparent !important;
+  // FIXME: can not override without important
+  border: 1px solid transparent !important;
 `;
