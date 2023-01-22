@@ -11,11 +11,10 @@ export const StripPanel: FC = () => {
   const selectedStrips = strips.filter((s) => selectedStripIds.includes(s.id));
   const fps = useSelector((state) => state.scene.fps);
 
-  if (selectedStrips.length !== 1) {
-    return <Panel width={100} height={100} />;
-  }
-
   const strip = selectedStrips[0];
+  if(!strip){
+    return <Panel width={100} height={100}></Panel>
+  }
 
   return (
     <Panel width={100} height={100}>
