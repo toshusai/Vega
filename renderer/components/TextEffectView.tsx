@@ -14,6 +14,7 @@ import { Select } from "./core/Select";
 import { IconButton } from "./IconButton";
 import { iconProps } from "./iconProps";
 import { Row, PropertyName } from "./StripPanel";
+import { exactKeyFrame } from "./exactKeyFrame";
 
 export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   props
@@ -55,13 +56,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     return textEffect.keyframes.some((k) => k.property === key);
   };
 
-  const exactKeyFrame = (key: keyof TextEffect) => {
-    return textEffect.keyframes.find(
-      (k) =>
-        k.property === key &&
-        Math.abs(k.time - (currentTime - props.strip.start)) < Number.EPSILON
-    );
-  };
+  const time = currentTime - props.strip.start;
 
   return (
     <>
@@ -108,7 +103,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
               <Key
                 {...iconProps}
                 color={
-                  exactKeyFrame(key)
+                  exactKeyFrame(textEffect, key, time)
                     ? "var(--color-strip-selected)"
                     : hasKeyFrame(key)
                     ? "var(--color-primary)"
