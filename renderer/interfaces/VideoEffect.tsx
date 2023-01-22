@@ -23,3 +23,7 @@ export type ImageEffect = {
   y: number;
   keyframes: KeyFrame[];
 };
+
+export const isImageEffect = (effect: Effect): effect is ImageEffect => {
+  return effect.type === "image";
+};

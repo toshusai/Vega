@@ -1,12 +1,12 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { isTextEffect } from "../interfaces/TextEffect";
-import { isVideoEffect } from "../interfaces/VideoEffect";
+import { isImageEffect, isVideoEffect } from "../interfaces/VideoEffect";
 import store from "../store";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { Panel } from "./core/Panel";
-import { updateTextEffect } from "../rendering/updateTextEffect";
+import { isImageAsset, updateTextEffect } from "../rendering/updateTextEffect";
 import { updateVideoEffect } from "../rendering/updateVideoEffect";
 import { Key, KeyboardInput } from "../KeyboardInput";
 import { getDragHander } from "./getDragHander";
@@ -15,6 +15,7 @@ import { textEffectToRect } from "./textEffectToRect";
 import { Gizmo } from "./Gizmo";
 import { IconButton } from "./IconButton";
 import { iconProps } from "./iconProps";
+import { updateImageEffect } from "../rendering/updateImageEffect";
 
 export const Preview: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -177,6 +178,8 @@ export const Preview: FC = () => {
             updateTextEffect(ctx, effect, strip, scene);
           } else if (isVideoEffect(effect)) {
             updateVideoEffect(ctx, effect, strip, scene);
+          } else if (isImageEffect(effect)) {
+            updateImageEffect(ctx, effect, strip, scene);
           }
         }
       }
