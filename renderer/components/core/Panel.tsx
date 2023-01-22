@@ -17,7 +17,7 @@ export const Panel: FC<{
   );
 };
 
-export const PanelRoot = styled.div`
+const PanelRoot = styled.div`
   background-color: var(--color-background);
   border-radius: 8px;
   position: relative;
@@ -25,7 +25,7 @@ export const PanelRoot = styled.div`
   width: 100%;
 `;
 
-export const PanelInner = styled.div`
+const PanelInner = styled.div`
   margin: 8px 4px;
   position: relative;
   height: calc(100% - 16px);

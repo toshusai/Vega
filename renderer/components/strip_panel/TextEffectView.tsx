@@ -2,19 +2,19 @@ import { FC } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Key } from "tabler-icons-react";
-import { Strip } from "../interfaces/Strip";
-import { TextEffect } from "../interfaces/effects/TextEffect";
-import { UndoManager } from "../UndoManager";
-import { caclulateKeyFrameValue } from "../rendering/updateTextEffect";
-import { actions } from "../store/scene";
-import { useSelector } from "../store/useSelector";
-import { ClickEditInput } from "./core/ClickEditInput";
-import { NumberEditInput } from "./core/NumberEditInput";
-import { Item, Select } from "./core/Select";
-import { IconButton } from "./IconButton";
-import { iconProps } from "./core/iconProps";
+import { Strip } from "../../interfaces/Strip";
+import { TextEffect } from "../../interfaces/effects/TextEffect";
+import { UndoManager } from "../../UndoManager";
+import { caclulateKeyFrameValue } from "../../rendering/updateTextEffect";
+import { actions } from "../../store/scene";
+import { useSelector } from "../../store/useSelector";
+import { ClickEditInput } from "../core/ClickEditInput";
+import { NumberEditInput } from "../core/NumberEditInput";
+import { Item, Select } from "../core/Select";
+import { IconButton } from "../core/styled/IconButton";
+import { iconProps } from "../core/iconProps";
 import { Row, PropertyName } from "./StripPanel";
-import { exactKeyFrame } from "./exactKeyFrame";
+import { exactKeyFrame } from "../../utils/exactKeyFrame";
 
 export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   props

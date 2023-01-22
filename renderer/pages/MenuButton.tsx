@@ -1,5 +1,5 @@
 import { FC, ReactChild, useEffect, useRef, useState } from "react";
-import { StyledContextMenuButton } from "../components/ContextMenu";
+import { StyledContextMenuButton } from "../components/core/context_menu/ContextMenu";
 import { filePick } from "./filePick";
 import { HeaderMenuButton } from "./HeaderMenuButton";
 import { DropdownMenu } from "./DropdownMenu";

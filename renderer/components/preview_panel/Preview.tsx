@@ -1,22 +1,22 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { isTextEffect } from "../interfaces/effects/utils/isTextEffect";
-import { isVideoEffect } from "../interfaces/effects/utils/isVideoEffect";
-import { isImageEffect } from "../interfaces/effects/utils/isImageEffect";
-import store from "../store";
-import { actions } from "../store/scene";
-import { useSelector } from "../store/useSelector";
-import { Panel } from "./core/Panel";
-import { isImageAsset, updateTextEffect } from "../rendering/updateTextEffect";
-import { updateVideoEffect } from "../rendering/updateVideoEffect";
-import { Key, KeyboardInput } from "../KeyboardInput";
-import { getDragHander } from "./getDragHander";
+import { isTextEffect } from "../../interfaces/effects/utils/isTextEffect";
+import { isVideoEffect } from "../../interfaces/effects/utils/isVideoEffect";
+import { isImageEffect } from "../../interfaces/effects/utils/isImageEffect";
+import store from "../../store";
+import { actions } from "../../store/scene";
+import { useSelector } from "../../store/useSelector";
+import { Panel } from "../core/Panel";
+import { isImageAsset, updateTextEffect } from "../../rendering/updateTextEffect";
+import { updateVideoEffect } from "../../rendering/updateVideoEffect";
+import { Key, KeyboardInput } from "../../KeyboardInput";
+import { getDragHander } from "../../utils/getDragHander";
 import { ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
-import { textEffectToRect } from "./textEffectToRect";
-import { Gizmo } from "./Gizmo";
-import { IconButton } from "./IconButton";
-import { iconProps } from "./core/iconProps";
-import { updateImageEffect } from "../rendering/updateImageEffect";
+import { textEffectToRect } from "./utils/textEffectToRect";
+import { Gizmo } from "../preview_panel/Gizmo";
+import { IconButton } from "../core/styled/IconButton";
+import { iconProps } from "../core/iconProps";
+import { updateImageEffect } from "../../rendering/updateImageEffect";
 
 export const Preview: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
