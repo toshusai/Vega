@@ -77,6 +77,7 @@ export const PanelBody = styled.div`
   font-size: 12px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 const TextAssetDetailsPanel: FC<{

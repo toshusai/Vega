@@ -34,6 +34,5 @@ const PanelInner = styled.div`
   position: relative;
   height: calc(100% - 16px);
   width: calc(100% - 8px);
-  /* height: 100%; */
-  /* width: 100%; */
+  overflow: auto;
 `;
