@@ -51,12 +51,6 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
         })
       );
     });
-    // dispatch(
-    //   actions.updateEddect({
-    //     effect: { ...textEffect, ...partial },
-    //     stripId: props.strip.id,
-    //   })
-    // );
   };
   const undo = () => emit({ ...textEffect });
 
@@ -153,6 +147,19 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
         return (
           <Row key={key}>
             <PropertyName>{key}</PropertyName>
+            {/* <KeyFrameIconButton>
+              <Key
+                {...iconProps}
+                color={
+                  exactKeyFrame(textEffect, key, time)
+                    ? "var(--color-strip-selected)"
+                    : hasKeyFrame(key)
+                    ? "var(--color-primary)"
+                    : "white"
+                }
+              />
+            </KeyFrameIconButton> */}
+
             <NumberEditInput
               value={caclulateKeyFrameValue(
                 textEffect.keyframes,
@@ -173,18 +180,6 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
                   .run()
               }
             />
-            <KeyFrameIconButton>
-              <Key
-                {...iconProps}
-                color={
-                  exactKeyFrame(textEffect, key, time)
-                    ? "var(--color-strip-selected)"
-                    : hasKeyFrame(key)
-                    ? "var(--color-primary)"
-                    : "white"
-                }
-              />
-            </KeyFrameIconButton>
           </Row>
         );
       })}
