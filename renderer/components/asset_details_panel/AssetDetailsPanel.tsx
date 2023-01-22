@@ -25,7 +25,7 @@ export const AssetDetailsPanel: FC = () => {
   }
   const selectedAsset = selectedAssets[0];
   return (
-    <Panel width={50} height={100}>
+    <Panel width={100} height={100}>
       <PanelBody
         style={{
           overflow: "hidden",

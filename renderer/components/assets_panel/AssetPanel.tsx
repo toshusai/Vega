@@ -88,7 +88,7 @@ export const AssetPanel: FC = () => {
   };
 
   return (
-    <Panel height={100} width={50}>
+    <Panel height={100} width={100}>
       <div
         style={{
           marginBottom: "8px",

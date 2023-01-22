@@ -2,14 +2,18 @@ import { FC } from "react";
 import styled from "styled-components";
 
 export const Panel: FC<{
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
+  box?: boolean;
 }> = (props) => {
   return (
     <PanelRoot
       style={{
-        width: props.width + "%",
-        height: props.height + "%",
+        width:
+          typeof props.width === "string" ? props.width : props.width + "%",
+        height:
+          typeof props.height === "string" ? props.height : props.height + "%",
+        background: props.box ? "transparent" : undefined,
       }}
     >
       <PanelInner>{props.children}</PanelInner>
