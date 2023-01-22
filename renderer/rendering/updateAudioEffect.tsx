@@ -71,9 +71,8 @@ export function updateAudioEffect(
       audioStatusMap.set(elementMapKey, AudioStatus.Paused);
     };
     const gapFrames = 5;
-    const diff = Math.abs(
-      audioElement.currentTime - scene.currentTime + strip.start + effect.offset
-    );
+    const target = scene.currentTime - strip.start + effect.offset;
+    const diff = Math.abs(audioElement.currentTime - target);
     if (currentStatus === AudioStatus.Playing && !scene.isPlaying) {
       audioElement.pause();
     } else if (currentStatus === AudioStatus.Paused && scene.isPlaying) {
