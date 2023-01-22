@@ -5,6 +5,7 @@ export const Panel: FC<{
   width: number | string;
   height: number | string;
   box?: boolean;
+  style?: React.CSSProperties;
 }> = (props) => {
   return (
     <PanelRoot
@@ -14,6 +15,7 @@ export const Panel: FC<{
         height:
           typeof props.height === "string" ? props.height : props.height + "%",
         background: props.box ? "transparent" : undefined,
+        ...props.style,
       }}
     >
       <PanelInner>{props.children}</PanelInner>
@@ -34,5 +36,4 @@ const PanelInner = styled.div`
   position: relative;
   height: calc(100% - 16px);
   width: calc(100% - 8px);
-  overflow: auto;
 `;

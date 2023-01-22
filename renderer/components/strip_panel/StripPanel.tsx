@@ -12,12 +12,12 @@ export const StripPanel: FC = () => {
   const fps = useSelector((state) => state.scene.fps);
 
   const strip = selectedStrips[0];
-  if(!strip){
-    return <Panel width={100} height={100}></Panel>
+  if (!strip) {
+    return <Panel width={100} height={100}></Panel>;
   }
 
   return (
-    <Panel width={100} height={100}>
+    <Panel width={100} height={100} style={{ overflow: "auto" }}>
       <PanelBody>
         <div style={{ display: "flex" }}>
           <div>start:</div>
