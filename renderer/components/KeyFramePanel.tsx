@@ -1,13 +1,14 @@
 import { CSSProperties, FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useWidth } from "../hooks/useWidth";
-import { KeyFrame } from "../interfaces/TextEffect";
+import { isTextEffect, KeyFrame } from "../interfaces/TextEffect";
 import { Key, KeyboardInput } from "../KeyboardInput";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { Panel } from "./core/Panel";
 import { easeInExpo } from "./easing";
 import { getDragHander } from "./getDragHander";
+import { SelectRect } from "./SelectRect";
 import { TimeView } from "./TimeView";
 
 export const KeyFramePanel: FC = () => {
@@ -33,6 +34,35 @@ export const KeyFramePanel: FC = () => {
     setPxPerSec(width / ((end - start) * strip.length));
   }, [width, start, end, selectedStrips]);
   const dispatch = useDispatch();
+  const [rect, setRect] = useState<{
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  } | null>(null);
+
+  useEffect(() => {
+    if (rect) {
+      const selectedKeyframes = allKeyframes.filter((keyframe) => {
+        const left = keyframe.time * pxPerSec;
+        const propertiesIndex = Array.from(uniqueProperties).indexOf(
+          keyframe.property
+        );
+        const right = left + 16;
+        const top = 16 * propertiesIndex;
+        const bottom = top + 12;
+        return (
+          left < rect.left + rect.width &&
+          right > rect.left &&
+          top < rect.top + rect.height &&
+          bottom > rect.top
+        );
+      });
+      dispatch(
+        actions.setSelectKeyframeIds(selectedKeyframes.map((strip) => strip.id))
+      );
+    }
+  }, [rect]);
 
   if (selectedStrips.length !== 1) {
     return <Panel />;
@@ -45,6 +75,9 @@ export const KeyFramePanel: FC = () => {
     }
     return [];
   }) as KeyFrame[];
+  const uniqueProperties = new Set(
+    allKeyframes.map((keyframe) => keyframe.property)
+  );
 
   const handleMouseDownKeyFrame = (keyframe: KeyFrame) =>
     getDragHander<
@@ -57,6 +90,41 @@ export const KeyFramePanel: FC = () => {
       } | null
     >(
       (ctx) => {
+        const { diffX, pass } = ctx;
+        const newSelectedKFIds = pass.updatedKeyframeIds;
+        const selectedKFs = allKeyframes
+          .filter((strip) => newSelectedKFIds.includes(strip.id))
+          .sort((a, b) => a.time - b.time);
+
+        const newKFs = selectedKFs.map((keyframe) => {
+          const newTime = keyframe.time + diffX / pxPerSec;
+          return {
+            ...keyframe,
+            time: newTime,
+          };
+        });
+
+        strip.effects.forEach((effect) => {
+          if (!isTextEffect(effect)) {
+            return;
+          }
+          dispatch(
+            actions.updateEddect({
+              stripId: strip.id,
+              effect: {
+                ...effect,
+                keyframes: effect.keyframes.map((kf) => {
+                  const newK = newKFs.find((m) => m.id === kf.id);
+                  if (newK) {
+                    return newK;
+                  }
+                  return kf;
+                }),
+              },
+            })
+          );
+        });
+
         return null;
       },
       (ctx) => {
@@ -76,14 +144,46 @@ export const KeyFramePanel: FC = () => {
           updatedKeyframeIds: pass,
         };
       },
-      (ctx) => {}
+      (ctx) => {
+        // todo impl select single
+        // todo impl revert invalid
+        // todo impl commit
+      }
     );
+
+  const handleMouseDownForSelect = getDragHander(
+    ({ diffX, diffY, startEvent }) => {
+      const el = startEvent.target as HTMLElement;
+      const rect = el.getBoundingClientRect();
+      let left = startEvent.clientX - rect.left;
+      let top = startEvent.clientY - rect.top;
+      let width = diffX;
+      let height = diffY;
+      if (width < 0) {
+        left += width;
+        width = -width;
+      }
+      if (height < 0) {
+        top += height;
+        height = -height;
+      }
+      setRect({ left, top, width, height });
+    },
+    undefined,
+    (ctx) => {
+      setRect(null);
+      if (ctx.diffX === 0 && ctx.diffY === 0) {
+        dispatch(actions.setSelectKeyframeIds([]));
+      }
+    }
+  );
 
   return (
     <Panel>
       <div
         style={{
           display: "flex",
+          height: "100%",
         }}
       >
         <div>
@@ -91,9 +191,6 @@ export const KeyFramePanel: FC = () => {
           <div>
             {strip.effects.map((effect, i) => {
               if ("keyframes" in effect && Array.isArray(effect.keyframes)) {
-                const uniqueProperties = new Set(
-                  effect.keyframes.map((keyframe) => keyframe.property)
-                );
                 return Array.from(uniqueProperties).map((property, j) => {
                   return (
                     <div
@@ -125,13 +222,20 @@ export const KeyFramePanel: FC = () => {
             style={{
               display: "flex",
               position: "relative",
+              height: "100%",
+              overflow: "hidden",
+              userSelect: "none",
             }}
+            onMouseDown={handleMouseDownForSelect}
           >
+            <SelectRect
+              $height={rect?.height ?? 0}
+              $left={rect?.left ?? 0}
+              $top={rect?.top ?? 0}
+              $width={rect?.width ?? 0}
+            ></SelectRect>
             {strip.effects.map((effect, i) => {
               if ("keyframes" in effect && Array.isArray(effect.keyframes)) {
-                const uniqueProperties = new Set(
-                  effect.keyframes.map((keyframe) => keyframe.property)
-                );
                 return effect.keyframes.map((keyframe, j) => {
                   const x = keyframe.time * pxPerSec;
                   const propertiesIndex = Array.from(uniqueProperties).indexOf(
