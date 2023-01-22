@@ -11,7 +11,7 @@ export const TimeCursor: FC<{
       style={{
         position: "absolute",
         // 16px is the height of the scrollbar,
-        height: `calc(100% - ${props.bottom}px - ${props.top}px - 2px)`,
+        height: `calc(100% - ${bottom}px - ${props.top}px - 2px)`,
         width: "1px",
         top: props.top + "px",
         backgroundColor: "red",
