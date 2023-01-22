@@ -1,7 +1,7 @@
 import { FC, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
-import { Photo, Plus, Tex, Video } from "tabler-icons-react";
+import { Music, Photo, Plus, Tex, Video } from "tabler-icons-react";
 import { Effect } from "../../interfaces/effects/Effect";
 import { Strip } from "../../interfaces/Strip";
 import { TextEffect } from "../../interfaces/effects/TextEffect";
@@ -13,6 +13,7 @@ import { useSelector } from "../../store/useSelector";
 import { StyledContextMenuButton } from "../core/context_menu/ContextMenu";
 import { IconButton } from "../core/styled/IconButton";
 import { iconProps } from "../core/iconProps";
+import { AudioEffect } from "@/interfaces/effects/AudioEffect";
 
 export const AddStripButton: FC = () => {
   const [show, setShow] = useState(false);
@@ -144,6 +145,17 @@ export const AddStripButton: FC = () => {
     addNewStripWithEffect(effect);
   };
 
+  const handleAddAudioStrip = () => {
+    const effect: AudioEffect = {
+      id: uuid(),
+      type: "audio",
+      audioAssetId: "",
+      volume: 1,
+      keyframes: [],
+    };
+    addNewStripWithEffect(effect);
+  };
+
   return (
     <div
       ref={ref}
@@ -170,6 +182,10 @@ export const AddStripButton: FC = () => {
           <StyledContextMenuButton onClick={handleAddImageStrip}>
             <Photo {...newIconProps}></Photo>
             <div style={{ marginLeft: "4px" }}>Add Image Strip</div>
+          </StyledContextMenuButton>
+          <StyledContextMenuButton onClick={handleAddAudioStrip}>
+            <Music {...newIconProps}></Music>
+            <div style={{ marginLeft: "4px" }}>Add Audio Strip</div>
           </StyledContextMenuButton>
         </DropdownMenu>
       )}
