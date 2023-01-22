@@ -15,6 +15,7 @@ import { IconButton } from "../core/styled/IconButton";
 import { iconProps } from "../core/iconProps";
 import { Row, PropertyName } from "./StripPanel";
 import { exactKeyFrame } from "../../utils/exactKeyFrame";
+import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
 
 export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   props
@@ -24,13 +25,38 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   const currentTime = useSelector((state) => state.scene.currentTime);
   const fps = useSelector((state) => state.scene.fps);
 
+  const selectedStrips = useSelector((state) =>
+    state.scene.strips.filter((s) =>
+      state.scene.selectedStripIds.includes(s.id)
+    )
+  );
+
+  const allTextEffects = selectedStrips.flatMap((s) =>
+    s.effects.filter(isTextEffect)
+  );
+  const effectIdToStripMap = new Map(
+    selectedStrips.flatMap((s) =>
+      s.effects.filter(isTextEffect).map((e) => [e.id, s])
+    )
+  );
+  const isMulti = selectedStrips.length > 1;
+
   const emit = (partial: Partial<TextEffect>) => {
-    dispatch(
-      actions.updateEddect({
-        effect: { ...textEffect, ...partial },
-        stripId: props.strip.id,
-      })
-    );
+    allTextEffects.forEach((e) => {
+      const strip = effectIdToStripMap.get(e.id)!;
+      dispatch(
+        actions.updateEddect({
+          effect: { ...e, ...partial },
+          stripId: strip.id,
+        })
+      );
+    });
+    // dispatch(
+    //   actions.updateEddect({
+    //     effect: { ...textEffect, ...partial },
+    //     stripId: props.strip.id,
+    //   })
+    // );
   };
   const undo = () => emit({ ...textEffect });
 
