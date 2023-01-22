@@ -8,8 +8,10 @@ import { useSelector } from "../store/useSelector";
 import { Panel } from "./core/Panel";
 import { easeInExpo, getEasingFunction } from "./easing";
 import { getDragHander } from "./getDragHander";
+import { roundToFrame } from "./roundToFrame";
 import { ScaleScrollBar } from "./ScaleScrollBar";
 import { SelectRect } from "./SelectRect";
+import { TimeCursor } from "./TimeCursor";
 import { TimeView } from "./TimeView";
 
 export const KeyFramePanel: FC = () => {
@@ -25,8 +27,30 @@ export const KeyFramePanel: FC = () => {
     (state) => state.scene.selectedKeyframeIds
   );
 
+  const fps = useSelector((state) => state.scene.fps);
+  const currentTime = useSelector((state) => state.scene.currentTime);
+
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(1);
+
+  const handleMouseDownTimeView = getDragHander<number, void>(
+    ({ diffX, pass }) => {
+      const newCurrentTime = pass + diffX / pxPerSec;
+      if (newCurrentTime >= 0 && newCurrentTime <= strip.length) {
+        dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
+      }
+    },
+    ({ startEvent: e }) => {
+      // TODO fix magic number
+      const newCurrentTime =
+        (e.clientX - 40) / pxPerSec + start * strip.length + strip.start;
+      if (newCurrentTime >= 0 && newCurrentTime <= strip.length) {
+        dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
+      }
+      return newCurrentTime;
+    }
+  );
+
   useEffect(() => {
     if (selectedStrips.length !== 1) {
       return;
@@ -210,13 +234,23 @@ export const KeyFramePanel: FC = () => {
             })}
           </div>
         </div>
-        <div ref={ref} style={{ width: "100%" }}>
+        <div
+          ref={ref}
+          style={{ width: "100%", position: "relative", overflow: "hidden" }}
+        >
           <TimeView
             endSec={strip.length}
             offsetSec={start * strip.length}
             pxPerSec={pxPerSec}
-            fps={60}
+            fps={fps}
             frameMode={true}
+            onMouseDown={handleMouseDownTimeView}
+          />
+          <TimeCursor
+            left={
+              (-start * strip.length + (currentTime - strip.start)) * pxPerSec
+            }
+            top={0}
           />
 
           <div

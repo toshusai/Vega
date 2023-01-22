@@ -60,8 +60,10 @@ export const Timeline: FC = () => {
       }
     },
     ({ startEvent: e }) => {
+      // TODO fix magic number
+      // TODO merge with KeyFramePanel
       const newCurrentTime =
-        (e.clientX - 4) / pxPerSec + start * timelineLength;
+        (e.clientX - 8) / pxPerSec + start * timelineLength;
       if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
         dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
       }
@@ -376,7 +378,10 @@ export const Timeline: FC = () => {
           frameMode={true}
           onMouseDown={handleMouseDownTimeView}
         />
-        <TimeCursor left={(-start * timelineLength + currentTime) * pxPerSec} />
+        <TimeCursor
+          left={(-start * timelineLength + currentTime) * pxPerSec}
+          top={18} // for toolbar
+        />
         <div
           style={{
             position: "relative",
