@@ -11,7 +11,10 @@ import {
   Trash,
   Video,
 } from "tabler-icons-react";
-import { Asset, FontAsset, ImageAsset, VideoAsset } from "../interfaces/Asset";
+import { Asset } from "../interfaces/asset/Asset";
+import { ImageAsset } from "../interfaces/asset/ImageAsset";
+import { VideoAsset } from "../interfaces/asset/VideoAsset";
+import { FontAsset } from "../interfaces/asset/FontAsset";
 import { filePick } from "../pages/filePick";
 import { isImageAsset } from "../rendering/updateTextEffect";
 import { actions } from "../store/scene";
