@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Key } from "tabler-icons-react";
 import { Strip } from "../interfaces/Strip";
 import { TextEffect } from "../interfaces/TextEffect";
-import { UndoManager } from "../KeyboardInput";
+import { UndoManager } from "../UndoManager";
 import { caclulateKeyFrameValue } from "../rendering/updateTextEffect";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
