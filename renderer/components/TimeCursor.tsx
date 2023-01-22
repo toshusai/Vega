@@ -3,14 +3,15 @@ import { FC } from "react";
 export const TimeCursor: FC<{
   left: number;
   top: number;
+  bottom?: number;
 }> = (props) => {
+  const bottom = props.bottom ?? 0;
   return (
     <div
       style={{
         position: "absolute",
         // 16px is the height of the scrollbar,
-        // 18px is the height of the timeview
-        height: `calc(100% - 16px - ${props.top}px - 2px)`,
+        height: `calc(100% - ${props.bottom}px - ${props.top}px - 2px)`,
         width: "1px",
         top: props.top + "px",
         backgroundColor: "red",

@@ -311,8 +311,6 @@ export const Timeline: FC = () => {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          overflow: "hidden",
-          position: "relative",
         }}
         onWheel={handleWheelTimeView}
         onContextMenu={(e) => {
@@ -366,35 +364,17 @@ export const Timeline: FC = () => {
               {...iconProps}
               color={isSnap ? "var(--color-primary)" : "white"}
             />
-            <ToolTip>
-              Toggle Snap (current:{isSnap ? "ON" : "OFF"})
-            </ToolTip>
+            <ToolTip>Toggle Snap (current:{isSnap ? "ON" : "OFF"})</ToolTip>
           </IconButton>
           <IconButton onClick={handleCutStrip}>
             <Cut {...iconProps} />
-            <ToolTip>
-              Cut Strips
-            </ToolTip>
+            <ToolTip>Cut Strips</ToolTip>
           </IconButton>
           <IconButton onClick={deleteStrip}>
             <Trash {...iconProps} />
-            <ToolTip>
-              Delete Strips
-            </ToolTip>
+            <ToolTip>Delete Strips</ToolTip>
           </IconButton>
         </div>
-        <MemoTimeView
-          offsetSec={start * timelineLength}
-          endSec={timelineLength}
-          pxPerSec={pxPerSec}
-          fps={fps}
-          frameMode={true}
-          onMouseDown={handleMouseDownTimeView}
-        />
-        <TimeCursor
-          left={(-start * timelineLength + currentTime) * pxPerSec}
-          top={18} // for toolbar
-        />
         <div
           style={{
             position: "relative",
@@ -402,32 +382,57 @@ export const Timeline: FC = () => {
             height: "100%",
             overflow: "hidden",
           }}
-          onMouseDown={handleMouseDownForSelect}
         >
-          <SelectRect
-            $height={rect?.height ?? 0}
-            $left={rect?.left ?? 0}
-            $top={rect?.top ?? 0}
-            $width={rect?.width ?? 0}
-          ></SelectRect>
-          {strips.map((strip) => (
-            <MemoStripUI
-              {...strip}
-              key={strip.id}
-              fps={fps}
-              offset={start * timelineLength}
-              pxPerSec={pxPerSec}
-              selected={selectedStripIds.includes(strip.id)}
-              invalid={invalidStripIds.includes(strip.id)}
-              onStripChange={(strip) => {
-                dispatch(actions.updateStrip(strip));
-              }}
-              onMouseDown={handleMouseDownStrip(strip, false, false)}
-              onMouseDownLeftHandle={handleMouseDownStrip(strip, false, true)}
-              onMouseDownRightHandle={handleMouseDownStrip(strip, true, false)}
-              onClick={() => {}}
-            />
-          ))}
+          <MemoTimeView
+            offsetSec={start * timelineLength}
+            endSec={timelineLength}
+            pxPerSec={pxPerSec}
+            fps={fps}
+            frameMode={true}
+            onMouseDown={handleMouseDownTimeView}
+          />
+          <TimeCursor
+            left={(-start * timelineLength + currentTime) * pxPerSec}
+            top={0} // for toolbar
+          />
+          <div
+            style={{
+              position: "relative",
+              boxSizing: "border-box",
+              height: "100%",
+              overflow: "hidden",
+            }}
+            onMouseDown={handleMouseDownForSelect}
+          >
+            <SelectRect
+              $height={rect?.height ?? 0}
+              $left={rect?.left ?? 0}
+              $top={rect?.top ?? 0}
+              $width={rect?.width ?? 0}
+            ></SelectRect>
+            {strips.map((strip) => (
+              <MemoStripUI
+                {...strip}
+                key={strip.id}
+                fps={fps}
+                offset={start * timelineLength}
+                pxPerSec={pxPerSec}
+                selected={selectedStripIds.includes(strip.id)}
+                invalid={invalidStripIds.includes(strip.id)}
+                onStripChange={(strip) => {
+                  dispatch(actions.updateStrip(strip));
+                }}
+                onMouseDown={handleMouseDownStrip(strip, false, false)}
+                onMouseDownLeftHandle={handleMouseDownStrip(strip, false, true)}
+                onMouseDownRightHandle={handleMouseDownStrip(
+                  strip,
+                  true,
+                  false
+                )}
+                onClick={() => {}}
+              />
+            ))}
+          </div>
         </div>
         <MemoScaleScrollBar
           start={start}
