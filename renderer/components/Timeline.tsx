@@ -17,7 +17,8 @@ import {
   Trash,
 } from "tabler-icons-react";
 import { Strip } from "../interfaces/Strip";
-import { Key, KeyboardInput, UndoManager } from "../KeyboardInput";
+import { Key, KeyboardInput } from "../KeyboardInput";
+import { UndoManager } from "../UndoManager";
 import { roundToFrame } from "./roundToFrame";
 import { canMove } from "./canMove";
 import { moveStrip } from "./moveStrip";

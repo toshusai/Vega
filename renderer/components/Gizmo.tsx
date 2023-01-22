@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { isTextEffect, TextEffect } from "../interfaces/TextEffect";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
-import { UndoManager } from "../KeyboardInput";
+import { UndoManager } from "../UndoManager";
 import { getDragHander } from "./getDragHander";
 import styled from "styled-components";
 import { SelectRectProps } from "./SelectRect";

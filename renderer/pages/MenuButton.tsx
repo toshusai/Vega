@@ -1,4 +1,4 @@
-import { FC, ReactChild, useRef, useState } from "react";
+import { FC, ReactChild, useEffect, useRef, useState } from "react";
 import { StyledContextMenuButton } from "../components/ContextMenu";
 import { filePick } from "./filePick";
 import { HeaderMenuButton } from "./HeaderMenuButton";
@@ -12,6 +12,7 @@ import { formatForSave } from "./formatForSave";
 import { readFileUserDataDir } from "../ipc/readFileUserDataDir";
 import { writeFileUserDataDir } from "../ipc/writeFileUserDataDir";
 import { readFile } from "../ipc/readFile";
+import { UndoManager } from "../UndoManager";
 
 function readRecentFiles() {
   let fileJson = readFileUserDataDir("recentFiles.json");
@@ -27,6 +28,23 @@ export const MenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const [recentFiles, setRecentFiles] = useState<string[]>([]);
+
+  const [hasChanged, setHasChanged] = useState(false);
+
+  useEffect(() => {
+    const handleChange = () => {
+      if (UndoManager.main.Index > -1) {
+        setHasChanged(true);
+      } else {
+        setHasChanged(false);
+      }
+    };
+
+    UndoManager.main.addEventListener("change", handleChange);
+    return () => {
+      UndoManager.main.removeEventListener("change", handleChange);
+    };
+  }, []);
 
   const handleClick = () => {
     setShowMenu(!showMenu);
@@ -100,7 +118,9 @@ export const MenuButton: FC = () => {
         position: "relative",
       }}
     >
-      <HeaderMenuButton onClick={handleClick}>File</HeaderMenuButton>
+      <HeaderMenuButton onClick={handleClick}>
+        File{hasChanged ? "*" : null}
+      </HeaderMenuButton>
       {showMenu && (
         <DropdownMenu>
           <StyledContextMenuButton onClick={handleFilePick}>
