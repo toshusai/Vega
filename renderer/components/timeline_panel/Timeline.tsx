@@ -34,6 +34,8 @@ import {
 import { uuid } from "short-uuid";
 import { Button } from "../core/DropdownLike";
 import { AddStripButton } from "./AddStripButton";
+import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
+import { releaseAudioAsset } from "@/rendering/updateAudioEffect";
 
 export const Timeline: FC = () => {
   const strips = useSelector((state) => state.scene.strips);
@@ -314,6 +316,16 @@ export const Timeline: FC = () => {
   };
 
   const deleteStrip = () => {
+    const selectedStrips = strips.filter((strip) =>
+      selectedStripIds.includes(strip.id)
+    );
+    selectedStrips.forEach((strip) => {
+      strip.effects.forEach((effect) => {
+        if (isAudioEffect(effect)) {
+          releaseAudioAsset(effect);
+        }
+      });
+    });
     dispatch(actions.removeStrip(selectedStripIds));
   };
 

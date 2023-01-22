@@ -5,15 +5,29 @@ import { SceneState } from "../store/scene";
 const loadedAudioElementMap = new Map<string, HTMLAudioElement>();
 
 enum AudioStatus {
-  Loading,
-  Playing,
-  Paused,
-  Seeking,
+  Loading = "loading",
+  Playing = "playing",
+  Paused = "paused",
+  Seeking = "seeking",
+  Deleted = "deleted",
 }
 
 const audioStatusMap = new Map<string, AudioStatus>();
 
 const modeLoadingBlack = false;
+
+export function releaseAudioAsset(effect: AudioEffect) {
+  const key = effect.id + effect.audioAssetId;
+  audioStatusMap.set(key, AudioStatus.Deleted);
+  const audioElement = loadedAudioElementMap.get(key);
+  console.log(loadedAudioElementMap, key)
+  if (audioElement) {
+    audioElement.pause();
+    audioElement.remove();
+    loadedAudioElementMap.delete(key);
+    console.log("delete");
+  }
+}
 
 export function updateAudioEffect(
   ctx: CanvasRenderingContext2D,
@@ -25,12 +39,17 @@ export function updateAudioEffect(
     (asset) => asset.id === effect.audioAssetId
   );
   const elementMapKey = effect.id + effect.audioAssetId;
+  const currentStatus = audioStatusMap.get(elementMapKey);
+  let audioElement = loadedAudioElementMap.get(elementMapKey);
+  console.log(currentStatus, !!audioElement);
+  if (currentStatus === AudioStatus.Deleted) {
+    return;
+  }
   if (
     scene.currentTime < strip.start ||
     scene.currentTime > strip.start + strip.length - 1 / scene.fps
   ) {
     audioStatusMap.set(effect.audioAssetId, AudioStatus.Paused);
-    let audioElement = loadedAudioElementMap.get(elementMapKey);
     if (!audioElement) {
       return;
     }
@@ -39,7 +58,6 @@ export function updateAudioEffect(
     return;
   }
   if (audioAsset) {
-    let audioElement = loadedAudioElementMap.get(elementMapKey);
     if (!audioElement) {
       audioElement = document.createElement("audio");
       loadedAudioElementMap.set(elementMapKey, audioElement);
@@ -51,7 +69,6 @@ export function updateAudioEffect(
       audioStatusMap.set(elementMapKey, AudioStatus.Paused);
       audioElement.pause();
     };
-    const currentStatus = audioStatusMap.get(elementMapKey);
     if (currentStatus === AudioStatus.Loading) {
       return;
     }
