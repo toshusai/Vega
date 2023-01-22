@@ -1,5 +1,5 @@
-import { Strip } from "../interfaces/Strip";
-import { roundToFrame } from "./roundToFrame";
+import { Strip } from "../Strip";
+import { roundToFrame } from "../../components/roundToFrame";
 
 export function snap(
   newStart: number,

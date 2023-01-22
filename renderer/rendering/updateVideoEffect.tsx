@@ -3,13 +3,16 @@ import { VideoEffect } from "../interfaces/effects/VideoEffect";
 import { SceneState } from "../store/scene";
 
 const loadedVideoElementMap = new Map<string, HTMLVideoElement>();
-const videoStatusMap = new Map<string, VideoStatus>();
+
 enum VideoStatus {
   Loading,
   Playing,
   Paused,
   Seeking,
 }
+
+const videoStatusMap = new Map<string, VideoStatus>();
+
 const modeLoadingBlack = false;
 
 export function updateVideoEffect(

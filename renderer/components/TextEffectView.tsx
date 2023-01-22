@@ -12,7 +12,7 @@ import { ClickEditInput } from "./core/ClickEditInput";
 import { NumberEditInput } from "./core/NumberEditInput";
 import { Item, Select } from "./core/Select";
 import { IconButton } from "./IconButton";
-import { iconProps } from "./iconProps";
+import { iconProps } from "./core/iconProps";
 import { Row, PropertyName } from "./StripPanel";
 import { exactKeyFrame } from "./exactKeyFrame";
 

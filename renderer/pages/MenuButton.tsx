@@ -4,7 +4,7 @@ import { filePick } from "./filePick";
 import { HeaderMenuButton } from "./HeaderMenuButton";
 import { DropdownMenu } from "./DropdownMenu";
 import { ArrowRight, Clock, DeviceFloppy, File } from "tabler-icons-react";
-import { iconProps } from "../components/iconProps";
+import { iconProps } from "../components/core/iconProps";
 import { download } from ".";
 import store from "../store";
 import { actions } from "../store/scene";

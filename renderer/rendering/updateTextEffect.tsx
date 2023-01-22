@@ -1,4 +1,4 @@
-import { Ease, easeOutBack, getEasingFunction } from "../components/easing";
+import { Ease, getEasingFunction } from "../components/easing";
 import { Asset } from "../interfaces/asset/Asset";
 import { ImageAsset } from "../interfaces/asset/ImageAsset";
 import { VideoAsset } from "../interfaces/asset/VideoAsset";
