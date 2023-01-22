@@ -68,7 +68,8 @@ export const StyledContextMenuButton = styled.div`
   font-family: "Ricty Diminished";
   color: var(--color-text);
   font-size: 12px;
-  line-height: 12px;
+  line-height: 14px;
+  height: 12px;
   cursor: pointer;
   padding: 2px 4px;
   border-radius: 2px;

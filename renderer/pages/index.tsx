@@ -12,6 +12,9 @@ import { StripPanel } from "../components/StripPanel";
 import { actions } from "../store/scene";
 import { KeyFramePanel } from "../components/KeyFramePanel";
 import { MenuButton } from "./MenuButton";
+import { formatForSave } from "./formatForSave";
+import { writeFile } from "../ipc/writeFile";
+
 export function download(blob: Blob | string, name: string) {
   const link = document.createElement("a");
   if (link.href) {
@@ -29,6 +32,14 @@ export function download(blob: Blob | string, name: string) {
 
 const IndexPage = () => {
   KeyboardInput.init(() => {
+    KeyboardInput.addKeyDownListener(Key.KeyS, (e) => {
+      e.preventDefault();
+      if (KeyboardInput.isPressed(Key.Meta)) {
+        if (!writeFile('', formatForSave(store.getState()))) {
+          throw new Error("Failed to save file");
+        }
+      }
+    });
     KeyboardInput.addKeyDownListener(Key.KeyZ, (e) => {
       e.preventDefault();
       if (

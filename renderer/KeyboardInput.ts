@@ -105,6 +105,7 @@ export enum Key {
   // Alphabet keys
   KeyA = "a",
 
+  KeyS = "s",
   KeyZ = "z",
 }
 

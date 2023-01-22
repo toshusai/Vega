@@ -3,9 +3,13 @@ import { join } from "path";
 import { format } from "url";
 
 // Packages
-import { BrowserWindow, app, ipcMain, IpcMainEvent } from "electron";
+import { BrowserWindow, app } from "electron";
 import isDev from "electron-is-dev";
 import prepareNext from "electron-next";
+import { initReadFileUserDataDir } from "./ipc/readFileUserDataDir";
+import { initWriteFile } from "./ipc/writeFile";
+import { initWriteFileUserDataDir } from "./ipc/writeFileUserDataDir";
+import { initReadFile } from "./ipc/readFile";
 
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
@@ -18,6 +22,7 @@ app.on("ready", async () => {
       nodeIntegration: false,
       contextIsolation: false,
       preload: join(__dirname, "preload.js"),
+      webSecurity: false,
     },
   });
 
@@ -35,8 +40,7 @@ app.on("ready", async () => {
 // Quit the app once all windows are closed
 app.on("window-all-closed", app.quit);
 
-// listen the channel `message` and resend the received message to the renderer process
-ipcMain.on("message", (event: IpcMainEvent, message: any) => {
-  console.log(message);
-  setTimeout(() => event.sender.send("message", "hi from electron"), 500);
-});
+initReadFileUserDataDir();
+initWriteFile();
+initWriteFileUserDataDir();
+initReadFile();
