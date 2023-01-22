@@ -153,6 +153,17 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
           value={textEffect.fontAssetId ?? ""}
         />
       </Row>
+      <Row>
+        <PropertyName>font style</PropertyName>
+        <Select
+          items={["normal", "bold", "italic", "bold italic"].map((v) => ({
+            value: v,
+            label: v,
+          }))}
+          onChange={(value) => emit({ fontStyle: value })}
+          value={textEffect.fontStyle ?? "normal"}
+        />
+      </Row>
     </>
   );
 };
