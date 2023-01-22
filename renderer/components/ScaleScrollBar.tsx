@@ -46,14 +46,15 @@ export const ScaleScrollBar: FC<{
         borderRadius: "8px",
         border: "1px solid var(--color-border)",
         boxSizing: "border-box",
+        position: "relative",
       }}
     >
       <div
         style={{
           position: "absolute",
           borderRadius: "8px",
-          left: `calc(${props.start * 100}% + 1px)`,
-          width: `calc(${(props.end - props.start) * 100}% - 2px)`,
+          left: `calc(${props.start * 100}%)`,
+          width: `calc(${(props.end - props.start) * 100}%)`,
           height: "14px",
           backgroundColor: "var(--color-text-strip)",
         }}

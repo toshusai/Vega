@@ -8,6 +8,7 @@ import { useSelector } from "../store/useSelector";
 import { Panel } from "./core/Panel";
 import { easeInExpo, getEasingFunction } from "./easing";
 import { getDragHander } from "./getDragHander";
+import { ScaleScrollBar } from "./ScaleScrollBar";
 import { SelectRect } from "./SelectRect";
 import { TimeView } from "./TimeView";
 
@@ -44,7 +45,7 @@ export const KeyFramePanel: FC = () => {
   useEffect(() => {
     if (rect) {
       const selectedKeyframes = allKeyframes.filter((keyframe) => {
-        const left = keyframe.time * pxPerSec;
+        const left = (keyframe.time - start * strip.length) * pxPerSec;
         const propertiesIndex = Array.from(uniqueProperties).indexOf(
           keyframe.property
         );
@@ -211,8 +212,8 @@ export const KeyFramePanel: FC = () => {
         </div>
         <div ref={ref} style={{ width: "100%" }}>
           <TimeView
-            endSec={10}
-            offsetSec={0}
+            endSec={strip.length}
+            offsetSec={start * strip.length}
             pxPerSec={pxPerSec}
             fps={60}
             frameMode={true}
@@ -222,7 +223,7 @@ export const KeyFramePanel: FC = () => {
             style={{
               display: "flex",
               position: "relative",
-              height: "100%",
+              height: "calc(100% - 16px - 20px)",
               overflow: "hidden",
               userSelect: "none",
             }}
@@ -237,7 +238,7 @@ export const KeyFramePanel: FC = () => {
             {strip.effects.map((effect, i) => {
               if (isTextEffect(effect)) {
                 return effect.keyframes.map((keyframe, j) => {
-                  const x = keyframe.time * pxPerSec;
+                  const x = (keyframe.time - start * strip.length) * pxPerSec;
                   const propertiesIndex = Array.from(uniqueProperties).indexOf(
                     keyframe.property
                   );
@@ -265,6 +266,14 @@ export const KeyFramePanel: FC = () => {
               return null;
             })}
           </div>
+          <ScaleScrollBar
+            start={start}
+            end={end}
+            onScaleChange={(start, end) => {
+              setStart(start);
+              setEnd(end);
+            }}
+          />
         </div>
       </div>
     </Panel>
