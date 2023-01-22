@@ -7,6 +7,7 @@ import { Strip } from "../interfaces/Strip";
 import { TextEffect } from "../interfaces/effects/TextEffect";
 import { KeyFrame } from "../interfaces/effects/KeyFrame";
 import { SceneState } from "../store/scene";
+import { AudioAsset } from "@/interfaces/asset/AudioAsset";
 
 const loadedFontAssetMap = new Map<string, boolean>();
 
@@ -19,6 +20,10 @@ export function isVideoAsset(asset: Asset): asset is VideoAsset {
 
 export function isImageAsset(asset: Asset): asset is ImageAsset {
   return asset.type === "image";
+}
+
+export function isAudioAsset(asset: Asset): asset is AudioAsset {
+  return asset.type === "audio";
 }
 
 export function loadFont(fontAsset: FontAsset) {
