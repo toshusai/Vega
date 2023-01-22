@@ -1,4 +1,4 @@
-import { Ease } from "../components/easing";
+import { Ease } from "../../components/easing";
 import { Effect } from "./Effect";
 
 export type TextEffect = {

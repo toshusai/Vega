@@ -1,5 +1,5 @@
 import { Strip } from "../interfaces/Strip";
-import { VideoEffect } from "../interfaces/VideoEffect";
+import { VideoEffect } from "../interfaces/effects/VideoEffect";
 import { SceneState } from "../store/scene";
 
 const loadedVideoElementMap = new Map<string, HTMLVideoElement>();

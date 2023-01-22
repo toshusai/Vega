@@ -1,4 +1,4 @@
-import { TextEffect } from "../interfaces/TextEffect";
+import { TextEffect } from "../interfaces/effects/TextEffect";
 
 export function exactKeyFrame(textEffect: TextEffect,
   key: keyof TextEffect,

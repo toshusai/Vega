@@ -1,4 +1,4 @@
-import { TextEffect } from "../interfaces/TextEffect";
+import { TextEffect } from "../interfaces/effects/TextEffect";
 import {
   caclulateKeyFrameValue,
   measureMap,

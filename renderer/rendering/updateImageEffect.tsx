@@ -1,5 +1,5 @@
 import { Strip } from "../interfaces/Strip";
-import { ImageEffect } from "../interfaces/ImageEffect";
+import { ImageEffect } from "../interfaces/effects/ImageEffect";
 import { SceneState } from "../store/scene";
 
 const loadedImageElementMap = new Map<string, HTMLImageElement>();

@@ -4,7 +4,7 @@ import { ImageAsset } from "../interfaces/asset/ImageAsset";
 import { VideoAsset } from "../interfaces/asset/VideoAsset";
 import { FontAsset } from "../interfaces/asset/FontAsset";
 import { Strip } from "../interfaces/Strip";
-import { KeyFrame, TextEffect } from "../interfaces/TextEffect";
+import { KeyFrame, TextEffect } from "../interfaces/effects/TextEffect";
 import { SceneState } from "../store/scene";
 
 const loadedFontAssetMap = new Map<string, boolean>();
