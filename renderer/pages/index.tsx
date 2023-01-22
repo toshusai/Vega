@@ -11,6 +11,7 @@ import { AssetDetailsPanel } from "../components/AssetDetailsPanel";
 import { StripPanel } from "../components/StripPanel";
 import { actions } from "../store/scene";
 import { KeyFramePanel } from "../components/KeyFramePanel";
+import { MenuButton } from "./MenuButton";
 
 const IndexPage = () => {
   KeyboardInput.init(() => {
@@ -36,11 +37,14 @@ const IndexPage = () => {
           style={{
             display: "flex",
             height: "16px",
+            padding: "4px 4px 0px 4px",
           }}
-        ></div>
+        >
+          <MenuButton />
+        </div>
         <VPanelBox
           style={{
-            height: "calc(100% - 16px)",
+            height: "calc(100% - 24px)",
           }}
         >
           <div
