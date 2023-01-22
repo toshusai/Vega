@@ -1,16 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useNativeOnChange(
+export function useNativeOnChange<
+  T extends HTMLInputElement | HTMLTextAreaElement = HTMLInputElement
+>(
   propsValue: string | number,
-  propsOnChange: (value: number | string) => void) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  propsOnChange: (value: number | string) => void
+) {
+  const inputRef = useRef<T>(null);
   const [value, setValue] = useState(propsValue);
   useEffect(() => {
     const onChange = (e: InputEvent) => {
-      const target = e.target as HTMLInputElement;
+      const target = e.target as T;
       if (typeof propsValue === "string") {
         propsOnChange?.(target.value);
-      } else {
+      } else if (target instanceof HTMLInputElement) {
         propsOnChange?.(target.valueAsNumber);
       }
     };

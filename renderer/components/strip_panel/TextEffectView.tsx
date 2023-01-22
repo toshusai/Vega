@@ -8,7 +8,7 @@ import { UndoManager } from "../../UndoManager";
 import { caclulateKeyFrameValue } from "../../rendering/updateTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
-import { ClickEditInput } from "../core/ClickEditInput";
+import { ClickEditInput, ClickEditTextarea } from "../core/ClickEditInput";
 import { NumberEditInput } from "../core/NumberEditInput";
 import { Item, Select } from "../core/Select";
 import { IconButton } from "../core/styled/IconButton";
@@ -73,7 +73,12 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     <>
       <Row>
         <PropertyName>text</PropertyName>
-        <ClickEditInput
+        <ClickEditTextarea
+          style={{
+            maxWidth: "100%",
+            width: "100%",
+            marginLeft: "8px",
+          }}
           value={textEffect.text}
           onInput={(value) => emit({ text: value })}
           onChange={(value) =>
