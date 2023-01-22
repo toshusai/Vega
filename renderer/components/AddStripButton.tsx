@@ -12,7 +12,7 @@ import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { StyledContextMenuButton } from "./ContextMenu";
 import { IconButton } from "./IconButton";
-import { iconProps } from "./iconProps";
+import { iconProps } from "./core/iconProps";
 
 export const AddStripButton: FC = () => {
   const [show, setShow] = useState(false);

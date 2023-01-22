@@ -21,7 +21,7 @@ import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { Panel } from "./core/Panel";
 import { IconButton } from "./IconButton";
-import { iconProps } from "./iconProps";
+import { iconProps } from "./core/iconProps";
 import { ToolTip } from "./ToolTip";
 
 const supportedVideoExtensions = ["mp4", "webm"];

@@ -15,7 +15,7 @@ import { ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
 import { textEffectToRect } from "./textEffectToRect";
 import { Gizmo } from "./Gizmo";
 import { IconButton } from "./IconButton";
-import { iconProps } from "./iconProps";
+import { iconProps } from "./core/iconProps";
 import { updateImageEffect } from "../rendering/updateImageEffect";
 
 export const Preview: FC = () => {

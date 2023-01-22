@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { Plus } from "tabler-icons-react";
 import { IconButton } from "../IconButton";
-import { iconProps } from "../iconProps";
+import { iconProps } from "./iconProps";
 import { StyledSelect } from "./StyledSelect";
 
 type Item = {
