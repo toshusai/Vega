@@ -1,5 +1,4 @@
 import { Effect } from "./Effect";
-import { KeyFrame } from "./TextEffect";
 
 export type VideoEffect = {
   id: string;
@@ -13,17 +12,4 @@ export type VideoEffect = {
 
 export const isVideoEffect = (effect: Effect): effect is VideoEffect => {
   return effect.type === "video";
-};
-
-export type ImageEffect = {
-  id: string;
-  type: "image";
-  imageAssetId: string;
-  x: number;
-  y: number;
-  keyframes: KeyFrame[];
-};
-
-export const isImageEffect = (effect: Effect): effect is ImageEffect => {
-  return effect.type === "image";
 };
