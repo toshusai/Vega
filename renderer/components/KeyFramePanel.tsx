@@ -122,7 +122,7 @@ export const KeyFramePanel: FC = () => {
           .sort((a, b) => a.time - b.time);
 
         const newKFs = selectedKFs.map((keyframe) => {
-          const newTime = keyframe.time + diffX / pxPerSec;
+          const newTime = roundToFrame(keyframe.time + diffX / pxPerSec, fps)
           return {
             ...keyframe,
             time: newTime,
