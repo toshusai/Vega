@@ -1,6 +1,8 @@
 import { Strip } from "../Strip";
 import { checkOverlap } from "./checkOverlap";
 
+const MAX_LAYER = 8;
+
 export function canMove(
   strip: Strip,
   withoutSelectedStrips: Strip[],
@@ -12,7 +14,7 @@ export function canMove(
     strip.start < 0 ||
     strip.start + strip.length > timelineLength ||
     strip.layer < 0 ||
-    strip.layer > 3
+    strip.layer > MAX_LAYER-1
   ) {
     return false;
   }
