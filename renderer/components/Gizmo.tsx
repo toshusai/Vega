@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import {
-  isTextEffect,
-  KeyFrame,
   TextEffect,
 } from "../interfaces/effects/TextEffect";
+import { KeyFrame } from "../interfaces/effects/KeyFrame";
+import { isTextEffect } from "../interfaces/effects/utils/isTextEffect";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { UndoManager } from "../UndoManager";
@@ -95,7 +95,7 @@ export const Gizmo: FC<{
           ...textEffects[0],
           ...partial,
           keyframes: finalKeyFrames,
-        },
+        } as TextEffect,
         stripId: strip.id,
       })
     );

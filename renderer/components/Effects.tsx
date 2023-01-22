@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { Effect } from "../interfaces/effects/Effect";
 import { Strip } from "../interfaces/Strip";
-import { isTextEffect } from "../interfaces/effects/TextEffect";
-import { isVideoEffect } from "../interfaces/effects/VideoEffect";
-import { isImageEffect } from "../interfaces/isImageEffect";
+import { isTextEffect } from "../interfaces/effects/utils/isTextEffect";
+import { isVideoEffect } from "../interfaces/effects/utils/isVideoEffect";
+import { isImageEffect } from "../interfaces/effects/utils/isImageEffect";
 import { ImageEffectView } from "./ImageEffectView";
 import { TextEffectView } from "./TextEffectView";
 import { VideoEffectView } from "./VideoEffectView";

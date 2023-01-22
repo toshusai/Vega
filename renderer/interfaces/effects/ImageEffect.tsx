@@ -1,4 +1,4 @@
-import { KeyFrame } from "./TextEffect";
+import { KeyFrame } from "./KeyFrame";
 
 export type ImageEffect = {
   id: string;
