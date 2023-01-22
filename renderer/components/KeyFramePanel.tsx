@@ -6,7 +6,7 @@ import { Key, KeyboardInput } from "../KeyboardInput";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { Panel } from "./core/Panel";
-import { easeInExpo } from "./easing";
+import { easeInExpo, getEasingFunction } from "./easing";
 import { getDragHander } from "./getDragHander";
 import { SelectRect } from "./SelectRect";
 import { TimeView } from "./TimeView";
@@ -235,7 +235,7 @@ export const KeyFramePanel: FC = () => {
               $width={rect?.width ?? 0}
             ></SelectRect>
             {strip.effects.map((effect, i) => {
-              if ("keyframes" in effect && Array.isArray(effect.keyframes)) {
+              if (isTextEffect(effect)) {
                 return effect.keyframes.map((keyframe, j) => {
                   const x = keyframe.time * pxPerSec;
                   const propertiesIndex = Array.from(uniqueProperties).indexOf(
@@ -247,7 +247,7 @@ export const KeyFramePanel: FC = () => {
                       onMouseDown={handleMouseDownKeyFrame(keyframe)}
                     >
                       <MmakeSVG
-                        f={easeInExpo}
+                        f={getEasingFunction(keyframe.ease)}
                         style={{
                           position: "absolute",
                           left: x,

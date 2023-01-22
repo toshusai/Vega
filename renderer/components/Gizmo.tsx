@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import { isTextEffect, TextEffect } from "../interfaces/TextEffect";
+import { isTextEffect, KeyFrame, TextEffect } from "../interfaces/TextEffect";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { UndoManager } from "../UndoManager";
@@ -8,6 +8,10 @@ import { getDragHander } from "./getDragHander";
 import styled from "styled-components";
 import { SelectRectProps } from "./SelectRect";
 import { textEffectToRect } from "./textEffectToRect";
+import { exactKeyFrame } from "./exactKeyFrame";
+import { uuid } from "short-uuid";
+import { Ease } from "./easing";
+import { roundToFrame } from "./roundToFrame";
 
 export const Gizmo: FC<{
   left: number;
@@ -45,11 +49,48 @@ export const Gizmo: FC<{
   if (!rect) return null;
 
   const emit = (partial: Partial<TextEffect>) => {
+    const changedKeys = Object.keys(partial) as (keyof TextEffect)[];
+    const newKFs: KeyFrame[] = [];
+    changedKeys.forEach((key) => {
+      const hasKeyFrame = textEffects[0].keyframes.some(
+        (keyframe) => keyframe.property === key
+      );
+      if (hasKeyFrame) {
+        const onKeyFrame = exactKeyFrame(
+          textEffects[0],
+          key,
+          currentTime - strip.start
+        );
+        if (onKeyFrame) {
+          newKFs.push({
+            ...onKeyFrame,
+            value: partial[key] as any,
+          });
+        } else {
+          newKFs.push({
+            id: uuid(),
+            property: key,
+            time: roundToFrame(currentTime - strip.start, fps),
+            value: partial[key] as any,
+            ease: Ease.Linear,
+          });
+        }
+      }
+    });
+
+    const finalKeyFrames = [
+      ...newKFs,
+      ...textEffects[0].keyframes.filter(
+        (keyframe) => !newKFs.find((kf) => kf.id === keyframe.id)
+      ),
+    ];
+
     dispatch(
       actions.updateEddect({
         effect: {
           ...textEffects[0],
           ...partial,
+          keyframes: finalKeyFrames,
         },
         stripId: strip.id,
       })
