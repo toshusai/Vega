@@ -10,7 +10,7 @@ import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { ClickEditInput } from "./core/ClickEditInput";
 import { NumberEditInput } from "./core/NumberEditInput";
-import { Select } from "./core/Select";
+import { Item, Select } from "./core/Select";
 import { IconButton } from "./IconButton";
 import { iconProps } from "./iconProps";
 import { Row, PropertyName } from "./StripPanel";
@@ -37,7 +37,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   const assets = useSelector((state) => state.scene.assets);
   const fontAssets = assets.filter((a) => a.type === "font");
 
-  const fontAssetItems = fontAssets.map((a) => ({
+  const fontAssetItems: Item[] = fontAssets.map((a) => ({
     value: a.id,
     label: a.name,
   }));
@@ -57,6 +57,17 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   };
 
   const time = currentTime - props.strip.start;
+
+  const noFontAsset =
+    fontAssets.find((a) => a.id === textEffect.fontAssetId) === undefined;
+
+  if (noFontAsset) {
+    fontAssetItems.unshift({
+      value: textEffect.fontAssetId ?? '',
+      label: "No font asset",
+      disabled: true,
+    });
+  }
 
   return (
     <>
@@ -134,7 +145,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
         <Select
           items={fontAssetItems}
           onChange={(value) => emit({ fontAssetId: value })}
-          value={textEffect.fontAssetId}
+          value={textEffect.fontAssetId ?? ''}
         />
       </Row>
     </>

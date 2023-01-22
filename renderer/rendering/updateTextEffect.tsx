@@ -1,5 +1,5 @@
 import { Ease, easeOutBack, getEasingFunction } from "../components/easing";
-import { Asset, FontAsset, VideoAsset } from "../interfaces/Asset";
+import { Asset, FontAsset, ImageAsset, VideoAsset } from "../interfaces/Asset";
 import { Strip } from "../interfaces/Strip";
 import { KeyFrame, TextEffect } from "../interfaces/TextEffect";
 import { SceneState } from "../store/scene";
@@ -13,7 +13,7 @@ export function isVideoAsset(asset: Asset): asset is VideoAsset {
   return asset.type === "video";
 }
 
-export function isImageAsset(asset: Asset): asset is VideoAsset {
+export function isImageAsset(asset: Asset): asset is ImageAsset {
   return asset.type === "image";
 }
 
@@ -47,7 +47,9 @@ export function updateTextEffect(
     (asset) => asset.id === effect.fontAssetId
   );
 
-  loadFont(fontAsset as FontAsset);
+  if (fontAsset) {
+    loadFont(fontAsset as FontAsset);
+  }
 
   ctx.fillStyle = "black";
   ctx.font = effect.fontSize + "px " + fontAsset?.name || "sans-serif";
