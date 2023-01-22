@@ -287,6 +287,7 @@ export const KeyFramePanel: FC = () => {
               (-start * strip.length + (currentTime - strip.start)) * pxPerSec
             }
             top={0}
+            bottom={16} // for scroll bar
           />
 
           <div
