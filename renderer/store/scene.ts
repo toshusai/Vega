@@ -197,6 +197,39 @@ export const sceneSlice = createSlice({
         }
       });
     },
+
+    updateAssets: (
+      state,
+      action: {
+        payload: Asset | Asset[];
+      }
+    ) => {
+      const assets = Array.isArray(action.payload)
+        ? action.payload
+        : [action.payload];
+
+      assets.forEach((asset) => {
+        const index = state.assets.findIndex((a) => a.id === asset.id);
+        if (index >= 0) {
+          state.assets[index] = asset;
+        } else {
+          state.assets.push(asset);
+        }
+      });
+    },
+
+    removeAsset: (
+      state,
+      action: {
+        payload: string | string[];
+      }
+    ) => {
+      const assetIds = Array.isArray(action.payload)
+        ? action.payload
+        : [action.payload];
+
+      state.assets = state.assets.filter((a) => !assetIds.includes(a.id));
+    },
   },
 });
 

@@ -1,11 +1,32 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
+import { uuid } from "short-uuid";
 import styled from "styled-components";
-import { Tex, Video } from "tabler-icons-react";
-import { Asset } from "../interfaces/Asset";
+import { FilePlus, PlayerPause, Tex, Trash, Video } from "tabler-icons-react";
+import { Asset, FontAsset, VideoAsset } from "../interfaces/Asset";
+import { filePick } from "../pages/filePick";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { Panel } from "./core/Panel";
+import { IconButton } from "./IconButton";
+import { iconProps } from "./iconProps";
+import { ToolTip } from "./ToolTip";
+
+const supportedVideoExtensions = ["mp4", "webm"];
+const supportedFontExtensions = ["ttf"];
+const supportedImageExtensions = ["png", "jpg", "jpeg"];
+
+function isImage(path: string) {
+  return supportedImageExtensions.some((ext) => path.endsWith(ext));
+}
+
+function isVideo(path: string) {
+  return supportedVideoExtensions.some((ext) => path.endsWith(ext));
+}
+
+function isFont(path: string) {
+  return supportedFontExtensions.some((ext) => path.endsWith(ext));
+}
 
 export const AssetPanel: FC = () => {
   const assets = useSelector((state) => state.scene.assets);
@@ -15,8 +36,55 @@ export const AssetPanel: FC = () => {
     dispatch(actions.setSelectedAssetIds([asset.id]));
   };
 
+  const handleAddAsset = () => {
+    const accept = [
+      ...supportedVideoExtensions,
+      ...supportedFontExtensions,
+      ...supportedImageExtensions,
+    ].join(", ");
+    filePick((_, path) => {
+      if (isFont(path)) {
+        const asset: FontAsset = {
+          id: uuid(),
+          path: `file://${path}`,
+          type: "font",
+          name: path.split("/").join("_"),
+        };
+        dispatch(actions.updateAssets(asset));
+      } else if (isVideo(path)) {
+        const asset: VideoAsset = {
+          id: uuid(),
+          path: `file://${path}`,
+          type: "video",
+          name: path.split("/").join("_"),
+        };
+        dispatch(actions.updateAssets(asset));
+      }
+    }, accept);
+  };
+
+  const handleDeleteAsset = () => {
+    dispatch(actions.removeAsset(selectedAssetIds));
+  };
+
   return (
     <Panel height={100} width={50}>
+      <div
+        style={{
+          marginBottom: "8px",
+          display: "flex",
+          gap: "2px",
+        }}
+      >
+        <IconButton onClick={handleAddAsset}>
+          <FilePlus {...iconProps} />
+          <ToolTip>Add new asset</ToolTip>
+        </IconButton>
+        <IconButton onClick={handleDeleteAsset}>
+          <Trash {...iconProps} />
+          <ToolTip>Delete selected asset</ToolTip>
+        </IconButton>
+      </div>
       {assets.map((asset) => {
         return (
           <AssetListItem
