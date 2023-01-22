@@ -10,4 +10,5 @@ export const DropdownMenu = styled.div`
   border-radius: 4px;
   padding: 4px;
   box-shadow: 0px 0px 4px 0px var(--color-background-2);
+  white-space: nowrap;
 `;

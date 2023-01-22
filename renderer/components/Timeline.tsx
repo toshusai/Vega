@@ -30,6 +30,7 @@ import { ToolTip } from "./ToolTip";
 import { ContextMenu, StyledContextMenuButton } from "./ContextMenu";
 import { uuid } from "short-uuid";
 import { Button } from "./core/DropdownLike";
+import { AddStripButton } from "./AddStripButton";
 
 export const Timeline: FC = () => {
   const strips = useSelector((state) => state.scene.strips);
@@ -340,22 +341,7 @@ export const Timeline: FC = () => {
             marginBottom: "2px",
           }}
         >
-          {/* WIP */}
-          {/* <Button
-            onChange={(value) => {
-              console.log(value);
-            }}
-            items={[
-              {
-                value: "text",
-                label: "Add Text Strip",
-              },
-              {
-                value: "video",
-                label: "Add Video Strip",
-              },
-            ]}
-          /> */}
+          <AddStripButton />
           <IconButton
             onClick={() => {
               dispatch(actions.toggleIsPlaying());
