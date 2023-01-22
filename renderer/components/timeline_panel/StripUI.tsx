@@ -1,3 +1,6 @@
+import { isImageEffect } from "@/interfaces/effects/utils/isImageEffect";
+import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
+import { useSelector } from "@/store/useSelector";
 import { FC, memo } from "react";
 import styled from "styled-components";
 import { Strip } from "../../interfaces/Strip";
@@ -39,10 +42,14 @@ export const StripUI: FC<
         userSelect: "none",
         boxSizing: "border-box",
         zIndex: props.invalid ? 100 : 0,
+        overflow: "hidden",
+        display: "flex",
       }}
       // onMouseDown={handleMouseDownStrip}
       onMouseDown={props.onMouseDown}
     >
+      <TextEffectStripUI strip={props} />
+      <ImageEffectStripUI strip={props} />
       <StripHandle
         onMouseDown={props.onMouseDownLeftHandle}
         style={{ left: "4px" }}
@@ -95,3 +102,71 @@ export const MemoStripUI = memo(StripUI, (prev, next) => {
     prev.onMouseDownRightHandle === next.onMouseDownRightHandle
   );
 });
+
+const ImageEffectStripUI: FC<{
+  strip: Strip;
+}> = (props) => {
+  const assets = useSelector((state) => state.scene.assets);
+  const effect = props.strip.effects.find(isImageEffect);
+  if (!effect) return null;
+  const asset = assets.find((a) => a.id === effect.imageAssetId);
+  if (!asset) return null;
+  return (
+    <img
+      src={asset.path}
+      style={{
+        height: "80%",
+        margin: "auto",
+        objectFit: "cover",
+      }}
+    />
+  );
+};
+
+const TextEffectStripUI: FC<{
+  strip: Strip;
+}> = (props) => {
+  const assets = useSelector((state) => state.scene.assets);
+  const textEffect = props.strip.effects.find(isTextEffect);
+  if (!textEffect) return null;
+  const asset = assets.find((a) => a.id === textEffect.fontAssetId);
+  const normalizeSize = 20;
+  const sizeRate = normalizeSize / textEffect.fontSize;
+  return (
+    <svg
+      viewBox="0 0 128 40"
+      style={{
+        minWidth: "128px",
+        minHeight: "40px",
+      }}
+    >
+      <text
+        x="0"
+        y="50%"
+        style={{
+          fontFamily: asset ? asset.name : "sans-serif",
+          fontWeight: textEffect.fontStyle === "bold" ? "bold" : "normal",
+          fontSize: `${normalizeSize}px`,
+          stroke: `${textEffect.outlineColor}`,
+          strokeWidth: `${textEffect.outlineWidth * sizeRate}px`,
+          strokeLinejoin: "round",
+        }}
+      >
+        {textEffect.text}
+      </text>
+      <text
+        x="0"
+        y="50%"
+        style={{
+          fontFamily: asset ? asset.name : "sans-serif",
+          fontWeight: textEffect.fontStyle === "bold" ? "bold" : "normal",
+          color: textEffect.color,
+          fontSize: `${normalizeSize}px`,
+        }}
+        fill="currentColor"
+      >
+        {textEffect.text}
+      </text>
+    </svg>
+  );
+};
