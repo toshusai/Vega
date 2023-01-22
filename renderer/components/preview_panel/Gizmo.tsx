@@ -1,8 +1,6 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import {
-  TextEffect,
-} from "../../interfaces/effects/TextEffect";
+import { TextEffect } from "../../interfaces/effects/TextEffect";
 import { KeyFrame } from "../../interfaces/effects/KeyFrame";
 import { isTextEffect } from "../../interfaces/effects/utils/isTextEffect";
 import { actions } from "../../store/scene";
@@ -21,6 +19,7 @@ export const Gizmo: FC<{
   left: number;
   top: number;
   scale: number;
+  userSelectNone: boolean;
   onWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
 }> = (props) => {
   const selectedStripIds = useSelector((state) => state.scene.selectedStripIds);
@@ -133,6 +132,9 @@ export const Gizmo: FC<{
 
   return (
     <StyledGizmo
+      style={{
+        pointerEvents: props.userSelectNone ? "none" : "auto",
+      }}
       {...rect}
       onMouseDown={handleMouseDown}
       onWheel={props.onWheel}

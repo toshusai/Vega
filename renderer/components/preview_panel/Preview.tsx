@@ -88,6 +88,12 @@ export const Preview: FC = () => {
       return null;
     },
     (ctx) => {
+      if (KeyboardInput.isPressed(Key.Alt)) {
+        return {
+          left: left,
+          top: top,
+        };
+      }
       const el = rootRef.current as HTMLDivElement;
       const rect = el.getBoundingClientRect();
 
@@ -265,7 +271,13 @@ export const Preview: FC = () => {
           height={height}
           ref={canvasRef}
         />
-        <Gizmo onWheel={handleWheel} left={left} top={top} scale={scale} />
+        <Gizmo
+          userSelectNone={dragging}
+          onWheel={handleWheel}
+          left={left}
+          top={top}
+          scale={scale}
+        />
       </div>
     </Panel>
   );
