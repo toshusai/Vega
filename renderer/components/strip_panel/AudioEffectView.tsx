@@ -34,11 +34,12 @@ export const AudioEffectView: FC<{
     value: a.id,
     label: a.name,
   }));
-  const numberKeys: (keyof AudioEffect)[] = ["volume"];
+  const numberKeys: (keyof AudioEffect)[] = ["volume", "offset"];
   const scaleKeysMap: {
     [key in keyof AudioEffect]?: number;
   } = {
     volume: 0.01,
+    offset: 0.01,
   };
   const minMaxKeysMap: {
     [key in keyof AudioEffect]?: [number, number];
