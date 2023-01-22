@@ -41,7 +41,7 @@ export const ScaleScrollBar: FC<{
         left: `${props.start}px`,
         width: `100%`,
         minHeight: "16px",
-        backgroundColor: "gray",
+        backgroundColor: "var(--color-input-background)",
         userSelect: "none",
         borderRadius: "8px",
         border: "1px solid var(--color-border)",

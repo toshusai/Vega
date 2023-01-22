@@ -151,9 +151,11 @@ const Div = styled.div`
   overflow: hidden;
   font-family: "Ricty Diminished";
   line-height: 16px;
+  font-size: 12px;
   height: 16px;
   cursor: default;
   user-select: none;
+  box-sizing: border-box;
 
   :hover {
     background-color: #333;
@@ -161,5 +163,6 @@ const Div = styled.div`
 
   :focus {
     background-color: #444;
+    border-bottom: 1px solid #fff;
   }
 `;
