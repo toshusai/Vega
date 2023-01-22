@@ -1,6 +1,10 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import { isTextEffect, KeyFrame, TextEffect } from "../interfaces/TextEffect";
+import {
+  isTextEffect,
+  KeyFrame,
+  TextEffect,
+} from "../interfaces/effects/TextEffect";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { UndoManager } from "../UndoManager";

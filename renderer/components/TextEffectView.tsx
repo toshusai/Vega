@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Key } from "tabler-icons-react";
 import { Strip } from "../interfaces/Strip";
-import { TextEffect } from "../interfaces/TextEffect";
+import { TextEffect } from "../interfaces/effects/TextEffect";
 import { UndoManager } from "../UndoManager";
 import { caclulateKeyFrameValue } from "../rendering/updateTextEffect";
 import { actions } from "../store/scene";
@@ -63,7 +63,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
 
   if (noFontAsset) {
     fontAssetItems.unshift({
-      value: textEffect.fontAssetId ?? '',
+      value: textEffect.fontAssetId ?? "",
       label: "No font asset",
       disabled: true,
     });
@@ -145,7 +145,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
         <Select
           items={fontAssetItems}
           onChange={(value) => emit({ fontAssetId: value })}
-          value={textEffect.fontAssetId ?? ''}
+          value={textEffect.fontAssetId ?? ""}
         />
       </Row>
     </>
