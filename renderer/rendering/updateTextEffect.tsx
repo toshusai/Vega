@@ -67,7 +67,12 @@ export function updateTextEffect(
   }
 
   ctx.fillStyle = "black";
-  ctx.font = effect.fontSize + "px " + fontAsset?.name || "sans-serif";
+  ctx.font =
+    (effect.fontStyle ?? "") +
+      " " +
+      effect.fontSize +
+      "px " +
+      fontAsset?.name || "sans-serif";
   const x = caclulateKeyFrameValue(
     effect.keyframes,
     scene.currentTime - strip.start,

@@ -8,5 +8,6 @@ export type TextEffect = {
   y: number;
   fontAssetId: string;
   fontSize: number;
+  fontStyle?: string;
   keyframes: KeyFrame[];
 };
