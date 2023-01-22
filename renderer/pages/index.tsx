@@ -82,6 +82,7 @@ const IndexPage = () => {
             // 20px header + 8px padding
             height: "calc(100% - 28px)",
             width: "calc(100% - 8px)",
+            overflow: "hidden",
           }}
         >
           <VPanelBox2

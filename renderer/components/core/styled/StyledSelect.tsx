@@ -13,6 +13,7 @@ export const StyledSelect = styled.select`
   height: 16px;
   padding-left: 8px;
   caret-color: red;
+  max-width: 128px;
 
   :focus {
     outline: none;
