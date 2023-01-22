@@ -5,5 +5,6 @@ export type AudioEffect = {
   type: "audio";
   audioAssetId: string;
   volume: number;
+  offset: number;
   keyframes: KeyFrame[];
 };

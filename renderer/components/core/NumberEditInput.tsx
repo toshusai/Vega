@@ -11,7 +11,19 @@ type NumberEditInputProps = {
   style?: React.CSSProperties;
   onChange?: (value: number) => void;
   onInput?: (value: number) => void;
+  min?: number;
+  max?: number;
 };
+
+function minMax(value: number, min: number, max: number) {
+  if (value < min) {
+    return min;
+  }
+  if (value > max) {
+    return max;
+  }
+  return value;
+}
 
 export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -21,11 +33,21 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
     props.onChange
   );
 
+  const _minMax = (value: number) => {
+    return minMax(
+      value,
+      props.min ?? Number.MIN_SAFE_INTEGER,
+      props.max ?? Number.MAX_SAFE_INTEGER
+    );
+  };
+
   const handleMouseDown = getDragHander(
     (ctx) => {
       ctx.startEvent.preventDefault();
-      setValue(props.value + ctx.diffX * (props.scale ?? 1));
-      props.onInput?.(props.value + ctx.diffX * (props.scale ?? 1));
+      let value = props.value + ctx.diffX * (props.scale ?? 1);
+      value = _minMax(value);
+      setValue(value);
+      props.onInput?.(value);
     },
     (ctx) => {
       ctx.startEvent.preventDefault();
@@ -36,7 +58,9 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
         inputRef.current?.focus();
         inputRef.current?.select();
       } else {
-        props.onChange?.(props.value + ctx.diffX * (props.scale ?? 1));
+        let value = props.value + ctx.diffX * (props.scale ?? 1);
+        value = _minMax(value);
+        props.onChange?.(value);
       }
     }
   );
@@ -59,8 +83,9 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
       }}
       onMouseDown={handleMouseDown}
       onChange={(e) => {
-        props.onInput?.(e.target.valueAsNumber);
-        setValue(e.target.valueAsNumber);
+        const value = _minMax(e.target.valueAsNumber);
+        props.onInput?.(value);
+        setValue(value);
       }}
       onKeyDown={(e) => {
         if (e.key === "Enter") {

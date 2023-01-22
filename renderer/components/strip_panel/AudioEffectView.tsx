@@ -35,9 +35,17 @@ export const AudioEffectView: FC<{
     label: a.name,
   }));
   const numberKeys: (keyof AudioEffect)[] = ["volume"];
-  const scaleKeysMap = {
+  const scaleKeysMap: {
+    [key in keyof AudioEffect]?: number;
+  } = {
     volume: 0.01,
   };
+  const minMaxKeysMap: {
+    [key in keyof AudioEffect]?: [number, number];
+  } = {
+    volume: [0, 1],
+  };
+
   const noAudioAsset =
     audioAssets.find((a) => a.id === audioEffect.audioAssetId) === undefined;
 
@@ -59,6 +67,8 @@ export const AudioEffectView: FC<{
               value={audioEffect[key] as number}
               scale={scaleKeysMap[key]}
               onInput={(value) => emit({ [key]: value })}
+              max={minMaxKeysMap[key]?.[1]}
+              min={minMaxKeysMap[key]?.[0]}
               onChange={(value) =>
                 UndoManager.main
                   .add({
