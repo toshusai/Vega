@@ -310,7 +310,7 @@ export const Timeline: FC = () => {
   const _pxPerSec = width / ((end - start) * timelineLength);
 
   return (
-    <Panel width={50} height={100}>
+    <Panel width={100} height={100}>
       {/* WIP */}
       {/* <ContextMenu
         e={contextMenuEvent}

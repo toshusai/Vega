@@ -20,7 +20,6 @@ import { TimeCursor } from "../core/TimeCursor";
 import { TimeView } from "../core/TimeView";
 
 export const KeyFramePanel: FC = () => {
-  const [width, ref] = useWidth();
   const [pxPerSec, setPxPerSec] = useState(1);
   const selectedStripIds = useSelector((state) => state.scene.selectedStripIds);
   const strips = useSelector((state) => state.scene.strips);
@@ -28,6 +27,7 @@ export const KeyFramePanel: FC = () => {
     selectedStripIds.includes(strip.id)
   );
 
+  const [width, ref] = useWidth([selectedStripIds]);
   const selectedKeyframeIds = useSelector(
     (state) => state.scene.selectedKeyframeIds
   );
@@ -61,6 +61,10 @@ export const KeyFramePanel: FC = () => {
       return;
     }
     const strip = selectedStrips[0];
+    if (width === 0) {
+      return;
+    }
+
     setPxPerSec(width / ((end - start) * strip.length));
   }, [width, start, end, selectedStrips]);
   const dispatch = useDispatch();
@@ -241,11 +245,12 @@ export const KeyFramePanel: FC = () => {
   );
 
   return (
-    <Panel width={100} height={50}>
+    <Panel width={100} height={100}>
       <div
         style={{
           display: "flex",
           height: "100%",
+          width: "100%",
         }}
       >
         <div>
@@ -290,7 +295,6 @@ export const KeyFramePanel: FC = () => {
             top={0}
             bottom={16} // for scroll bar
           />
-
           <div
             style={{
               display: "flex",

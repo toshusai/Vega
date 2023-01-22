@@ -7,7 +7,10 @@ import store from "../../store";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
 import { Panel } from "../core/Panel";
-import { isImageAsset, updateTextEffect } from "../../rendering/updateTextEffect";
+import {
+  isImageAsset,
+  updateTextEffect,
+} from "../../rendering/updateTextEffect";
 import { updateVideoEffect } from "../../rendering/updateVideoEffect";
 import { Key, KeyboardInput } from "../../KeyboardInput";
 import { getDragHander } from "../../utils/getDragHander";
