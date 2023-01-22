@@ -33,8 +33,11 @@ import { Button } from "./core/DropdownLike";
 
 export const Timeline: FC = () => {
   const strips = useSelector((state) => state.scene.strips);
-  const start = useSelector((state) => state.scene.viewStartRate);
-  const end = useSelector((state) => state.scene.viewEndRate);
+  const { start, end } = useSelector((state) => ({
+    start: state.scene.viewStartRate,
+    end: state.scene.viewEndRate,
+  }));
+  // const end = useSelector((state) => state.scene.viewEndRate);
   const timelineLength = useSelector((state) => state.scene.length);
   const fps = useSelector((state) => state.scene.fps);
   const currentTime = useSelector((state) => {
@@ -77,8 +80,12 @@ export const Timeline: FC = () => {
     if (KeyboardInput.isPressed(Key.Alt)) {
       const newStart = start - value;
       const newEnd = end + value;
-      dispatch(actions.setViewStartRate(newStart));
-      dispatch(actions.setViewEndRate(newEnd));
+      dispatch(
+        actions.setViewStartAndEndRate({
+          start: newStart,
+          end: newEnd,
+        })
+      );
     } else {
       let newStart = start + value;
       let newEnd = end + value;
@@ -90,8 +97,12 @@ export const Timeline: FC = () => {
         newEnd = 1;
         newStart = start - (end - 1);
       }
-      dispatch(actions.setViewStartRate(newStart));
-      dispatch(actions.setViewEndRate(newEnd));
+      dispatch(
+        actions.setViewStartAndEndRate({
+          start: newStart,
+          end: newEnd,
+        })
+      );
     }
   };
 
@@ -294,6 +305,9 @@ export const Timeline: FC = () => {
     dispatch(actions.removeStrip(selectedStripIds));
   };
 
+  // for strip rendering fix me
+  const _pxPerSec = width / ((end - start) * timelineLength);
+
   return (
     <Panel width={50} height={100}>
       <ContextMenu
@@ -325,7 +339,7 @@ export const Timeline: FC = () => {
             marginBottom: "2px",
           }}
         >
-          <Button
+          {/* <Button
             onChange={(value) => {
               console.log(value);
             }}
@@ -339,7 +353,7 @@ export const Timeline: FC = () => {
                 label: "Add Video Strip",
               },
             ]}
-          />
+          /> */}
           <IconButton
             onClick={() => {
               dispatch(actions.toggleIsPlaying());
@@ -393,7 +407,7 @@ export const Timeline: FC = () => {
           />
           <TimeCursor
             left={(-start * timelineLength + currentTime) * pxPerSec}
-            top={0} // for toolbar
+            top={0}
           />
           <div
             style={{
@@ -416,7 +430,7 @@ export const Timeline: FC = () => {
                 key={strip.id}
                 fps={fps}
                 offset={start * timelineLength}
-                pxPerSec={pxPerSec}
+                pxPerSec={_pxPerSec}
                 selected={selectedStripIds.includes(strip.id)}
                 invalid={invalidStripIds.includes(strip.id)}
                 onStripChange={(strip) => {
@@ -438,8 +452,12 @@ export const Timeline: FC = () => {
           start={start}
           end={end}
           onScaleChange={(start, end) => {
-            dispatch(actions.setViewStartRate(start));
-            dispatch(actions.setViewEndRate(end));
+            dispatch(
+              actions.setViewStartAndEndRate({
+                start,
+                end,
+              })
+            );
           }}
         />
       </div>

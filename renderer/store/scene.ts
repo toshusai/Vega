@@ -78,14 +78,56 @@ export const sceneSlice = createSlice({
       if (action.payload > 1) {
         action.payload = 1;
       }
+      const length = (state.viewEndRate - action.payload) * state.length;
+      if (length < 1) {
+        state.viewStartRate = state.viewEndRate - 1 / state.length;
+        return;
+      }
       state.viewStartRate = action.payload;
     },
+    setViewStartAndEndRate: (
+      state,
+      action: {
+        payload: {
+          start: number;
+          end: number;
+        };
+      }
+    ) => {
+      const { start, end } = action.payload;
+      if (start < 0) {
+        action.payload.start = 0;
+      }
+      if (start > 1) {
+        action.payload.start = 1;
+      }
+      if (end < 0) {
+        action.payload.end = 0;
+      }
+      if (end > 1) {
+        action.payload.end = 1;
+      }
+      const length = (action.payload.end - action.payload.start) * state.length;
+      if (length < 1) {
+        state.viewStartRate = action.payload.end - 1 / state.length;
+        state.viewEndRate = action.payload.end;
+        return;
+      }
+      state.viewStartRate = action.payload.start;
+      state.viewEndRate = action.payload.end;
+    },
+
     setViewEndRate: (state, action: { payload: number }) => {
       if (action.payload < 0) {
         action.payload = 0;
       }
       if (action.payload > 1) {
         action.payload = 1;
+      }
+      const length = (action.payload - state.viewStartRate) * state.length;
+      if (length < 1) {
+        state.viewEndRate = state.viewStartRate + 1 / state.length;
+        return;
       }
       state.viewEndRate = action.payload;
     },
