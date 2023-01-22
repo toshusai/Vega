@@ -18,11 +18,11 @@ export const AssetDetailsPanel: FC = () => {
   );
 
   if (selectedAssets.length !== 1) {
-    return <Panel />;
+    return <Panel width={100} height={100} />;
   }
   const selectedAsset = selectedAssets[0];
   return (
-    <Panel>
+    <Panel width={50} height={100}>
       <PanelBody>
         <div style={{ display: "flex" }}>
           <div>name:</div>

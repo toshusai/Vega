@@ -1,7 +1,8 @@
 import styled from "styled-components";
-
+import { ToolTip } from "./ToolTip";
 
 export const IconButton = styled.button`
+  position: relative;
   padding: 0;
   width: 16px;
   min-width: 16px;
@@ -11,4 +12,8 @@ export const IconButton = styled.button`
   display: flex;
   border-radius: 4px;
   background-color: var(--color-input-background);
+
+  :hover > ${ToolTip} {
+    opacity: 1;
+  }
 `;
