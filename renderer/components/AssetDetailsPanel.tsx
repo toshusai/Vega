@@ -1,6 +1,8 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { FontAsset, ImageAsset, VideoAsset } from "../interfaces/Asset";
+import { ImageAsset } from "../interfaces/asset/ImageAsset";
+import { VideoAsset } from "../interfaces/asset/VideoAsset";
+import { FontAsset } from "../interfaces/asset/FontAsset";
 import {
   isImageAsset,
   isTextAsset,

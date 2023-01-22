@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Ease } from "../components/easing";
 import { roundToFrame } from "../components/roundToFrame";
-import { Asset } from "../interfaces/Asset";
+import { Asset } from "../interfaces/asset/Asset";
 import { Effect } from "../interfaces/Effect";
 import { Strip } from "../interfaces/Strip";
 import { TextEffect } from "../interfaces/TextEffect";

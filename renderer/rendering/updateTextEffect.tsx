@@ -1,5 +1,8 @@
 import { Ease, easeOutBack, getEasingFunction } from "../components/easing";
-import { Asset, FontAsset, ImageAsset, VideoAsset } from "../interfaces/Asset";
+import { Asset } from "../interfaces/asset/Asset";
+import { ImageAsset } from "../interfaces/asset/ImageAsset";
+import { VideoAsset } from "../interfaces/asset/VideoAsset";
+import { FontAsset } from "../interfaces/asset/FontAsset";
 import { Strip } from "../interfaces/Strip";
 import { KeyFrame, TextEffect } from "../interfaces/TextEffect";
 import { SceneState } from "../store/scene";
