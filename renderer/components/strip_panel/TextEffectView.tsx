@@ -42,7 +42,20 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     label: a.name,
   }));
 
-  const numberKeys: (keyof TextEffect)[] = ["x", "y"];
+  const numberKeys: (keyof TextEffect)[] = [
+    "x",
+    "y",
+    "fontSize",
+    "shadowBlur",
+    "outlineWidth",
+  ];
+
+  const stringKeys: (keyof TextEffect)[] = [
+    "color",
+    "outlineColor",
+    "shadowColor",
+  ];
+
   const scaleKeysMap = {
     x: 1,
     y: 1,
@@ -91,6 +104,25 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
           }
         />
       </Row>
+      {stringKeys.map((key) => {
+        return (
+          <Row key={key}>
+            <PropertyName>{key}</PropertyName>
+            <ClickEditInput
+              value={textEffect[key] as string}
+              onInput={(value) => emit({ [key]: value })}
+              onChange={(value) =>
+                UndoManager.main
+                  .add({
+                    undo,
+                    redo: () => emit({ [key]: value }),
+                  })
+                  .run()
+              }
+            />
+          </Row>
+        );
+      })}
       {numberKeys.map((key) => {
         return (
           <Row key={key}>
@@ -130,21 +162,6 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
           </Row>
         );
       })}
-      <Row>
-        <PropertyName>font size</PropertyName>
-        <NumberEditInput
-          value={textEffect.fontSize}
-          onInput={(value) => emit({ fontSize: value })}
-          onChange={(value) =>
-            UndoManager.main
-              .add({
-                undo,
-                redo: () => emit({ fontSize: value }),
-              })
-              .run()
-          }
-        />
-      </Row>
       <Row>
         <PropertyName>font</PropertyName>
         <Select

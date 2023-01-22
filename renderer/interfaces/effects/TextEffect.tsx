@@ -9,5 +9,10 @@ export type TextEffect = {
   fontAssetId: string;
   fontSize: number;
   fontStyle?: string;
+  color?: string;
+  shadowColor?: string;
+  shadowBlur?: number;
+  outlineColor?: string;
+  outlineWidth?: number;
   keyframes: KeyFrame[];
 };

@@ -93,6 +93,28 @@ export function updateTextEffect(
   let left = x;
   let maxLeft = 0;
   const lineHeight = effect.fontSize;
+  ctx.shadowColor = effect.shadowColor ?? "transparent";
+  ctx.shadowBlur = effect.shadowBlur ?? 0;
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = effect.outlineColor ?? "transparent";
+  ctx.lineWidth = effect.outlineWidth ?? 0;
+
+  for (let i = 0; i < effect.text.length; i++) {
+    const char = effect.text[i];
+    if (char === "\n") {
+      top += lineHeight;
+      left = x;
+      continue;
+    }
+    const w = ctx.measureText(char).width;
+    ctx.strokeText(char, left, top);
+    left += w + 0;
+    maxLeft = Math.max(maxLeft, left);
+  }
+
+  ctx.fillStyle = effect.color ?? "black"
+  top = y;
+  left = x;
   for (let i = 0; i < effect.text.length; i++) {
     const char = effect.text[i];
     if (char === "\n") {
@@ -105,7 +127,7 @@ export function updateTextEffect(
     left += w + 0;
     maxLeft = Math.max(maxLeft, left);
   }
-  const measure = ctx.measureText(effect.text);
+
   measureMap.set(effect.id, {
     width: maxLeft - x,
     height: top - y + lineHeight,
