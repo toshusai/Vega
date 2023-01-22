@@ -13,6 +13,10 @@ export function isVideoAsset(asset: Asset): asset is VideoAsset {
   return asset.type === "video";
 }
 
+export function isImageAsset(asset: Asset): asset is VideoAsset {
+  return asset.type === "image";
+}
+
 export function loadFont(fontAsset: FontAsset) {
   if (!loadedFontAssetMap.has(fontAsset.id) && fontAsset) {
     const style = document.createElement("style");
