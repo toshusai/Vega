@@ -125,6 +125,8 @@ export const AddStripButton: FC = () => {
       keyframes: [],
       x: 0,
       y: 0,
+      scaleX: 1,
+      scaleY: 1,
     };
     addNewStripWithEffect(effect);
   };
