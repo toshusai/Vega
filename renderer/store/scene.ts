@@ -42,8 +42,8 @@ export const sceneSlice = createSlice({
     assets: [],
   } as SceneState,
   reducers: {
-    setAll: (state, action: { payload: { scene: SceneState } }) => {
-      return action.payload.scene;
+    setAll: (state, action: { payload: SceneState }) => {
+      return action.payload;
     },
     setIsPlaying: (state, action: { payload: boolean }) => {
       state.isPlaying = action.payload;
