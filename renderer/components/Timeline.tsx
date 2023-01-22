@@ -310,7 +310,8 @@ export const Timeline: FC = () => {
 
   return (
     <Panel width={50} height={100}>
-      <ContextMenu
+      {/* WIP */}
+      {/* <ContextMenu
         e={contextMenuEvent}
         onClose={() => {
           setContextMenuEvent(null);
@@ -318,7 +319,7 @@ export const Timeline: FC = () => {
         show={contextMenuEvent != null}
       >
         <StyledContextMenuButton>hogehgoe</StyledContextMenuButton>
-      </ContextMenu>
+      </ContextMenu> */}
       <div
         ref={ref}
         style={{
@@ -339,6 +340,7 @@ export const Timeline: FC = () => {
             marginBottom: "2px",
           }}
         >
+          {/* WIP */}
           {/* <Button
             onChange={(value) => {
               console.log(value);

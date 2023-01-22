@@ -1,9 +1,10 @@
 import { FC } from "react";
 import { StyledSelect } from "./StyledSelect";
 
-type Item = {
+export type Item = {
   label: string;
   value: string;
+  disabled?: boolean;
 };
 type Props = {
   items: Item[];
@@ -21,7 +22,7 @@ export const Select: FC<Props> = (props) => {
     >
       {props.items.map((item) => {
         return (
-          <option key={item.value} value={item.value}>
+          <option key={item.value} value={item.value} disabled={item.disabled}>
             {item.label}
           </option>
         );
