@@ -1,5 +1,4 @@
-
-export function filePick(cb: (str: string) => void) {
+export function filePick(cb: (str: string, path: string) => void) {
   const fileInput = document.createElement("input");
   fileInput.type = "file";
   fileInput.accept = ".json";
@@ -9,14 +8,13 @@ export function filePick(cb: (str: string) => void) {
       return;
     }
     const file = fileInput.files[0];
-    console.log(file);
     if (!file) {
       return;
     }
     const reader = new FileReader();
     reader.onload = () => {
       if (typeof reader.result === "string") {
-        cb(reader.result);
+        cb(reader.result, file.path);
       }
     };
     reader.readAsText(file);

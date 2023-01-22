@@ -37,123 +37,12 @@ export const sceneSlice = createSlice({
     viewStartRate: 0,
     viewEndRate: 1,
     length: 13,
-    strips: [
-      {
-        id: "1",
-        start: roundToFrame(0.5, 60),
-        length: roundToFrame(2.5, 60),
-        effects: [
-          {
-            id: "1",
-            type: "text",
-            x: 10,
-            y: 50,
-            text: "Hello",
-            fontAssetId: "1",
-            fontSize: 50,
-            keyframes: [],
-          } as TextEffect,
-        ],
-        layer: 1,
-      },
-      {
-        id: "2",
-        start: roundToFrame(1, 60),
-        length: roundToFrame(2.5, 60),
-        effects: [
-          {
-            id: "2",
-            type: "text",
-            x: 10,
-            y: 400,
-            fontAssetId: "3",
-            text: "hogehoge",
-            fontSize: 30,
-            keyframes: [
-              // {
-              //   property: "x",
-              //   value: 10,
-              //   time: roundToFrame(0, 60),
-              //   ease: Ease.EaseInSine,
-              // },
-              // {
-              //   property: "x",
-              //   value: 1000,
-              //   time: roundToFrame(5, 60),
-              //   ease: Ease.EaseInSine,
-              // },
-              {
-                property: "y",
-                value: 10,
-                time: roundToFrame(1, 60),
-                ease: Ease.EaseInSine,
-              },
-              {
-                property: "y",
-                value: 100,
-                time: roundToFrame(3, 60),
-                ease: Ease.EaseInSine,
-              },
-            ],
-          } as TextEffect,
-        ],
-        layer: 0,
-      },
-      {
-        id: "3",
-        start: roundToFrame(4, 60),
-        length: roundToFrame(5, 60),
-        effects: [
-          {
-            id: "3",
-            type: "video",
-            x: 0,
-            y: 0,
-            videoAssetId: "2",
-            scaleX: 0.5,
-            scaleY: 0.5,
-          } as VideoEffect,
-        ],
-        layer: 0,
-      },
-    ],
+    strips: [],
     fps: 60,
-    assets: [
-      {
-        id: "1",
-        name: "RictyDiminished-Regular",
-        type: "font",
-        path: "/RictyDiminished-Regular.ttf",
-      },
-      {
-        id: "3",
-        name: "x12y16pxMaruMonica",
-        type: "font",
-        path: "/x12y16pxMaruMonica.ttf",
-      },
-      {
-        id: "4",
-        name: "YujiBoku-Regular",
-        type: "font",
-        path: "/YujiBoku-Regular.ttf",
-      },
-      {
-        id: "2",
-        name: "cat in the sun",
-        type: "video",
-        path: "/cat_in_the_sun.mp4",
-      },
-      {
-        id: "5",
-        name: "splatoon",
-        type: "video",
-        path: "/lazer-DQd5U0Wlq8E_2.mp4",
-      },
-    ],
+    assets: [],
   } as SceneState,
   reducers: {
     setAll: (state, action: { payload: { scene: SceneState } }) => {
-      console.log(action.payload.scene)
       return action.payload.scene;
     },
     setIsPlaying: (state, action: { payload: boolean }) => {
