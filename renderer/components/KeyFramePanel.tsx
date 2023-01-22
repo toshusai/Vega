@@ -1,12 +1,15 @@
 import { CSSProperties, FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useWidth } from "../hooks/useWidth";
+import { Effect } from "../interfaces/Effect";
+import { Strip } from "../interfaces/Strip";
 import { isTextEffect, KeyFrame } from "../interfaces/TextEffect";
 import { Key, KeyboardInput } from "../KeyboardInput";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
+import { UndoManager } from "../UndoManager";
 import { Panel } from "./core/Panel";
-import { easeInExpo, getEasingFunction } from "./easing";
+import { getEasingFunction } from "./easing";
 import { getDragHander } from "./getDragHander";
 import { roundToFrame } from "./roundToFrame";
 import { ScaleScrollBar } from "./ScaleScrollBar";
@@ -109,9 +112,10 @@ export const KeyFramePanel: FC = () => {
       {
         firstKeyframes: KeyFrame[];
         updatedKeyframeIds: string[];
+        firstStrips: Strip[];
       },
       {
-        updatedKeyframes: Keyframe[];
+        updatedStrips: Strip[];
       } | null
     >(
       (ctx) => {
@@ -122,35 +126,44 @@ export const KeyFramePanel: FC = () => {
           .sort((a, b) => a.time - b.time);
 
         const newKFs = selectedKFs.map((keyframe) => {
-          const newTime = roundToFrame(keyframe.time + diffX / pxPerSec, fps)
+          const newTime = roundToFrame(keyframe.time + diffX / pxPerSec, fps);
           return {
             ...keyframe,
             time: newTime,
           };
         });
 
+        const newEffects: Effect[] = [];
         strip.effects.forEach((effect) => {
           if (!isTextEffect(effect)) {
             return;
           }
+          const newEffect = {
+            ...effect,
+            keyframes: effect.keyframes.map((kf) => {
+              const newK = newKFs.find((m) => m.id === kf.id);
+              if (newK) {
+                return newK;
+              }
+              return kf;
+            }),
+          };
+          newEffects.push(newEffect);
           dispatch(
             actions.updateEddect({
               stripId: strip.id,
-              effect: {
-                ...effect,
-                keyframes: effect.keyframes.map((kf) => {
-                  const newK = newKFs.find((m) => m.id === kf.id);
-                  if (newK) {
-                    return newK;
-                  }
-                  return kf;
-                }),
-              },
+              effect: newEffect,
             })
           );
         });
-
-        return null;
+        return {
+          updatedStrips: [
+            {
+              ...strip,
+              effects: newEffects,
+            },
+          ],
+        };
       },
       (ctx) => {
         let pass = [keyframe.id];
@@ -167,12 +180,34 @@ export const KeyFramePanel: FC = () => {
         return {
           firstKeyframes: [...allKeyframes],
           updatedKeyframeIds: pass,
+          firstStrips: [...strips],
         };
       },
       (ctx) => {
-        // todo impl select single
-        // todo impl revert invalid
-        // todo impl commit
+        if (ctx.diffX === 0 && ctx.diffY === 0) {
+          let newIds: string[] = [];
+          if (KeyboardInput.isPressed(Key.Shift)) {
+            if (selectedKeyframeIds.includes(keyframe.id)) {
+              newIds = selectedKeyframeIds.filter((id) => id !== keyframe.id);
+            } else {
+              newIds = [...selectedKeyframeIds, keyframe.id];
+            }
+          } else {
+            newIds = [keyframe.id];
+          }
+          dispatch(actions.setSelectKeyframeIds(newIds));
+        }
+
+        const updatedStrips = ctx.movePass?.updatedStrips ?? [];
+
+        UndoManager.main.add({
+          redo: () => {
+            dispatch(actions.updateStrip(updatedStrips));
+          },
+          undo: () => {
+            dispatch(actions.updateStrip(ctx.pass.firstStrips));
+          },
+        });
       }
     );
 
