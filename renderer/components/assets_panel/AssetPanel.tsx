@@ -4,6 +4,7 @@ import { uuid } from "short-uuid";
 import styled from "styled-components";
 import {
   FilePlus,
+  Music,
   Phone,
   Photo,
   PlayerPause,
@@ -16,16 +17,18 @@ import { ImageAsset } from "../../interfaces/asset/ImageAsset";
 import { VideoAsset } from "../../interfaces/asset/VideoAsset";
 import { FontAsset } from "../../interfaces/asset/FontAsset";
 import { filePick } from "../../pages/filePick";
-import { isImageAsset } from "../../rendering/updateTextEffect";
+import { isAudioAsset, isImageAsset } from "../../rendering/updateTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
 import { Panel } from "../core/Panel";
 import { IconButton } from "../core/styled/IconButton";
 import { iconProps } from "../core/iconProps";
 import { ToolTip } from "../core/styled/ToolTip";
+import { AudioAsset } from "@/interfaces/asset/AudioAsset";
 
 const supportedVideoExtensions = ["mp4", "webm"];
 const supportedFontExtensions = ["ttf"];
+const supportedAudioExtensions = ["mp3", "wav"];
 const supportedImageExtensions = ["png", "jpg", "jpeg", "svg"];
 
 function isImage(path: string) {
@@ -38,6 +41,9 @@ function isVideo(path: string) {
 
 function isFont(path: string) {
   return supportedFontExtensions.some((ext) => path.endsWith(ext));
+}
+function isAudio(path: string) {
+  return supportedAudioExtensions.some((ext) => path.endsWith(ext));
 }
 
 export const AssetPanel: FC = () => {
@@ -76,6 +82,14 @@ export const AssetPanel: FC = () => {
           id: uuid(),
           path: `file://${path}`,
           type: "image",
+          name: path.split("/").join("_"),
+        };
+        dispatch(actions.updateAssets(asset));
+      } else if (isAudio(path)) {
+        const asset: AudioAsset = {
+          id: uuid(),
+          path: `file://${path}`,
+          type: "audio",
           name: path.split("/").join("_"),
         };
         dispatch(actions.updateAssets(asset));
@@ -140,6 +154,8 @@ const AssetListItem: FC<{
         <Tex style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
       ) : isImageAsset(props.asset) ? (
         <Photo style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
+      ) : isAudioAsset(props.asset) ? (
+        <Music style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
       ) : null}
       <div>{props.asset.name}</div>
     </Div>

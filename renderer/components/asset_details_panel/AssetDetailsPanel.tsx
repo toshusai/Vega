@@ -4,6 +4,7 @@ import { ImageAsset } from "../../interfaces/asset/ImageAsset";
 import { VideoAsset } from "../../interfaces/asset/VideoAsset";
 import { FontAsset } from "../../interfaces/asset/FontAsset";
 import {
+  isAudioAsset,
   isImageAsset,
   isTextAsset,
   isVideoAsset,
@@ -12,6 +13,7 @@ import {
 import { useSelector } from "../../store/useSelector";
 import { ClickEditInput } from "../core/ClickEditInput";
 import { Panel } from "../core/Panel";
+import { AudioAsset } from "@/interfaces/asset/AudioAsset";
 
 export const AssetDetailsPanel: FC = () => {
   const selectedAssetIds = useSelector((state) => state.scene.selectedAssetIds);
@@ -59,6 +61,9 @@ export const AssetDetailsPanel: FC = () => {
           )}
           {isImageAsset(selectedAsset) && (
             <ImageAssetDetailsPanel asset={selectedAsset} />
+          )}
+          {isAudioAsset(selectedAsset) && (
+            <AudioAssetDetailsPanel asset={selectedAsset} />
           )}
         </div>
       </PanelBody>
@@ -121,6 +126,23 @@ const ImageAssetDetailsPanel: FC<{
           height: "100%",
         }}
         src={props.asset.path}
+      />
+    </div>
+  );
+};
+
+const AudioAssetDetailsPanel: FC<{
+  asset: AudioAsset;
+}> = (props) => {
+  return (
+    <div>
+      <audio
+        style={{
+          transform: "scale(0.5)",
+          transformOrigin: "top left",
+        }}
+        src={props.asset.path}
+        controls
       />
     </div>
   );
