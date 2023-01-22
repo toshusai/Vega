@@ -9,20 +9,12 @@ import { download } from ".";
 import store from "../store";
 import { actions } from "../store/scene";
 import { formatForSave } from "./formatForSave";
-import { readFileUserDataDir } from "../ipc/readFileUserDataDir";
 import { writeFileUserDataDir } from "../ipc/writeFileUserDataDir";
 import { readFile } from "../ipc/readFile";
 import { UndoManager } from "../UndoManager";
-
-function readRecentFiles() {
-  let fileJson = readFileUserDataDir("recentFiles.json");
-  if (fileJson === false) {
-    // throw new Error("Could not read recent files");
-    fileJson = "[]";
-  }
-  const recentFiles = JSON.parse(fileJson);
-  return recentFiles;
-}
+import { appAction } from "../store/app";
+import { compareScene } from "./compareScene";
+import { readRecentFiles } from "./readRecentFiles";
 
 export const MenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -33,7 +25,9 @@ export const MenuButton: FC = () => {
 
   useEffect(() => {
     const handleChange = () => {
-      if (UndoManager.main.Index > -1) {
+      const scene = store.getState().scene;
+      const old = JSON.parse(store.getState().app.readedDataJsonString);
+      if (!compareScene(scene, old)) {
         setHasChanged(true);
       } else {
         setHasChanged(false);
@@ -88,13 +82,15 @@ export const MenuButton: FC = () => {
       walk(json);
 
       store.dispatch(actions.setAll(json));
+      store.dispatch(appAction.setReadedDataJsonString(str));
+      store.dispatch(appAction.setCurrentPath(path));
       setShowMenu(false);
     });
   };
 
   const handleSave = () => {
     const data = store.getState();
-    const json = formatForSave(data);
+    const json = formatForSave(data.scene);
     download(json, "vega.json");
     setShowMenu(false);
   };
@@ -106,6 +102,8 @@ export const MenuButton: FC = () => {
     const projectDataStr = readFile(path);
     const projectData = JSON.parse(projectDataStr);
     store.dispatch(actions.setAll(projectData));
+    store.dispatch(appAction.setReadedDataJsonString(projectDataStr));
+    store.dispatch(appAction.setCurrentPath(path));
     writeFileUserDataDir("recentFiles.json", JSON.stringify(recentFiles));
     setShowMenu(false);
   };

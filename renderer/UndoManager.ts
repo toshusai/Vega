@@ -44,6 +44,15 @@ export class UndoManager {
     this.event.removeEventListener(type, listener);
   }
 
+  /**
+   * file change detector is watched UndoManager,
+   * it used for force notifiy file change.
+   * @param type
+   */
+  emit(type: OperationType) {
+    this.event.dispatchEvent(new CustomEvent(type));
+  }
+
   add(undoable: Undoable) {
     if (this.isUndoing || this.isRedoing) {
       return;

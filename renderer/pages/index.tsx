@@ -15,6 +15,7 @@ import { KeyFramePanel } from "../components/KeyFramePanel";
 import { MenuButton } from "./MenuButton";
 import { formatForSave } from "./formatForSave";
 import { writeFile } from "../ipc/writeFile";
+import { appAction } from "../store/app";
 
 export function download(blob: Blob | string, name: string) {
   const link = document.createElement("a");
@@ -36,9 +37,14 @@ const IndexPage = () => {
     KeyboardInput.addKeyDownListener(Key.KeyS, (e) => {
       e.preventDefault();
       if (KeyboardInput.isPressed(Key.Meta)) {
-        if (!writeFile('', formatForSave(store.getState()))) {
+        const url = store.getState().app.currentPath;
+        const data = formatForSave(store.getState().scene);
+        if (!writeFile(url, data)) {
           throw new Error("Failed to save file");
         }
+        store.dispatch(appAction.setReadedDataJsonString(data));
+        // NOTE: This is a hack for FileWatcher that subscribes UndoManager
+        UndoManager.main.emit("change");
       }
     });
     KeyboardInput.addKeyDownListener(Key.KeyZ, (e) => {

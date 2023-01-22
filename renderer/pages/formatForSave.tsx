@@ -1,5 +1,6 @@
+import { SceneState } from "../store/scene";
 
-export function formatForSave(data: any) {
+export function formatForSave(data: SceneState) {
   const json = JSON.stringify(
     data,
     (_, value) => {
