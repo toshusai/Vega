@@ -26,7 +26,7 @@ import { ToolTip } from "../core/styled/ToolTip";
 
 const supportedVideoExtensions = ["mp4", "webm"];
 const supportedFontExtensions = ["ttf"];
-const supportedImageExtensions = ["png", "jpg", "jpeg"];
+const supportedImageExtensions = ["png", "jpg", "jpeg", "svg"];
 
 function isImage(path: string) {
   return supportedImageExtensions.some((ext) => path.endsWith(ext));
@@ -79,6 +79,8 @@ export const AssetPanel: FC = () => {
           name: path.split("/").join("_"),
         };
         dispatch(actions.updateAssets(asset));
+      } else {
+        alert("Unsupported file type");
       }
     }, accept);
   };
