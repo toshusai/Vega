@@ -2,9 +2,18 @@ import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 import styled from "styled-components";
-import { FilePlus, PlayerPause, Tex, Trash, Video } from "tabler-icons-react";
+import {
+  FilePlus,
+  Phone,
+  Photo,
+  PlayerPause,
+  Tex,
+  Trash,
+  Video,
+} from "tabler-icons-react";
 import { Asset, FontAsset, ImageAsset, VideoAsset } from "../interfaces/Asset";
 import { filePick } from "../pages/filePick";
+import { isImageAsset } from "../rendering/updateTextEffect";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { Panel } from "./core/Panel";
@@ -124,6 +133,8 @@ const AssetListItem: FC<{
         <Video style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
       ) : props.asset.type === "font" ? (
         <Tex style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
+      ) : isImageAsset(props.asset) ? (
+        <Photo style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
       ) : null}
       <div>{props.asset.name}</div>
     </Div>
