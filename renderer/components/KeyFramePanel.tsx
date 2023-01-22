@@ -1,8 +1,13 @@
 import { CSSProperties, FC, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useWidth } from "../hooks/useWidth";
+import { KeyFrame } from "../interfaces/TextEffect";
+import { Key, KeyboardInput } from "../KeyboardInput";
+import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
 import { Panel } from "./core/Panel";
 import { easeInExpo } from "./easing";
+import { getDragHander } from "./getDragHander";
 import { TimeView } from "./TimeView";
 
 export const KeyFramePanel: FC = () => {
@@ -14,6 +19,10 @@ export const KeyFramePanel: FC = () => {
     selectedStripIds.includes(strip.id)
   );
 
+  const selectedKeyframeIds = useSelector(
+    (state) => state.scene.selectedKeyframeIds
+  );
+
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(1);
   useEffect(() => {
@@ -23,11 +32,52 @@ export const KeyFramePanel: FC = () => {
     const strip = selectedStrips[0];
     setPxPerSec(width / ((end - start) * strip.length));
   }, [width, start, end, selectedStrips]);
+  const dispatch = useDispatch();
 
   if (selectedStrips.length !== 1) {
     return <Panel />;
   }
   const strip = selectedStrips[0];
+
+  const allKeyframes = strip.effects.flatMap((effect) => {
+    if ("keyframes" in effect) {
+      return effect.keyframes;
+    }
+    return [];
+  }) as KeyFrame[];
+
+  const handleMouseDownKeyFrame = (keyframe: KeyFrame) =>
+    getDragHander<
+      {
+        firstKeyframes: KeyFrame[];
+        updatedKeyframeIds: string[];
+      },
+      {
+        updatedKeyframes: Keyframe[];
+      } | null
+    >(
+      (ctx) => {
+        return null;
+      },
+      (ctx) => {
+        let pass = [keyframe.id];
+        if (selectedKeyframeIds.includes(keyframe.id)) {
+          pass = [...selectedKeyframeIds];
+        } else {
+          if (KeyboardInput.isPressed(Key.Shift)) {
+            pass = [...selectedKeyframeIds, keyframe.id];
+          } else {
+            pass = [keyframe.id];
+          }
+        }
+        dispatch(actions.setSelectKeyframeIds(pass));
+        return {
+          firstKeyframes: [...allKeyframes],
+          updatedKeyframeIds: pass,
+        };
+      },
+      (ctx) => {}
+    );
 
   return (
     <Panel>
@@ -88,13 +138,20 @@ export const KeyFramePanel: FC = () => {
                     keyframe.property
                   );
                   return (
-                    <div key={`${i}${j}`}>
+                    <div
+                      key={`${i}${j}`}
+                      onMouseDown={handleMouseDownKeyFrame(keyframe)}
+                    >
                       <MmakeSVG
                         f={easeInExpo}
                         style={{
                           position: "absolute",
                           left: x,
                           top: 16 * propertiesIndex,
+                          border: selectedKeyframeIds.includes(keyframe.id)
+                            ? "1px solid var(--color-strip-selected)"
+                            : "none",
+                          boxSizing: "border-box",
                         }}
                       />
                     </div>

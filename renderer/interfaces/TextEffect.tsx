@@ -13,6 +13,7 @@ export type TextEffect = {
 };
 
 export type KeyFrame = {
+  id: string;
   time: number;
   value: number;
   property: string;
