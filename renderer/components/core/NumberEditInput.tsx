@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import { pureFinalPropsSelectorFactory } from "react-redux/es/connect/selectorFactory";
 import { getDragHander } from "../getDragHander";
 import { StyledInput } from "./StyledInput";
 import { useNativeOnChange } from "./useNativeOnChange";
@@ -23,8 +24,8 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
   const handleMouseDown = getDragHander(
     (ctx) => {
       ctx.startEvent.preventDefault();
-      setValue(props.value + ctx.diffX);
-      props.onInput?.(props.value + ctx.diffX * (props.scale ?? 1))
+      setValue(props.value + ctx.diffX * (props.scale ?? 1));
+      props.onInput?.(props.value + ctx.diffX * (props.scale ?? 1));
     },
     (ctx) => {
       ctx.startEvent.preventDefault();
@@ -45,7 +46,13 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
       ref={inputRef}
       type="number"
       readOnly={!isFocused}
-      value={props.view ? props.view(value as number) : isNaN(value as number) ? "0" : value}
+      value={
+        props.view
+          ? props.view(value as number)
+          : isNaN(value as number)
+          ? "0"
+          : value
+      }
       style={{
         cursor: isFocused ? "default" : "ew-resize",
         userSelect: isFocused ? "text" : "none",

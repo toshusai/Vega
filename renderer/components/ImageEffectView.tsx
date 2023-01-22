@@ -8,7 +8,7 @@ import { useSelector } from "../store/useSelector";
 import { NumberEditInput } from "./core/NumberEditInput";
 import { Item, Select } from "./core/Select";
 import { Row, PropertyName } from "./StripPanel";
-import { ImageEffect } from "../interfaces/VideoEffect";
+import { ImageEffect } from "../interfaces/ImageEffect";
 
 export const ImageEffectView: FC<{
   imageEffect: ImageEffect;
@@ -34,7 +34,7 @@ export const ImageEffectView: FC<{
     value: a.id,
     label: a.name,
   }));
-  const numberKeys: (keyof ImageEffect)[] = ["x", "y"];
+  const numberKeys: (keyof ImageEffect)[] = ["x", "y", "scaleX", "scaleY"];
   const scaleKeysMap = {
     x: 1,
     y: 1,
@@ -44,8 +44,6 @@ export const ImageEffectView: FC<{
   const viewKeysMap = {
     x: (v) => v.toFixed(0),
     y: (v) => v.toFixed(0),
-    scaleX: (v) => v.toFixed(2),
-    scaleY: (v) => v.toFixed(2),
   };
 
   const noImageAsset =

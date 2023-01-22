@@ -1,5 +1,5 @@
 import { Strip } from "../interfaces/Strip";
-import { ImageEffect } from "../interfaces/VideoEffect";
+import { ImageEffect } from "../interfaces/ImageEffect";
 import { SceneState } from "../store/scene";
 
 const loadedImageElementMap = new Map<string, HTMLImageElement>();
@@ -40,8 +40,8 @@ export function updateImageEffect(
       imageElement.height,
       effect.x,
       effect.y,
-      imageElement.width * 1, //effect.scaleX,
-      imageElement.height * 1 //effect.scaleY
+      imageElement.width * effect.scaleX,
+      imageElement.height * effect.scaleY
     );
   }
 }

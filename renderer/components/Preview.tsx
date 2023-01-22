@@ -1,7 +1,8 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { isTextEffect } from "../interfaces/TextEffect";
-import { isImageEffect, isVideoEffect } from "../interfaces/VideoEffect";
+import { isVideoEffect } from "../interfaces/VideoEffect";
+import { isImageEffect } from "../interfaces/isImageEffect";
 import store from "../store";
 import { actions } from "../store/scene";
 import { useSelector } from "../store/useSelector";
