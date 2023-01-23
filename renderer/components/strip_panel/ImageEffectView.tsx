@@ -34,12 +34,10 @@ export const ImageEffectView: FC<{
     value: a.id,
     label: a.name,
   }));
-  const numberKeys: (keyof ImageEffect)[] = ["x", "y", "scaleX", "scaleY"];
+  const numberKeys: (keyof ImageEffect)[] = ["x", "y", "width", "height"];
   const scaleKeysMap = {
     x: 1,
     y: 1,
-    scaleX: 0.01,
-    scaleY: 0.01,
   };
   const viewKeysMap = {
     x: (v) => v.toFixed(0),

@@ -126,8 +126,8 @@ export const AddStripButton: FC = () => {
       keyframes: [],
       x: 0,
       y: 0,
-      scaleX: 1,
-      scaleY: 1,
+      width: 1280,
+      height: 720,
     };
     addNewStripWithEffect(effect);
   };
@@ -137,10 +137,10 @@ export const AddStripButton: FC = () => {
       id: uuid(),
       type: "video",
       videoAssetId: "",
-      scaleX: 1,
-      scaleY: 1,
       x: 0,
       y: 0,
+      width: 1280,
+      height: 720,
     };
     addNewStripWithEffect(effect);
   };
@@ -151,6 +151,7 @@ export const AddStripButton: FC = () => {
       type: "audio",
       audioAssetId: "",
       volume: 1,
+      offset: 0,
       keyframes: [],
     };
     addNewStripWithEffect(effect);

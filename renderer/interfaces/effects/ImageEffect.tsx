@@ -6,7 +6,15 @@ export type ImageEffect = {
   imageAssetId: string;
   x: number;
   y: number;
-  scaleX: number;
-  scaleY: number;
+  /**
+   * @deprecated use width instead
+   */
+  scaleX?: number;
+  /**
+   * @deprecated use height instead
+   */
+  scaleY?: number;
+  width?: number;
+  height?: number;
   keyframes: KeyFrame[];
 };
