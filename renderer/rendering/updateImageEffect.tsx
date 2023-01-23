@@ -43,8 +43,8 @@ export function updateImageEffect(
       imageElement.height,
       effect.x,
       effect.y,
-      imageElement.width * effect.scaleX,
-      imageElement.height * effect.scaleY
+      effect.width,
+      effect.height
     );
   }
 }

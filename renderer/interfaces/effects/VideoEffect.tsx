@@ -8,11 +8,11 @@ export type VideoEffect = {
   /**
    * @deprecated use width instead
    */
-  scaleX: number;
+  scaleX?: number;
   /**
    * @deprecated use height instead
    */
-  scaleY: number;
+  scaleY?: number;
 
   width?: number;
   height?: number;
