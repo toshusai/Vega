@@ -1,6 +1,6 @@
 import { FC, ReactChild, useEffect, useRef, useState } from "react";
-import { StyledContextMenuButton } from "../components/core/context_menu/ContextMenu";
-import { filePick } from "./filePick";
+import { StyledContextMenuButton } from "./core/context_menu/ContextMenu";
+import { filePick } from "../utils/filePick";
 import { HeaderMenuButton } from "./HeaderMenuButton";
 import { DropdownMenu } from "./DropdownMenu";
 import {
@@ -10,17 +10,17 @@ import {
   File,
   IconProps,
 } from "tabler-icons-react";
-import { iconProps } from "../components/core/iconProps";
-import { download } from ".";
+import { iconProps } from "./core/iconProps";
+import { download } from "../pages";
 import store from "../store";
 import { actions } from "../store/scene";
-import { formatForSave } from "./formatForSave";
+import { formatForSave } from "../utils/formatForSave";
 import { writeFileUserDataDir } from "../ipc/writeFileUserDataDir";
 import { readFile } from "../ipc/readFile";
 import { UndoManager } from "@/UndoManager";
 import { appAction } from "../store/app";
-import { compareScene } from "./compareScene";
-import { readRecentFiles } from "./readRecentFiles";
+import { compareScene } from "../utils/compareScene";
+import { readRecentFiles } from "../utils/readRecentFiles";
 
 export const MenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);

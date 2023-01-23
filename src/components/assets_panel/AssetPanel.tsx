@@ -16,7 +16,7 @@ import { Asset } from "../../interfaces/asset/Asset";
 import { ImageAsset } from "../../interfaces/asset/ImageAsset";
 import { VideoAsset } from "../../interfaces/asset/VideoAsset";
 import { FontAsset } from "../../interfaces/asset/FontAsset";
-import { filePick } from "../../pages/filePick";
+import { filePick } from "../../utils/filePick";
 import { isAudioAsset, isImageAsset } from "../../rendering/updateTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";

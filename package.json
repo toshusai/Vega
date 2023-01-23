@@ -1,14 +1,17 @@
 {
   "private": true,
+  "name": "vega",
+  "version": "4.0.0",
   "main": "main/index.js",
   "productName": "Vega",
   "scripts": {
     "clean": "rimraf dist main renderer/out renderer/.next",
     "dev": "npm run build-electron && electron .",
     "build-renderer": "next build && next export ",
-    "build-electron": "tsc",
+    "build-electron": "tsc -p src/electron-src",
     "build": "npm run build-renderer && npm run build-electron",
     "pack-app": "npm run build && electron-builder --dir",
+    "electron-builder": "electron-builder",
     "dist": "npm run build && electron-builder",
     "lint": "next lint",
     "type-check": "tsc --noEmit"
@@ -42,8 +45,10 @@
   "build": {
     "asar": true,
     "files": [
-      "main",
-      "renderer/out"
+      "main"
+    ],
+    "extraResources":[
+      "out"
     ]
   }
 }
