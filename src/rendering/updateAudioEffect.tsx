@@ -64,17 +64,17 @@ export function updateAudioEffect(
     }
     audioElement.onloadeddata = () => {
       audioStatusMap.set(elementMapKey, AudioStatus.Paused);
-      audioElement.pause();
+      audioElement?.pause();
     };
     if (currentStatus === AudioStatus.Loading) {
       return;
     }
     audioElement.onseeked = () => {
       if (scene.isPlaying) {
-        audioElement.play();
+        audioElement?.play();
         audioStatusMap.set(elementMapKey, AudioStatus.Playing);
       } else {
-        audioElement.pause();
+        audioElement?.pause();
         audioStatusMap.set(elementMapKey, AudioStatus.Paused);
       }
     };

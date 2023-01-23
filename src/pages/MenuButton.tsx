@@ -3,7 +3,13 @@ import { StyledContextMenuButton } from "../components/core/context_menu/Context
 import { filePick } from "./filePick";
 import { HeaderMenuButton } from "./HeaderMenuButton";
 import { DropdownMenu } from "./DropdownMenu";
-import { ArrowRight, Clock, DeviceFloppy, File } from "tabler-icons-react";
+import {
+  ArrowRight,
+  Clock,
+  DeviceFloppy,
+  File,
+  IconProps,
+} from "tabler-icons-react";
 import { iconProps } from "../components/core/iconProps";
 import { download } from ".";
 import store from "../store";
@@ -149,7 +155,7 @@ export const MenuButton: FC = () => {
 };
 
 const MenuItem: FC<{
-  leftIcon?: (props: any) => JSX.Element;
+  leftIcon?: FC<IconProps>;
   text: string;
   shortcut?: string;
 }> = (props) => {
@@ -184,7 +190,7 @@ const MenuItem: FC<{
 
 type Props = {
   title: ReactChild;
-  leftIcon?: (props: any) => JSX.Element;
+  leftIcon?: FC<IconProps>;
 };
 const MenuWithClildren: FC<Props> = (props) => {
   const [showMenu, setShowMenu] = useState(false);

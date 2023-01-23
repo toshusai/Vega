@@ -29,8 +29,8 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const { inputRef, value, setValue } = useNativeOnChange(
-    props.value,
-    props.onChange
+    props.value ?? 0,
+    (value) => props.onChange?.(value as number)
   );
 
   const _minMax = (value: number) => {
@@ -44,7 +44,7 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
   const handleMouseDown = getDragHander(
     (ctx) => {
       ctx.startEvent.preventDefault();
-      let value = props.value + ctx.diffX * (props.scale ?? 1);
+      let value = (props.value ?? 0) + ctx.diffX * (props.scale ?? 1);
       value = _minMax(value);
       setValue(value);
       props.onInput?.(value);
@@ -58,7 +58,7 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
         inputRef.current?.focus();
         inputRef.current?.select();
       } else {
-        let value = props.value + ctx.diffX * (props.scale ?? 1);
+        let value =  (props.value ?? 0) + ctx.diffX * (props.scale ?? 1);
         value = _minMax(value);
         props.onChange?.(value);
       }

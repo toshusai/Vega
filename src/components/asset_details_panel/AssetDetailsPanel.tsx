@@ -135,7 +135,7 @@ const ImageAssetDetailsPanel: FC<{
       <div>
         {width}x{height}
       </div>
-      <Image
+      <img
         alt="preview"
         ref={imgRef}
         style={{

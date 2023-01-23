@@ -2,6 +2,7 @@ import { Strip } from "../interfaces/Strip";
 import { ImageEffect } from "../interfaces/effects/ImageEffect";
 import { SceneState } from "../store/scene";
 import { caclulateKeyFrameValue } from "./updateTextEffect";
+import { PickProperties } from "@/components/strip_panel/ImageEffectView";
 
 const loadedImageElementMap = new Map<string, HTMLImageElement>();
 
@@ -37,11 +38,16 @@ export function updateImageEffect(
       ...effect,
     };
     Object.keys(effect).forEach((key) => {
-      animatedEffect[key] = caclulateKeyFrameValue(
+      const k = key as keyof PickProperties<ImageEffect, number>;
+      const value = effect[k];
+      if (typeof value !== "number") {
+        return;
+      }
+      animatedEffect[k] = caclulateKeyFrameValue(
         effect.keyframes,
         scene.currentTime - strip.start,
         key,
-        effect[key],
+        value,
         scene.fps
       );
     });
@@ -58,8 +64,8 @@ export function updateImageEffect(
       imageElement.height,
       animatedEffect.x,
       animatedEffect.y,
-      animatedEffect.width,
-      animatedEffect.height
+      animatedEffect.width ?? imageElement.width,
+      animatedEffect.height ?? imageElement.height
     );
     ctx.globalAlpha = 1;
   }

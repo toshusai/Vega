@@ -35,7 +35,7 @@ export const ContextMenu: React.FC<PropsWithChildren<ContextMenuProps>> = (
 ) => {
   const ref = useRef<HTMLDivElement>(null);
   if (!props.show) return null;
-  const mouseDown = (e) => {
+  const mouseDown = (e: MouseEvent) => {
     if (ref.current?.contains(e.target as Node)) {
       return;
     }

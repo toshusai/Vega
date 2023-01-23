@@ -49,7 +49,7 @@ export function updateVideoEffect(
     }
     videoElement.onloadeddata = () => {
       videoStatusMap.set(elementMapKey, VideoStatus.Paused);
-      videoElement.pause();
+      videoElement?.pause();
     };
     const currentStatus = videoStatusMap.get(elementMapKey);
     if (currentStatus === VideoStatus.Loading) {
@@ -57,10 +57,10 @@ export function updateVideoEffect(
     }
     videoElement.onseeked = () => {
       if (scene.isPlaying) {
-        videoElement.play();
+        videoElement?.play();
         videoStatusMap.set(elementMapKey, VideoStatus.Playing);
       } else {
-        videoElement.pause();
+        videoElement?.pause();
         videoStatusMap.set(elementMapKey, VideoStatus.Paused);
       }
     };
@@ -104,8 +104,8 @@ export function updateVideoEffect(
       videoElement.videoHeight,
       effect.x,
       effect.y,
-      effect.width,
-      effect.height
+      effect.width || videoElement.videoWidth,
+      effect.height || videoElement.videoHeight
     );
   }
 }

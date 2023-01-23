@@ -12,8 +12,8 @@ type ClickEditInputProps = {
 
 export const ClickEditInput: FC<ClickEditInputProps> = (props) => {
   const { inputRef, value, setValue } = useNativeOnChange(
-    props.value,
-    props.onChange
+    props.value ?? "",
+    (value) => props.onChange?.(value as string)
   );
 
   return (
@@ -33,8 +33,8 @@ export const ClickEditInput: FC<ClickEditInputProps> = (props) => {
 
 export const ClickEditTextarea: FC<ClickEditInputProps> = (props) => {
   const { inputRef, value, setValue } = useNativeOnChange<HTMLTextAreaElement>(
-    props.value,
-    props.onChange
+    props.value ?? "",
+    (value) => props.onChange?.(value as string)
   );
   return (
     <>

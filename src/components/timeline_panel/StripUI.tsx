@@ -113,7 +113,7 @@ const ImageEffectStripUI: FC<{
   const asset = assets.find((a) => a.id === effect.imageAssetId);
   if (!asset) return null;
   return (
-    <Image
+    <img
       alt="preview"
       src={asset.path}
       style={{
@@ -150,7 +150,7 @@ const TextEffectStripUI: FC<{
           fontWeight: textEffect.fontStyle === "bold" ? "bold" : "normal",
           fontSize: `${normalizeSize}px`,
           stroke: `${textEffect.outlineColor}`,
-          strokeWidth: `${textEffect.outlineWidth * sizeRate}px`,
+          strokeWidth: `${(textEffect.outlineWidth ?? 0) * sizeRate}px`,
           strokeLinejoin: "round",
         }}
       >

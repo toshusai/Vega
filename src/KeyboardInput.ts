@@ -36,7 +36,7 @@ export class KeyboardInput {
           if (!KeyboardInput.listners.has(id)) {
             KeyboardInput.listners.set(id, []);
           }
-          KeyboardInput.listners.get(id).push(listener);
+          KeyboardInput.listners.get(id)?.push(listener);
         }
       },
     ];

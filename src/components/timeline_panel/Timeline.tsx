@@ -64,6 +64,7 @@ export const Timeline: FC = () => {
 
   const handleMouseDownTimeView = getDragHander<number, void>(
     ({ diffX, pass }) => {
+      if (!pass) return;
       const newCurrentTime = pass + diffX / pxPerSec;
       if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
         dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
@@ -129,6 +130,7 @@ export const Timeline: FC = () => {
       } | null
     >(
       ({ diffX, diffY, pass }) => {
+        if (!pass) return null;
         const newSelectedStripIds = pass.updatedStripIds;
         const selectedStrips = strips
           .filter((strip) => newSelectedStripIds.includes(strip.id))
@@ -200,6 +202,7 @@ export const Timeline: FC = () => {
         }
 
         if (ctx.movePass && ctx.movePass.invalidIds.length > 0) {
+          if (!ctx.pass) return;
           dispatch(actions.updateStrip(ctx.pass.firstStrips));
           setInvalidStripIds([]);
           return;
@@ -212,6 +215,7 @@ export const Timeline: FC = () => {
             dispatch(actions.updateStrip(updatedStrips));
           },
           undo: () => {
+            if (!ctx.pass) return;
             dispatch(actions.updateStrip(ctx.pass.firstStrips));
           },
         });

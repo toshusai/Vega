@@ -87,7 +87,7 @@ export const Preview: FC = () => {
 
   const handleMouseDown = getDragHander<{ left: number; top: number }, null>(
     (ctx) => {
-      if (dragging) {
+      if (dragging && ctx.pass) {
         setLeft(ctx.diffX + ctx.pass.left);
         setTop(ctx.diffY + ctx.pass.top);
       }
@@ -167,7 +167,8 @@ export const Preview: FC = () => {
     const ctx = canvas.getContext("2d");
     let prevTime = 0;
 
-    const update = (t) => {
+    const update = (t: number) => {
+      if (!ctx) return;
       const delta = t - prevTime;
       prevTime = t;
 

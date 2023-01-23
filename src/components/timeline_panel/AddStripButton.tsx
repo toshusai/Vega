@@ -110,7 +110,7 @@ export const AddStripButton: FC = () => {
       type: "text",
       text: "New Text Strip",
       fontSize: 24,
-      fontAssetId: null,
+      fontAssetId: "",
       keyframes: [],
       x: 0,
       y: 0,
