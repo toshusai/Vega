@@ -89,12 +89,7 @@ export function updateVideoEffect(
       ctx.shadowColor = "";
       ctx.shadowBlur = 0;
       ctx.fillStyle = "black";
-      ctx.fillRect(
-        effect.x,
-        effect.y,
-        videoElement.videoWidth,
-        videoElement.videoHeight
-      );
+      ctx.fillRect(effect.x, effect.y, ctx.canvas.width, ctx.canvas.height);
     }
     if (currentStatus === VideoStatus.Seeking && scene.isPlaying) {
       return;
@@ -109,8 +104,8 @@ export function updateVideoEffect(
       videoElement.videoHeight,
       effect.x,
       effect.y,
-      videoElement.videoWidth * effect.scaleX,
-      videoElement.videoHeight * effect.scaleY
+      effect.width,
+      effect.height
     );
   }
 }
