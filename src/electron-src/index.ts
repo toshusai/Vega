@@ -13,7 +13,7 @@ import { initReadFile } from "./ipc/readFile";
 
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
-  await prepareNext("./renderer");
+  await prepareNext("./src");
 
   const mainWindow = new BrowserWindow({
     width: 1270,

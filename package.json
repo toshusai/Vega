@@ -5,11 +5,12 @@
   "scripts": {
     "clean": "rimraf dist main renderer/out renderer/.next",
     "dev": "npm run build-electron && electron .",
-    "build-renderer": "next build renderer && next export renderer",
-    "build-electron": "tsc -p electron-src",
+    "build-renderer": "next build && next export ",
+    "build-electron": "tsc -p src/electron-src",
     "build": "npm run build-renderer && npm run build-electron",
     "pack-app": "npm run build && electron-builder --dir",
     "dist": "npm run build && electron-builder",
+    "lint": "next lint",
     "type-check": "tsc -p ./renderer/tsconfig.json && tsc -p ./electron-src/tsconfig.json"
   },
   "dependencies": {
@@ -32,6 +33,8 @@
     "@types/styled-components": "^5.1.26",
     "electron": "^13",
     "electron-builder": "^23.0.3",
+    "eslint": "^8.32.0",
+    "eslint-config-next": "13.1.4",
     "next": "latest",
     "rimraf": "^3.0.0",
     "typescript": "^4.0.5"

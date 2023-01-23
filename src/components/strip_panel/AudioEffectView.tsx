@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { Strip } from "../../interfaces/Strip";
 import { AudioEffect } from "../../interfaces/effects/AudioEffect";
-import { UndoManager } from "../../UndoManager";
+import { UndoManager } from "@/UndoManager";
 import { isAudioAsset } from "../../rendering/updateTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";

@@ -11,7 +11,7 @@ import { actions } from "../store/scene";
 import { formatForSave } from "./formatForSave";
 import { writeFileUserDataDir } from "../ipc/writeFileUserDataDir";
 import { readFile } from "../ipc/readFile";
-import { UndoManager } from "../UndoManager";
+import { UndoManager } from "@/UndoManager";
 import { appAction } from "../store/app";
 import { compareScene } from "./compareScene";
 import { readRecentFiles } from "./readRecentFiles";

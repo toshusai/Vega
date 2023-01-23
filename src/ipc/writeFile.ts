@@ -1,4 +1,4 @@
-import { WRITE_FILE } from "../../electron-src/ipc/const";
+import { WRITE_FILE } from "@/electron-src/ipc/const";
 
 /**
  * Writes data to a file
