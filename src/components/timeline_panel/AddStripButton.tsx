@@ -7,7 +7,7 @@ import { Strip } from "../../interfaces/Strip";
 import { TextEffect } from "../../interfaces/effects/TextEffect";
 import { VideoEffect } from "../../interfaces/effects/VideoEffect";
 import { ImageEffect } from "../../interfaces/effects/ImageEffect";
-import { DropdownMenu } from "../../pages/DropdownMenu";
+import { DropdownMenu } from "../DropdownMenu";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
 import { StyledContextMenuButton } from "../core/context_menu/ContextMenu";
