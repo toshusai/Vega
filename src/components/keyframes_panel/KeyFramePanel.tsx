@@ -43,6 +43,7 @@ export const KeyFramePanel: FC = () => {
 
   const handleMouseDownTimeView = getDragHander<number, void>(
     ({ diffX, pass }) => {
+      if (!pass || !strip) return;
       const newCurrentTime = pass + diffX / pxPerSec;
       if (newCurrentTime >= 0 && newCurrentTime <= strip.length + strip.start) {
         dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
@@ -50,6 +51,7 @@ export const KeyFramePanel: FC = () => {
     },
     ({ startEvent: e }) => {
       // TODO fix magic number
+      if (!strip) return 0;
       const newCurrentTime =
         (e.clientX - 40) / pxPerSec + start * strip.length + strip.start;
       if (newCurrentTime >= 0 && newCurrentTime <= strip.length + strip.start) {
@@ -78,14 +80,19 @@ export const KeyFramePanel: FC = () => {
     height: number;
   } | null>(null);
 
-  const strip = selectedStrips[0];
+  const strip = selectedStrips[0] as Strip | undefined;
 
-  const allKeyframes = strip.effects.flatMap((effect) => {
-    if ("keyframes" in effect) {
-      return effect.keyframes;
-    }
-    return [];
-  }) as KeyFrame[];
+  const allKeyframes = useMemo<KeyFrame[]>(
+    () =>
+      (strip?.effects.flatMap((effect) => {
+        if ("keyframes" in effect) {
+          return effect.keyframes;
+        }
+        return [];
+      }) as KeyFrame[]) ?? ([] as KeyFrame[]),
+    [strip?.effects]
+  );
+
   const uniqueProperties = useMemo(
     () => new Set(allKeyframes.map((keyframe) => keyframe.property)),
     [allKeyframes]
@@ -94,6 +101,7 @@ export const KeyFramePanel: FC = () => {
   useEffect(() => {
     if (rect) {
       const selectedKeyframes = allKeyframes.filter((keyframe) => {
+        if (!strip) return false;
         const left = (keyframe.time - start * strip.length) * pxPerSec;
         const propertiesIndex = Array.from(uniqueProperties).indexOf(
           keyframe.property
@@ -118,7 +126,8 @@ export const KeyFramePanel: FC = () => {
     pxPerSec,
     rect,
     start,
-    strip.length,
+    strip,
+    strip?.length,
     uniqueProperties,
   ]);
 
@@ -131,13 +140,14 @@ export const KeyFramePanel: FC = () => {
         firstKeyframes: KeyFrame[];
         updatedKeyframeIds: string[];
         firstStrips: Strip[];
-      },
+      } | null,
       {
         updatedStrips: Strip[];
       } | null
     >(
       (ctx) => {
         const { diffX, pass } = ctx;
+        if (!pass || !strip) return null;
         const newSelectedKFIds = pass.updatedKeyframeIds;
         const selectedKFs = allKeyframes
           .filter((strip) => newSelectedKFIds.includes(strip.id))
@@ -223,6 +233,7 @@ export const KeyFramePanel: FC = () => {
             dispatch(actions.updateStrip(updatedStrips));
           },
           undo: () => {
+            if (!ctx.pass) return;
             dispatch(actions.updateStrip(ctx.pass.firstStrips));
           },
         });
@@ -255,6 +266,8 @@ export const KeyFramePanel: FC = () => {
       }
     }
   );
+
+  if (!strip) return <Panel width={100} height={100} />;
 
   return (
     <Panel width={100} height={100}>

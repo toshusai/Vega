@@ -17,6 +17,10 @@ import { makeNewKeyframes } from "../preview_panel/Gizmo";
 import { KeyFrame } from "@/interfaces/effects/KeyFrame";
 import { Ease } from "@/utils/easing";
 
+export type PickProperties<T, TFilter> = {
+  [K in keyof T as T[K] extends TFilter ? K : never]: T[K];
+};
+
 export const ImageEffectView: FC<{
   imageEffect: ImageEffect;
   strip: Strip;
@@ -57,23 +61,30 @@ export const ImageEffectView: FC<{
     value: a.id,
     label: a.name,
   }));
-  const numberKeys: (keyof ImageEffect)[] = [
+
+  type NumberProps = PickProperties<ImageEffect, number | undefined>;
+
+  const numberKeys: (keyof NumberProps)[] = [
     "x",
     "y",
     "width",
     "height",
     "opacity",
   ];
-  const scaleKeysMap = {
+  const scaleKeysMap: NumberProps = {
     x: 1,
     y: 1,
     opacity: 0.01,
   };
-  const viewKeysMap = {
-    x: (v) => v.toFixed(0),
-    y: (v) => v.toFixed(0),
+  const viewKeysMap: { [key in keyof NumberProps]: (v: number) => string } = {
+    x: (v: number) => v.toFixed(0),
+    y: (v: number) => v.toFixed(0),
   };
-  const minMaxKeysMap = {
+  const minMaxKeysMap: {
+    [key in keyof NumberProps]: [number, number] | undefined;
+  } = {
+    x: undefined,
+    y: undefined,
     opacity: [0, 1],
   };
 

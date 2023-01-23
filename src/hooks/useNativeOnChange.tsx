@@ -9,7 +9,7 @@ export function useNativeOnChange<
   const inputRef = useRef<T>(null);
   const [value, setValue] = useState(propsValue);
   useEffect(() => {
-    const onChange = (e: InputEvent) => {
+    const onChange = (e: Event) => {
       const target = e.target as T;
       if (typeof propsValue === "string") {
         propsOnChange?.(target.value);
@@ -23,7 +23,7 @@ export function useNativeOnChange<
     }
     const el = inputRef.current;
     return () => {
-      el.removeEventListener("change", onChange);
+      el?.removeEventListener("change", onChange);
     };
   }, [propsOnChange, propsValue]);
 

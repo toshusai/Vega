@@ -14,6 +14,7 @@ import { iconProps } from "../core/iconProps";
 import { Row, PropertyName } from "./StripPanel";
 import { exactKeyFrame } from "../../utils/exactKeyFrame";
 import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
+import { PickProperties } from "./ImageEffectView";
 
 export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   props
@@ -60,7 +61,8 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     label: a.name,
   }));
 
-  const numberKeys: (keyof TextEffect)[] = [
+  type NumberProps = PickProperties<TextEffect, number | undefined>;
+  const numberKeys: (keyof NumberProps)[] = [
     "x",
     "y",
     "fontSize",
@@ -74,11 +76,14 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     "shadowColor",
   ];
 
-  const scaleKeysMap = {
+  const scaleKeysMap: NumberProps = {
+    fontSize: 1,
+    shadowBlur: 1,
     x: 1,
     y: 1,
   };
-  const viewKeysMap = {
+  const viewKeysMap: { [key in keyof NumberProps]: (v: number) => string } = {
+    fontSize: (v) => v.toString(),
     x: (v) => v.toFixed(0),
     y: (v) => v.toFixed(0),
   };

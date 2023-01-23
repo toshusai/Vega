@@ -8,7 +8,7 @@ export function formatForSave(data: SceneState) {
         return [...value].sort();
       }
       if (value instanceof Object) {
-        const ordered = {};
+        const ordered: { [key: string]: any } = {};
         Object.keys(value)
           .sort()
           .forEach((key) => {

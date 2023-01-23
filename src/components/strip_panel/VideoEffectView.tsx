@@ -9,6 +9,7 @@ import { useSelector } from "../../store/useSelector";
 import { NumberEditInput } from "../core/NumberEditInput";
 import { Item, Select } from "../core/Select";
 import { Row, PropertyName } from "./StripPanel";
+import { PickProperties } from "./ImageEffectView";
 
 export const VideoEffectView: FC<{
   videoEffect: VideoEffect;
@@ -34,17 +35,13 @@ export const VideoEffectView: FC<{
     value: a.id,
     label: a.name,
   }));
-  const numberKeys: (keyof VideoEffect)[] = [
-    "x",
-    "y",
-    "width",
-    "height",
-  ];
-  const scaleKeysMap = {
+  type NumberProps = PickProperties<VideoEffect, number | undefined>;
+  const numberKeys: (keyof NumberProps)[] = ["x", "y", "width", "height"];
+  const scaleKeysMap: NumberProps = {
     x: 1,
     y: 1,
   };
-  const viewKeysMap = {
+  const viewKeysMap: { [key in keyof NumberProps]: (v: number) => string } = {
     x: (v) => v.toFixed(0),
     y: (v) => v.toFixed(0),
   };

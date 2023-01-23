@@ -29,6 +29,11 @@ export function makeNewKeyframes<T extends { keyframes: KeyFrame[] }>(
       (keyframe) => keyframe.property === key
     );
     if (hasKeyFrame) {
+      const propKey = key as keyof T;
+      const value = partial[propKey] as any;
+      if (value === undefined) {
+        return;
+      }
       const onKeyFrame = exactKeyFrame<T>(
         effect,
         key as keyof T,
@@ -37,14 +42,14 @@ export function makeNewKeyframes<T extends { keyframes: KeyFrame[] }>(
       if (onKeyFrame) {
         newKFs.push({
           ...onKeyFrame,
-          value: partial[key] as any,
+          value,
         });
       } else {
         newKFs.push({
           id: uuid(),
           property: key,
           time: roundToFrame(currentTime - strip.start, fps),
-          value: partial[key] as any,
+          value,
           ease: Ease.Linear,
         });
       }

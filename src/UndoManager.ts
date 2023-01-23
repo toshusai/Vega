@@ -19,7 +19,7 @@ export class UndoManager {
   private isUndoing = false;
   private isRedoing = false;
 
-  private event: EventTarget;
+  private event!: EventTarget;
 
   public static main: UndoManager = new UndoManager();
 
@@ -61,7 +61,7 @@ export class UndoManager {
 
   add(undoable: Undoable) {
     if (this.isUndoing || this.isRedoing) {
-      return;
+      return { run: () => {} };
     }
     if (this.index < this.stack.length - 1) {
       this.stack.splice(this.index + 1);
