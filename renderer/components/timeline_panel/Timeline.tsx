@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { MemoTimeView } from "../core/TimeView";
 import { Panel } from "../core/Panel";
 import { MemoStripUI } from "./StripUI";
@@ -92,7 +92,8 @@ export const Timeline: FC = () => {
           end: newEnd,
         })
       );
-    } else {
+    } else if (KeyboardInput.isPressed(Key.Shift)) {
+      const value = e.deltaX * 0.0001;
       let newStart = start + value;
       let newEnd = end + value;
       if (start + value < 0) {
@@ -229,7 +230,7 @@ export const Timeline: FC = () => {
       const el = startEvent.target as HTMLElement;
       const rect = el.getBoundingClientRect();
       let left = startEvent.clientX - rect.left;
-      let top = startEvent.clientY - rect.top;
+      let top = startEvent.clientY - rect.top + el.scrollTop;
       let width = diffX;
       let height = diffY;
       if (width < 0) {
@@ -270,6 +271,8 @@ export const Timeline: FC = () => {
       );
     }
   }, [rect]);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const [contextMenuEvent, setContextMenuEvent] = useState<React.MouseEvent<
     HTMLDivElement,
@@ -331,6 +334,10 @@ export const Timeline: FC = () => {
 
   // for strip rendering fix me
   const _pxPerSec = width / ((end - start) * timelineLength);
+
+  const maxLayer = strips.reduce((max, strip) => {
+    return Math.max(max, strip.layer);
+  }, 0);
 
   return (
     <Panel width={100} height={100}>
@@ -424,9 +431,11 @@ export const Timeline: FC = () => {
             style={{
               position: "relative",
               boxSizing: "border-box",
-              height: "100%",
-              overflow: "hidden",
+              height: "calc(100% - 22px)",
+              overflowY: "auto",
+              overflowX: "hidden",
             }}
+            ref={scrollRef}
             onMouseDown={handleMouseDownForSelect}
           >
             <SelectRect
@@ -457,6 +466,14 @@ export const Timeline: FC = () => {
                 onClick={() => {}}
               />
             ))}
+            <div
+              style={{
+                position: "absolute",
+                height: "44px",
+                top: `${(maxLayer + 1) * 44}px`,
+                width: "1px",
+              }}
+            ></div>
           </div>
         </div>
         <MemoScaleScrollBar
