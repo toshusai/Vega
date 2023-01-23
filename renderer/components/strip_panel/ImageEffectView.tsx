@@ -34,14 +34,24 @@ export const ImageEffectView: FC<{
     value: a.id,
     label: a.name,
   }));
-  const numberKeys: (keyof ImageEffect)[] = ["x", "y", "width", "height"];
+  const numberKeys: (keyof ImageEffect)[] = [
+    "x",
+    "y",
+    "width",
+    "height",
+    "opacity",
+  ];
   const scaleKeysMap = {
     x: 1,
     y: 1,
+    opacity: 0.01,
   };
   const viewKeysMap = {
     x: (v) => v.toFixed(0),
     y: (v) => v.toFixed(0),
+  };
+  const minMaxKeysMap = {
+    opacity: [0, 1],
   };
 
   const noImageAsset =
@@ -64,6 +74,8 @@ export const ImageEffectView: FC<{
             <NumberEditInput
               value={imageEffect[key] as number}
               scale={scaleKeysMap[key]}
+              max={minMaxKeysMap[key]?.[1]}
+              min={minMaxKeysMap[key]?.[0]}
               view={viewKeysMap[key]}
               onInput={(value) => emit({ [key]: value })}
               onChange={(value) =>
