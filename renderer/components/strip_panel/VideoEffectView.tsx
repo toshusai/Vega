@@ -34,18 +34,19 @@ export const VideoEffectView: FC<{
     value: a.id,
     label: a.name,
   }));
-  const numberKeys: (keyof VideoEffect)[] = ["x", "y", "scaleX", "scaleY"];
+  const numberKeys: (keyof VideoEffect)[] = [
+    "x",
+    "y",
+    "width",
+    "height",
+  ];
   const scaleKeysMap = {
     x: 1,
     y: 1,
-    scaleX: 0.01,
-    scaleY: 0.01,
   };
   const viewKeysMap = {
     x: (v) => v.toFixed(0),
     y: (v) => v.toFixed(0),
-    scaleX: (v) => v.toFixed(2),
-    scaleY: (v) => v.toFixed(2),
   };
 
   const noVideoAsset =
