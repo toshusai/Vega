@@ -15,6 +15,53 @@ import { uuid } from "short-uuid";
 import { Ease } from "../../utils/easing";
 import { roundToFrame } from "../../utils/roundToFrame";
 
+export function makeNewKeyframes<T extends { keyframes: KeyFrame[] }>(
+  partial: Partial<T>,
+  effect: T,
+  currentTime: number,
+  strip: { start: number },
+  fps: number
+) {
+  const changedKeys = Object.keys(partial) as (keyof TextEffect)[];
+  const newKFs: KeyFrame[] = [];
+  changedKeys.forEach((key) => {
+    const hasKeyFrame = effect.keyframes.some(
+      (keyframe) => keyframe.property === key
+    );
+    if (hasKeyFrame) {
+      const onKeyFrame = exactKeyFrame<T>(
+        effect,
+        key as keyof T,
+        currentTime - strip.start
+      );
+      if (onKeyFrame) {
+        newKFs.push({
+          ...onKeyFrame,
+          value: partial[key] as any,
+        });
+      } else {
+        newKFs.push({
+          id: uuid(),
+          property: key,
+          time: roundToFrame(currentTime - strip.start, fps),
+          value: partial[key] as any,
+          ease: Ease.Linear,
+        });
+      }
+    }
+  });
+  if (newKFs.length === 0) {
+    return false;
+  }
+  const finalKeyFrames = [
+    ...newKFs,
+    ...effect.keyframes.filter(
+      (keyframe) => !newKFs.find((kf) => kf.id === keyframe.id)
+    ),
+  ];
+  return finalKeyFrames;
+}
+
 export const Gizmo: FC<{
   left: number;
   top: number;
@@ -52,48 +99,20 @@ export const Gizmo: FC<{
   if (!rect) return null;
 
   const emit = (partial: Partial<TextEffect>) => {
-    const changedKeys = Object.keys(partial) as (keyof TextEffect)[];
-    const newKFs: KeyFrame[] = [];
-    changedKeys.forEach((key) => {
-      const hasKeyFrame = textEffects[0].keyframes.some(
-        (keyframe) => keyframe.property === key
-      );
-      if (hasKeyFrame) {
-        const onKeyFrame = exactKeyFrame(
-          textEffects[0],
-          key,
-          currentTime - strip.start
-        );
-        if (onKeyFrame) {
-          newKFs.push({
-            ...onKeyFrame,
-            value: partial[key] as any,
-          });
-        } else {
-          newKFs.push({
-            id: uuid(),
-            property: key,
-            time: roundToFrame(currentTime - strip.start, fps),
-            value: partial[key] as any,
-            ease: Ease.Linear,
-          });
-        }
-      }
-    });
-
-    const finalKeyFrames = [
-      ...newKFs,
-      ...textEffects[0].keyframes.filter(
-        (keyframe) => !newKFs.find((kf) => kf.id === keyframe.id)
-      ),
-    ];
+    const newKFs = makeNewKeyframes<TextEffect>(
+      partial,
+      textEffects[0],
+      currentTime,
+      strip,
+      fps
+    );
 
     dispatch(
       actions.updateEddect({
         effect: {
           ...textEffects[0],
           ...partial,
-          keyframes: finalKeyFrames,
+          keyframes: newKFs ? newKFs : textEffects[0].keyframes,
         } as TextEffect,
         stripId: strip.id,
       })

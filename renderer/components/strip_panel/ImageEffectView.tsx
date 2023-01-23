@@ -9,6 +9,13 @@ import { NumberEditInput } from "../core/NumberEditInput";
 import { Item, Select } from "../core/Select";
 import { Row, PropertyName } from "./StripPanel";
 import { ImageEffect } from "../../interfaces/effects/ImageEffect";
+import { KeyFrameIconButton } from "./KeyFrameIconButton";
+import { Key } from "tabler-icons-react";
+import { iconProps } from "../core/iconProps";
+import { exactKeyFrame } from "@/utils/exactKeyFrame";
+import { makeNewKeyframes } from "../preview_panel/Gizmo";
+import { KeyFrame } from "@/interfaces/effects/KeyFrame";
+import { Ease } from "@/utils/easing";
 
 export const ImageEffectView: FC<{
   imageEffect: ImageEffect;
@@ -17,10 +24,26 @@ export const ImageEffectView: FC<{
   const { imageEffect } = props;
   const dispatch = useDispatch();
 
+  const currentTime = useSelector((state) => state.scene.currentTime);
+  const fps = useSelector((state) => state.scene.fps);
   const emit = (partial: Partial<ImageEffect>) => {
+    const newKFs = makeNewKeyframes<ImageEffect>(
+      partial,
+      imageEffect,
+      currentTime,
+      props.strip,
+      fps
+    );
+
     dispatch(
       actions.updateEddect({
-        effect: { ...imageEffect, ...partial },
+        effect: {
+          ...imageEffect,
+          ...partial,
+          keyframes: newKFs
+            ? newKFs
+            : [...imageEffect.keyframes, ...(partial.keyframes ?? [])],
+        } as ImageEffect,
         stripId: props.strip.id,
       })
     );
@@ -64,6 +87,23 @@ export const ImageEffectView: FC<{
       disabled: true,
     });
   }
+  const time = currentTime - props.strip.start;
+
+  const addKeyFrame = (key: keyof ImageEffect) => {
+    const value = imageEffect[key];
+    if (typeof value !== "number") return;
+    const newKeyFrames: KeyFrame[] = [
+      ...imageEffect.keyframes,
+      {
+        property: key,
+        time,
+        ease: Ease.Linear,
+        value,
+        id: Math.random().toString(),
+      },
+    ];
+    emit({ keyframes: newKeyFrames });
+  };
 
   return (
     <>
@@ -71,6 +111,19 @@ export const ImageEffectView: FC<{
         return (
           <Row key={key}>
             <PropertyName>{key}</PropertyName>
+            <KeyFrameIconButton>
+              <Key
+                {...iconProps}
+                onClick={() => addKeyFrame(key)}
+                color={
+                  exactKeyFrame(imageEffect, key, time)
+                    ? "var(--color-strip-selected)"
+                    : hasKeyFrame(imageEffect, key)
+                    ? "var(--color-primary)"
+                    : "white"
+                }
+              />
+            </KeyFrameIconButton>
             <NumberEditInput
               value={imageEffect[key] as number}
               scale={scaleKeysMap[key]}
@@ -101,4 +154,9 @@ export const ImageEffectView: FC<{
       </Row>
     </>
   );
+};
+
+const hasKeyFrame = (effect: ImageEffect, key: keyof ImageEffect) => {
+  if (!effect.keyframes) return false;
+  return effect.keyframes.some((k) => k.property === key);
 };

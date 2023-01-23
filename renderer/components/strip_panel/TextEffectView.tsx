@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
 import { Key } from "tabler-icons-react";
 import { Strip } from "../../interfaces/Strip";
 import { TextEffect } from "../../interfaces/effects/TextEffect";
@@ -11,7 +10,6 @@ import { useSelector } from "../../store/useSelector";
 import { ClickEditInput, ClickEditTextarea } from "../core/ClickEditInput";
 import { NumberEditInput } from "../core/NumberEditInput";
 import { Item, Select } from "../core/Select";
-import { IconButton } from "../core/styled/IconButton";
 import { iconProps } from "../core/iconProps";
 import { Row, PropertyName } from "./StripPanel";
 import { exactKeyFrame } from "../../utils/exactKeyFrame";
@@ -83,10 +81,6 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   const viewKeysMap = {
     x: (v) => v.toFixed(0),
     y: (v) => v.toFixed(0),
-  };
-
-  const hasKeyFrame = (key: keyof TextEffect) => {
-    return textEffect.keyframes.some((k) => k.property === key);
   };
 
   const time = currentTime - props.strip.start;
@@ -205,10 +199,3 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     </>
   );
 };
-
-const KeyFrameIconButton = styled(IconButton)`
-  // FIXME: can not override without important
-  background: transparent !important;
-  // FIXME: can not override without important
-  border: 1px solid transparent !important;
-`;
