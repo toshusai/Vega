@@ -18,7 +18,6 @@ import {
 } from "tabler-icons-react";
 import { Strip } from "../../interfaces/Strip";
 import { Key, KeyboardInput } from "../../KeyboardInput";
-import { UndoManager } from "../../UndoManager";
 import { roundToFrame } from "../../utils/roundToFrame";
 import { canMove } from "../../interfaces/strips/canMove";
 import { moveStrip } from "../../interfaces/strips/moveStrip";
@@ -36,6 +35,7 @@ import { Button } from "../core/DropdownLike";
 import { AddStripButton } from "./AddStripButton";
 import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
 import { releaseAudioAsset } from "@/rendering/updateAudioEffect";
+import { UndoManager } from "@/UndoManager";
 
 export const Timeline: FC = () => {
   const strips = useSelector((state) => state.scene.strips);

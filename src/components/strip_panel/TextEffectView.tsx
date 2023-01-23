@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Key } from "tabler-icons-react";
 import { Strip } from "../../interfaces/Strip";
 import { TextEffect } from "../../interfaces/effects/TextEffect";
-import { UndoManager } from "../../UndoManager";
+import { UndoManager } from "@/UndoManager";
 import { caclulateKeyFrameValue } from "../../rendering/updateTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";

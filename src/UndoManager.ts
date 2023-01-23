@@ -36,11 +36,17 @@ export class UndoManager {
     return this.index;
   }
 
-  addEventListener(type: OperationType, listener: (e: CustomEvent) => void) {
+  addEventListener(
+    type: OperationType,
+    listener: EventListenerOrEventListenerObject
+  ) {
     this.event.addEventListener(type, listener);
   }
 
-  removeEventListener(type: OperationType, listener: (e: CustomEvent) => void) {
+  removeEventListener(
+    type: OperationType,
+    listener: EventListenerOrEventListenerObject
+  ) {
     this.event.removeEventListener(type, listener);
   }
 

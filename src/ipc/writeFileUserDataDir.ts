@@ -1,4 +1,4 @@
-import { WRITE_FILE_USER_DATA_DIR } from "./../../electron-src/ipc/const";
+import { WRITE_FILE_USER_DATA_DIR } from "@/electron-src/ipc/const";
 /**
  * Writes data to a file in the userData directory
  * @param path relative path from userData directory e.g. "recent-projects.json"

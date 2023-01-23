@@ -1,4 +1,5 @@
-import { READ_FILE } from "./../../electron-src/ipc/const";
+import { READ_FILE } from "@/electron-src/ipc/const";
+
 /**
  * read file from disk
  *

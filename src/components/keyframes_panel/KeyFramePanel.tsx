@@ -7,7 +7,6 @@ import { KeyFrame } from "../../interfaces/effects/KeyFrame";
 import { Key, KeyboardInput } from "../../KeyboardInput";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
-import { UndoManager } from "../../UndoManager";
 import { Panel } from "../core/Panel";
 import { getEasingFunction } from "../../utils/easing";
 import { getDragHander } from "../../utils/getDragHander";
@@ -17,6 +16,7 @@ import { ScaleScrollBar } from "../core/ScaleScrollBar";
 import { SelectRect } from "../core/styled/SelectRect";
 import { TimeCursor } from "../core/TimeCursor";
 import { TimeView } from "../core/TimeView";
+import { UndoManager } from "@/UndoManager";
 
 export function hasKeyFrame(object: any): object is { keyframes: KeyFrame[] } {
   return object.keyframes !== undefined && Array.isArray(object.keyframes);
@@ -147,7 +147,7 @@ export const KeyFramePanel: FC = () => {
           if (!hasKeyFrame(effect)) {
             return;
           }
-          const newEffect = {
+          const newEffect: Effect & { keyframes: KeyFrame[] } = {
             ...effect,
             keyframes: effect.keyframes.map((kf) => {
               const newK = newKFs.find((m) => m.id === kf.id);

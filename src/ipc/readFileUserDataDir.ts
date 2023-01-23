@@ -1,4 +1,4 @@
-import { READ_FILE_USER_DATA_DIR } from "../../electron-src/ipc/const";
+import { READ_FILE_USER_DATA_DIR } from "@/electron-src/ipc/const";
 
 /**
  * Reads a file in the userData directory

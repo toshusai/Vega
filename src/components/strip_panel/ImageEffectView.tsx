@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { Strip } from "../../interfaces/Strip";
-import { UndoManager } from "../../UndoManager";
+import { UndoManager } from "@/UndoManager";
 import { isImageAsset } from "../../rendering/updateTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";

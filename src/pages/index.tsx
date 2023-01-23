@@ -6,7 +6,6 @@ import store from "../store";
 import { Preview } from "../components/preview_panel/Preview";
 import { AssetPanel } from "../components/assets_panel/AssetPanel";
 import { Key, KeyboardInput } from "../KeyboardInput";
-import { UndoManager } from "../UndoManager";
 import { AssetDetailsPanel } from "../components/asset_details_panel/AssetDetailsPanel";
 import { StripPanel } from "../components/strip_panel/StripPanel";
 import { KeyFramePanel } from "../components/keyframes_panel/KeyFramePanel";
@@ -15,8 +14,8 @@ import { formatForSave } from "./formatForSave";
 import { writeFile } from "../ipc/writeFile";
 import { appAction } from "../store/app";
 import React, { FC } from "react";
-import { Panel } from "@/components/core/Panel";
-import { getDragHander } from "@/utils/getDragHander";
+import { UndoManager } from "../UndoManager";
+import { getDragHander } from "../utils/getDragHander";
 
 export function download(blob: Blob | string, name: string) {
   const link = document.createElement("a");

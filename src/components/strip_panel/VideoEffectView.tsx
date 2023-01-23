@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { Strip } from "../../interfaces/Strip";
 import { VideoEffect } from "../../interfaces/effects/VideoEffect";
-import { UndoManager } from "../../UndoManager";
+import { UndoManager } from "@/UndoManager";
 import { isVideoAsset } from "../../rendering/updateTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";

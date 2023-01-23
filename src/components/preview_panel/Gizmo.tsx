@@ -5,7 +5,7 @@ import { KeyFrame } from "../../interfaces/effects/KeyFrame";
 import { isTextEffect } from "../../interfaces/effects/utils/isTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
-import { UndoManager } from "../../UndoManager";
+import { UndoManager } from "@/UndoManager";
 import { getDragHander } from "../../utils/getDragHander";
 import styled from "styled-components";
 import { SelectRectProps } from "../core/styled/SelectRect";
