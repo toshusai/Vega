@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { ImageAsset } from "../../interfaces/asset/ImageAsset";
 import { VideoAsset } from "../../interfaces/asset/VideoAsset";
@@ -119,9 +119,23 @@ const VideoAssetDetailsPanel: FC<{
 const ImageAssetDetailsPanel: FC<{
   asset: ImageAsset;
 }> = (props) => {
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [width, setWidth] = useState<number | undefined>(undefined);
+  const [height, setHeight] = useState<number | undefined>(undefined);
+  useEffect(() => {
+    if (imgRef.current) {
+      setWidth(imgRef.current.naturalWidth);
+      setHeight(imgRef.current.naturalHeight);
+    }
+  }, [imgRef.current, props.asset.path]);
+
   return (
     <div>
+      <div>
+        {width}x{height}
+      </div>
       <img
+        ref={imgRef}
         style={{
           width: "100%",
           height: "100%",
