@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useWidth } from "../../hooks/useWidth";
 import { Effect } from "../../interfaces/effects/Effect";
@@ -78,6 +78,19 @@ export const KeyFramePanel: FC = () => {
     height: number;
   } | null>(null);
 
+  const strip = selectedStrips[0];
+
+  const allKeyframes = strip.effects.flatMap((effect) => {
+    if ("keyframes" in effect) {
+      return effect.keyframes;
+    }
+    return [];
+  }) as KeyFrame[];
+  const uniqueProperties = useMemo(
+    () => new Set(allKeyframes.map((keyframe) => keyframe.property)),
+    [allKeyframes]
+  );
+
   useEffect(() => {
     if (rect) {
       const selectedKeyframes = allKeyframes.filter((keyframe) => {
@@ -99,23 +112,19 @@ export const KeyFramePanel: FC = () => {
         actions.setSelectKeyframeIds(selectedKeyframes.map((strip) => strip.id))
       );
     }
-  }, [rect]);
+  }, [
+    allKeyframes,
+    dispatch,
+    pxPerSec,
+    rect,
+    start,
+    strip.length,
+    uniqueProperties,
+  ]);
 
   if (selectedStrips.length !== 1) {
     return <Panel width={100} height={100} />;
   }
-  const strip = selectedStrips[0];
-
-  const allKeyframes = strip.effects.flatMap((effect) => {
-    if ("keyframes" in effect) {
-      return effect.keyframes;
-    }
-    return [];
-  }) as KeyFrame[];
-  const uniqueProperties = new Set(
-    allKeyframes.map((keyframe) => keyframe.property)
-  );
-
   const handleMouseDownKeyFrame = (keyframe: KeyFrame) =>
     getDragHander<
       {

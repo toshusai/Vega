@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { isTextEffect } from "../../interfaces/effects/utils/isTextEffect";
 import { isVideoEffect } from "../../interfaces/effects/utils/isVideoEffect";
@@ -40,25 +40,28 @@ export const Preview: FC = () => {
   const [scale, setScale] = useState(0.3);
   const [dragging, setDragging] = useState(false);
 
-  const changeScale = (newScale: number, center?: boolean) => {
-    if (newScale < 0.1) {
-      newScale = 0.1;
-    }
-    if (newScale > 2) {
-      newScale = 2;
-    }
-    setScale(newScale);
-    if (center) {
-      const el = rootRef.current as HTMLDivElement;
-      const rect = el.getBoundingClientRect();
-      const deltaScale = newScale / scale;
-      const distanceX = rect.width / 2 - left;
-      const distanceY = rect.height / 2 - top;
-      setLeft(left + distanceX * (1 - deltaScale));
-      setTop(top + distanceY * (1 - deltaScale));
-    }
-    return newScale;
-  };
+  const changeScale = useCallback(
+    (newScale: number, center?: boolean) => {
+      if (newScale < 0.1) {
+        newScale = 0.1;
+      }
+      if (newScale > 2) {
+        newScale = 2;
+      }
+      setScale(newScale);
+      if (center) {
+        const el = rootRef.current as HTMLDivElement;
+        const rect = el.getBoundingClientRect();
+        const deltaScale = newScale / scale;
+        const distanceX = rect.width / 2 - left;
+        const distanceY = rect.height / 2 - top;
+        setLeft(left + distanceX * (1 - deltaScale));
+        setTop(top + distanceY * (1 - deltaScale));
+      }
+      return newScale;
+    },
+    [left, scale, top]
+  );
 
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     const el = rootRef.current as HTMLDivElement;
@@ -72,13 +75,13 @@ export const Preview: FC = () => {
     setTop(top + distanceY * (1 - deltaScale));
   };
 
-  const resetScale = () => {
+  const resetScale = useCallback(() => {
     changeScale(0.3, true);
     const el = rootRef.current as HTMLDivElement;
     const rect = el.getBoundingClientRect();
     setLeft(rect.width / 2 - (width * 0.3) / 2);
     setTop(rect.height / 2 - (height * 0.3) / 2);
-  };
+  }, [changeScale, height, width]);
 
   const currentTime = useSelector((state) => state.scene.currentTime);
 
@@ -202,7 +205,7 @@ export const Preview: FC = () => {
       requestAnimationFrame(update);
     };
     update(0);
-  }, [left, top, scale, initialized, dispatch]);
+  }, [left, top, scale, initialized, dispatch, resetScale]);
   return (
     <Panel width={100} height={100}>
       <div

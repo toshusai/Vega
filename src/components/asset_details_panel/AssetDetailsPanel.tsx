@@ -14,6 +14,7 @@ import { useSelector } from "../../store/useSelector";
 import { ClickEditInput } from "../core/ClickEditInput";
 import { Panel } from "../core/Panel";
 import { AudioAsset } from "@/interfaces/asset/AudioAsset";
+import Image from "next/image";
 
 export const AssetDetailsPanel: FC = () => {
   const selectedAssetIds = useSelector((state) => state.scene.selectedAssetIds);
@@ -127,14 +128,15 @@ const ImageAssetDetailsPanel: FC<{
       setWidth(imgRef.current.naturalWidth);
       setHeight(imgRef.current.naturalHeight);
     }
-  }, [imgRef.current, props.asset.path]);
+  }, [props.asset.path]);
 
   return (
     <div>
       <div>
         {width}x{height}
       </div>
-      <img
+      <Image
+        alt="preview"
         ref={imgRef}
         style={{
           width: "100%",

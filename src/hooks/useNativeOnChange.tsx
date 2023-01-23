@@ -21,17 +21,16 @@ export function useNativeOnChange<
     if (inputRef.current) {
       inputRef.current.addEventListener("change", onChange);
     }
+    const el = inputRef.current;
     return () => {
-      if (inputRef.current) {
-        inputRef.current.removeEventListener("change", onChange);
-      }
+      el.removeEventListener("change", onChange);
     };
-  }, [propsValue]);
+  }, [propsOnChange, propsValue]);
 
   useEffect(() => {
     if (propsValue !== value) {
       setValue(propsValue);
     }
-  }, [propsValue]);
+  }, [propsValue, value]);
   return { inputRef, value, setValue };
 }

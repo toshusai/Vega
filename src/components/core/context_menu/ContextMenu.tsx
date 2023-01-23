@@ -33,8 +33,8 @@ const StyledDiv = styled.div.attrs<{
 export const ContextMenu: React.FC<PropsWithChildren<ContextMenuProps>> = (
   props
 ) => {
-  if (!props.show) return null;
   const ref = useRef<HTMLDivElement>(null);
+  if (!props.show) return null;
   const mouseDown = (e) => {
     if (ref.current?.contains(e.target as Node)) {
       return;

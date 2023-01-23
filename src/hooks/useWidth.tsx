@@ -16,6 +16,6 @@ export function useWidth(deps: any[] = []) {
   useEffect(() => {
     if (!ref.current) return;
     setWidth(ref.current.clientWidth);
-  }, [ref, ...deps]);
+  }, [ref, deps]);
   return [width, ref] as const;
 }
