@@ -86,6 +86,8 @@ export function updateVideoEffect(
       videoElement.currentTime = scene.currentTime - strip.start;
       videoStatusMap.set(elementMapKey, VideoStatus.Seeking);
     } else if (currentStatus === VideoStatus.Seeking && modeLoadingBlack) {
+      ctx.shadowColor = "";
+      ctx.shadowBlur = 0;
       ctx.fillStyle = "black";
       ctx.fillRect(
         effect.x,
@@ -97,6 +99,8 @@ export function updateVideoEffect(
     if (currentStatus === VideoStatus.Seeking && scene.isPlaying) {
       return;
     }
+    ctx.shadowColor = "";
+    ctx.shadowBlur = 0;
     ctx.drawImage(
       videoElement,
       0,

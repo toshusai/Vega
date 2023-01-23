@@ -32,6 +32,9 @@ export function updateImageEffect(
       imageElement.src = imageAsset.path;
     }
 
+    ctx.shadowColor = "";
+    ctx.shadowBlur = 0;
+
     ctx.drawImage(
       imageElement,
       0,
