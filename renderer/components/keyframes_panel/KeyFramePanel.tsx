@@ -4,7 +4,6 @@ import { useWidth } from "../../hooks/useWidth";
 import { Effect } from "../../interfaces/effects/Effect";
 import { Strip } from "../../interfaces/Strip";
 import { KeyFrame } from "../../interfaces/effects/KeyFrame";
-import { isTextEffect } from "../../interfaces/effects/utils/isTextEffect";
 import { Key, KeyboardInput } from "../../KeyboardInput";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
@@ -18,6 +17,10 @@ import { ScaleScrollBar } from "../core/ScaleScrollBar";
 import { SelectRect } from "../core/styled/SelectRect";
 import { TimeCursor } from "../core/TimeCursor";
 import { TimeView } from "../core/TimeView";
+
+export function hasKeyFrame(object: any): object is { keyframes: KeyFrame[] } {
+  return object.keyframes !== undefined && Array.isArray(object.keyframes);
+}
 
 export const KeyFramePanel: FC = () => {
   const [pxPerSec, setPxPerSec] = useState(1);
@@ -141,7 +144,7 @@ export const KeyFramePanel: FC = () => {
 
         const newEffects: Effect[] = [];
         strip.effects.forEach((effect) => {
-          if (!isTextEffect(effect)) {
+          if (!hasKeyFrame(effect)) {
             return;
           }
           const newEffect = {
@@ -312,7 +315,7 @@ export const KeyFramePanel: FC = () => {
               $width={rect?.width ?? 0}
             ></SelectRect>
             {strip.effects.map((effect, i) => {
-              if (isTextEffect(effect)) {
+              if ("keyframes" in effect && Array.isArray(effect.keyframes)) {
                 return effect.keyframes.map((keyframe, j) => {
                   const x = (keyframe.time - start * strip.length) * pxPerSec;
                   const propertiesIndex = Array.from(uniqueProperties).indexOf(

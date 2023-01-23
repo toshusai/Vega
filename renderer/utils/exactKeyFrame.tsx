@@ -1,9 +1,15 @@
-import { TextEffect } from "../interfaces/effects/TextEffect";
+import { KeyFrame } from "@/interfaces/effects/KeyFrame";
 
-export function exactKeyFrame(textEffect: TextEffect,
-  key: keyof TextEffect,
-  time: number) {
-  return textEffect.keyframes.find(
-    (k) => k.property === key && Math.abs(k.time - time) < Number.EPSILON
+export function exactKeyFrame<
+  T extends {
+    keyframes: KeyFrame[];
+  }
+>(effect: T, key: keyof T, time: number) {
+  if (!effect.keyframes) {
+    console.log("no keyframes", effect, key);
+    return;
+  }
+  return effect.keyframes.find(
+    (k) => k.property === key && Math.abs(k.time - time) < 1 / 60 / 2
   );
 }

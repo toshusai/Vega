@@ -1,6 +1,7 @@
 import { Strip } from "../interfaces/Strip";
 import { ImageEffect } from "../interfaces/effects/ImageEffect";
 import { SceneState } from "../store/scene";
+import { caclulateKeyFrameValue } from "./updateTextEffect";
 
 const loadedImageElementMap = new Map<string, HTMLImageElement>();
 
@@ -32,9 +33,22 @@ export function updateImageEffect(
       imageElement.src = imageAsset.path;
     }
 
+    const animatedEffect: ImageEffect = {
+      ...effect,
+    };
+    Object.keys(effect).forEach((key) => {
+      animatedEffect[key] = caclulateKeyFrameValue(
+        effect.keyframes,
+        scene.currentTime - strip.start,
+        key,
+        effect[key],
+        scene.fps
+      );
+    });
+
     ctx.shadowColor = "";
     ctx.shadowBlur = 0;
-    ctx.globalAlpha = effect.opacity ?? 1;
+    ctx.globalAlpha = animatedEffect.opacity ?? 1;
 
     ctx.drawImage(
       imageElement,
@@ -42,10 +56,11 @@ export function updateImageEffect(
       0,
       imageElement.width,
       imageElement.height,
-      effect.x,
-      effect.y,
-      effect.width,
-      effect.height
+      animatedEffect.x,
+      animatedEffect.y,
+      animatedEffect.width,
+      animatedEffect.height
     );
+    ctx.globalAlpha = 1;
   }
 }
