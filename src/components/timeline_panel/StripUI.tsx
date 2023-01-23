@@ -1,6 +1,7 @@
 import { isImageEffect } from "@/interfaces/effects/utils/isImageEffect";
 import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
 import { useSelector } from "@/store/useSelector";
+import Image from "next/image";
 import { FC, memo } from "react";
 import styled from "styled-components";
 import { Strip } from "../../interfaces/Strip";
@@ -112,7 +113,8 @@ const ImageEffectStripUI: FC<{
   const asset = assets.find((a) => a.id === effect.imageAssetId);
   if (!asset) return null;
   return (
-    <img
+    <Image
+      alt="preview"
       src={asset.path}
       style={{
         height: "80%",

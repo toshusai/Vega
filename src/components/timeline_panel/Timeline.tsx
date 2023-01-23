@@ -270,7 +270,7 @@ export const Timeline: FC = () => {
         actions.setSelectedStripIds(selectedStrips.map((strip) => strip.id))
       );
     }
-  }, [rect]);
+  }, [dispatch, pxPerSec, rect, start, strips, timelineLength]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
