@@ -16,5 +16,6 @@ export type ImageEffect = {
   scaleY?: number;
   width?: number;
   height?: number;
+  opacity?: number;
   keyframes: KeyFrame[];
 };

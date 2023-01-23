@@ -34,6 +34,7 @@ export function updateImageEffect(
 
     ctx.shadowColor = "";
     ctx.shadowBlur = 0;
+    ctx.globalAlpha = effect.opacity ?? 1;
 
     ctx.drawImage(
       imageElement,
