@@ -1,7 +1,6 @@
 import { isImageEffect } from "@/interfaces/effects/utils/isImageEffect";
 import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
 import { useSelector } from "@/store/useSelector";
-import Image from "next/image";
 import { FC, memo } from "react";
 import styled from "styled-components";
 import { Strip } from "../../interfaces/Strip";

@@ -1,11 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Ease } from "../utils/easing";
-import { roundToFrame } from "../utils/roundToFrame";
 import { Asset } from "../interfaces/asset/Asset";
 import { Effect } from "../interfaces/effects/Effect";
 import { Strip } from "../interfaces/Strip";
-import { TextEffect } from "../interfaces/effects/TextEffect";
-import { VideoEffect } from "../interfaces/effects/VideoEffect";
 
 export type SceneState = {
   initialized: boolean;
