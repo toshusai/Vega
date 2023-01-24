@@ -1,3 +1,4 @@
+import { styled } from "styled-components";
 import { type IpcRenderer, IpcRendererEvent } from "electron/renderer";
 interface IpcRenderer extends NodeJS.EventEmitter {
   invoke(channel: string, ...args: any[]): Promise<any>;
@@ -17,6 +18,10 @@ interface IpcRenderer extends NodeJS.EventEmitter {
   sendTo(webContentsId: number, channel: string, ...args: any[]): void;
   sendToHost(channel: string, ...args: any[]): void;
 }
+
 declare global {
   const ipcRenderer: IpcRenderer;
+  interface Window {
+    styled: styled;
+  }
 }

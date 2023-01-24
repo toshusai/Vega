@@ -11,7 +11,7 @@ import {
   IconProps,
 } from "tabler-icons-react";
 import { iconProps } from "./core/iconProps";
-import { download } from "../pages";
+import { download } from "@/utils/download";
 import store from "../store";
 import { actions } from "../store/scene";
 import { formatForSave } from "../utils/formatForSave";
