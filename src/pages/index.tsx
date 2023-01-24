@@ -36,6 +36,10 @@ const IndexPage = () => {
       }
     });
     KeyboardInput.addKeyDownListener(Key.KeyS, (e) => {
+      const el = document.activeElement;
+      if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA")) {
+        return;
+      }
       e.preventDefault();
       if (KeyboardInput.isPressed(Key.Meta)) {
         const url = store.getState().app.currentPath;
