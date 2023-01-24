@@ -24,6 +24,17 @@ if (typeof window !== "undefined") {
 
 const IndexPage = () => {
   KeyboardInput.init(() => {
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        document.querySelectorAll("video").forEach((video) => {
+          video.pause();
+        });
+        document.querySelectorAll("audio").forEach((audio) => {
+          audio.pause();
+        });
+      } else {
+      }
+    });
     KeyboardInput.addKeyDownListener(Key.KeyS, (e) => {
       e.preventDefault();
       if (KeyboardInput.isPressed(Key.Meta)) {
