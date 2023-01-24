@@ -21,56 +21,40 @@ export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
   return (
     <div>
       {effects.map((effect) => {
-        if (isTextEffect(effect)) {
-          return (
-            <TextEffectView
-              key={effect.id}
-              textEffect={effect}
-              strip={props.strip}
-            />
-          );
-        }
-        if (isVideoEffect(effect)) {
-          return (
-            <VideoEffectView
-              key={effect.id}
-              videoEffect={effect}
-              strip={props.strip}
-            />
-          );
-        }
-        if (isImageEffect(effect)) {
-          return (
-            <ImageEffectView
-              key={effect.id}
-              imageEffect={effect}
-              strip={props.strip}
-            />
-          );
-        }
-        if (isAudioEffect(effect)) {
-          return (
-            <AudioEffectView
-              key={effect.id}
-              audioEffect={effect}
-              strip={props.strip}
-            />
-          );
-        }
-        if (isScriptEffect(effect)) {
-          return (
-            <ScriptEffectView
-              key={effect.id}
-              scriptEffect={effect}
-              strip={props.strip}
-              appCtx={{
-                dispatch,
-                actions,
+        return (
+          <div key={effect.id} style={{ marginTop: "8px" }}>
+            <strong
+              style={{
+                marginBottom: "4px",
+                display: "block",
               }}
-            />
-          );
-        }
-        return null;
+            >
+              {effect.type}
+            </strong>
+            {isTextEffect(effect) && (
+              <TextEffectView textEffect={effect} strip={props.strip} />
+            )}
+            {isVideoEffect(effect) && (
+              <VideoEffectView videoEffect={effect} strip={props.strip} />
+            )}
+            {isImageEffect(effect) && (
+              <ImageEffectView imageEffect={effect} strip={props.strip} />
+            )}
+            {isAudioEffect(effect) && (
+              <AudioEffectView audioEffect={effect} strip={props.strip} />
+            )}
+            {isScriptEffect(effect) && (
+              <ScriptEffectView
+                scriptEffect={effect}
+                strip={props.strip}
+                appCtx={{
+                  dispatch,
+                  actions,
+                }}
+              />
+            )}
+          </div>
+        );
       })}
     </div>
   );
