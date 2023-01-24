@@ -58,12 +58,16 @@ export function makeNewKeyframes<T extends { keyframes: KeyFrame[] }>(
   if (newKFs.length === 0) {
     return false;
   }
-  const finalKeyFrames = [
-    ...newKFs,
-    ...effect.keyframes.filter(
-      (keyframe) => !newKFs.find((kf) => kf.id === keyframe.id)
-    ),
-  ];
+
+  // drop same time keyframes
+  const old = effect.keyframes.filter((keyframe) => {
+    return (
+      !newKFs.find((kf) => Math.abs(kf.time - keyframe.time) < 1 / fps) &&
+      !newKFs.find((kf) => kf.id === keyframe.id)
+    );
+  });
+
+  const finalKeyFrames = [...newKFs, ...old];
   return finalKeyFrames;
 }
 
