@@ -178,7 +178,7 @@ const ScriptAssetDetailsPanel: FC<{
 }> = (props) => {
   const [metaData, setMetaData] = useState<ScriptMeta | undefined>(undefined);
   useEffect(() => {
-    fetch(props.asset.path)
+    fetch(props.asset.path + "/package.json")
       .then((res) => res.json())
       .then((json) => {
         setMetaData(json);
@@ -188,10 +188,16 @@ const ScriptAssetDetailsPanel: FC<{
   if (!metaData) return <div>loading...</div>;
 
   return (
-    <div>
-      <div>{metaData.name}</div>
-      <div>v{metaData.version}</div>
-      <div>{metaData.description}</div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "4px",
+      }}
+    >
+      <div>name: {metaData.name}</div>
+      <div>version: v{metaData.version}</div>
+      <div>description: {metaData.description}</div>
     </div>
   );
 };
