@@ -15,6 +15,11 @@ import { ClickEditInput } from "../core/ClickEditInput";
 import { Panel } from "../core/Panel";
 import { AudioAsset } from "@/interfaces/asset/AudioAsset";
 import Image from "next/image";
+import {
+  isScriptAsset,
+  ScriptAsset,
+  ScriptMeta,
+} from "@/interfaces/asset/ScriptAsset";
 
 export const AssetDetailsPanel: FC = () => {
   const selectedAssetIds = useSelector((state) => state.scene.selectedAssetIds);
@@ -65,6 +70,9 @@ export const AssetDetailsPanel: FC = () => {
           )}
           {isAudioAsset(selectedAsset) && (
             <AudioAssetDetailsPanel asset={selectedAsset} />
+          )}
+          {isScriptAsset(selectedAsset) && (
+            <ScriptAssetDetailsPanel asset={selectedAsset} />
           )}
         </div>
       </PanelBody>
@@ -161,6 +169,29 @@ const AudioAssetDetailsPanel: FC<{
         src={props.asset.path}
         controls
       />
+    </div>
+  );
+};
+
+const ScriptAssetDetailsPanel: FC<{
+  asset: ScriptAsset;
+}> = (props) => {
+  const [metaData, setMetaData] = useState<ScriptMeta | undefined>(undefined);
+  useEffect(() => {
+    fetch(props.asset.path)
+      .then((res) => res.json())
+      .then((json) => {
+        setMetaData(json);
+      });
+  }, [props.asset.path]);
+
+  if (!metaData) return <div>loading...</div>;
+
+  return (
+    <div>
+      <div>{metaData.name}</div>
+      <div>v{metaData.version}</div>
+      <div>{metaData.description}</div>
     </div>
   );
 };

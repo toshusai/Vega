@@ -9,9 +9,15 @@ import { TextEffectView } from "./TextEffectView";
 import { VideoEffectView } from "./VideoEffectView";
 import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
 import { AudioEffectView } from "./AudioEffectView";
+import { isScriptEffect } from "@/interfaces/effects/ScriptEffect";
+import { ScriptEffectView } from "./ScriptEffectView";
+import { useDispatch } from "react-redux";
+import { actions } from "@/store/scene";
 
 export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
   const { effects } = props;
+  const dispatch = useDispatch();
+
   return (
     <div>
       {effects.map((effect) => {
@@ -48,6 +54,19 @@ export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
               key={effect.id}
               audioEffect={effect}
               strip={props.strip}
+            />
+          );
+        }
+        if (isScriptEffect(effect)) {
+          return (
+            <ScriptEffectView
+              key={effect.id}
+              scriptEffect={effect}
+              strip={props.strip}
+              appCtx={{
+                dispatch,
+                actions,
+              }}
             />
           );
         }

@@ -8,6 +8,7 @@ import {
   Phone,
   Photo,
   PlayerPause,
+  Script,
   Tex,
   Trash,
   Video,
@@ -25,6 +26,7 @@ import { IconButton } from "../core/styled/IconButton";
 import { iconProps } from "../core/iconProps";
 import { ToolTip } from "../core/styled/ToolTip";
 import { AudioAsset } from "@/interfaces/asset/AudioAsset";
+import { isScriptAsset } from "@/interfaces/asset/ScriptAsset";
 
 const supportedVideoExtensions = ["mp4", "webm"];
 const supportedFontExtensions = ["ttf"];
@@ -156,6 +158,8 @@ const AssetListItem: FC<{
         <Photo style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
       ) : isAudioAsset(props.asset) ? (
         <Music style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
+      ) : isScriptAsset(props.asset) ? (
+        <Script style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
       ) : null}
       <div>{props.asset.name}</div>
     </Div>

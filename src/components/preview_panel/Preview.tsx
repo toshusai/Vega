@@ -23,6 +23,9 @@ import { iconProps } from "../core/iconProps";
 import { updateImageEffect } from "../../rendering/updateImageEffect";
 import { updateAudioEffect } from "@/rendering/updateAudioEffect";
 import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
+import { isScriptAsset } from "@/interfaces/asset/ScriptAsset";
+import { handler } from "@/rendering/updateScriptEffect";
+import { isScriptEffect } from "@/interfaces/effects/ScriptEffect";
 
 export const Preview: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -188,6 +191,29 @@ export const Preview: FC = () => {
         .sort((a, b) => a.layer - b.layer)
         .map((s) => s.i);
 
+      const effetIdUpdateMap: {
+        [id: string]:
+          | {
+              update: () => void;
+              beforeUpdate: () => void;
+            }
+          | undefined;
+      } = {};
+      for (const i of layerOrderedIndeiexes) {
+        const strip = scene.strips[i];
+        for (const effect of strip.effects) {
+          if (isScriptEffect(effect)) {
+            const result = handler(ctx, effect, strip, scene, {
+              dispatch,
+              actions,
+            });
+            if (result) {
+              effetIdUpdateMap[effect.id] = result;
+              result.beforeUpdate();
+            }
+          }
+        }
+      }
       for (const i of layerOrderedIndeiexes) {
         const strip = scene.strips[i];
         for (const effect of strip.effects) {
@@ -199,6 +225,8 @@ export const Preview: FC = () => {
             updateImageEffect(ctx, effect, strip, scene);
           } else if (isAudioEffect(effect)) {
             updateAudioEffect(ctx, effect, strip, scene);
+          } else if (isScriptEffect(effect)) {
+            effetIdUpdateMap[effect.id]?.update();
           }
         }
       }
