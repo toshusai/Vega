@@ -2,7 +2,10 @@ import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { Strip } from "../../interfaces/Strip";
 import { UndoManager } from "@/UndoManager";
-import { isImageAsset } from "../../rendering/updateTextEffect";
+import {
+  caclulateKeyFrameValue,
+  isImageAsset,
+} from "../../rendering/updateTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
 import { NumberEditInput } from "../core/NumberEditInput";
@@ -46,7 +49,9 @@ export const ImageEffectView: FC<{
           ...partial,
           keyframes: newKFs
             ? newKFs
-            : [...imageEffect.keyframes, ...(partial.keyframes ?? [])],
+            : partial.keyframes
+            ? partial.keyframes
+            : imageEffect.keyframes,
         } as ImageEffect,
         stripId: props.strip.id,
       })
@@ -104,7 +109,7 @@ export const ImageEffectView: FC<{
     const value = imageEffect[key];
     if (typeof value !== "number") return;
     const newKeyFrames: KeyFrame[] = [
-      ...imageEffect.keyframes,
+      ...imageEffect.keyframes.filter((k) => Math.abs(k.time - time) > 1 / fps),
       {
         property: key,
         time,
@@ -114,6 +119,16 @@ export const ImageEffectView: FC<{
       },
     ];
     emit({ keyframes: newKeyFrames });
+  };
+
+  const animation = (key: keyof NumberProps) => {
+    return caclulateKeyFrameValue(
+      imageEffect.keyframes,
+      time,
+      key,
+      imageEffect[key] ?? 0,
+      fps
+    );
   };
 
   return (
@@ -136,7 +151,7 @@ export const ImageEffectView: FC<{
               />
             </KeyFrameIconButton>
             <NumberEditInput
-              value={imageEffect[key] as number}
+              value={animation(key)}
               scale={scaleKeysMap[key]}
               max={minMaxKeysMap[key]?.[1]}
               min={minMaxKeysMap[key]?.[0]}
