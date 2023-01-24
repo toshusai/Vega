@@ -60,6 +60,8 @@ export function updateAudioEffect(
       loadedAudioElementMap.set(elementMapKey, audioElement);
       audioElement.src = audioAsset.path;
       audioElement.autoplay = true;
+      audioElement.style.display = "none";
+      document.body.appendChild(audioElement);
       audioStatusMap.set(elementMapKey, AudioStatus.Loading);
     }
     audioElement.onloadeddata = () => {
