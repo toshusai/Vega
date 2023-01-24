@@ -228,6 +228,8 @@ export const KeyFramePanel: FC = () => {
 
         const updatedStrips = ctx.movePass?.updatedStrips ?? [];
 
+        // TODO: merge keyframes
+
         UndoManager.main.add({
           redo: () => {
             dispatch(actions.updateStrip(updatedStrips));
