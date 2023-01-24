@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { MemoTimeView } from "../core/TimeView";
 import { Panel } from "../core/Panel";
 import { MemoStripUI } from "./StripUI";
@@ -82,37 +82,50 @@ export const Timeline: FC = () => {
     }
   );
 
-  const handleWheelTimeView = (e: React.WheelEvent<HTMLDivElement>) => {
-    const value = e.deltaY * 0.0001;
-    if (KeyboardInput.isPressed(Key.Alt)) {
-      const newStart = start - value;
-      const newEnd = end + value;
-      dispatch(
-        actions.setViewStartAndEndRate({
-          start: newStart,
-          end: newEnd,
-        })
-      );
-    } else if (KeyboardInput.isPressed(Key.Shift)) {
-      const value = e.deltaX * 0.0001;
-      let newStart = start + value;
-      let newEnd = end + value;
-      if (start + value < 0) {
-        newStart = 0;
-        newEnd = end - start;
+  const handleWheelTimeView = useCallback(
+    (e: WheelEvent) => {
+      const value = e.deltaY * 0.0001;
+      if (KeyboardInput.isPressed(Key.Alt)) {
+        e.preventDefault();
+        const newStart = start - value;
+        const newEnd = end + value;
+        dispatch(
+          actions.setViewStartAndEndRate({
+            start: newStart,
+            end: newEnd,
+          })
+        );
+      } else if (KeyboardInput.isPressed(Key.Shift)) {
+        const value = e.deltaX * 0.0001;
+        let newStart = start + value;
+        let newEnd = end + value;
+        if (start + value < 0) {
+          newStart = 0;
+          newEnd = end - start;
+        }
+        if (end + value > 1) {
+          newEnd = 1;
+          newStart = start - (end - 1);
+        }
+        dispatch(
+          actions.setViewStartAndEndRate({
+            start: newStart,
+            end: newEnd,
+          })
+        );
       }
-      if (end + value > 1) {
-        newEnd = 1;
-        newStart = start - (end - 1);
-      }
-      dispatch(
-        actions.setViewStartAndEndRate({
-          start: newStart,
-          end: newEnd,
-        })
-      );
-    }
-  };
+    },
+    [dispatch, end, start]
+  );
+  useEffect(() => {
+    ref.current?.addEventListener("wheel", handleWheelTimeView, {
+      passive: false,
+    });
+    const el = ref.current;
+    return () => {
+      el?.removeEventListener("wheel", handleWheelTimeView);
+    };
+  }, [handleWheelTimeView, ref]);
 
   const handleMouseDownStrip = (
     strip: Strip,
@@ -362,7 +375,6 @@ export const Timeline: FC = () => {
           display: "flex",
           flexDirection: "column",
         }}
-        onWheel={handleWheelTimeView}
         onContextMenu={(e) => {
           e.preventDefault();
           setContextMenuEvent(e);
