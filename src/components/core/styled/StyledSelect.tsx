@@ -21,6 +21,9 @@ export const StyledSelect = styled.select`
     border-radius: 8px;
     background-color: var(--color-input-background-focus);
   }
-
+  :disabled {
+    background-color: var(--color-input-background-disabled);
+    color: var(--color-text-disabled);
+  }
   font-family: "Ricty Diminished";
 `;

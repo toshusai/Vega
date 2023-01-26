@@ -10,6 +10,7 @@ type Props = {
   items: Item[];
   value: string;
   onChange: (value: string) => void;
+  disabled?: boolean;
 };
 
 export const Select: FC<Props> = (props) => {
@@ -19,6 +20,7 @@ export const Select: FC<Props> = (props) => {
       onChange={(e) => {
         props.onChange(e.target.value);
       }}
+      disabled={props.disabled}
     >
       {props.items.map((item) => {
         return (

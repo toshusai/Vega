@@ -10,9 +10,11 @@ export const GlobalStyle = createGlobalStyle`
   --color-border: #545454;
   --color-input-background: #7a7a7a;
   --color-input-background-focus: #272727;
+  --color-input-background-disabled: #3a3a3a;
   --color-text: #ffffff;
 
   --color-text-strip: #076deb;
+  --color-text-disabled: #545454;
   --color-text-strip-border: #3e87e0;
   --color-strip-handle: #0000002e;
   --color-strip-selected: #ff8827;

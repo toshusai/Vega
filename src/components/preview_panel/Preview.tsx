@@ -183,9 +183,11 @@ export const Preview: FC = () => {
       if (scene.recordingState === "recording" && !recorder.isRecording()) {
         recorder.onEnd = (blob) => {
           dispatch(actions.setRecordingState("idle"));
-          download(blob, "video.webm");
           dispatch(actions.setCurrentTime(0));
           dispatch(actions.setIsPlaying(false));
+          if (store.getState().scene.recordingState === "recording") {
+            download(blob, "video.webm");
+          }
         };
 
         recorder.start(scene);
@@ -195,6 +197,9 @@ export const Preview: FC = () => {
         recorder.isRecording() &&
         scene.currentTime > scene.length
       ) {
+        recorder.stop();
+      }
+      if (scene.recordingState === "paused") {
         recorder.stop();
       }
       if (scene.isPlaying) {
