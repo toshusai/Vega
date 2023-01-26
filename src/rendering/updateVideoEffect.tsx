@@ -1,6 +1,7 @@
 import { Strip } from "../interfaces/Strip";
 import { VideoEffect } from "../interfaces/effects/VideoEffect";
 import { SceneState } from "../store/scene";
+import { Asset } from "@/interfaces/asset/Asset";
 
 const loadedVideoElementMap = new Map<string, HTMLVideoElement>();
 
@@ -15,6 +16,38 @@ const videoStatusMap = new Map<string, VideoStatus>();
 
 const modeLoadingBlack = false;
 
+function getVideoElementKey(effect: VideoEffect) {
+  return effect.id + effect.videoAssetId;
+}
+
+export function getVideoElement(effect: VideoEffect) {
+  const key = getVideoElementKey(effect);
+  return loadedVideoElementMap.get(key) || null;
+}
+
+export function createVideoElementOrGetFromCache(
+  effect: VideoEffect,
+  videoAsset: Asset
+) {
+  const key = getVideoElementKey(effect);
+  if (loadedVideoElementMap.has(key)) {
+    return loadedVideoElementMap.get(key) as HTMLVideoElement;
+  }
+  const videoElement = document.createElement("video");
+  loadedVideoElementMap.set(key, videoElement);
+  videoElement.src = videoAsset.path;
+  videoElement.autoplay = true;
+  videoElement.style.display = "none";
+  document.body.appendChild(videoElement);
+  videoStatusMap.set(key, VideoStatus.Loading);
+  videoElement.onloadeddata = () => {
+    videoStatusMap.set(key, VideoStatus.Paused);
+    videoElement?.pause();
+  };
+
+  return videoElement;
+}
+
 export function updateVideoEffect(
   ctx: CanvasRenderingContext2D,
   effect: VideoEffect,
@@ -24,7 +57,7 @@ export function updateVideoEffect(
   const videoAsset = scene.assets.find(
     (asset) => asset.id === effect.videoAssetId
   );
-  const elementMapKey = effect.id + effect.videoAssetId;
+  const elementMapKey = getVideoElementKey(effect);
   if (
     scene.currentTime < strip.start ||
     scene.currentTime > strip.start + strip.length - 1 / scene.fps
@@ -41,16 +74,8 @@ export function updateVideoEffect(
   if (videoAsset) {
     let videoElement = loadedVideoElementMap.get(elementMapKey);
     if (!videoElement) {
-      videoElement = document.createElement("video");
-      loadedVideoElementMap.set(elementMapKey, videoElement);
-      videoElement.src = videoAsset.path;
-      videoElement.autoplay = true;
-      videoStatusMap.set(elementMapKey, VideoStatus.Loading);
+      videoElement = createVideoElementOrGetFromCache(effect, videoAsset);
     }
-    videoElement.onloadeddata = () => {
-      videoStatusMap.set(elementMapKey, VideoStatus.Paused);
-      videoElement?.pause();
-    };
     const currentStatus = videoStatusMap.get(elementMapKey);
     if (currentStatus === VideoStatus.Loading) {
       return;

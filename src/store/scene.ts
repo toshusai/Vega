@@ -19,11 +19,13 @@ export type SceneState = {
   canvasWidth: number;
   canvasHeight: number;
   selectedKeyframeIds: string[];
+  recordingState: "idle" | "recording" | "paused";
 };
 
 export const sceneSlice = createSlice({
   name: "scene",
   initialState: {
+    recordingState: "idle",
     canvasHeight: 720,
     canvasWidth: 1280,
     selectedStripIds: [],
@@ -133,6 +135,12 @@ export const sceneSlice = createSlice({
     },
     setStrips: (state, action: { payload: Strip[] }) => {
       state.strips = action.payload;
+    },
+    setRecordingState: (
+      state,
+      action: { payload: SceneState["recordingState"] }
+    ) => {
+      state.recordingState = action.payload;
     },
     updateEddect: (
       state,

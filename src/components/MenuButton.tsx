@@ -21,6 +21,7 @@ import { UndoManager } from "@/UndoManager";
 import { appAction } from "../store/app";
 import { compareScene } from "../utils/compareScene";
 import { readRecentFiles } from "../utils/readRecentFiles";
+import { loadAllAssets } from "@/rendering/recorder";
 
 export const MenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -107,6 +108,7 @@ export const MenuButton: FC = () => {
     }
     const projectDataStr = readFile(path);
     const projectData = JSON.parse(projectDataStr);
+    loadAllAssets(projectData);
     store.dispatch(actions.setAll(projectData));
     store.dispatch(appAction.setReadedDataJsonString(projectDataStr));
     store.dispatch(appAction.setCurrentPath(path));
