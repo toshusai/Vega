@@ -5,12 +5,14 @@ type UseFocusTrapOptions = {
   el: HTMLElement | null;
   isOpen: boolean;
   onClose: () => void;
+  canEscapeKeyClose?: boolean;
 };
 
 export function useFocusTrap({
   el,
   isOpen,
   onClose,
+  canEscapeKeyClose,
 }: UseFocusTrapOptions): void {
   useEffect(() => {
     if (!isOpen || el === null) {
@@ -19,7 +21,7 @@ export function useFocusTrap({
 
     const trap = createFocusTrap(el, {
       clickOutsideDeactivates: true,
-      escapeDeactivates: true,
+      escapeDeactivates: canEscapeKeyClose,
       returnFocusOnDeactivate: true,
       onDeactivate: onClose,
     });
@@ -28,5 +30,5 @@ export function useFocusTrap({
     return () => {
       trap.deactivate();
     };
-  }, [el, isOpen, onClose]);
+  }, [el, isOpen, onClose, canEscapeKeyClose]);
 }

@@ -5,7 +5,8 @@ import { useFocusTrap } from "@/hooks/useFocusTrap";
 export const Modal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  canEscapeKeyClose?: boolean;
 }> = ({ isOpen, onClose, children }) => {
   const [element, setElement] = useState<HTMLElement | null>(null);
   useFocusTrap({ el: element, isOpen, onClose });

@@ -1,4 +1,5 @@
 import { actions } from "@/store/scene";
+import { useSelector } from "@/store/useSelector";
 import { FC, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -16,6 +17,12 @@ export const RecordMenuButton: FC = () => {
   const handleClick = () => {
     setShowMenu(!showMenu);
   };
+  const dispatch = useDispatch();
+
+  const handleClose = () => {
+    setShowMenu(false);
+    dispatch(actions.setRecordingState("paused"));
+  };
 
   return (
     <div
@@ -25,7 +32,7 @@ export const RecordMenuButton: FC = () => {
       }}
     >
       <HeaderMenuButton onClick={handleClick}>Record</HeaderMenuButton>
-      <Modal isOpen={showMenu} onClose={() => setShowMenu(false)}>
+      <Modal isOpen={showMenu} onClose={handleClose}>
         <RenderPanel></RenderPanel>
       </Modal>
     </div>
@@ -52,6 +59,7 @@ const RenderPanel = () => {
     dispatch(actions.setCurrentTime(0));
     dispatch(actions.setIsPlaying(true));
   };
+  const recordingState = useSelector((state) => state.scene.recordingState);
   return (
     <Panel
       width={"200px"}
@@ -70,6 +78,7 @@ const RenderPanel = () => {
         <Row>
           <PropertyName>Export</PropertyName>
           <Select
+            disabled={recordingState === "recording"}
             items={exportOptionItems}
             value={selectedExportOption}
             onChange={setSelectedExportOption}
@@ -77,7 +86,12 @@ const RenderPanel = () => {
         </Row>
         <div style={{ margin: "auto" }}>
           <Row>
-            <Button onClick={handleStartRecording}>Record</Button>
+            <Button
+              disabled={recordingState === "recording"}
+              onClick={handleStartRecording}
+            >
+              {recordingState === "recording" ? "Stop" : "Start"}
+            </Button>
           </Row>
         </div>
       </PanelBody>
@@ -101,6 +115,10 @@ const Button = styled.button`
   max-width: 128px;
   :active {
     background-color: var(--color-input-background-focus);
+  }
+  :disabled {
+    background-color: var(--color-input-background-disabled);
+    color: var(--color-text-disabled);
   }
   font-family: "Ricty Diminished";
 `;
