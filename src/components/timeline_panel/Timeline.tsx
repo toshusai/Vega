@@ -346,7 +346,15 @@ export const Timeline: FC = () => {
         }
       });
     });
-    dispatch(actions.removeStrip(selectedStripIds));
+    const clone = [...strips];
+    UndoManager.main.add({
+      redo: () => {
+        dispatch(actions.removeStrip(selectedStripIds));
+      },
+      undo: () => {
+        dispatch(actions.updateStrip(clone));
+      },
+    }).run();
   };
 
   // for strip rendering fix me
