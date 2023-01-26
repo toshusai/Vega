@@ -1,6 +1,6 @@
 import { SceneState } from "../store/scene";
 
-export function formatForSave(data: SceneState) {
+export function sortStringify(data: SceneState, space: number | undefined = 2) {
   const json = JSON.stringify(
     data,
     (_, value) => {
@@ -20,7 +20,7 @@ export function formatForSave(data: SceneState) {
 
       return value;
     },
-    2
+    space
   );
   return json;
 }

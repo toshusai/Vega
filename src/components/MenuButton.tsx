@@ -13,8 +13,8 @@ import {
 import { iconProps } from "./core/iconProps";
 import { download } from "@/utils/download";
 import store from "../store";
-import { actions } from "../store/scene";
-import { formatForSave } from "../utils/formatForSave";
+import { actions, SceneState } from "../store/scene";
+import { sortStringify } from "../utils/formatForSave";
 import { writeFileUserDataDir } from "../ipc/writeFileUserDataDir";
 import { readFile } from "../ipc/readFile";
 import { UndoManager } from "@/UndoManager";
@@ -67,7 +67,7 @@ export const MenuButton: FC = () => {
 
   const handleFilePick = () => {
     filePick((str, path) => {
-      const json = JSON.parse(str);
+      const json = JSON.parse(str) as SceneState;
 
       const recentFiles = readRecentFiles();
       if (!recentFiles.includes(path)) {
@@ -87,7 +87,7 @@ export const MenuButton: FC = () => {
         }
       };
       walk(json);
-
+      loadAllAssets(json);
       store.dispatch(actions.setAll(json));
       store.dispatch(appAction.setReadedDataJsonString(str));
       store.dispatch(appAction.setCurrentPath(path));
@@ -97,7 +97,7 @@ export const MenuButton: FC = () => {
 
   const handleSave = () => {
     const data = store.getState();
-    const json = formatForSave(data.scene);
+    const json = sortStringify(data.scene);
     download(json, "vega.json");
     setShowMenu(false);
   };
