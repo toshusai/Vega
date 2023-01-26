@@ -26,6 +26,8 @@ import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
 import { isScriptAsset } from "@/interfaces/asset/ScriptAsset";
 import { handler } from "@/rendering/updateScriptEffect";
 import { isScriptEffect } from "@/interfaces/effects/ScriptEffect";
+import { Recorder } from "@/rendering/recorder";
+import { download } from "@/utils/download";
 
 export const Preview: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -170,12 +172,31 @@ export const Preview: FC = () => {
     const ctx = canvas.getContext("2d");
     let prevTime = 0;
 
+    const recorder = new Recorder(canvas);
+
     const update = (t: number) => {
       if (!ctx) return;
       const delta = t - prevTime;
       prevTime = t;
 
       const scene = store.getState().scene;
+      if (scene.recordingState === "recording" && !recorder.isRecording()) {
+        recorder.onEnd = (blob) => {
+          dispatch(actions.setRecordingState("idle"));
+          download(blob, "video.webm");
+          dispatch(actions.setCurrentTime(0));
+          dispatch(actions.setIsPlaying(false));
+        };
+
+        recorder.start(scene);
+      }
+      if (
+        scene.recordingState === "recording" &&
+        recorder.isRecording() &&
+        scene.currentTime > scene.length
+      ) {
+        recorder.stop();
+      }
       if (scene.isPlaying) {
         dispatch(actions.setCurrentTime(scene.currentTime + delta / 1000));
       }

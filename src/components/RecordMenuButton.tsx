@@ -1,4 +1,6 @@
+import { actions } from "@/store/scene";
 import { FC, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { PanelBody } from "./asset_details_panel/AssetDetailsPanel";
 import { Panel } from "./core/Panel";
@@ -43,6 +45,13 @@ const RenderPanel = () => {
   ];
 
   const [selectedExportOption, setSelectedExportOption] = useState("webm");
+  const dispatch = useDispatch();
+
+  const handleStartRecording = () => {
+    dispatch(actions.setRecordingState("recording"));
+    dispatch(actions.setCurrentTime(0));
+    dispatch(actions.setIsPlaying(true));
+  };
   return (
     <Panel
       width={"200px"}
@@ -68,7 +77,7 @@ const RenderPanel = () => {
         </Row>
         <div style={{ margin: "auto" }}>
           <Row>
-            <Button>Record</Button>
+            <Button onClick={handleStartRecording}>Record</Button>
           </Row>
         </div>
       </PanelBody>

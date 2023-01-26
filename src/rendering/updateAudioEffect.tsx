@@ -1,6 +1,8 @@
 import { Strip } from "../interfaces/Strip";
 import { AudioEffect } from "../interfaces/effects/AudioEffect";
 import { SceneState } from "../store/scene";
+import { AudioAsset } from "@/interfaces/asset/AudioAsset";
+import { Asset } from "@/interfaces/asset/Asset";
 
 const loadedAudioElementMap = new Map<string, HTMLAudioElement>();
 
@@ -16,8 +18,17 @@ const audioStatusMap = new Map<string, AudioStatus>();
 
 const modeLoadingBlack = false;
 
+function getKeyForEffect(effect: AudioEffect) {
+  return effect.id + effect.audioAssetId;
+}
+
+export function getAudioElement(effect: AudioEffect) {
+  const key = getKeyForEffect(effect);
+  return loadedAudioElementMap.get(key) || null;
+}
+
 export function releaseAudioAsset(effect: AudioEffect) {
-  const key = effect.id + effect.audioAssetId;
+  const key = getKeyForEffect(effect);
   audioStatusMap.set(key, AudioStatus.Deleted);
   const audioElement = loadedAudioElementMap.get(key);
   if (audioElement) {
@@ -25,6 +36,29 @@ export function releaseAudioAsset(effect: AudioEffect) {
     audioElement.remove();
     loadedAudioElementMap.delete(key);
   }
+}
+
+export function createAudioElementOrGetFromCache(
+  effect: AudioEffect,
+  audioAsset: Asset
+) {
+  const key = getKeyForEffect(effect);
+  if (loadedAudioElementMap.has(key)) {
+    return loadedAudioElementMap.get(key) as HTMLAudioElement;
+  }
+  const audioElement = document.createElement("audio");
+  loadedAudioElementMap.set(key, audioElement);
+  audioElement.src = audioAsset.path;
+  audioElement.autoplay = true;
+  audioElement.style.display = "none";
+  document.body.appendChild(audioElement);
+  audioStatusMap.set(key, AudioStatus.Loading);
+  audioElement.onloadeddata = () => {
+    audioStatusMap.set(key, AudioStatus.Paused);
+    audioElement?.pause();
+  };
+
+  return audioElement;
 }
 
 export function updateAudioEffect(
@@ -56,18 +90,8 @@ export function updateAudioEffect(
   }
   if (audioAsset) {
     if (!audioElement) {
-      audioElement = document.createElement("audio");
-      loadedAudioElementMap.set(elementMapKey, audioElement);
-      audioElement.src = audioAsset.path;
-      audioElement.autoplay = true;
-      audioElement.style.display = "none";
-      document.body.appendChild(audioElement);
-      audioStatusMap.set(elementMapKey, AudioStatus.Loading);
+      audioElement = createAudioElementOrGetFromCache(effect, audioAsset);
     }
-    audioElement.onloadeddata = () => {
-      audioStatusMap.set(elementMapKey, AudioStatus.Paused);
-      audioElement?.pause();
-    };
     if (currentStatus === AudioStatus.Loading) {
       return;
     }
