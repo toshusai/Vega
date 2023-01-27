@@ -347,14 +347,16 @@ export const Timeline: FC = () => {
       });
     });
     const clone = [...strips];
-    UndoManager.main.add({
-      redo: () => {
-        dispatch(actions.removeStrip(selectedStripIds));
-      },
-      undo: () => {
-        dispatch(actions.updateStrip(clone));
-      },
-    }).run();
+    UndoManager.main
+      .add({
+        redo: () => {
+          dispatch(actions.removeStrip(selectedStripIds));
+        },
+        undo: () => {
+          dispatch(actions.updateStrip(clone));
+        },
+      })
+      .run();
   };
 
   // for strip rendering fix me
@@ -366,16 +368,6 @@ export const Timeline: FC = () => {
 
   return (
     <Panel width={100} height={100}>
-      {/* WIP */}
-      {/* <ContextMenu
-        e={contextMenuEvent}
-        onClose={() => {
-          setContextMenuEvent(null);
-        }}
-        show={contextMenuEvent != null}
-      >
-        <StyledContextMenuButton>hogehgoe</StyledContextMenuButton>
-      </ContextMenu> */}
       <div
         ref={ref}
         style={{
