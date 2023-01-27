@@ -3,15 +3,12 @@ import { useSelector } from "@/store/useSelector";
 import { FC, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Cross, X } from "tabler-icons-react";
-import { PanelBody } from "./asset_details_panel/AssetDetailsPanel";
-import { iconProps } from "./core/iconProps";
-import { Panel } from "./core/Panel";
+import { Cross } from "tabler-icons-react";
 import { Item, Select } from "./core/Select";
 import { HeaderMenuButton } from "./HeaderMenuButton";
 import { Modal } from "./Modal";
 import { PropertyName, Row } from "./strip_panel/StripPanel";
-import { KeyFrameIconButton } from "./strip_panel/KeyFrameIconButton";
+import { ModalBody } from "./ModalBody";
 
 export const RecordMenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -66,50 +63,27 @@ const RenderPanel: FC<{
   };
   const recordingState = useSelector((state) => state.scene.recordingState);
   return (
-    <Panel
-      width={"200px"}
-      height={"auto"}
-      style={{
-        margin: "auto",
-      }}
-    >
-      <PanelBody
-        style={{
-          height: "100%",
-          margin: "0 8px",
-          gap: "8px",
-        }}
-      >
-        <div style={{ display: "flex" }}>
-          <div style={{ width: "16px" }}></div>
-          <div style={{ margin: "auto", fontWeight: "bold" }}>Record</div>
-          <div>
-            <KeyFrameIconButton onClick={props.onClose}>
-              <X {...iconProps} />
-            </KeyFrameIconButton>
-          </div>
-        </div>
+    <ModalBody title="Record" onClose={props.onClose}>
+      <Row>
+        <PropertyName>Export</PropertyName>
+        <Select
+          disabled={recordingState === "recording"}
+          items={exportOptionItems}
+          value={selectedExportOption}
+          onChange={setSelectedExportOption}
+        />
+      </Row>
+      <div style={{ margin: "auto" }}>
         <Row>
-          <PropertyName>Export</PropertyName>
-          <Select
+          <Button
             disabled={recordingState === "recording"}
-            items={exportOptionItems}
-            value={selectedExportOption}
-            onChange={setSelectedExportOption}
-          />
+            onClick={handleStartRecording}
+          >
+            {recordingState === "recording" ? "Stop" : "Start"}
+          </Button>
         </Row>
-        <div style={{ margin: "auto" }}>
-          <Row>
-            <Button
-              disabled={recordingState === "recording"}
-              onClick={handleStartRecording}
-            >
-              {recordingState === "recording" ? "Stop" : "Start"}
-            </Button>
-          </Row>
-        </div>
-      </PanelBody>
-    </Panel>
+      </div>
+    </ModalBody>
   );
 };
 
