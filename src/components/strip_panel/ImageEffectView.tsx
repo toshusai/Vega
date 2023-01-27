@@ -109,7 +109,9 @@ export const ImageEffectView: FC<{
     const value = imageEffect[key];
     if (typeof value !== "number") return;
     const newKeyFrames: KeyFrame[] = [
-      ...imageEffect.keyframes.filter((k) => Math.abs(k.time - time) > 1 / fps),
+      ...imageEffect.keyframes.filter(
+        (k) => Math.abs(k.time - time) > 1 / fps || k.property !== key
+      ),
       {
         property: key,
         time,
