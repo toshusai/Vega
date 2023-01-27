@@ -119,6 +119,7 @@ const ImageEffectStripUI: FC<{
         height: "80%",
         margin: "auto",
         objectFit: "cover",
+        pointerEvents: "none",
       }}
     />
   );
@@ -139,6 +140,7 @@ const TextEffectStripUI: FC<{
       style={{
         minWidth: "128px",
         minHeight: "40px",
+        pointerEvents: "none",
       }}
     >
       <text
