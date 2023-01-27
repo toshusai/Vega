@@ -6,6 +6,7 @@ export const ScaleScrollBar: FC<{
   start: number;
   end: number;
   onScaleChange?: (start: number, end: number) => void;
+  minimumRange?: number;
 }> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
   const handleMouseDownLeftHandle = getDragHander(({ diffX }) => {
@@ -13,11 +14,13 @@ export const ScaleScrollBar: FC<{
       props.start + diffX / ref.current!.clientWidth,
       0
     );
+    if (props.end - newStart < (props.minimumRange ?? 0)) return;
     props.onScaleChange?.(newStart, props.end);
   });
 
   const handleMouseDownRightHandle = getDragHander(({ diffX }) => {
     const newEnd = Math.min(props.end + diffX / ref.current!.clientWidth, 1);
+    if (newEnd - props.start < (props.minimumRange ?? 0)) return;
     props.onScaleChange?.(props.start, newEnd);
   });
 
@@ -33,6 +36,8 @@ export const ScaleScrollBar: FC<{
     }
     props.onScaleChange?.(newStart, newEnd);
   });
+
+  const minimumWidthPx = 24;
 
   return (
     <div
@@ -53,8 +58,16 @@ export const ScaleScrollBar: FC<{
         style={{
           position: "absolute",
           borderRadius: "8px",
-          left: `calc(${props.start * 100}%)`,
+          left: `calc(${Math.max(
+            0,
+            (props.end - props.start) * (ref.current?.clientWidth ?? 0) <=
+              minimumWidthPx
+              ? (props.end - minimumWidthPx / (ref.current?.clientWidth ?? 0)) *
+                  100
+              : props.start * 100
+          )}%)`,
           width: `calc(${(props.end - props.start) * 100}%)`,
+          minWidth: `${minimumWidthPx}px`,
           height: "14px",
           backgroundColor: "var(--color-text-strip)",
         }}

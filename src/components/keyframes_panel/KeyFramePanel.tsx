@@ -21,6 +21,7 @@ import { IconButton } from "../core/styled/IconButton";
 import { Cut, Trash } from "tabler-icons-react";
 import { iconProps } from "../core/iconProps";
 import { ToolTip } from "../core/styled/ToolTip";
+import { restrictStartEnd } from "../../utils/restrictStartEnd";
 
 export function hasKeyFrame(object: any): object is { keyframes: KeyFrame[] } {
   return object.keyframes !== undefined && Array.isArray(object.keyframes);
@@ -416,9 +417,12 @@ export const KeyFramePanel: FC = () => {
           <ScaleScrollBar
             start={start}
             end={end}
+            minimumRange={1 / strip.length}
             onScaleChange={(start, end) => {
-              setStart(start);
-              setEnd(end);
+              const result = restrictStartEnd(start, end, strip.length, 1);
+              const [_start, _end] = result;
+              setStart(_start);
+              setEnd(_end);
             }}
           />
         </div>
@@ -426,3 +430,5 @@ export const KeyFramePanel: FC = () => {
     </Panel>
   );
 };
+
+
