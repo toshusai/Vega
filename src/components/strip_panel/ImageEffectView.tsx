@@ -19,6 +19,7 @@ import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { makeNewKeyframes } from "../preview_panel/Gizmo";
 import { KeyFrame } from "@/interfaces/effects/KeyFrame";
 import { Ease } from "@/utils/easing";
+import { uuid } from "short-uuid";
 
 export type PickProperties<T, TFilter> = {
   [K in keyof T as T[K] extends TFilter ? K : never]: T[K];
@@ -117,7 +118,7 @@ export const ImageEffectView: FC<{
         time,
         ease: Ease.Linear,
         value,
-        id: Math.random().toString(),
+        id: uuid(),
       },
     ];
     emit({ keyframes: newKeyFrames });
