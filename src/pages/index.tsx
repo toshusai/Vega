@@ -13,6 +13,7 @@ import React, { FC } from "react";
 import { getDragHander } from "../utils/getDragHander";
 import { initGlobalEvent } from "../utils/initGlobalEvent";
 import { RecordMenuButton } from "@/components/RecordMenuButton";
+import { SettingsMenuButton } from "@/components/SettingsMenuButton";
 
 if (typeof window !== "undefined") {
   window.React = React;
@@ -34,6 +35,7 @@ const IndexPage = () => {
         >
           <MenuButton />
           <RecordMenuButton />
+          <SettingsMenuButton />
         </div>
 
         <div
