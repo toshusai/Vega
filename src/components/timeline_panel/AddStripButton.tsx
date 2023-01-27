@@ -14,36 +14,11 @@ import { StyledContextMenuButton } from "../core/context_menu/ContextMenu";
 import { IconButton } from "../core/styled/IconButton";
 import { iconProps } from "../core/iconProps";
 import { AudioEffect } from "@/interfaces/effects/AudioEffect";
+import { useClickOutside } from "../keyframes_panel/useClickOutside";
 
 export const AddStripButton: FC = () => {
-  const [show, setShow] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-
-  const handleClick = () => {
-    setShow(!show);
-    const handleMouseDown = (e: MouseEvent) => {
-      if (ref.current && ref.current.contains(e.target as Node)) {
-        return;
-      }
-      setShow(false);
-      window.removeEventListener("mousedown", handleMouseDown, {
-        capture: true,
-      });
-    };
-    window.addEventListener("mousedown", handleMouseDown, {
-      capture: true,
-    });
-  };
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
-
-  const onMouseLeave = () => {
-    const id = setTimeout(() => {
-      if (timeoutId) {
-        setShow(false);
-      }
-    }, 100);
-    setTimeoutId(id);
-  };
+  const { show, setShow, handleClick, onMouseLeave } = useClickOutside(ref);
 
   const newIconProps = {
     ...iconProps,

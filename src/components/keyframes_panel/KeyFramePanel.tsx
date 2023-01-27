@@ -22,6 +22,7 @@ import { Cut, Trash } from "tabler-icons-react";
 import { iconProps } from "../core/iconProps";
 import { ToolTip } from "../core/styled/ToolTip";
 import { restrictStartEnd } from "../../utils/restrictStartEnd";
+import { ChangeEaseButton } from "./ChangeEaseButton";
 
 export function hasKeyFrame(object: any): object is { keyframes: KeyFrame[] } {
   return object.keyframes !== undefined && Array.isArray(object.keyframes);
@@ -315,6 +316,7 @@ export const KeyFramePanel: FC = () => {
           marginBottom: "2px",
         }}
       >
+        <ChangeEaseButton />
         <IconButton onClick={handleDeleteKeyframe}>
           <Trash {...iconProps} />
           <ToolTip>Delete Keyframe</ToolTip>
