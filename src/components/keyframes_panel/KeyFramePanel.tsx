@@ -17,6 +17,10 @@ import { SelectRect } from "../core/styled/SelectRect";
 import { TimeCursor } from "../core/TimeCursor";
 import { TimeView } from "../core/TimeView";
 import { UndoManager } from "@/UndoManager";
+import { IconButton } from "../core/styled/IconButton";
+import { Cut, Trash } from "tabler-icons-react";
+import { iconProps } from "../core/iconProps";
+import { ToolTip } from "../core/styled/ToolTip";
 
 export function hasKeyFrame(object: any): object is { keyframes: KeyFrame[] } {
   return object.keyframes !== undefined && Array.isArray(object.keyframes);
@@ -269,6 +273,27 @@ export const KeyFramePanel: FC = () => {
     }
   );
 
+  const handleDeleteKeyframe = () => {
+    if (!strip) return;
+    const newEffects = strip.effects.map((effect) => {
+      if (!hasKeyFrame(effect)) {
+        return effect;
+      }
+      const newKeyframes = effect.keyframes.filter(
+        (kf) => !selectedKeyframeIds.includes(kf.id)
+      );
+      return {
+        ...effect,
+        keyframes: newKeyframes,
+      };
+    });
+    const newStrip = {
+      ...strip,
+      effects: newEffects,
+    };
+    dispatch(actions.updateStrip([newStrip]));
+  };
+
   if (!strip) return <Panel width={100} height={100} />;
 
   return (
@@ -276,7 +301,20 @@ export const KeyFramePanel: FC = () => {
       <div
         style={{
           display: "flex",
-          height: "100%",
+          justifyContent: "center",
+          marginBottom: "2px",
+        }}
+      >
+        <IconButton onClick={handleDeleteKeyframe}>
+          <Trash {...iconProps} />
+          <ToolTip>Delete Keyframe</ToolTip>
+        </IconButton>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          height: "calc(100% - 16px)",
           width: "100%",
         }}
       >
