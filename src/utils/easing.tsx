@@ -9,6 +9,8 @@ export enum Ease {
   EaseInCubic = "easeInCubic",
 }
 
+export const allEase = Object.values(Ease).map((ease) => ease);
+
 export function getEasingFunction(ease: Ease) {
   switch (ease) {
     case Ease.Linear:
