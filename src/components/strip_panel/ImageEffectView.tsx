@@ -42,23 +42,32 @@ export const ImageEffectView: FC<{
       props.strip,
       fps
     );
-
-    dispatch(
-      actions.updateEddect({
-        effect: {
-          ...imageEffect,
-          ...partial,
-          keyframes: newKFs
-            ? newKFs
-            : partial.keyframes
-            ? partial.keyframes
-            : imageEffect.keyframes,
-        } as ImageEffect,
-        stripId: props.strip.id,
-      })
-    );
+    const redo = () => {
+      dispatch(
+        actions.updateEddect({
+          effect: {
+            ...imageEffect,
+            ...partial,
+            keyframes: newKFs
+              ? newKFs
+              : partial.keyframes
+              ? partial.keyframes
+              : imageEffect.keyframes,
+          } as ImageEffect,
+          stripId: props.strip.id,
+        })
+      );
+    };
+    const undo = () => {
+      dispatch(
+        actions.updateEddect({
+          effect: imageEffect,
+          stripId: props.strip.id,
+        })
+      );
+    };
+    UndoManager.main.add({ undo, redo }).run();
   };
-  const undo = () => emit({ ...imageEffect });
 
   const assets = useSelector((state) => state.scene.assets);
   const imageAssets = assets.filter(isImageAsset);
@@ -163,7 +172,9 @@ export const ImageEffectView: FC<{
               onChange={(value) =>
                 UndoManager.main
                   .add({
-                    undo,
+                    undo: () => {
+                      emit({ [key]: imageEffect[key] });
+                    },
                     redo: () => emit({ [key]: value }),
                   })
                   .run()
