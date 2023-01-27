@@ -1,3 +1,4 @@
+import { restrictStartEnd } from "@/utils/restrictStartEnd";
 import { createSlice } from "@reduxjs/toolkit";
 import { Asset } from "../interfaces/asset/Asset";
 import { Effect } from "../interfaces/effects/Effect";
@@ -94,26 +95,9 @@ export const sceneSlice = createSlice({
       }
     ) => {
       const { start, end } = action.payload;
-      if (start < 0) {
-        action.payload.start = 0;
-      }
-      if (start > 1) {
-        action.payload.start = 1;
-      }
-      if (end < 0) {
-        action.payload.end = 0;
-      }
-      if (end > 1) {
-        action.payload.end = 1;
-      }
-      const length = (action.payload.end - action.payload.start) * state.length;
-      if (length < 1) {
-        state.viewStartRate = action.payload.end - 1 / state.length;
-        state.viewEndRate = action.payload.end;
-        return;
-      }
-      state.viewStartRate = action.payload.start;
-      state.viewEndRate = action.payload.end;
+      const result = restrictStartEnd(start, end, state.length, 1);
+      state.viewStartRate = result[0];
+      state.viewEndRate = result[1];
     },
 
     setViewEndRate: (state, action: { payload: number }) => {
