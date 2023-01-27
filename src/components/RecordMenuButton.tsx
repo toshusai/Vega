@@ -3,12 +3,15 @@ import { useSelector } from "@/store/useSelector";
 import { FC, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { Cross, X } from "tabler-icons-react";
 import { PanelBody } from "./asset_details_panel/AssetDetailsPanel";
+import { iconProps } from "./core/iconProps";
 import { Panel } from "./core/Panel";
 import { Item, Select } from "./core/Select";
 import { HeaderMenuButton } from "./HeaderMenuButton";
 import { Modal } from "./Modal";
 import { PropertyName, Row } from "./strip_panel/StripPanel";
+import { KeyFrameIconButton } from "./strip_panel/KeyFrameIconButton";
 
 export const RecordMenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -33,13 +36,15 @@ export const RecordMenuButton: FC = () => {
     >
       <HeaderMenuButton onClick={handleClick}>Record</HeaderMenuButton>
       <Modal isOpen={showMenu} onClose={handleClose}>
-        <RenderPanel></RenderPanel>
+        <RenderPanel onClose={handleClose}></RenderPanel>
       </Modal>
     </div>
   );
 };
 
-const RenderPanel = () => {
+const RenderPanel: FC<{
+  onClose?: () => void;
+}> = (props) => {
   const exportOptionItems: Item[] = [
     {
       label: "WebM",
@@ -75,6 +80,15 @@ const RenderPanel = () => {
           gap: "8px",
         }}
       >
+        <div style={{ display: "flex" }}>
+          <div style={{ width: "16px" }}></div>
+          <div style={{ margin: "auto", fontWeight: "bold" }}>Record</div>
+          <div>
+            <KeyFrameIconButton onClick={props.onClose}>
+              <X {...iconProps} />
+            </KeyFrameIconButton>
+          </div>
+        </div>
         <Row>
           <PropertyName>Export</PropertyName>
           <Select
