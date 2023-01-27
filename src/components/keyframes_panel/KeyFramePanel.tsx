@@ -89,12 +89,15 @@ export const KeyFramePanel: FC = () => {
 
   const allKeyframes = useMemo<KeyFrame[]>(
     () =>
-      (strip?.effects.flatMap((effect) => {
-        if ("keyframes" in effect) {
-          return effect.keyframes;
-        }
-        return [];
-      }) as KeyFrame[]) ?? ([] as KeyFrame[]),
+      (
+        strip?.effects.flatMap((effect) => {
+          if ("keyframes" in effect) {
+            return effect.keyframes;
+          }
+          return [];
+        }) as KeyFrame[]
+      ).sort((a, b) => a.property.localeCompare(b.property)) ??
+      ([] as KeyFrame[]),
     [strip?.effects]
   );
 
@@ -328,23 +331,19 @@ export const KeyFramePanel: FC = () => {
         <div>
           <div style={{ height: "16px", width: "32px" }}></div>
           <div>
-            {strip.effects.map((effect, i) => {
-              if ("keyframes" in effect && Array.isArray(effect.keyframes)) {
-                return Array.from(uniqueProperties).map((property, j) => {
-                  return (
-                    <div
-                      key={`${i}${j}`}
-                      style={{
-                        height: "16px",
-                        color: "white",
-                        fontSize: "12px",
-                      }}
-                    >
-                      {property}
-                    </div>
-                  );
-                });
-              }
+            {Array.from(uniqueProperties).map((property, j) => {
+              return (
+                <div
+                  key={`${j}`}
+                  style={{
+                    height: "16px",
+                    color: "white",
+                    fontSize: "12px",
+                  }}
+                >
+                  {property}
+                </div>
+              );
             })}
           </div>
         </div>
@@ -383,35 +382,30 @@ export const KeyFramePanel: FC = () => {
               $top={rect?.top ?? 0}
               $width={rect?.width ?? 0}
             ></SelectRect>
-            {strip.effects.map((effect, i) => {
-              if ("keyframes" in effect && Array.isArray(effect.keyframes)) {
-                return effect.keyframes.map((keyframe, j) => {
-                  const x = (keyframe.time - start * strip.length) * pxPerSec;
-                  const propertiesIndex = Array.from(uniqueProperties).indexOf(
-                    keyframe.property
-                  );
-                  return (
-                    <div
-                      key={`${i}${j}`}
-                      onMouseDown={handleMouseDownKeyFrame(keyframe)}
-                    >
-                      <MakeSVG
-                        f={getEasingFunction(keyframe.ease)}
-                        style={{
-                          position: "absolute",
-                          left: x,
-                          top: 16 * propertiesIndex,
-                          border: selectedKeyframeIds.includes(keyframe.id)
-                            ? "1px solid var(--color-strip-selected)"
-                            : "none",
-                          boxSizing: "border-box",
-                        }}
-                      />
-                    </div>
-                  );
-                });
-              }
-              return null;
+            {allKeyframes.map((keyframe, j) => {
+              const x = (keyframe.time - start * strip.length) * pxPerSec;
+              const propertiesIndex = Array.from(uniqueProperties).indexOf(
+                keyframe.property
+              );
+              return (
+                <div
+                  key={`${j}`}
+                  onMouseDown={handleMouseDownKeyFrame(keyframe)}
+                >
+                  <MakeSVG
+                    f={getEasingFunction(keyframe.ease)}
+                    style={{
+                      position: "absolute",
+                      left: x,
+                      top: 16 * propertiesIndex,
+                      border: selectedKeyframeIds.includes(keyframe.id)
+                        ? "1px solid var(--color-strip-selected)"
+                        : "none",
+                      boxSizing: "border-box",
+                    }}
+                  />
+                </div>
+              );
             })}
           </div>
           <ScaleScrollBar
@@ -430,5 +424,3 @@ export const KeyFramePanel: FC = () => {
     </Panel>
   );
 };
-
-
