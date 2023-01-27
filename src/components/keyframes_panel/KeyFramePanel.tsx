@@ -291,7 +291,13 @@ export const KeyFramePanel: FC = () => {
       ...strip,
       effects: newEffects,
     };
-    dispatch(actions.updateStrip([newStrip]));
+    const redo = () => {
+      dispatch(actions.updateStrip([newStrip]));
+    };
+    const undo = () => {
+      dispatch(actions.updateStrip([strip]));
+    };
+    UndoManager.main.add({ redo, undo }).run();
   };
 
   if (!strip) return <Panel width={100} height={100} />;
