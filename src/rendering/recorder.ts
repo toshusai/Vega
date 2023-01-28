@@ -1,6 +1,6 @@
-import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
-import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
-import { isVideoEffect } from "@/interfaces/effects/utils/isVideoEffect";
+import { isAudioEffect } from "@/interfaces/utils/isAudioEffect";
+import { isTextEffect } from "@/interfaces/utils/isTextEffect";
+import { isVideoEffect } from "@/interfaces/utils/isVideoEffect";
 import { SceneState } from "@/store/scene";
 
 import {

@@ -18,7 +18,7 @@ import { ToolTip } from "@/components/core/styled/ToolTip";
 import { TimeCursor } from "@/components/core/TimeCursor";
 import { MemoTimeView } from "@/components/core/TimeView";
 import { useWidth } from "@/hooks/useWidth";
-import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
+import { isAudioEffect } from "@/interfaces/utils/isAudioEffect";
 import { canMove } from "@/interfaces/strips/canMove";
 import { moveStrip } from "@/interfaces/strips/moveStrip";
 import { Key, KeyboardInput } from "@/KeyboardInput";

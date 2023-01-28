@@ -5,7 +5,7 @@ import { ClickEditInput, ClickEditTextarea } from "@/components/core/ClickEditIn
 import { NumberEditInput } from "@/components/core/NumberEditInput";
 import { Item, Select } from "@/components/core/Select";
 import { TextEffect } from "@/interfaces/effects/TextEffect";
-import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
+import { isTextEffect } from "@/interfaces/utils/isTextEffect";
 import { Strip } from "@/packages/types";
 import { caclulateKeyFrameValue } from "@/rendering/updateTextEffect";
 import { actions } from "@/store/scene";

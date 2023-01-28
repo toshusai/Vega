@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { SelectRectProps } from "@/components/core/styled/SelectRect";
 import { KeyFrame } from "@/interfaces/effects/KeyFrame";
 import { TextEffect } from "@/interfaces/effects/TextEffect";
-import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
+import { isTextEffect } from "@/interfaces/utils/isTextEffect";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
