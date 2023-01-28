@@ -286,11 +286,6 @@ export const Timeline: FC = () => {
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const [contextMenuEvent, setContextMenuEvent] = useState<React.MouseEvent<
-    HTMLDivElement,
-    MouseEvent
-  > | null>();
-
   const handleCutStrip = () => {
     const selectedStrips = strips.filter((strip) =>
       selectedStripIds.includes(strip.id)
@@ -372,7 +367,6 @@ export const Timeline: FC = () => {
         }}
         onContextMenu={(e) => {
           e.preventDefault();
-          setContextMenuEvent(e);
         }}
       >
         <div

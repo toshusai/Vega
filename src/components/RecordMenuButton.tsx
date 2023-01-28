@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from "react";
+import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
@@ -13,7 +13,6 @@ import { PropertyName, Row } from "./strip_panel/StripPanel";
 
 export const RecordMenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
     setShowMenu(!showMenu);

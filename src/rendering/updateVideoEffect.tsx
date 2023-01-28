@@ -1,4 +1,4 @@
-import { Asset,Strip , VideoEffect  } from "@/packages/types";
+import { Asset, Strip, VideoEffect } from "@/packages/types";
 import { SceneState } from "@/store/scene";
 
 const loadedVideoElementMap = new Map<string, HTMLVideoElement>();
@@ -61,7 +61,7 @@ export function updateVideoEffect(
     scene.currentTime > strip.start + strip.length - 1 / scene.fps
   ) {
     videoStatusMap.set(effect.videoAssetId, VideoStatus.Paused);
-    let videoElement = loadedVideoElementMap.get(elementMapKey);
+    const videoElement = loadedVideoElementMap.get(elementMapKey);
     if (!videoElement) {
       return;
     }

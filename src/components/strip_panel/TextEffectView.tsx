@@ -1,17 +1,20 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 
-import { ClickEditInput, ClickEditTextarea } from "@/components/core/ClickEditInput";
+import {
+  ClickEditInput,
+  ClickEditTextarea,
+} from "@/components/core/ClickEditInput";
 import { NumberEditInput } from "@/components/core/NumberEditInput";
 import { Item, Select } from "@/components/core/Select";
-import { isTextEffect,Strip , TextEffect  } from "@/packages/types";
+import { isTextEffect, Strip, TextEffect } from "@/packages/types";
 import { caclulateKeyFrameValue } from "@/rendering/updateTextEffect";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
 
 import { PickProperties } from "./ImageEffectView";
-import { PropertyName,Row } from "./StripPanel";
+import { PropertyName, Row } from "./StripPanel";
 
 export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   props
@@ -35,7 +38,6 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
       s.effects.filter(isTextEffect).map((e) => [e.id, s])
     )
   );
-  const isMulti = selectedStrips.length > 1;
 
   const emit = (partial: Partial<TextEffect>) => {
     allTextEffects.forEach((e) => {
@@ -84,8 +86,6 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     x: (v) => v.toFixed(0),
     y: (v) => v.toFixed(0),
   };
-
-  const time = currentTime - props.strip.start;
 
   const noFontAsset =
     fontAssets.find((a) => a.id === textEffect.fontAssetId) === undefined;

@@ -20,7 +20,7 @@ export function updateImageEffect(
     scene.currentTime < strip.start ||
     scene.currentTime > strip.start + strip.length - 1 / scene.fps
   ) {
-    let imageElement = loadedImageElementMap.get(elementMapKey);
+    const imageElement = loadedImageElementMap.get(elementMapKey);
     if (!imageElement) {
       return;
     }
