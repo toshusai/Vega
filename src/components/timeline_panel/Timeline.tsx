@@ -133,6 +133,10 @@ export const Timeline: FC = () => {
             ...strip,
             layer: strip.layer + plusLayer,
             id: uuid(),
+            effects: strip.effects.map((effect) => ({
+              ...effect,
+              id: uuid(),
+            })),
             start: currentTime,
           } as Strip;
         });
