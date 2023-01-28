@@ -12,6 +12,7 @@ import { TimeCursor } from "@/components/core/TimeCursor";
 import { TimeView } from "@/components/core/TimeView";
 import { useWidth } from "@/hooks/useWidth";
 import { KeyFrame } from "@/interfaces/effects/KeyFrame";
+import { hasKeyFrame } from "@/interfaces/utils/hasKeyFrame";
 import { Key, KeyboardInput } from "@/KeyboardInput";
 import { Effect, Strip } from "@/packages/types";
 import { actions } from "@/store/scene";
@@ -24,10 +25,6 @@ import { roundToFrame } from "@/utils/roundToFrame";
 
 import { ChangeEaseButton } from "./ChangeEaseButton";
 import { MakeSVG } from "./MakeSVG";
-
-export function hasKeyFrame(object: any): object is { keyframes: KeyFrame[] } {
-  return object.keyframes !== undefined && Array.isArray(object.keyframes);
-}
 
 export const KeyFramePanel: FC = () => {
   const [pxPerSec, setPxPerSec] = useState(1);
