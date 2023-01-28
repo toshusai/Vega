@@ -1,6 +1,5 @@
 import { PickProperties } from "@/components/strip_panel/ImageEffectView";
-import { ImageEffect } from "@/interfaces/effects/ImageEffect";
-import { Strip } from "@/packages/types";
+import { ImageEffect , Strip } from "@/packages/types";
 import { SceneState } from "@/store/scene";
 
 import { caclulateKeyFrameValue } from "./updateTextEffect";

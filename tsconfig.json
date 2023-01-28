@@ -20,6 +20,11 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/packages/types/src/effects/VideoEffect.ts`"
+  ],
   "exclude": ["node_modules"]
 }

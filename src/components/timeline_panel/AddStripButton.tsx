@@ -8,11 +8,7 @@ import { iconProps } from "@/components/core/iconProps";
 import { IconButton } from "@/components/core/styled/IconButton";
 import { DropdownMenu } from "@/components/DropdownMenu";
 import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
-import { AudioEffect } from "@/interfaces/effects/AudioEffect";
-import { ImageEffect } from "@/interfaces/effects/ImageEffect";
-import { TextEffect } from "@/interfaces/effects/TextEffect";
-import { VideoEffect } from "@/interfaces/effects/VideoEffect";
-import { Effect , Strip } from "@/packages/types";
+import { AudioEffect , Effect , ImageEffect , Strip , TextEffect , VideoEffect } from "@/packages/types";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
 

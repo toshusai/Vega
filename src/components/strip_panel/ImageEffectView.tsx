@@ -7,10 +7,7 @@ import { iconProps } from "@/components/core/iconProps";
 import { NumberEditInput } from "@/components/core/NumberEditInput";
 import { Item, Select } from "@/components/core/Select";
 import { makeNewKeyframes } from "@/components/preview_panel/Gizmo";
-import { Ease } from "@/interfaces/easing";
-import { ImageEffect } from "@/interfaces/effects/ImageEffect";
-import { KeyFrame } from "@/interfaces/effects/KeyFrame";
-import { Strip } from "@/packages/types";
+import { Ease,ImageEffect, KeyFrame, Strip  } from "@/packages/types";
 import {
   caclulateKeyFrameValue,
   isImageAsset,
@@ -21,7 +18,7 @@ import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 
 import { KeyFrameIconButton } from "./KeyFrameIconButton";
-import { PropertyName,Row } from "./StripPanel";
+import { PropertyName, Row } from "./StripPanel";
 
 export type PickProperties<T, TFilter> = {
   [K in keyof T as T[K] extends TFilter ? K : never]: T[K];

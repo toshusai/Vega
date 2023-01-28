@@ -1,6 +1,4 @@
-import { Asset } from "@/interfaces/asset/Asset";
-import { VideoEffect } from "@/interfaces/effects/VideoEffect";
-import { Strip } from "@/packages/types";
+import { Asset,Strip , VideoEffect  } from "@/packages/types";
 import { SceneState } from "@/store/scene";
 
 const loadedVideoElementMap = new Map<string, HTMLVideoElement>();

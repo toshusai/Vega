@@ -1,5 +1,5 @@
 import { SelectRectProps } from "@/components/core/styled/SelectRect";
-import { TextEffect } from "@/interfaces/effects/TextEffect";
+import { TextEffect } from "@/packages/types";
 import {
   caclulateKeyFrameValue,
   measureMap,

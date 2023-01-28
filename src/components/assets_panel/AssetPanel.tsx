@@ -16,12 +16,14 @@ import { iconProps } from "@/components/core/iconProps";
 import { Panel } from "@/components/core/Panel";
 import { IconButton } from "@/components/core/styled/IconButton";
 import { ToolTip } from "@/components/core/styled/ToolTip";
-import { Asset } from "@/interfaces/asset/Asset";
-import { AudioAsset } from "@/interfaces/asset/AudioAsset";
-import { FontAsset } from "@/interfaces/asset/FontAsset";
-import { ImageAsset } from "@/interfaces/asset/ImageAsset";
-import { isScriptAsset } from "@/interfaces/asset/ScriptAsset";
-import { VideoAsset } from "@/interfaces/asset/VideoAsset";
+import {
+  Asset,
+  AudioAsset,
+  FontAsset,
+  ImageAsset,
+  isScriptAsset,
+  VideoAsset,
+} from "@/packages/types";
 import { isAudioAsset, isImageAsset } from "@/rendering/updateTextEffect";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";

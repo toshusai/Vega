@@ -1,4 +1,4 @@
-import { KeyFrame } from "@/interfaces/effects/KeyFrame";
+import { KeyFrame } from "@/packages/types";
 
 export function exactKeyFrame<
   T extends {
