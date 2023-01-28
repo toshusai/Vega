@@ -68,7 +68,6 @@ export class Recorder {
 
   start(scene: SceneState) {
     const strips = scene.strips;
-    const assets = scene.assets;
     this.stream = this.canvas.captureStream();
     if (!this.audioCtx) {
       this.audioCtx = new AudioContext();

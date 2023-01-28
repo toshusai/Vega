@@ -26,7 +26,7 @@ export function moveStrip(
   }
 
   // handle snap
-  let allSnapPoints: number[] = [0, timelineLength];
+  const allSnapPoints: number[] = [0, timelineLength];
   withoutSelectedStrips.forEach((s) => {
     allSnapPoints.push(s.start);
     allSnapPoints.push(s.start + s.length);

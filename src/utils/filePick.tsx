@@ -1,6 +1,6 @@
 export function filePick(
   cb: (str: string, path: string) => void,
-  accept: string = ".json"
+  accept = ".json"
 ) {
   const fileInput = document.createElement("input");
   fileInput.type = "file";

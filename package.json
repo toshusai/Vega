@@ -35,6 +35,7 @@
     "@types/react": "^16.9.9",
     "@types/react-dom": "^16.9.9",
     "@types/styled-components": "^5.1.26",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
     "electron": "^13",
     "electron-builder": "^23.0.3",
     "eslint": "^8.32.0",

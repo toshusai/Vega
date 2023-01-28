@@ -197,7 +197,7 @@ export const KeyFramePanel: FC = () => {
           ],
         };
       },
-      (ctx) => {
+      () => {
         let pass = [keyframe.id];
         if (selectedKeyframeIds.includes(keyframe.id)) {
           pass = [...selectedKeyframeIds];
