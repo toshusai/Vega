@@ -4,13 +4,13 @@ import { uuid } from "short-uuid";
 import styled from "styled-components";
 
 import { SelectRectProps } from "@/components/core/styled/SelectRect";
+import { Ease } from "@/interfaces/easing";
 import { KeyFrame } from "@/interfaces/effects/KeyFrame";
 import { TextEffect } from "@/interfaces/effects/TextEffect";
 import { isTextEffect } from "@/interfaces/utils/isTextEffect";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
-import { Ease } from "@/utils/easing";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { getDragHander } from "@/utils/getDragHander";
 import { roundToFrame } from "@/utils/roundToFrame";

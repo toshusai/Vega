@@ -6,11 +6,11 @@ import { StyledContextMenuButton } from "@/components/core/context_menu/ContextM
 import { iconProps } from "@/components/core/iconProps";
 import { IconButton } from "@/components/core/styled/IconButton";
 import { DropdownMenu } from "@/components/DropdownMenu";
+import { allEase, easeInCubic, getEasingFunction } from "@/interfaces/easing";
 import { hasKeyFrame } from "@/interfaces/utils/hasKeyFrame";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
-import { allEase, easeInCubic, getEasingFunction } from "@/utils/easing";
 
 import { MakeSVG } from "./MakeSVG";
 import { useClickOutside } from "./useClickOutside";

@@ -7,6 +7,7 @@ import { iconProps } from "@/components/core/iconProps";
 import { NumberEditInput } from "@/components/core/NumberEditInput";
 import { Item, Select } from "@/components/core/Select";
 import { makeNewKeyframes } from "@/components/preview_panel/Gizmo";
+import { Ease } from "@/interfaces/easing";
 import { ImageEffect } from "@/interfaces/effects/ImageEffect";
 import { KeyFrame } from "@/interfaces/effects/KeyFrame";
 import { Strip } from "@/packages/types";
@@ -17,7 +18,6 @@ import {
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
-import { Ease } from "@/utils/easing";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 
 import { KeyFrameIconButton } from "./KeyFrameIconButton";
