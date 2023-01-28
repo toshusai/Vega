@@ -19,6 +19,7 @@ import { TimeCursor } from "@/components/core/TimeCursor";
 import { MemoTimeView } from "@/components/core/TimeView";
 import { useWidth } from "@/hooks/useWidth";
 import { canMove } from "@/interfaces/strips/canMove";
+import { checkOverlap } from "@/interfaces/strips/checkOverlap";
 import { moveStrip } from "@/interfaces/strips/moveStrip";
 import { Key, KeyboardInput } from "@/KeyboardInput";
 import { isAudioEffect, Strip } from "@/packages/types";
@@ -38,7 +39,6 @@ export const Timeline: FC = () => {
     start: state.scene.viewStartRate,
     end: state.scene.viewEndRate,
   }));
-  // const end = useSelector((state) => state.scene.viewEndRate);
   const timelineLength = useSelector((state) => state.scene.length);
   const fps = useSelector((state) => state.scene.fps);
   const currentTime = useSelector((state) => {
@@ -113,14 +113,80 @@ export const Timeline: FC = () => {
     [dispatch, end, start]
   );
   useEffect(() => {
+    const el = ref.current;
+    const copy = (e: ClipboardEvent) => {
+      e.clipboardData?.setData("text/plain", JSON.stringify(selectedStripIds));
+      e.preventDefault();
+    };
+    const paste = (e: ClipboardEvent) => {
+      const data = e.clipboardData?.getData("text/plain");
+      if (!data) return;
+      const pastedStripIds = JSON.parse(data) as string[];
+      if (!Array.isArray(pastedStripIds)) return;
+      const pastedStrips = strips.filter((strip) =>
+        pastedStripIds.includes(strip.id)
+      );
+
+      const createNewStrips = (pastedStrips: Strip[], plusLayer: number) => {
+        const newStrips = pastedStrips.map((strip) => {
+          return {
+            ...strip,
+            layer: strip.layer + plusLayer,
+            id: uuid(),
+            start: currentTime,
+          } as Strip;
+        });
+        return newStrips;
+      };
+
+      e.preventDefault();
+      for (let i = 0; i < 8; i++) {
+        const newStrips = createNewStrips(pastedStrips, i);
+        let isOverlap = false;
+        for (const strip of newStrips) {
+          if (checkOverlap(strips, strip)) {
+            isOverlap = true;
+            break;
+          }
+        }
+        if (!isOverlap) {
+          UndoManager.main
+            .add({
+              undo: () => {
+                dispatch(actions.updateStripsForce(strips));
+              },
+              redo: () => {
+                dispatch(actions.updateStrip(newStrips));
+              },
+            })
+            .run();
+          return;
+        }
+      }
+      alert("There is no space to paste");
+    };
+
+    ref.current?.addEventListener("copy", copy, {
+      passive: false,
+    });
+    ref.current?.addEventListener("paste", paste);
     ref.current?.addEventListener("wheel", handleWheelTimeView, {
       passive: false,
     });
-    const el = ref.current;
+
     return () => {
+      el?.removeEventListener("copy", copy);
+      el?.removeEventListener("paste", paste);
       el?.removeEventListener("wheel", handleWheelTimeView);
     };
-  }, [handleWheelTimeView, ref]);
+  }, [
+    currentTime,
+    dispatch,
+    handleWheelTimeView,
+    ref,
+    selectedStripIds,
+    strips,
+  ]);
 
   const handleMouseDownStrip = (
     strip: Strip,
@@ -195,6 +261,11 @@ export const Timeline: FC = () => {
         };
       },
       (ctx) => {
+        if (ref.current) {
+          // select for copy event
+          getSelection()?.selectAllChildren(ref.current);
+        }
+        ctx.startEvent.preventDefault();
         if (ctx.diffX === 0 && ctx.diffY === 0) {
           let newIds: string[] = [];
           if (KeyboardInput.isPressed(Key.Shift)) {
@@ -255,7 +326,7 @@ export const Timeline: FC = () => {
       }
       setRect({ left, top, width, height });
     },
-    undefined,
+    () => {},
     (ctx) => {
       setRect(null);
       if (ctx.diffX === 0 && ctx.diffY === 0) {

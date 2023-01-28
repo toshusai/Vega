@@ -1,7 +1,7 @@
-import { FC, memo } from "react";
+import { FC, memo, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import { isImageEffect , isTextEffect,Strip  } from "@/packages/types";
+import { isImageEffect, isTextEffect, Strip } from "@/packages/types";
 import { useSelector } from "@/store/useSelector";
 
 export const StripUI: FC<
@@ -23,10 +23,16 @@ export const StripUI: FC<
 
   const left = (props.start - props.offset) * props.pxPerSec;
   const width = props.length * props.pxPerSec;
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {});
+
   if (left + width < 0) return null;
 
   return (
     <div
+      ref={ref}
       style={{
         position: "absolute",
         left: `${left}px`,
@@ -44,7 +50,6 @@ export const StripUI: FC<
         overflow: "hidden",
         display: "flex",
       }}
-      // onMouseDown={handleMouseDownStrip}
       onMouseDown={props.onMouseDown}
     >
       <TextEffectStripUI strip={props} />
