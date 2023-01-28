@@ -3,8 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { NumberEditInput } from "@/components/core/NumberEditInput";
 import { Item, Select } from "@/components/core/Select";
-import { VideoEffect } from "@/interfaces/effects/VideoEffect";
-import { Strip } from "@/packages/types";
+import { Strip , VideoEffect } from "@/packages/types";
 import { isVideoAsset } from "@/rendering/updateTextEffect";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";

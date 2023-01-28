@@ -3,15 +3,15 @@ import styled from "styled-components";
 
 import { ClickEditInput } from "@/components/core/ClickEditInput";
 import { Panel } from "@/components/core/Panel";
-import { AudioAsset } from "@/interfaces/asset/AudioAsset";
-import { FontAsset } from "@/interfaces/asset/FontAsset";
-import { ImageAsset } from "@/interfaces/asset/ImageAsset";
 import {
+  AudioAsset,
+  FontAsset,
+  ImageAsset,
   isScriptAsset,
   ScriptAsset,
   ScriptMeta,
-} from "@/interfaces/asset/ScriptAsset";
-import { VideoAsset } from "@/interfaces/asset/VideoAsset";
+  VideoAsset,
+} from "@/packages/types";
 import {
   isAudioAsset,
   isImageAsset,

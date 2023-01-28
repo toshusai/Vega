@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { Asset } from "@/interfaces/asset/Asset";
-import { Effect , Strip } from "@/packages/types";
+import { Asset , Effect , Strip } from "@/packages/types";
 import { restrictStartEnd } from "@/utils/restrictStartEnd";
 
 export type SceneState = {

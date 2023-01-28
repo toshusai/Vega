@@ -1,7 +1,6 @@
 import { FC } from "react";
 
-import { ScriptEffect } from "@/interfaces/effects/ScriptEffect";
-import { Strip } from "@/packages/types";
+import { ScriptEffect,Strip  } from "@/packages/types";
 import { SceneState } from "@/store/scene";
 
 export type UpdateHandler<T> = (
