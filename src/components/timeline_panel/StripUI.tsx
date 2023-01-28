@@ -3,7 +3,7 @@ import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
 import { useSelector } from "@/store/useSelector";
 import { FC, memo } from "react";
 import styled from "styled-components";
-import { Strip } from "../../interfaces/Strip";
+import { Strip } from "@/packages/types";
 
 export const StripUI: FC<
   Strip & {

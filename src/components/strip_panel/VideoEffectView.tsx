@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import { Strip } from "../../interfaces/Strip";
+import { Strip } from "@/packages/types";
 import { VideoEffect } from "../../interfaces/effects/VideoEffect";
 import { UndoManager } from "@/UndoManager";
 import { isVideoAsset } from "../../rendering/updateTextEffect";

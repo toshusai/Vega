@@ -1,0 +1,15 @@
+{
+  "name": "types",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --declaration --emitDeclarationOnly --declarationDir './dist'"
+  },
+  "author": "tosuhsai.net@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  }
+}

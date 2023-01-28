@@ -3,7 +3,7 @@ import { Asset } from "../interfaces/asset/Asset";
 import { ImageAsset } from "../interfaces/asset/ImageAsset";
 import { VideoAsset } from "../interfaces/asset/VideoAsset";
 import { FontAsset } from "../interfaces/asset/FontAsset";
-import { Strip } from "../interfaces/Strip";
+import { Strip } from "@/packages/types";
 import { TextEffect } from "../interfaces/effects/TextEffect";
 import { KeyFrame } from "../interfaces/effects/KeyFrame";
 import { SceneState } from "../store/scene";

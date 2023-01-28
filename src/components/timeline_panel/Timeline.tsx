@@ -16,7 +16,7 @@ import {
   PlayerPlay,
   Trash,
 } from "tabler-icons-react";
-import { Strip } from "../../interfaces/Strip";
+import { Strip } from "@/packages/types";
 import { Key, KeyboardInput } from "../../KeyboardInput";
 import { roundToFrame } from "../../utils/roundToFrame";
 import { canMove } from "../../interfaces/strips/canMove";

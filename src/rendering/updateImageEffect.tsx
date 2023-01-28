@@ -1,4 +1,4 @@
-import { Strip } from "../interfaces/Strip";
+import { Strip } from "@/packages/types";
 import { ImageEffect } from "../interfaces/effects/ImageEffect";
 import { SceneState } from "../store/scene";
 import { caclulateKeyFrameValue } from "./updateTextEffect";

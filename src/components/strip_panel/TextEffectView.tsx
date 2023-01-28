@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { Key } from "tabler-icons-react";
-import { Strip } from "../../interfaces/Strip";
+import { Strip } from "@/packages/types";
 import { TextEffect } from "../../interfaces/effects/TextEffect";
 import { UndoManager } from "@/UndoManager";
 import { caclulateKeyFrameValue } from "../../rendering/updateTextEffect";
