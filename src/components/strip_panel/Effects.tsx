@@ -1,7 +1,16 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 
-import { Effect , isAudioEffect , isImageEffect , isScriptEffect , isTextEffect , isVideoEffect,Strip  } from "@/packages/types";
+import { writeFile } from "@/ipc/writeFile";
+import {
+  Effect,
+  isAudioEffect,
+  isImageEffect,
+  isScriptEffect,
+  isTextEffect,
+  isVideoEffect,
+  Strip,
+} from "@/packages/types";
 import { actions } from "@/store/scene";
 
 import { AudioEffectView } from "./AudioEffectView";
@@ -46,6 +55,9 @@ export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
                 appCtx={{
                   dispatch,
                   actions,
+                  fs: {
+                    writeFile: writeFile,
+                  },
                 }}
               />
             )}
@@ -55,3 +67,11 @@ export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
     </div>
   );
 };
+
+interface AppContext {
+  dispatch: any;
+  actions: any;
+  fs: {
+    writeFile: (path: string, data: any) => Promise<any>;
+  };
+}
