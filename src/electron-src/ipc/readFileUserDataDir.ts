@@ -1,6 +1,7 @@
-import { join } from "path";
 import { app, ipcMain } from "electron";
 import { readFileSync } from "fs";
+import { join } from "path";
+
 import { READ_FILE_USER_DATA_DIR } from "./const";
 
 export const initReadFileUserDataDir = () => {

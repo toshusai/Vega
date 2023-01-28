@@ -1,25 +1,27 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
+import { uuid } from "short-uuid";
+import { Key } from "tabler-icons-react";
+
+import { KeyFrame } from "@/interfaces/effects/KeyFrame";
 import { Strip } from "@/packages/types";
 import { UndoManager } from "@/UndoManager";
+import { Ease } from "@/utils/easing";
+import { exactKeyFrame } from "@/utils/exactKeyFrame";
+
+import { ImageEffect } from "../../interfaces/effects/ImageEffect";
 import {
   caclulateKeyFrameValue,
   isImageAsset,
 } from "../../rendering/updateTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
+import { iconProps } from "../core/iconProps";
 import { NumberEditInput } from "../core/NumberEditInput";
 import { Item, Select } from "../core/Select";
-import { Row, PropertyName } from "./StripPanel";
-import { ImageEffect } from "../../interfaces/effects/ImageEffect";
-import { KeyFrameIconButton } from "./KeyFrameIconButton";
-import { Key } from "tabler-icons-react";
-import { iconProps } from "../core/iconProps";
-import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { makeNewKeyframes } from "../preview_panel/Gizmo";
-import { KeyFrame } from "@/interfaces/effects/KeyFrame";
-import { Ease } from "@/utils/easing";
-import { uuid } from "short-uuid";
+import { KeyFrameIconButton } from "./KeyFrameIconButton";
+import { PropertyName,Row } from "./StripPanel";
 
 export type PickProperties<T, TFilter> = {
   [K in keyof T as T[K] extends TFilter ? K : never]: T[K];

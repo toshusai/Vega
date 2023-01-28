@@ -1,5 +1,6 @@
 import { ipcMain } from "electron";
 import { readFileSync } from "fs";
+
 import { READ_FILE } from "./const";
 
 export const initReadFile = () => {

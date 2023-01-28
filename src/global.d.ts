@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { type IpcRenderer, IpcRendererEvent } from "electron";
+import styled from "styled-components";
 interface IpcRenderer extends NodeJS.EventEmitter {
   invoke(channel: string, ...args: any[]): Promise<any>;
   on(

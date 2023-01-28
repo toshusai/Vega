@@ -1,8 +1,4 @@
 import { FC, ReactChild, useEffect, useRef, useState } from "react";
-import { StyledContextMenuButton } from "./core/context_menu/ContextMenu";
-import { filePick } from "../utils/filePick";
-import { HeaderMenuButton } from "./HeaderMenuButton";
-import { DropdownMenu } from "./DropdownMenu";
 import {
   ArrowRight,
   Clock,
@@ -10,18 +6,24 @@ import {
   File,
   type IconProps,
 } from "tabler-icons-react";
-import { iconProps } from "./core/iconProps";
-import { download } from "@/utils/download";
-import store from "../store";
-import { actions, SceneState } from "../store/scene";
-import { sortStringify } from "../utils/formatForSave";
-import { writeFileUserDataDir } from "../ipc/writeFileUserDataDir";
-import { readFile } from "../ipc/readFile";
-import { UndoManager } from "@/UndoManager";
-import { appAction } from "../store/app";
-import { compareScene } from "../utils/compareScene";
-import { readRecentFiles } from "../utils/readRecentFiles";
+
 import { loadAllAssets } from "@/rendering/recorder";
+import { UndoManager } from "@/UndoManager";
+import { download } from "@/utils/download";
+
+import { readFile } from "../ipc/readFile";
+import { writeFileUserDataDir } from "../ipc/writeFileUserDataDir";
+import store from "../store";
+import { appAction } from "../store/app";
+import { actions, SceneState } from "../store/scene";
+import { compareScene } from "../utils/compareScene";
+import { filePick } from "../utils/filePick";
+import { sortStringify } from "../utils/formatForSave";
+import { readRecentFiles } from "../utils/readRecentFiles";
+import { StyledContextMenuButton } from "./core/context_menu/ContextMenu";
+import { iconProps } from "./core/iconProps";
+import { DropdownMenu } from "./DropdownMenu";
+import { HeaderMenuButton } from "./HeaderMenuButton";
 
 export const MenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);

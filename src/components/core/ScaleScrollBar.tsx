@@ -1,5 +1,6 @@
 import { FC, memo, useRef } from "react";
 import styled from "styled-components";
+
 import { getDragHander } from "../../utils/getDragHander";
 
 export const ScaleScrollBar: FC<{

@@ -1,4 +1,5 @@
 import { Strip } from "@/packages/types";
+
 import { roundToFrame } from "../../utils/roundToFrame";
 import { snap } from "./snap";
 

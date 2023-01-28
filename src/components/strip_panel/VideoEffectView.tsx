@@ -1,15 +1,17 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
+
 import { Strip } from "@/packages/types";
-import { VideoEffect } from "../../interfaces/effects/VideoEffect";
 import { UndoManager } from "@/UndoManager";
+
+import { VideoEffect } from "../../interfaces/effects/VideoEffect";
 import { isVideoAsset } from "../../rendering/updateTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
 import { NumberEditInput } from "../core/NumberEditInput";
 import { Item, Select } from "../core/Select";
-import { Row, PropertyName } from "./StripPanel";
 import { PickProperties } from "./ImageEffectView";
+import { PropertyName,Row } from "./StripPanel";
 
 export const VideoEffectView: FC<{
   videoEffect: VideoEffect;

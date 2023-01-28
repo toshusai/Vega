@@ -2,17 +2,19 @@ import { FC, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 import { Music, Photo, Plus, Tex, Video } from "tabler-icons-react";
+
+import { AudioEffect } from "@/interfaces/effects/AudioEffect";
 import { Effect , Strip } from "@/packages/types";
+
+import { ImageEffect } from "../../interfaces/effects/ImageEffect";
 import { TextEffect } from "../../interfaces/effects/TextEffect";
 import { VideoEffect } from "../../interfaces/effects/VideoEffect";
-import { ImageEffect } from "../../interfaces/effects/ImageEffect";
-import { DropdownMenu } from "../DropdownMenu";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
 import { StyledContextMenuButton } from "../core/context_menu/ContextMenu";
-import { IconButton } from "../core/styled/IconButton";
 import { iconProps } from "../core/iconProps";
-import { AudioEffect } from "@/interfaces/effects/AudioEffect";
+import { IconButton } from "../core/styled/IconButton";
+import { DropdownMenu } from "../DropdownMenu";
 import { useClickOutside } from "../keyframes_panel/useClickOutside";
 
 export const AddStripButton: FC = () => {

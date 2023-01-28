@@ -1,19 +1,21 @@
-import { GlobalStyle } from "../components/core/styled/GlobalStyle";
-import styled from "styled-components";
-import { Timeline } from "../components/timeline_panel/Timeline";
-import { Provider } from "react-redux";
-import store from "../store";
-import { Preview } from "../components/preview_panel/Preview";
-import { AssetPanel } from "../components/assets_panel/AssetPanel";
-import { AssetDetailsPanel } from "../components/asset_details_panel/AssetDetailsPanel";
-import { StripPanel } from "../components/strip_panel/StripPanel";
-import { KeyFramePanel } from "../components/keyframes_panel/KeyFramePanel";
-import { MenuButton } from "../components/MenuButton";
 import React, { FC } from "react";
-import { getDragHander } from "../utils/getDragHander";
-import { initGlobalEvent } from "../utils/initGlobalEvent";
+import { Provider } from "react-redux";
+import styled from "styled-components";
+
 import { RecordMenuButton } from "@/components/RecordMenuButton";
 import { SettingsMenuButton } from "@/components/SettingsMenuButton";
+
+import { AssetDetailsPanel } from "../components/asset_details_panel/AssetDetailsPanel";
+import { AssetPanel } from "../components/assets_panel/AssetPanel";
+import { GlobalStyle } from "../components/core/styled/GlobalStyle";
+import { KeyFramePanel } from "../components/keyframes_panel/KeyFramePanel";
+import { MenuButton } from "../components/MenuButton";
+import { Preview } from "../components/preview_panel/Preview";
+import { StripPanel } from "../components/strip_panel/StripPanel";
+import { Timeline } from "../components/timeline_panel/Timeline";
+import store from "../store";
+import { getDragHander } from "../utils/getDragHander";
+import { initGlobalEvent } from "../utils/initGlobalEvent";
 
 if (typeof window !== "undefined") {
   window.React = React;

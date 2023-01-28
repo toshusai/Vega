@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
+
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 export const Modal: React.FC<{

@@ -1,17 +1,19 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
+
+import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
 import { Strip } from "@/packages/types";
-import { TextEffect } from "../../interfaces/effects/TextEffect";
 import { UndoManager } from "@/UndoManager";
+
+import { TextEffect } from "../../interfaces/effects/TextEffect";
 import { caclulateKeyFrameValue } from "../../rendering/updateTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
 import { ClickEditInput, ClickEditTextarea } from "../core/ClickEditInput";
 import { NumberEditInput } from "../core/NumberEditInput";
 import { Item, Select } from "../core/Select";
-import { Row, PropertyName } from "./StripPanel";
-import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
 import { PickProperties } from "./ImageEffectView";
+import { PropertyName,Row } from "./StripPanel";
 
 export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   props

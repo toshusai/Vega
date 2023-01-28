@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { X } from "tabler-icons-react";
+
 import { PanelBody } from "./asset_details_panel/AssetDetailsPanel";
 import { iconProps } from "./core/iconProps";
 import { Panel } from "./core/Panel";

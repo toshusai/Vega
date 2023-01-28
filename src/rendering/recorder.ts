@@ -1,15 +1,16 @@
-import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
 import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
+import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
 import { isVideoEffect } from "@/interfaces/effects/utils/isVideoEffect";
 import { SceneState } from "@/store/scene";
+
 import {
   createAudioElementOrGetFromCache,
   getAudioElement,
 } from "./updateAudioEffect";
 import {
   isAudioAsset,
-  isVideoAsset,
   isTextAsset,
+  isVideoAsset,
   loadFont,
 } from "./updateTextEffect";
 import {

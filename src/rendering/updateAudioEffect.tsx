@@ -1,7 +1,8 @@
+import { Asset } from "@/interfaces/asset/Asset";
 import { Strip } from "@/packages/types";
+
 import { AudioEffect } from "../interfaces/effects/AudioEffect";
 import { SceneState } from "../store/scene";
-import { Asset } from "@/interfaces/asset/Asset";
 
 const loadedAudioElementMap = new Map<string, HTMLAudioElement>();
 

@@ -1,7 +1,8 @@
+import { FC } from "react";
+
 import { ScriptEffect } from "@/interfaces/effects/ScriptEffect";
 import { Strip } from "@/packages/types";
 import { userScriptMap } from "@/rendering/updateScriptEffect";
-import { FC } from "react";
 
 export const ScriptEffectView: FC<{
   scriptEffect: ScriptEffect;

@@ -1,13 +1,15 @@
-import { actions } from "@/store/scene";
-import { useSelector } from "@/store/useSelector";
 import { FC, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+
+import { actions } from "@/store/scene";
+import { useSelector } from "@/store/useSelector";
+
 import { Item, Select } from "./core/Select";
 import { HeaderMenuButton } from "./HeaderMenuButton";
 import { Modal } from "./Modal";
-import { PropertyName, Row } from "./strip_panel/StripPanel";
 import { ModalBody } from "./ModalBody";
+import { PropertyName, Row } from "./strip_panel/StripPanel";
 
 export const RecordMenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);

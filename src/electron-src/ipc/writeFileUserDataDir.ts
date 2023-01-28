@@ -1,6 +1,7 @@
-import { join } from "path";
 import { app, ipcMain } from "electron";
 import { writeFileSync } from "fs";
+import { join } from "path";
+
 import { WRITE_FILE_USER_DATA_DIR } from "./const";
 
 export const initWriteFileUserDataDir = () => {

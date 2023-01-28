@@ -1,19 +1,21 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import { TextEffect } from "../../interfaces/effects/TextEffect";
+import { uuid } from "short-uuid";
+import styled from "styled-components";
+
+import { UndoManager } from "@/UndoManager";
+
 import { KeyFrame } from "../../interfaces/effects/KeyFrame";
+import { TextEffect } from "../../interfaces/effects/TextEffect";
 import { isTextEffect } from "../../interfaces/effects/utils/isTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
-import { UndoManager } from "@/UndoManager";
+import { Ease } from "../../utils/easing";
+import { exactKeyFrame } from "../../utils/exactKeyFrame";
 import { getDragHander } from "../../utils/getDragHander";
-import styled from "styled-components";
+import { roundToFrame } from "../../utils/roundToFrame";
 import { SelectRectProps } from "../core/styled/SelectRect";
 import { textEffectToRect } from "./utils/textEffectToRect";
-import { exactKeyFrame } from "../../utils/exactKeyFrame";
-import { uuid } from "short-uuid";
-import { Ease } from "../../utils/easing";
-import { roundToFrame } from "../../utils/roundToFrame";
 
 export function makeNewKeyframes<T extends { keyframes: KeyFrame[] }>(
   partial: Partial<T>,

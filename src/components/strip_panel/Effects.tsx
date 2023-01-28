@@ -1,17 +1,19 @@
 import { FC } from "react";
+import { useDispatch } from "react-redux";
+
+import { isScriptEffect } from "@/interfaces/effects/ScriptEffect";
+import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
 import { Effect , Strip } from "@/packages/types";
+import { actions } from "@/store/scene";
+
+import { isImageEffect } from "../../interfaces/effects/utils/isImageEffect";
 import { isTextEffect } from "../../interfaces/effects/utils/isTextEffect";
 import { isVideoEffect } from "../../interfaces/effects/utils/isVideoEffect";
-import { isImageEffect } from "../../interfaces/effects/utils/isImageEffect";
+import { AudioEffectView } from "./AudioEffectView";
 import { ImageEffectView } from "./ImageEffectView";
+import { ScriptEffectView } from "./ScriptEffectView";
 import { TextEffectView } from "./TextEffectView";
 import { VideoEffectView } from "./VideoEffectView";
-import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
-import { AudioEffectView } from "./AudioEffectView";
-import { isScriptEffect } from "@/interfaces/effects/ScriptEffect";
-import { ScriptEffectView } from "./ScriptEffectView";
-import { useDispatch } from "react-redux";
-import { actions } from "@/store/scene";
 
 export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
   const { effects } = props;
