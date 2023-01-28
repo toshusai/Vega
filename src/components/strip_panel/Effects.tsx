@@ -2,10 +2,10 @@ import { FC } from "react";
 import { useDispatch } from "react-redux";
 
 import { isScriptEffect } from "@/interfaces/effects/ScriptEffect";
-import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
-import { isImageEffect } from "@/interfaces/effects/utils/isImageEffect";
-import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
-import { isVideoEffect } from "@/interfaces/effects/utils/isVideoEffect";
+import { isAudioEffect } from "@/interfaces/utils/isAudioEffect";
+import { isImageEffect } from "@/interfaces/utils/isImageEffect";
+import { isTextEffect } from "@/interfaces/utils/isTextEffect";
+import { isVideoEffect } from "@/interfaces/utils/isVideoEffect";
 import { Effect , Strip } from "@/packages/types";
 import { actions } from "@/store/scene";
 

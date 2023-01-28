@@ -1,8 +1,8 @@
 import { FC, memo } from "react";
 import styled from "styled-components";
 
-import { isImageEffect } from "@/interfaces/effects/utils/isImageEffect";
-import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
+import { isImageEffect } from "@/interfaces/utils/isImageEffect";
+import { isTextEffect } from "@/interfaces/utils/isTextEffect";
 import { Strip } from "@/packages/types";
 import { useSelector } from "@/store/useSelector";
 
