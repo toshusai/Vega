@@ -1,4 +1,3 @@
-import App from "next/app";
 import Document, { DocumentContext } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 

@@ -14,7 +14,6 @@ import { useSelector } from "../../store/useSelector";
 import { ClickEditInput } from "../core/ClickEditInput";
 import { Panel } from "../core/Panel";
 import { AudioAsset } from "@/interfaces/asset/AudioAsset";
-import Image from "next/image";
 import {
   isScriptAsset,
   ScriptAsset,

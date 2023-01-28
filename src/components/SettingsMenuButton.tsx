@@ -1,16 +1,9 @@
 import { useSelector } from "@/store/useSelector";
 import { FC, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
-import { Cross, X } from "tabler-icons-react";
-import { PanelBody } from "./asset_details_panel/AssetDetailsPanel";
-import { iconProps } from "./core/iconProps";
-import { Panel } from "./core/Panel";
-import { Item, Select } from "./core/Select";
 import { HeaderMenuButton } from "./HeaderMenuButton";
 import { Modal } from "./Modal";
 import { PropertyName, Row } from "./strip_panel/StripPanel";
-import { KeyFrameIconButton } from "./strip_panel/KeyFrameIconButton";
 import { actions } from "@/store/scene";
 import { ModalBody } from "./ModalBody";
 import { NumberEditInput } from "./core/NumberEditInput";

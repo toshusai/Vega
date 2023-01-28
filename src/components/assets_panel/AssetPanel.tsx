@@ -5,9 +5,7 @@ import styled from "styled-components";
 import {
   FilePlus,
   Music,
-  Phone,
   Photo,
-  PlayerPause,
   Script,
   Tex,
   Trash,

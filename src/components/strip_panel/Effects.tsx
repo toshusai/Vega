@@ -1,6 +1,5 @@
 import { FC } from "react";
-import { Effect } from "@/packages/types";
-import { Strip } from "@/packages/types";
+import { Effect , Strip } from "@/packages/types";
 import { isTextEffect } from "../../interfaces/effects/utils/isTextEffect";
 import { isVideoEffect } from "../../interfaces/effects/utils/isVideoEffect";
 import { isImageEffect } from "../../interfaces/effects/utils/isImageEffect";

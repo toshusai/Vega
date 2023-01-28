@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useRef, useState } from "react";
+import { FC, memo } from "react";
 import { useWidth } from "../../hooks/useWidth";
 
 type TimeViewProps = {

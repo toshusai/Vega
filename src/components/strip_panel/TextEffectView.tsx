@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import { Key } from "tabler-icons-react";
 import { Strip } from "@/packages/types";
 import { TextEffect } from "../../interfaces/effects/TextEffect";
 import { UndoManager } from "@/UndoManager";
@@ -10,9 +9,7 @@ import { useSelector } from "../../store/useSelector";
 import { ClickEditInput, ClickEditTextarea } from "../core/ClickEditInput";
 import { NumberEditInput } from "../core/NumberEditInput";
 import { Item, Select } from "../core/Select";
-import { iconProps } from "../core/iconProps";
 import { Row, PropertyName } from "./StripPanel";
-import { exactKeyFrame } from "../../utils/exactKeyFrame";
 import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
 import { PickProperties } from "./ImageEffectView";
 

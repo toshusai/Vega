@@ -8,7 +8,7 @@ import {
   Clock,
   DeviceFloppy,
   File,
-  IconProps,
+  type IconProps,
 } from "tabler-icons-react";
 import { iconProps } from "./core/iconProps";
 import { download } from "@/utils/download";

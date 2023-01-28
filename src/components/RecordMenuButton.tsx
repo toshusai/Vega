@@ -3,7 +3,6 @@ import { useSelector } from "@/store/useSelector";
 import { FC, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Cross } from "tabler-icons-react";
 import { Item, Select } from "./core/Select";
 import { HeaderMenuButton } from "./HeaderMenuButton";
 import { Modal } from "./Modal";

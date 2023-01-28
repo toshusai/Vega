@@ -1,4 +1,4 @@
-import { Strip } from "../Strip";
+import { Strip } from "@/packages/types";
 import { checkOverlap } from "./checkOverlap";
 
 const MAX_LAYER = 8;

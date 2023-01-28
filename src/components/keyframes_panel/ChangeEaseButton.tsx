@@ -4,7 +4,6 @@ import { UndoManager } from "@/UndoManager";
 import {
   allEase,
   easeInCubic,
-  easeInExpo,
   getEasingFunction,
 } from "@/utils/easing";
 import { FC, useRef } from "react";
