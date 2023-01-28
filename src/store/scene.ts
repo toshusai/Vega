@@ -1,7 +1,9 @@
-import { restrictStartEnd } from "@/utils/restrictStartEnd";
 import { createSlice } from "@reduxjs/toolkit";
-import { Asset } from "../interfaces/asset/Asset";
+
 import { Effect , Strip } from "@/packages/types";
+import { restrictStartEnd } from "@/utils/restrictStartEnd";
+
+import { Asset } from "../interfaces/asset/Asset";
 
 export type SceneState = {
   initialized: boolean;

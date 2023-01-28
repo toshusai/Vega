@@ -1,4 +1,5 @@
 import { FC, memo } from "react";
+
 import { useWidth } from "../../hooks/useWidth";
 
 type TimeViewProps = {

@@ -1,5 +1,6 @@
 import { FC } from "react";
 import styled from "styled-components";
+
 import { useSelector } from "../../store/useSelector";
 import { PanelBody } from "../asset_details_panel/AssetDetailsPanel";
 import { Panel } from "../core/Panel";

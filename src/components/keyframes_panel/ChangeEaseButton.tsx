@@ -1,3 +1,7 @@
+import { FC, useRef } from "react";
+import { useDispatch } from "react-redux";
+import styled from "styled-components";
+
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
@@ -6,9 +10,7 @@ import {
   easeInCubic,
   getEasingFunction,
 } from "@/utils/easing";
-import { FC, useRef } from "react";
-import { useDispatch } from "react-redux";
-import styled from "styled-components";
+
 import { StyledContextMenuButton } from "../core/context_menu/ContextMenu";
 import { iconProps } from "../core/iconProps";
 import { IconButton } from "../core/styled/IconButton";

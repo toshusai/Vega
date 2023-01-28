@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 import { createFocusTrap } from "focus-trap";
+import { useEffect } from "react";
 
 type UseFocusTrapOptions = {
   el: HTMLElement | null;

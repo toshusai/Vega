@@ -1,30 +1,32 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
+
+import { isScriptEffect } from "@/interfaces/effects/ScriptEffect";
+import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
+import { Recorder } from "@/rendering/recorder";
+import { updateAudioEffect } from "@/rendering/updateAudioEffect";
+import { handler } from "@/rendering/updateScriptEffect";
+import { download } from "@/utils/download";
+
+import { isImageEffect } from "../../interfaces/effects/utils/isImageEffect";
 import { isTextEffect } from "../../interfaces/effects/utils/isTextEffect";
 import { isVideoEffect } from "../../interfaces/effects/utils/isVideoEffect";
-import { isImageEffect } from "../../interfaces/effects/utils/isImageEffect";
-import store from "../../store";
-import { actions } from "../../store/scene";
-import { useSelector } from "../../store/useSelector";
-import { Panel } from "../core/Panel";
+import { Key, KeyboardInput } from "../../KeyboardInput";
+import { updateImageEffect } from "../../rendering/updateImageEffect";
 import {
   updateTextEffect,
 } from "../../rendering/updateTextEffect";
 import { updateVideoEffect } from "../../rendering/updateVideoEffect";
-import { Key, KeyboardInput } from "../../KeyboardInput";
+import store from "../../store";
+import { actions } from "../../store/scene";
+import { useSelector } from "../../store/useSelector";
 import { getDragHander } from "../../utils/getDragHander";
-import { ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
-import { textEffectToRect } from "./utils/textEffectToRect";
-import { Gizmo } from "../preview_panel/Gizmo";
-import { IconButton } from "../core/styled/IconButton";
 import { iconProps } from "../core/iconProps";
-import { updateImageEffect } from "../../rendering/updateImageEffect";
-import { updateAudioEffect } from "@/rendering/updateAudioEffect";
-import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
-import { handler } from "@/rendering/updateScriptEffect";
-import { isScriptEffect } from "@/interfaces/effects/ScriptEffect";
-import { Recorder } from "@/rendering/recorder";
-import { download } from "@/utils/download";
+import { Panel } from "../core/Panel";
+import { IconButton } from "../core/styled/IconButton";
+import { Gizmo } from "../preview_panel/Gizmo";
+import { textEffectToRect } from "./utils/textEffectToRect";
 
 export const Preview: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);

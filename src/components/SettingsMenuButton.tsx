@@ -1,12 +1,14 @@
-import { useSelector } from "@/store/useSelector";
 import { FC, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+
+import { actions } from "@/store/scene";
+import { useSelector } from "@/store/useSelector";
+
+import { NumberEditInput } from "./core/NumberEditInput";
 import { HeaderMenuButton } from "./HeaderMenuButton";
 import { Modal } from "./Modal";
-import { PropertyName, Row } from "./strip_panel/StripPanel";
-import { actions } from "@/store/scene";
 import { ModalBody } from "./ModalBody";
-import { NumberEditInput } from "./core/NumberEditInput";
+import { PropertyName, Row } from "./strip_panel/StripPanel";
 
 export const SettingsMenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);

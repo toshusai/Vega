@@ -1,4 +1,5 @@
 import { FC } from "react";
+
 import { StyledSelect } from "./styled/StyledSelect";
 
 export type Item = {

@@ -1,27 +1,29 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useWidth } from "../../hooks/useWidth";
+import { Trash } from "tabler-icons-react";
+
 import { Effect , Strip } from "@/packages/types";
+import { UndoManager } from "@/UndoManager";
+
+import { useWidth } from "../../hooks/useWidth";
 import { KeyFrame } from "../../interfaces/effects/KeyFrame";
 import { Key, KeyboardInput } from "../../KeyboardInput";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
-import { Panel } from "../core/Panel";
 import { getEasingFunction } from "../../utils/easing";
 import { getDragHander } from "../../utils/getDragHander";
-import { MakeSVG } from "./MakeSVG";
+import { restrictStartEnd } from "../../utils/restrictStartEnd";
 import { roundToFrame } from "../../utils/roundToFrame";
+import { iconProps } from "../core/iconProps";
+import { Panel } from "../core/Panel";
 import { ScaleScrollBar } from "../core/ScaleScrollBar";
+import { IconButton } from "../core/styled/IconButton";
 import { SelectRect } from "../core/styled/SelectRect";
+import { ToolTip } from "../core/styled/ToolTip";
 import { TimeCursor } from "../core/TimeCursor";
 import { TimeView } from "../core/TimeView";
-import { UndoManager } from "@/UndoManager";
-import { IconButton } from "../core/styled/IconButton";
-import { Trash } from "tabler-icons-react";
-import { iconProps } from "../core/iconProps";
-import { ToolTip } from "../core/styled/ToolTip";
-import { restrictStartEnd } from "../../utils/restrictStartEnd";
 import { ChangeEaseButton } from "./ChangeEaseButton";
+import { MakeSVG } from "./MakeSVG";
 
 export function hasKeyFrame(object: any): object is { keyframes: KeyFrame[] } {
   return object.keyframes !== undefined && Array.isArray(object.keyframes);

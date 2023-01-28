@@ -1,7 +1,8 @@
 import { FC, useState } from "react";
+
+import { useNativeOnChange } from "../../hooks/useNativeOnChange";
 import { getDragHander } from "../../utils/getDragHander";
 import { StyledInput } from "./styled/StyledInput";
-import { useNativeOnChange } from "../../hooks/useNativeOnChange";
 
 type NumberEditInputProps = {
   value?: number;

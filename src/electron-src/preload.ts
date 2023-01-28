@@ -1,4 +1,4 @@
-import { ipcRenderer, IpcRenderer } from "electron";
+import { IpcRenderer,ipcRenderer } from "electron";
 
 declare global {
   namespace NodeJS {

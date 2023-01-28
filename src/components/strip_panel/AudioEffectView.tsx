@@ -1,14 +1,16 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
+
 import { Strip } from "@/packages/types";
-import { AudioEffect } from "../../interfaces/effects/AudioEffect";
 import { UndoManager } from "@/UndoManager";
+
+import { AudioEffect } from "../../interfaces/effects/AudioEffect";
 import { isAudioAsset } from "../../rendering/updateTextEffect";
 import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
 import { NumberEditInput } from "../core/NumberEditInput";
 import { Item, Select } from "../core/Select";
-import { Row, PropertyName } from "./StripPanel";
+import { PropertyName,Row } from "./StripPanel";
 
 export const AudioEffectView: FC<{
   audioEffect: AudioEffect;

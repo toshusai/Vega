@@ -1,13 +1,6 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
-import { MemoTimeView } from "../core/TimeView";
-import { Panel } from "../core/Panel";
-import { MemoStripUI } from "./StripUI";
-import { getDragHander } from "../../utils/getDragHander";
-import { MemoScaleScrollBar } from "../core/ScaleScrollBar";
-import { useWidth } from "../../hooks/useWidth";
 import { useDispatch } from "react-redux";
-import { actions } from "../../store/scene";
-import { useSelector } from "../../store/useSelector";
+import { uuid } from "short-uuid";
 import {
   Cut,
   Magnet,
@@ -15,23 +8,30 @@ import {
   PlayerPlay,
   Trash,
 } from "tabler-icons-react";
-import { Strip } from "@/packages/types";
-import { Key, KeyboardInput } from "../../KeyboardInput";
-import { roundToFrame } from "../../utils/roundToFrame";
-import { canMove } from "../../interfaces/strips/canMove";
-import { moveStrip } from "../../interfaces/strips/moveStrip";
-import { TimeCursor } from "../core/TimeCursor";
-import { SelectRect } from "../core/styled/SelectRect";
-import { iconProps } from "../core/iconProps";
-import { IconButton } from "../core/styled/IconButton";
-import { ToolTip } from "../core/styled/ToolTip";
 
-
-import { uuid } from "short-uuid";
-import { AddStripButton } from "./AddStripButton";
 import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
+import { Strip } from "@/packages/types";
 import { releaseAudioAsset } from "@/rendering/updateAudioEffect";
 import { UndoManager } from "@/UndoManager";
+
+import { useWidth } from "../../hooks/useWidth";
+import { canMove } from "../../interfaces/strips/canMove";
+import { moveStrip } from "../../interfaces/strips/moveStrip";
+import { Key, KeyboardInput } from "../../KeyboardInput";
+import { actions } from "../../store/scene";
+import { useSelector } from "../../store/useSelector";
+import { getDragHander } from "../../utils/getDragHander";
+import { roundToFrame } from "../../utils/roundToFrame";
+import { iconProps } from "../core/iconProps";
+import { Panel } from "../core/Panel";
+import { MemoScaleScrollBar } from "../core/ScaleScrollBar";
+import { IconButton } from "../core/styled/IconButton";
+import { SelectRect } from "../core/styled/SelectRect";
+import { ToolTip } from "../core/styled/ToolTip";
+import { TimeCursor } from "../core/TimeCursor";
+import { MemoTimeView } from "../core/TimeView";
+import { AddStripButton } from "./AddStripButton";
+import { MemoStripUI } from "./StripUI";
 
 export const Timeline: FC = () => {
   const strips = useSelector((state) => state.scene.strips);

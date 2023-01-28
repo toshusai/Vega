@@ -1,8 +1,16 @@
 import { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+
+import { AudioAsset } from "@/interfaces/asset/AudioAsset";
+import {
+  isScriptAsset,
+  ScriptAsset,
+  ScriptMeta,
+} from "@/interfaces/asset/ScriptAsset";
+
+import { FontAsset } from "../../interfaces/asset/FontAsset";
 import { ImageAsset } from "../../interfaces/asset/ImageAsset";
 import { VideoAsset } from "../../interfaces/asset/VideoAsset";
-import { FontAsset } from "../../interfaces/asset/FontAsset";
 import {
   isAudioAsset,
   isImageAsset,
@@ -13,12 +21,6 @@ import {
 import { useSelector } from "../../store/useSelector";
 import { ClickEditInput } from "../core/ClickEditInput";
 import { Panel } from "../core/Panel";
-import { AudioAsset } from "@/interfaces/asset/AudioAsset";
-import {
-  isScriptAsset,
-  ScriptAsset,
-  ScriptMeta,
-} from "@/interfaces/asset/ScriptAsset";
 
 export const AssetDetailsPanel: FC = () => {
   const selectedAssetIds = useSelector((state) => state.scene.selectedAssetIds);

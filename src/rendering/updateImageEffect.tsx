@@ -1,8 +1,9 @@
+import { PickProperties } from "@/components/strip_panel/ImageEffectView";
 import { Strip } from "@/packages/types";
+
 import { ImageEffect } from "../interfaces/effects/ImageEffect";
 import { SceneState } from "../store/scene";
 import { caclulateKeyFrameValue } from "./updateTextEffect";
-import { PickProperties } from "@/components/strip_panel/ImageEffectView";
 
 const loadedImageElementMap = new Map<string, HTMLImageElement>();
 

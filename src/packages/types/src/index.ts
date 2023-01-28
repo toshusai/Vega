@@ -1,2 +1,2 @@
-export * from "./Strip";
 export * from "./effects/Effect";
+export * from "./Strip";

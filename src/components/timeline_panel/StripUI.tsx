@@ -1,9 +1,10 @@
-import { isImageEffect } from "@/interfaces/effects/utils/isImageEffect";
-import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
-import { useSelector } from "@/store/useSelector";
 import { FC, memo } from "react";
 import styled from "styled-components";
+
+import { isImageEffect } from "@/interfaces/effects/utils/isImageEffect";
+import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
 import { Strip } from "@/packages/types";
+import { useSelector } from "@/store/useSelector";
 
 export const StripUI: FC<
   Strip & {

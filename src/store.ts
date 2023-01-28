@@ -1,6 +1,7 @@
-import { sceneReducer, SceneState } from "./store/scene";
 import { configureStore } from "@reduxjs/toolkit";
+
 import { appReducer, AppState } from "./store/app";
+import { sceneReducer, SceneState } from "./store/scene";
 
 export type SelectorType = {
   scene: SceneState;

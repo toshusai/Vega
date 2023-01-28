@@ -1,13 +1,14 @@
-import { Ease, getEasingFunction } from "../utils/easing";
+import { AudioAsset } from "@/interfaces/asset/AudioAsset";
+import { Strip } from "@/packages/types";
+
 import { Asset } from "../interfaces/asset/Asset";
+import { FontAsset } from "../interfaces/asset/FontAsset";
 import { ImageAsset } from "../interfaces/asset/ImageAsset";
 import { VideoAsset } from "../interfaces/asset/VideoAsset";
-import { FontAsset } from "../interfaces/asset/FontAsset";
-import { Strip } from "@/packages/types";
-import { TextEffect } from "../interfaces/effects/TextEffect";
 import { KeyFrame } from "../interfaces/effects/KeyFrame";
+import { TextEffect } from "../interfaces/effects/TextEffect";
 import { SceneState } from "../store/scene";
-import { AudioAsset } from "@/interfaces/asset/AudioAsset";
+import { Ease, getEasingFunction } from "../utils/easing";
 
 const loadedFontAssetMap = new Map<string, boolean>();
 

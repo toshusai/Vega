@@ -1,5 +1,6 @@
 import { ipcMain } from "electron";
 import { writeFileSync } from "fs";
+
 import { WRITE_FILE } from "./const";
 
 export const initWriteFile = () => {

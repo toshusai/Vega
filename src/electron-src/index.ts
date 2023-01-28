@@ -1,15 +1,15 @@
 // Native
+// Packages
+import { app,BrowserWindow } from "electron";
+import isDev from "electron-is-dev";
+import prepareNext from "electron-next";
 import { join } from "path";
 import { format } from "url";
 
-// Packages
-import { BrowserWindow, app } from "electron";
-import isDev from "electron-is-dev";
-import prepareNext from "electron-next";
+import { initReadFile } from "./ipc/readFile";
 import { initReadFileUserDataDir } from "./ipc/readFileUserDataDir";
 import { initWriteFile } from "./ipc/writeFile";
 import { initWriteFileUserDataDir } from "./ipc/writeFileUserDataDir";
-import { initReadFile } from "./ipc/readFile";
 
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
