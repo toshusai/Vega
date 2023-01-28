@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { Asset , Effect , Strip } from "@/packages/types";
+import { Asset, Effect, Strip } from "@/packages/types";
 import { restrictStartEnd } from "@/utils/restrictStartEnd";
 
 export type SceneState = {
@@ -48,6 +48,12 @@ export const sceneSlice = createSlice({
     },
     setIsPlaying: (state, action: { payload: boolean }) => {
       state.isPlaying = action.payload;
+    },
+    setWidth: (state, action: { payload: number }) => {
+      state.canvasWidth = action.payload;
+    },
+    setHeight: (state, action: { payload: number }) => {
+      state.canvasHeight = action.payload;
     },
     toggleIsSnap: (state) => {
       state.isSnap = !state.isSnap;
