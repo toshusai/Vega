@@ -3,11 +3,11 @@ import { AudioAsset } from "@/interfaces/asset/AudioAsset";
 import { FontAsset } from "@/interfaces/asset/FontAsset";
 import { ImageAsset } from "@/interfaces/asset/ImageAsset";
 import { VideoAsset } from "@/interfaces/asset/VideoAsset";
+import { Ease, getEasingFunction } from "@/interfaces/easing";
 import { KeyFrame } from "@/interfaces/effects/KeyFrame";
 import { TextEffect } from "@/interfaces/effects/TextEffect";
 import { Strip } from "@/packages/types";
 import { SceneState } from "@/store/scene";
-import { Ease, getEasingFunction } from "@/utils/easing";
 
 const loadedFontAssetMap = new Map<string, boolean>();
 
