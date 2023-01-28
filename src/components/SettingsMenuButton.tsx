@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from "react";
+import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { actions } from "@/store/scene";
@@ -12,7 +12,6 @@ import { PropertyName, Row } from "./strip_panel/StripPanel";
 
 export const SettingsMenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
     setShowMenu(!showMenu);
@@ -43,6 +42,8 @@ const SettingsModal: FC<{
   onClose?: () => void;
 }> = (props) => {
   const length = useSelector((state) => state.scene.length);
+  const width = useSelector((state) => state.scene.canvasWidth);
+  const height = useSelector((state) => state.scene.canvasHeight);
   const dispatch = useDispatch();
 
   return (
@@ -59,6 +60,36 @@ const SettingsModal: FC<{
           }}
           onChange={(value) => {
             dispatch(actions.setLength(value));
+          }}
+        />
+      </Row>
+      <Row>
+        <PropertyName>width:</PropertyName>
+        <NumberEditInput
+          min={1}
+          max={1920}
+          scale={1}
+          value={width}
+          onInput={(value) => {
+            dispatch(actions.setWidth(value));
+          }}
+          onChange={(value) => {
+            dispatch(actions.setWidth(value));
+          }}
+        />
+      </Row>
+      <Row>
+        <PropertyName>height:</PropertyName>
+        <NumberEditInput
+          min={1}
+          max={1280}
+          scale={1}
+          value={height}
+          onInput={(value) => {
+            dispatch(actions.setHeight(value));
+          }}
+          onChange={(value) => {
+            dispatch(actions.setHeight(value));
           }}
         />
       </Row>
