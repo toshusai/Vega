@@ -107,7 +107,13 @@ export const AssetPanel: FC = () => {
   };
 
   return (
-    <Panel height={100} width={100}>
+    <Panel
+      height={100}
+      width={100}
+      style={{
+        overflowY: "auto",
+      }}
+    >
       <div
         style={{
           marginBottom: "8px",
