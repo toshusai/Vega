@@ -1,4 +1,4 @@
-import { Asset } from "../asset/Asset";
+import { Asset } from "./Asset";
 
 export type FontAsset = Asset & {
   type: "font";

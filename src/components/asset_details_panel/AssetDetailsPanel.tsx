@@ -1,26 +1,25 @@
 import { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
+import { ClickEditInput } from "@/components/core/ClickEditInput";
+import { Panel } from "@/components/core/Panel";
 import { AudioAsset } from "@/interfaces/asset/AudioAsset";
+import { FontAsset } from "@/interfaces/asset/FontAsset";
+import { ImageAsset } from "@/interfaces/asset/ImageAsset";
 import {
   isScriptAsset,
   ScriptAsset,
   ScriptMeta,
 } from "@/interfaces/asset/ScriptAsset";
-
-import { FontAsset } from "../../interfaces/asset/FontAsset";
-import { ImageAsset } from "../../interfaces/asset/ImageAsset";
-import { VideoAsset } from "../../interfaces/asset/VideoAsset";
+import { VideoAsset } from "@/interfaces/asset/VideoAsset";
 import {
   isAudioAsset,
   isImageAsset,
   isTextAsset,
   isVideoAsset,
   loadFont,
-} from "../../rendering/updateTextEffect";
-import { useSelector } from "../../store/useSelector";
-import { ClickEditInput } from "../core/ClickEditInput";
-import { Panel } from "../core/Panel";
+} from "@/rendering/updateTextEffect";
+import { useSelector } from "@/store/useSelector";
 
 export const AssetDetailsPanel: FC = () => {
   const selectedAssetIds = useSelector((state) => state.scene.selectedAssetIds);

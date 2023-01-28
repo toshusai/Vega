@@ -1,15 +1,15 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 
+import { NumberEditInput } from "@/components/core/NumberEditInput";
+import { Item, Select } from "@/components/core/Select";
+import { VideoEffect } from "@/interfaces/effects/VideoEffect";
 import { Strip } from "@/packages/types";
+import { isVideoAsset } from "@/rendering/updateTextEffect";
+import { actions } from "@/store/scene";
+import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
 
-import { VideoEffect } from "../../interfaces/effects/VideoEffect";
-import { isVideoAsset } from "../../rendering/updateTextEffect";
-import { actions } from "../../store/scene";
-import { useSelector } from "../../store/useSelector";
-import { NumberEditInput } from "../core/NumberEditInput";
-import { Item, Select } from "../core/Select";
 import { PickProperties } from "./ImageEffectView";
 import { PropertyName,Row } from "./StripPanel";
 

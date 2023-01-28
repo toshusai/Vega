@@ -3,19 +3,18 @@ import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 import { Music, Photo, Plus, Tex, Video } from "tabler-icons-react";
 
+import { StyledContextMenuButton } from "@/components/core/context_menu/ContextMenu";
+import { iconProps } from "@/components/core/iconProps";
+import { IconButton } from "@/components/core/styled/IconButton";
+import { DropdownMenu } from "@/components/DropdownMenu";
+import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
 import { AudioEffect } from "@/interfaces/effects/AudioEffect";
+import { ImageEffect } from "@/interfaces/effects/ImageEffect";
+import { TextEffect } from "@/interfaces/effects/TextEffect";
+import { VideoEffect } from "@/interfaces/effects/VideoEffect";
 import { Effect , Strip } from "@/packages/types";
-
-import { ImageEffect } from "../../interfaces/effects/ImageEffect";
-import { TextEffect } from "../../interfaces/effects/TextEffect";
-import { VideoEffect } from "../../interfaces/effects/VideoEffect";
-import { actions } from "../../store/scene";
-import { useSelector } from "../../store/useSelector";
-import { StyledContextMenuButton } from "../core/context_menu/ContextMenu";
-import { iconProps } from "../core/iconProps";
-import { IconButton } from "../core/styled/IconButton";
-import { DropdownMenu } from "../DropdownMenu";
-import { useClickOutside } from "../keyframes_panel/useClickOutside";
+import { actions } from "@/store/scene";
+import { useSelector } from "@/store/useSelector";
 
 export const AddStripButton: FC = () => {
   const ref = useRef<HTMLDivElement>(null);

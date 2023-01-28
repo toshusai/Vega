@@ -1,6 +1,6 @@
 import { Strip } from "@/packages/types";
+import { roundToFrame } from "@/utils/roundToFrame";
 
-import { roundToFrame } from "../../utils/roundToFrame";
 import { snap } from "./snap";
 
 export function moveStrip(

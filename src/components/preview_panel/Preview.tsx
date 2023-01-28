@@ -2,30 +2,30 @@ import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
 
+import { iconProps } from "@/components/core/iconProps";
+import { Panel } from "@/components/core/Panel";
+import { IconButton } from "@/components/core/styled/IconButton";
+import { Gizmo } from "@/components/preview_panel/Gizmo";
 import { isScriptEffect } from "@/interfaces/effects/ScriptEffect";
 import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
+import { isImageEffect } from "@/interfaces/effects/utils/isImageEffect";
+import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
+import { isVideoEffect } from "@/interfaces/effects/utils/isVideoEffect";
+import { Key, KeyboardInput } from "@/KeyboardInput";
 import { Recorder } from "@/rendering/recorder";
 import { updateAudioEffect } from "@/rendering/updateAudioEffect";
+import { updateImageEffect } from "@/rendering/updateImageEffect";
 import { handler } from "@/rendering/updateScriptEffect";
-import { download } from "@/utils/download";
-
-import { isImageEffect } from "../../interfaces/effects/utils/isImageEffect";
-import { isTextEffect } from "../../interfaces/effects/utils/isTextEffect";
-import { isVideoEffect } from "../../interfaces/effects/utils/isVideoEffect";
-import { Key, KeyboardInput } from "../../KeyboardInput";
-import { updateImageEffect } from "../../rendering/updateImageEffect";
 import {
   updateTextEffect,
-} from "../../rendering/updateTextEffect";
-import { updateVideoEffect } from "../../rendering/updateVideoEffect";
-import store from "../../store";
-import { actions } from "../../store/scene";
-import { useSelector } from "../../store/useSelector";
-import { getDragHander } from "../../utils/getDragHander";
-import { iconProps } from "../core/iconProps";
-import { Panel } from "../core/Panel";
-import { IconButton } from "../core/styled/IconButton";
-import { Gizmo } from "../preview_panel/Gizmo";
+} from "@/rendering/updateTextEffect";
+import { updateVideoEffect } from "@/rendering/updateVideoEffect";
+import store from "@/store";
+import { actions } from "@/store/scene";
+import { useSelector } from "@/store/useSelector";
+import { download } from "@/utils/download";
+import { getDragHander } from "@/utils/getDragHander";
+
 import { textEffectToRect } from "./utils/textEffectToRect";
 
 export const Preview: FC = () => {

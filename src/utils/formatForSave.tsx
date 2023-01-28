@@ -1,4 +1,4 @@
-import { SceneState } from "../store/scene";
+import { SceneState } from "@/store/scene";
 
 export function sortStringify(data: SceneState, space: number | undefined = 2) {
   const json = JSON.stringify(

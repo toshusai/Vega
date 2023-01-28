@@ -7,19 +7,19 @@ import {
   type IconProps,
 } from "tabler-icons-react";
 
+import { readFile } from "@/ipc/readFile";
+import { writeFileUserDataDir } from "@/ipc/writeFileUserDataDir";
 import { loadAllAssets } from "@/rendering/recorder";
+import store from "@/store";
+import { appAction } from "@/store/app";
+import { actions, SceneState } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
+import { compareScene } from "@/utils/compareScene";
 import { download } from "@/utils/download";
+import { filePick } from "@/utils/filePick";
+import { sortStringify } from "@/utils/formatForSave";
+import { readRecentFiles } from "@/utils/readRecentFiles";
 
-import { readFile } from "../ipc/readFile";
-import { writeFileUserDataDir } from "../ipc/writeFileUserDataDir";
-import store from "../store";
-import { appAction } from "../store/app";
-import { actions, SceneState } from "../store/scene";
-import { compareScene } from "../utils/compareScene";
-import { filePick } from "../utils/filePick";
-import { sortStringify } from "../utils/formatForSave";
-import { readRecentFiles } from "../utils/readRecentFiles";
 import { StyledContextMenuButton } from "./core/context_menu/ContextMenu";
 import { iconProps } from "./core/iconProps";
 import { DropdownMenu } from "./DropdownMenu";

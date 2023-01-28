@@ -3,12 +3,12 @@ import { useDispatch } from "react-redux";
 
 import { isScriptEffect } from "@/interfaces/effects/ScriptEffect";
 import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
+import { isImageEffect } from "@/interfaces/effects/utils/isImageEffect";
+import { isTextEffect } from "@/interfaces/effects/utils/isTextEffect";
+import { isVideoEffect } from "@/interfaces/effects/utils/isVideoEffect";
 import { Effect , Strip } from "@/packages/types";
 import { actions } from "@/store/scene";
 
-import { isImageEffect } from "../../interfaces/effects/utils/isImageEffect";
-import { isTextEffect } from "../../interfaces/effects/utils/isTextEffect";
-import { isVideoEffect } from "../../interfaces/effects/utils/isVideoEffect";
 import { AudioEffectView } from "./AudioEffectView";
 import { ImageEffectView } from "./ImageEffectView";
 import { ScriptEffectView } from "./ScriptEffectView";

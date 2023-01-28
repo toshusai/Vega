@@ -1,10 +1,10 @@
+import { writeFile } from "@/ipc/writeFile";
+import { Key, KeyboardInput } from "@/KeyboardInput";
+import store from "@/store";
+import { appAction } from "@/store/app";
 import { actions } from "@/store/scene";
+import { UndoManager } from "@/UndoManager";
 
-import { writeFile } from "../ipc/writeFile";
-import { Key, KeyboardInput } from "../KeyboardInput";
-import store from "../store";
-import { appAction } from "../store/app";
-import { UndoManager } from "../UndoManager";
 import { sortStringify } from "./formatForSave";
 
 export function initGlobalEvent() {

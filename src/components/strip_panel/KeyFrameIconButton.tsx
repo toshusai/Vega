@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { IconButton } from "../core/styled/IconButton";
+import { IconButton } from "@/components/core/styled/IconButton";
 
 export const KeyFrameIconButton = styled(IconButton)`
   // FIXME: can not override without important

@@ -1,6 +1,5 @@
 import { Strip } from "@/packages/types";
-
-import { roundToFrame } from "../../utils/roundToFrame";
+import { roundToFrame } from "@/utils/roundToFrame";
 
 export function snap(
   newStart: number,
