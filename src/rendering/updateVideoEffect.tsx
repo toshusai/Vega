@@ -1,4 +1,4 @@
-import { Strip } from "../interfaces/Strip";
+import { Strip } from "@/packages/types";
 import { VideoEffect } from "../interfaces/effects/VideoEffect";
 import { SceneState } from "../store/scene";
 import { Asset } from "@/interfaces/asset/Asset";

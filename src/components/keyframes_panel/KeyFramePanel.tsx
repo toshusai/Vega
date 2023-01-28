@@ -1,8 +1,8 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useWidth } from "../../hooks/useWidth";
-import { Effect } from "../../interfaces/effects/Effect";
-import { Strip } from "../../interfaces/Strip";
+import { Effect } from "@/packages/types";
+import { Strip } from "@/packages/types";
 import { KeyFrame } from "../../interfaces/effects/KeyFrame";
 import { Key, KeyboardInput } from "../../KeyboardInput";
 import { actions } from "../../store/scene";
