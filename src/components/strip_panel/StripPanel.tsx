@@ -1,9 +1,10 @@
 import { FC } from "react";
 import styled from "styled-components";
 
-import { useSelector } from "../../store/useSelector";
-import { PanelBody } from "../asset_details_panel/AssetDetailsPanel";
-import { Panel } from "../core/Panel";
+import { PanelBody } from "@/components/asset_details_panel/AssetDetailsPanel";
+import { Panel } from "@/components/core/Panel";
+import { useSelector } from "@/store/useSelector";
+
 import { Effects } from "./Effects";
 
 export const StripPanel: FC = () => {

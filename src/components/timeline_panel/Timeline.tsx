@@ -9,27 +9,27 @@ import {
   Trash,
 } from "tabler-icons-react";
 
+import { iconProps } from "@/components/core/iconProps";
+import { Panel } from "@/components/core/Panel";
+import { MemoScaleScrollBar } from "@/components/core/ScaleScrollBar";
+import { IconButton } from "@/components/core/styled/IconButton";
+import { SelectRect } from "@/components/core/styled/SelectRect";
+import { ToolTip } from "@/components/core/styled/ToolTip";
+import { TimeCursor } from "@/components/core/TimeCursor";
+import { MemoTimeView } from "@/components/core/TimeView";
+import { useWidth } from "@/hooks/useWidth";
 import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
+import { canMove } from "@/interfaces/strips/canMove";
+import { moveStrip } from "@/interfaces/strips/moveStrip";
+import { Key, KeyboardInput } from "@/KeyboardInput";
 import { Strip } from "@/packages/types";
 import { releaseAudioAsset } from "@/rendering/updateAudioEffect";
+import { actions } from "@/store/scene";
+import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
+import { getDragHander } from "@/utils/getDragHander";
+import { roundToFrame } from "@/utils/roundToFrame";
 
-import { useWidth } from "../../hooks/useWidth";
-import { canMove } from "../../interfaces/strips/canMove";
-import { moveStrip } from "../../interfaces/strips/moveStrip";
-import { Key, KeyboardInput } from "../../KeyboardInput";
-import { actions } from "../../store/scene";
-import { useSelector } from "../../store/useSelector";
-import { getDragHander } from "../../utils/getDragHander";
-import { roundToFrame } from "../../utils/roundToFrame";
-import { iconProps } from "../core/iconProps";
-import { Panel } from "../core/Panel";
-import { MemoScaleScrollBar } from "../core/ScaleScrollBar";
-import { IconButton } from "../core/styled/IconButton";
-import { SelectRect } from "../core/styled/SelectRect";
-import { ToolTip } from "../core/styled/ToolTip";
-import { TimeCursor } from "../core/TimeCursor";
-import { MemoTimeView } from "../core/TimeView";
 import { AddStripButton } from "./AddStripButton";
 import { MemoStripUI } from "./StripUI";
 

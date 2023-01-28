@@ -2,19 +2,15 @@ import { FC, useRef } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
+import { StyledContextMenuButton } from "@/components/core/context_menu/ContextMenu";
+import { iconProps } from "@/components/core/iconProps";
+import { IconButton } from "@/components/core/styled/IconButton";
+import { DropdownMenu } from "@/components/DropdownMenu";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
-import {
-  allEase,
-  easeInCubic,
-  getEasingFunction,
-} from "@/utils/easing";
+import { allEase, easeInCubic, getEasingFunction } from "@/utils/easing";
 
-import { StyledContextMenuButton } from "../core/context_menu/ContextMenu";
-import { iconProps } from "../core/iconProps";
-import { IconButton } from "../core/styled/IconButton";
-import { DropdownMenu } from "../DropdownMenu";
 import { hasKeyFrame } from "./KeyFramePanel";
 import { MakeSVG } from "./MakeSVG";
 import { useClickOutside } from "./useClickOutside";

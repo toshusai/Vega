@@ -1,4 +1,5 @@
-import { SceneState } from "../store/scene";
+import { SceneState } from "@/store/scene";
+
 import { jsonCompare } from "./jsonCompare";
 
 export const compareScene = (scene: SceneState, old: SceneState) => {

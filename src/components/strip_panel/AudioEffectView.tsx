@@ -1,15 +1,15 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 
+import { NumberEditInput } from "@/components/core/NumberEditInput";
+import { Item, Select } from "@/components/core/Select";
+import { AudioEffect } from "@/interfaces/effects/AudioEffect";
 import { Strip } from "@/packages/types";
+import { isAudioAsset } from "@/rendering/updateTextEffect";
+import { actions } from "@/store/scene";
+import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
 
-import { AudioEffect } from "../../interfaces/effects/AudioEffect";
-import { isAudioAsset } from "../../rendering/updateTextEffect";
-import { actions } from "../../store/scene";
-import { useSelector } from "../../store/useSelector";
-import { NumberEditInput } from "../core/NumberEditInput";
-import { Item, Select } from "../core/Select";
 import { PropertyName,Row } from "./StripPanel";
 
 export const AudioEffectView: FC<{

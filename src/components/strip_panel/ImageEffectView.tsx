@@ -3,23 +3,23 @@ import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 import { Key } from "tabler-icons-react";
 
+import { iconProps } from "@/components/core/iconProps";
+import { NumberEditInput } from "@/components/core/NumberEditInput";
+import { Item, Select } from "@/components/core/Select";
+import { makeNewKeyframes } from "@/components/preview_panel/Gizmo";
+import { ImageEffect } from "@/interfaces/effects/ImageEffect";
 import { KeyFrame } from "@/interfaces/effects/KeyFrame";
 import { Strip } from "@/packages/types";
+import {
+  caclulateKeyFrameValue,
+  isImageAsset,
+} from "@/rendering/updateTextEffect";
+import { actions } from "@/store/scene";
+import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
 import { Ease } from "@/utils/easing";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 
-import { ImageEffect } from "../../interfaces/effects/ImageEffect";
-import {
-  caclulateKeyFrameValue,
-  isImageAsset,
-} from "../../rendering/updateTextEffect";
-import { actions } from "../../store/scene";
-import { useSelector } from "../../store/useSelector";
-import { iconProps } from "../core/iconProps";
-import { NumberEditInput } from "../core/NumberEditInput";
-import { Item, Select } from "../core/Select";
-import { makeNewKeyframes } from "../preview_panel/Gizmo";
 import { KeyFrameIconButton } from "./KeyFrameIconButton";
 import { PropertyName,Row } from "./StripPanel";
 

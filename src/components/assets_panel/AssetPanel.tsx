@@ -12,21 +12,20 @@ import {
   Video,
 } from "tabler-icons-react";
 
+import { iconProps } from "@/components/core/iconProps";
+import { Panel } from "@/components/core/Panel";
+import { IconButton } from "@/components/core/styled/IconButton";
+import { ToolTip } from "@/components/core/styled/ToolTip";
+import { Asset } from "@/interfaces/asset/Asset";
 import { AudioAsset } from "@/interfaces/asset/AudioAsset";
+import { FontAsset } from "@/interfaces/asset/FontAsset";
+import { ImageAsset } from "@/interfaces/asset/ImageAsset";
 import { isScriptAsset } from "@/interfaces/asset/ScriptAsset";
-
-import { Asset } from "../../interfaces/asset/Asset";
-import { FontAsset } from "../../interfaces/asset/FontAsset";
-import { ImageAsset } from "../../interfaces/asset/ImageAsset";
-import { VideoAsset } from "../../interfaces/asset/VideoAsset";
-import { isAudioAsset, isImageAsset } from "../../rendering/updateTextEffect";
-import { actions } from "../../store/scene";
-import { useSelector } from "../../store/useSelector";
-import { filePick } from "../../utils/filePick";
-import { iconProps } from "../core/iconProps";
-import { Panel } from "../core/Panel";
-import { IconButton } from "../core/styled/IconButton";
-import { ToolTip } from "../core/styled/ToolTip";
+import { VideoAsset } from "@/interfaces/asset/VideoAsset";
+import { isAudioAsset, isImageAsset } from "@/rendering/updateTextEffect";
+import { actions } from "@/store/scene";
+import { useSelector } from "@/store/useSelector";
+import { filePick } from "@/utils/filePick";
 
 const supportedVideoExtensions = ["mp4", "webm"];
 const supportedFontExtensions = ["ttf"];

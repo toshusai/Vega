@@ -1,4 +1,4 @@
-import { readFileUserDataDir } from "../ipc/readFileUserDataDir";
+import { readFileUserDataDir } from "@/ipc/readFileUserDataDir";
 
 export function readRecentFiles() {
   let fileJson = readFileUserDataDir("recentFiles.json");
