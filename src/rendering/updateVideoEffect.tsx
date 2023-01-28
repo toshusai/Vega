@@ -1,13 +1,16 @@
 import { Asset, Strip, VideoEffect } from "@/packages/types";
+import store from "@/store";
 import { SceneState } from "@/store/scene";
 
 const loadedVideoElementMap = new Map<string, HTMLVideoElement>();
 
 enum VideoStatus {
-  Loading,
-  Playing,
-  Paused,
-  Seeking,
+  Loading = "loading",
+  Playing = "playing",
+  WaitPlay = "waitPlay",
+  WaitPause = "waitPause",
+  Paused = "paused",
+  Seeking = "seeking",
 }
 
 const videoStatusMap = new Map<string, VideoStatus>();
@@ -56,10 +59,18 @@ export function updateVideoEffect(
     (asset) => asset.id === effect.videoAssetId
   );
   const elementMapKey = getVideoElementKey(effect);
+  const currentStatus = videoStatusMap.get(elementMapKey);
   if (
     scene.currentTime < strip.start ||
     scene.currentTime > strip.start + strip.length - 1 / scene.fps
   ) {
+    if (
+      currentStatus === VideoStatus.Paused ||
+      currentStatus === VideoStatus.WaitPause ||
+      currentStatus === VideoStatus.WaitPlay
+    ) {
+      return;
+    }
     videoStatusMap.set(effect.videoAssetId, VideoStatus.Paused);
     const videoElement = loadedVideoElementMap.get(elementMapKey);
     if (!videoElement) {
@@ -74,17 +85,22 @@ export function updateVideoEffect(
     if (!videoElement) {
       videoElement = createVideoElementOrGetFromCache(effect, videoAsset);
     }
-    const currentStatus = videoStatusMap.get(elementMapKey);
     if (currentStatus === VideoStatus.Loading) {
       return;
     }
     videoElement.onseeked = () => {
-      if (scene.isPlaying) {
+      if (
+        currentStatus === VideoStatus.WaitPlay ||
+        currentStatus === VideoStatus.WaitPause
+      ) {
+        return;
+      }
+      if (store.getState().scene.isPlaying) {
         videoElement?.play();
-        videoStatusMap.set(elementMapKey, VideoStatus.Playing);
+        videoStatusMap.set(elementMapKey, VideoStatus.WaitPlay);
       } else {
         videoElement?.pause();
-        videoStatusMap.set(elementMapKey, VideoStatus.Paused);
+        videoStatusMap.set(elementMapKey, VideoStatus.WaitPause);
       }
     };
     videoElement.onplay = () => {
@@ -99,8 +115,10 @@ export function updateVideoEffect(
     );
     if (currentStatus === VideoStatus.Playing && !scene.isPlaying) {
       videoElement.pause();
+      videoStatusMap.set(elementMapKey, VideoStatus.WaitPause);
     } else if (currentStatus === VideoStatus.Paused && scene.isPlaying) {
       videoElement.play();
+      videoStatusMap.set(elementMapKey, VideoStatus.WaitPlay);
     } else if (
       diff > (1 / scene.fps) * gapFrames &&
       currentStatus !== VideoStatus.Seeking
@@ -115,7 +133,7 @@ export function updateVideoEffect(
       ctx.fillRect(effect.x, effect.y, ctx.canvas.width, ctx.canvas.height);
     }
     if (currentStatus === VideoStatus.Seeking && scene.isPlaying) {
-      return;
+      // return;
     }
     ctx.shadowColor = "";
     ctx.shadowBlur = 0;
