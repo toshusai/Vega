@@ -1,8 +1,7 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useWidth } from "../../hooks/useWidth";
-import { Effect } from "@/packages/types";
-import { Strip } from "@/packages/types";
+import { Effect , Strip } from "@/packages/types";
 import { KeyFrame } from "../../interfaces/effects/KeyFrame";
 import { Key, KeyboardInput } from "../../KeyboardInput";
 import { actions } from "../../store/scene";
@@ -18,7 +17,7 @@ import { TimeCursor } from "../core/TimeCursor";
 import { TimeView } from "../core/TimeView";
 import { UndoManager } from "@/UndoManager";
 import { IconButton } from "../core/styled/IconButton";
-import { Cut, Trash } from "tabler-icons-react";
+import { Trash } from "tabler-icons-react";
 import { iconProps } from "../core/iconProps";
 import { ToolTip } from "../core/styled/ToolTip";
 import { restrictStartEnd } from "../../utils/restrictStartEnd";

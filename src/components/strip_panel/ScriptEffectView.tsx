@@ -1,5 +1,5 @@
 import { ScriptEffect } from "@/interfaces/effects/ScriptEffect";
-import { Strip } from "@/interfaces/Strip";
+import { Strip } from "@/packages/types";
 import { userScriptMap } from "@/rendering/updateScriptEffect";
 import { FC } from "react";
 

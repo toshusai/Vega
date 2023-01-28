@@ -1,7 +1,11 @@
 {
-  "extends": ["next"],
+  "extends": ["next", "plugin:import/recommended"],
+  "plugins": ["unused-imports"],
+  "parser": "@typescript-eslint/parser",
   "rules": {
     "react-hooks/exhaustive-deps": "error",
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error"
   }
 }

@@ -1,4 +1,4 @@
-import { Effect } from "./Effect";
+import { Effect } from "@/packages/types";
 
 export type ScriptEffect = {
   id: string;

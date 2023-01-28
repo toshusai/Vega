@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Strip } from "../Strip";
+import { Strip } from "@/packages/types";
 import { SceneState } from "@/store/scene";
 import { ScriptEffect } from "../effects/ScriptEffect";
 

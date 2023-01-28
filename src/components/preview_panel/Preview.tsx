@@ -8,8 +8,6 @@ import { actions } from "../../store/scene";
 import { useSelector } from "../../store/useSelector";
 import { Panel } from "../core/Panel";
 import {
-  isAudioAsset,
-  isImageAsset,
   updateTextEffect,
 } from "../../rendering/updateTextEffect";
 import { updateVideoEffect } from "../../rendering/updateVideoEffect";
@@ -23,7 +21,6 @@ import { iconProps } from "../core/iconProps";
 import { updateImageEffect } from "../../rendering/updateImageEffect";
 import { updateAudioEffect } from "@/rendering/updateAudioEffect";
 import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
-import { isScriptAsset } from "@/interfaces/asset/ScriptAsset";
 import { handler } from "@/rendering/updateScriptEffect";
 import { isScriptEffect } from "@/interfaces/effects/ScriptEffect";
 import { Recorder } from "@/rendering/recorder";

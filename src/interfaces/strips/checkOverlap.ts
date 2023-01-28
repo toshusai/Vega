@@ -1,4 +1,4 @@
-import { Strip } from "../Strip";
+import { Strip } from "@/packages/types";
 
 const DIFF = 1 / 60 / 2;
 export function checkOverlap(strips: Strip[], strip: Strip): Strip | null {

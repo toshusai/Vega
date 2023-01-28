@@ -11,7 +11,6 @@ import { useSelector } from "../../store/useSelector";
 import {
   Cut,
   Magnet,
-  MagnetOff,
   PlayerPause,
   PlayerPlay,
   Trash,
@@ -26,12 +25,9 @@ import { SelectRect } from "../core/styled/SelectRect";
 import { iconProps } from "../core/iconProps";
 import { IconButton } from "../core/styled/IconButton";
 import { ToolTip } from "../core/styled/ToolTip";
-import {
-  ContextMenu,
-  StyledContextMenuButton,
-} from "../core/context_menu/ContextMenu";
+
+
 import { uuid } from "short-uuid";
-import { Button } from "../core/DropdownLike";
 import { AddStripButton } from "./AddStripButton";
 import { isAudioEffect } from "@/interfaces/effects/utils/isAudioEffect";
 import { releaseAudioAsset } from "@/rendering/updateAudioEffect";

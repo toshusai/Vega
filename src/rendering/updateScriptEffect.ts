@@ -1,5 +1,5 @@
 import { ScriptEffect } from "@/interfaces/effects/ScriptEffect";
-import { Strip } from "@/interfaces/Strip";
+import { Strip } from "@/packages/types";
 import { SceneState } from "@/store/scene";
 import { uuid } from "short-uuid";
 import { EffectPlugin } from "./../interfaces/plugins/CustomEffect";

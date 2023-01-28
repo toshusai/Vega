@@ -1,9 +1,8 @@
-import { FC, useRef, useState } from "react";
+import { FC, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 import { Music, Photo, Plus, Tex, Video } from "tabler-icons-react";
-import { Effect } from "@/packages/types";
-import { Strip } from "@/packages/types";
+import { Effect , Strip } from "@/packages/types";
 import { TextEffect } from "../../interfaces/effects/TextEffect";
 import { VideoEffect } from "../../interfaces/effects/VideoEffect";
 import { ImageEffect } from "../../interfaces/effects/ImageEffect";
