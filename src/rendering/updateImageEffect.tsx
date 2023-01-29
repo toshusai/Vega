@@ -2,7 +2,7 @@ import { ImageEffect , Strip } from "@/packages/types";
 import { SceneState } from "@/store/scene";
 import { PickProperties } from "@/types/PickProperties";
 
-import { caclulateKeyFrameValue } from "./caclulateKeyFrameValue";
+import { calculateKeyFrameValue } from "./calculateKeyFrameValue";
 
 const loadedImageElementMap = new Map<string, HTMLImageElement>();
 
@@ -43,7 +43,7 @@ export function updateImageEffect(
       if (typeof value !== "number") {
         return;
       }
-      animatedEffect[k] = caclulateKeyFrameValue(
+      animatedEffect[k] = calculateKeyFrameValue(
         effect.keyframes,
         scene.currentTime - strip.start,
         key,

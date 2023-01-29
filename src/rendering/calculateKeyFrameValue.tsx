@@ -1,6 +1,6 @@
 import { Ease, getEasingFunction, KeyFrame } from "@/packages/types";
 
-export function caclulateKeyFrameValue(
+export function calculateKeyFrameValue(
   keyframes: KeyFrame[],
   currentTime: number,
   property: string | number | symbol,
