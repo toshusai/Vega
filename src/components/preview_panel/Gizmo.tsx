@@ -4,7 +4,14 @@ import { uuid } from "short-uuid";
 import styled from "styled-components";
 
 import { SelectRectProps } from "@/components/core/styled/SelectRect";
-import { Ease , isTextEffect,KeyFrame , TextEffect  } from "@/packages/types";
+import { hasKeyFrame } from "@/components/strip_panel/hasKeyFrame";
+import {
+  Ease,
+  Effect,
+  isTextEffect,
+  KeyFrame,
+  TextEffect,
+} from "@/packages/types";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
@@ -14,20 +21,17 @@ import { roundToFrame } from "@/utils/roundToFrame";
 
 import { textEffectToRect } from "./utils/textEffectToRect";
 
-export function makeNewKeyframes<T extends { keyframes: KeyFrame[] }>(
+export function makeNewKeyframes<T extends Effect>(
   partial: Partial<T>,
   effect: T,
   currentTime: number,
   strip: { start: number },
   fps: number
 ) {
-  const changedKeys = Object.keys(partial) as (keyof TextEffect)[];
+  const changedKeys = Object.keys(partial) as (keyof T)[];
   const newKFs: KeyFrame[] = [];
   changedKeys.forEach((key) => {
-    const hasKeyFrame = effect.keyframes.some(
-      (keyframe) => keyframe.property === key
-    );
-    if (hasKeyFrame) {
+    if (hasKeyFrame<T>(effect, key)) {
       const propKey = key as keyof T;
       const value = partial[propKey] as any;
       if (value === undefined) {
@@ -46,7 +50,7 @@ export function makeNewKeyframes<T extends { keyframes: KeyFrame[] }>(
       } else {
         newKFs.push({
           id: uuid(),
-          property: key,
+          property: key.toString(),
           time: roundToFrame(currentTime - strip.start, fps),
           value,
           ease: Ease.Linear,

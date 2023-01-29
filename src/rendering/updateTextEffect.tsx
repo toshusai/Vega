@@ -129,7 +129,7 @@ export function updateTextEffect(
 export const caclulateKeyFrameValue = (
   keyframes: KeyFrame[],
   currentTime: number,
-  property: string,
+  property: string | number | symbol,
   defaultValue: number,
   fps: number
 ) => {

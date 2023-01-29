@@ -9,8 +9,9 @@ import { DropdownMenu } from "@/components/DropdownMenu";
 import {
   allEase,
   easeInCubic,
+  Effect,
   getEasingFunction,
-  hasKeyFrame,
+  Strip,
 } from "@/packages/types";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
@@ -37,9 +38,6 @@ export const ChangeEaseButton: FC = () => {
     if (!strip) return;
     setShow(false);
     const newEffects = strip.effects.map((effect) => {
-      if (!hasKeyFrame(effect)) {
-        return effect;
-      }
       const newKeyframes = effect.keyframes.map((keyframe) => {
         if (!selectedKeyframeIds.includes(keyframe.id)) return keyframe;
         return {
@@ -50,9 +48,9 @@ export const ChangeEaseButton: FC = () => {
       return {
         ...effect,
         keyframes: newKeyframes,
-      };
+      } as Effect;
     });
-    const newStrip = {
+    const newStrip: Strip = {
       ...strip,
       effects: newEffects,
     };
