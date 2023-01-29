@@ -1,27 +1,52 @@
 import { FC } from "react";
-import { useDispatch } from "react-redux";
-import { uuid } from "short-uuid";
 import { Key } from "tabler-icons-react";
 
 import { iconProps } from "@/components/core/iconProps";
 import { NumberEditInput } from "@/components/core/NumberEditInput";
 import { Item, Select } from "@/components/core/Select";
-import { makeNewKeyframes } from "@/components/preview_panel/Gizmo";
-import { Ease,ImageEffect, KeyFrame, Strip  } from "@/packages/types";
-import {
-  caclulateKeyFrameValue,
-  isImageAsset,
-} from "@/rendering/updateTextEffect";
-import { actions } from "@/store/scene";
+import { ImageEffect, Strip } from "@/packages/types";
+import { isImageAsset } from "@/rendering/updateTextEffect";
 import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 
+import { hasKeyFrame } from "./hasKeyFrame";
 import { KeyFrameIconButton } from "./KeyFrameIconButton";
+import { useAnimationedValue } from "./makeEmit";
 import { PropertyName, Row } from "./StripPanel";
+import { useUpdateEffect } from "./useUpdateEffect";
 
 export type PickProperties<T, TFilter> = {
   [K in keyof T as T[K] extends TFilter ? K : never]: T[K];
+};
+
+type NumberProps = PickProperties<ImageEffect, number | undefined>;
+
+const numberKeys: (keyof NumberProps)[] = [
+  "x",
+  "y",
+  "width",
+  "height",
+  "opacity",
+];
+
+const scaleKeysMap: NumberProps = {
+  x: 1,
+  y: 1,
+  opacity: 0.01,
+};
+
+const viewKeysMap: { [key in keyof NumberProps]: (v: number) => string } = {
+  x: (v: number) => v.toFixed(0),
+  y: (v: number) => v.toFixed(0),
+};
+
+const minMaxKeysMap: {
+  [key in keyof NumberProps]: [number, number] | undefined;
+} = {
+  x: undefined,
+  y: undefined,
+  opacity: [0, 1],
 };
 
 export const ImageEffectView: FC<{
@@ -29,78 +54,20 @@ export const ImageEffectView: FC<{
   strip: Strip;
 }> = (props) => {
   const { imageEffect } = props;
-  const dispatch = useDispatch();
-
   const currentTime = useSelector((state) => state.scene.currentTime);
-  const fps = useSelector((state) => state.scene.fps);
-  const emit = (partial: Partial<ImageEffect>) => {
-    const newKFs = makeNewKeyframes<ImageEffect>(
-      partial,
-      imageEffect,
-      currentTime,
-      props.strip,
-      fps
-    );
-    const redo = () => {
-      dispatch(
-        actions.updateEddect({
-          effect: {
-            ...imageEffect,
-            ...partial,
-            keyframes: newKFs
-              ? newKFs
-              : partial.keyframes
-              ? partial.keyframes
-              : imageEffect.keyframes,
-          } as ImageEffect,
-          stripId: props.strip.id,
-        })
-      );
-    };
-    const undo = () => {
-      dispatch(
-        actions.updateEddect({
-          effect: imageEffect,
-          stripId: props.strip.id,
-        })
-      );
-    };
-    UndoManager.main.add({ undo, redo }).run();
-  };
-
   const assets = useSelector((state) => state.scene.assets);
   const imageAssets = assets.filter(isImageAsset);
+
+  const { emit, addKeyFrame } = useUpdateEffect<ImageEffect>(
+    imageEffect,
+    props.strip
+  );
+  const animation = useAnimationedValue<ImageEffect>(imageEffect, props.strip);
 
   const imageAssetItems: Item[] = imageAssets.map((a) => ({
     value: a.id,
     label: a.name,
   }));
-
-  type NumberProps = PickProperties<ImageEffect, number | undefined>;
-
-  const numberKeys: (keyof NumberProps)[] = [
-    "x",
-    "y",
-    "width",
-    "height",
-    "opacity",
-  ];
-  const scaleKeysMap: NumberProps = {
-    x: 1,
-    y: 1,
-    opacity: 0.01,
-  };
-  const viewKeysMap: { [key in keyof NumberProps]: (v: number) => string } = {
-    x: (v: number) => v.toFixed(0),
-    y: (v: number) => v.toFixed(0),
-  };
-  const minMaxKeysMap: {
-    [key in keyof NumberProps]: [number, number] | undefined;
-  } = {
-    x: undefined,
-    y: undefined,
-    opacity: [0, 1],
-  };
 
   const noImageAsset =
     imageAssets.find((a) => a.id === imageEffect.imageAssetId) === undefined;
@@ -113,34 +80,6 @@ export const ImageEffectView: FC<{
     });
   }
   const time = currentTime - props.strip.start;
-
-  const addKeyFrame = (key: keyof ImageEffect) => {
-    const value = imageEffect[key];
-    if (typeof value !== "number") return;
-    const newKeyFrames: KeyFrame[] = [
-      ...imageEffect.keyframes.filter(
-        (k) => Math.abs(k.time - time) > 1 / fps || k.property !== key
-      ),
-      {
-        property: key,
-        time,
-        ease: Ease.Linear,
-        value,
-        id: uuid(),
-      },
-    ];
-    emit({ keyframes: newKeyFrames });
-  };
-
-  const animation = (key: keyof NumberProps) => {
-    return caclulateKeyFrameValue(
-      imageEffect.keyframes,
-      time,
-      key,
-      imageEffect[key] ?? 0,
-      fps
-    );
-  };
 
   return (
     <>
@@ -195,7 +134,4 @@ export const ImageEffectView: FC<{
   );
 };
 
-const hasKeyFrame = (effect: ImageEffect, key: keyof ImageEffect) => {
-  if (!effect.keyframes) return false;
-  return effect.keyframes.some((k) => k.property === key);
-};
+

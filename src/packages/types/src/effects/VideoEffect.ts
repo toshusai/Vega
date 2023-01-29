@@ -1,3 +1,5 @@
+import { KeyFrame } from "./KeyFrame";
+
 export type VideoEffect = {
   id: string;
   type: "video";
@@ -16,4 +18,6 @@ export type VideoEffect = {
 
   width?: number;
   height?: number;
+
+  keyframes: KeyFrame[];
 };
