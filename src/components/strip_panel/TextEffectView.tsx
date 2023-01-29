@@ -23,6 +23,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   const dispatch = useDispatch();
   const currentTime = useSelector((state) => state.scene.currentTime);
   const fps = useSelector((state) => state.scene.fps);
+  const assets = useSelector((state) => state.scene.assets);
 
   const selectedStrips = useSelector((state) =>
     state.scene.strips.filter((s) =>
@@ -33,6 +34,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   const allTextEffects = selectedStrips.flatMap((s) =>
     s.effects.filter(isTextEffect)
   );
+
   const effectIdToStripMap = new Map(
     selectedStrips.flatMap((s) =>
       s.effects.filter(isTextEffect).map((e) => [e.id, s])
@@ -52,7 +54,6 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   };
   const undo = () => emit({ ...textEffect });
 
-  const assets = useSelector((state) => state.scene.assets);
   const fontAssets = assets.filter((a) => a.type === "font");
 
   const fontAssetItems: Item[] = fontAssets.map((a) => ({

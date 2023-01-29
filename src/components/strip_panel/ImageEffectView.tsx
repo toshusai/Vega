@@ -10,11 +10,11 @@ import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { hasKeyFrame } from "@/utils/hasKeyFrame";
- 
+
 import { useAnimationedValue } from "./hooks/useAnimationedValue";
 import { useUpdateEffect } from "./hooks/useUpdateEffect";
-import { KeyFrameIconButton } from "./KeyFrameIconButton";
 import { imageEffectOptions } from "./imageEffectOptions";
+import { KeyFrameIconButton } from "./KeyFrameIconButton";
 import { PropertyName, Row } from "./StripPanel";
 
 export const ImageEffectView: FC<{
