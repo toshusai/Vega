@@ -31,21 +31,6 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   );
   const animation = useAnimationedValue<TextEffect>(textEffect, props.strip);
 
-  // Multiple edit
-  // const selectedStrips = useSelector((state) =>
-  //   state.scene.strips.filter((s) =>
-  //     state.scene.selectedStripIds.includes(s.id)
-  //   )
-  // );
-  // const allTextEffects = selectedStrips.flatMap((s) =>
-  //   s.effects.filter(isTextEffect)
-  // );
-  // const effectIdToStripMap = new Map(
-  //   selectedStrips.flatMap((s) =>
-  //     s.effects.filter(isTextEffect).map((e) => [e.id, s])
-  //   )
-  // );
-
   const undo = () => emit({ ...textEffect });
 
   const fontAssets = assets.filter((a) => a.type === "font");
