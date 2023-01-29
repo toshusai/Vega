@@ -7,8 +7,6 @@ const loadedVideoElementMap = new Map<string, HTMLVideoElement>();
 enum VideoStatus {
   Loading = "loading",
   Playing = "playing",
-  WaitPlay = "waitPlay",
-  WaitPause = "waitPause",
   Paused = "paused",
   Seeking = "seeking",
 }
@@ -64,11 +62,7 @@ export function updateVideoEffect(
     scene.currentTime < strip.start ||
     scene.currentTime > strip.start + strip.length - 1 / scene.fps
   ) {
-    if (
-      currentStatus === VideoStatus.Paused ||
-      currentStatus === VideoStatus.WaitPause ||
-      currentStatus === VideoStatus.WaitPlay
-    ) {
+    if (currentStatus === VideoStatus.Paused) {
       return;
     }
     videoStatusMap.set(effect.videoAssetId, VideoStatus.Paused);
@@ -89,18 +83,12 @@ export function updateVideoEffect(
       return;
     }
     videoElement.onseeked = () => {
-      if (
-        currentStatus === VideoStatus.WaitPlay ||
-        currentStatus === VideoStatus.WaitPause
-      ) {
-        return;
-      }
       if (store.getState().scene.isPlaying) {
         videoElement?.play();
-        videoStatusMap.set(elementMapKey, VideoStatus.WaitPlay);
+        videoStatusMap.set(elementMapKey, VideoStatus.Playing);
       } else {
         videoElement?.pause();
-        videoStatusMap.set(elementMapKey, VideoStatus.WaitPause);
+        videoStatusMap.set(elementMapKey, VideoStatus.Paused);
       }
     };
     videoElement.onplay = () => {
@@ -115,10 +103,10 @@ export function updateVideoEffect(
     );
     if (currentStatus === VideoStatus.Playing && !scene.isPlaying) {
       videoElement.pause();
-      videoStatusMap.set(elementMapKey, VideoStatus.WaitPause);
+      videoStatusMap.set(elementMapKey, VideoStatus.Paused);
     } else if (currentStatus === VideoStatus.Paused && scene.isPlaying) {
       videoElement.play();
-      videoStatusMap.set(elementMapKey, VideoStatus.WaitPlay);
+      videoStatusMap.set(elementMapKey, VideoStatus.Playing);
     } else if (
       diff > (1 / scene.fps) * gapFrames &&
       currentStatus !== VideoStatus.Seeking
