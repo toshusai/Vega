@@ -20,6 +20,9 @@ export type SceneState = {
   canvasHeight: number;
   selectedKeyframeIds: string[];
   recordingState: "idle" | "recording" | "paused";
+  canvasLeft: number;
+  canvasTop: number;
+  canvasScale: number;
 };
 
 export const sceneSlice = createSlice({
@@ -41,11 +44,24 @@ export const sceneSlice = createSlice({
     fps: 60,
     assets: [],
     selectedKeyframeIds: [],
+    canvasLeft: 0,
+    canvasTop: 0,
+    canvasScale: 1,
   } as SceneState,
   reducers: {
     setAll: (state, action: { payload: SceneState }) => {
       return action.payload;
     },
+    setLeft: (state, action: { payload: number }) => {
+      state.canvasLeft = action.payload;
+    },
+    setTop: (state, action: { payload: number }) => {
+      state.canvasTop = action.payload;
+    },
+    setScale: (state, action: { payload: number }) => {
+      state.canvasScale = action.payload;
+    },
+
     setIsPlaying: (state, action: { payload: boolean }) => {
       state.isPlaying = action.payload;
     },
