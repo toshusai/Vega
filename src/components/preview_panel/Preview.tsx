@@ -8,14 +8,18 @@ import { IconButton } from "@/components/core/styled/IconButton";
 import { Gizmo } from "@/components/preview_panel/Gizmo";
 import { useSelector } from "@/hooks/useSelector";
 import { Key, KeyboardInput } from "@/KeyboardInput";
-import { isAudioEffect , isImageEffect , isScriptEffect , isTextEffect , isVideoEffect } from "@/packages/types";
+import {
+  isAudioEffect,
+  isImageEffect,
+  isScriptEffect,
+  isTextEffect,
+  isVideoEffect,
+} from "@/packages/types";
 import { Recorder } from "@/rendering/recorder";
 import { updateAudioEffect } from "@/rendering/updateAudioEffect";
 import { updateImageEffect } from "@/rendering/updateImageEffect";
 import { handler } from "@/rendering/updateScriptEffect";
-import {
-  updateTextEffect,
-} from "@/rendering/updateTextEffect";
+import { updateTextEffect } from "@/rendering/updateTextEffect";
 import { updateVideoEffect } from "@/rendering/updateVideoEffect";
 import store from "@/store";
 import { actions } from "@/store/scene";
@@ -35,9 +39,28 @@ export const Preview: FC = () => {
   const strips = useSelector((state) => state.scene.strips);
   const fps = useSelector((state) => state.scene.fps);
 
-  const [left, setLeft] = useState(0);
-  const [top, setTop] = useState(0);
-  const [scale, setScale] = useState(0.3);
+  const left = useSelector((state) => state.scene.canvasLeft ?? 0);
+  const top = useSelector((state) => state.scene.canvasTop ?? 0);
+  const scale = useSelector((state) => state.scene.canvasScale ?? 1);
+  const setLeft = useCallback(
+    (newLeft: number) => {
+      dispatch(actions.setLeft(newLeft));
+    },
+    [dispatch]
+  );
+  const setTop = useCallback(
+    (newTop: number) => {
+      dispatch(actions.setTop(newTop));
+    },
+    [dispatch]
+  );
+  const setScale = useCallback(
+    (newScale: number) => {
+      dispatch(actions.setScale(newScale));
+    },
+    [dispatch]
+  );
+
   const [dragging, setDragging] = useState(false);
 
   const changeScale = useCallback(
@@ -60,7 +83,7 @@ export const Preview: FC = () => {
       }
       return newScale;
     },
-    [left, scale, top]
+    [left, scale, setLeft, setScale, setTop, top]
   );
 
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
@@ -81,7 +104,7 @@ export const Preview: FC = () => {
     const rect = el.getBoundingClientRect();
     setLeft(rect.width / 2 - (width * 0.3) / 2);
     setTop(rect.height / 2 - (height * 0.3) / 2);
-  }, [changeScale, height, width]);
+  }, [changeScale, height, setLeft, setTop, width]);
 
   const currentTime = useSelector((state) => state.scene.currentTime);
 
