@@ -10,8 +10,8 @@ import { useSelector } from "@/store/useSelector";
 import { PickProperties } from "@/types/PickProperties";
 import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
+import { hasKeyFrame } from "@/utils/hasKeyFrame";
 
-import { hasKeyFrame } from "./hasKeyFrame";
 import { useAnimationedValue } from "./hooks/makeEmit";
 import { useUpdateEffect } from "./hooks/useUpdateEffect";
 import { KeyFrameIconButton } from "./KeyFrameIconButton";
