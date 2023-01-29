@@ -55,19 +55,11 @@ export const ImageEffectView: FC<{
         return (
           <Row key={key}>
             <PropertyName>{key}</PropertyName>
-            <KeyFrameIconButton>
-              <Key
-                {...iconProps}
-                onClick={() => addKeyFrame(key)}
-                color={
-                  exactKeyFrame(imageEffect, key, time)
-                    ? "var(--color-strip-selected)"
-                    : hasKeyFrame(imageEffect, key)
-                    ? "var(--color-primary)"
-                    : "white"
-                }
-              />
-            </KeyFrameIconButton>
+            <KeyframeButton
+              onClick={() => addKeyFrame(key)}
+              highlight={!!exactKeyFrame(imageEffect, key, time)}
+              active={hasKeyFrame(imageEffect, key)}
+            ></KeyframeButton>
             <NumberEditInput
               value={animation(key)}
               scale={imageEffectOptions.scaleKeysMap[key]}
@@ -99,5 +91,27 @@ export const ImageEffectView: FC<{
         />
       </Row>
     </>
+  );
+};
+
+export const KeyframeButton: FC<{
+  onClick: () => void;
+  highlight: boolean;
+  active: boolean;
+}> = (props) => {
+  return (
+    <KeyFrameIconButton>
+      <Key
+        {...iconProps}
+        onClick={props.onClick}
+        color={
+          props.highlight
+            ? "var(--color-strip-selected)"
+            : props.active
+            ? "var(--color-primary)"
+            : "white"
+        }
+      />
+    </KeyFrameIconButton>
   );
 };
