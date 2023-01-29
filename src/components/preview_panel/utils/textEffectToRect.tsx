@@ -1,7 +1,7 @@
 import { SelectRectProps } from "@/components/core/styled/SelectRect";
 import { TextEffect } from "@/packages/types";
+import { caclulateKeyFrameValue } from "@/rendering/caclulateKeyFrameValue";
 import {
-  caclulateKeyFrameValue,
   measureMap,
 } from "@/rendering/updateTextEffect";
 

@@ -1,6 +1,8 @@
 import { Asset, AudioEffect, Strip } from "@/packages/types";
 import { SceneState } from "@/store/scene";
 
+import { caclulateKeyFrameValue } from "./caclulateKeyFrameValue";
+
 const loadedAudioElementMap = new Map<string, HTMLAudioElement>();
 
 enum AudioStatus {
@@ -124,7 +126,15 @@ export function updateAudioEffect(
       audioStatusMap.set(elementMapKey, AudioStatus.Seeking);
     } else if (currentStatus === AudioStatus.Seeking && modeLoadingBlack) {
     }
-    audioElement.volume = effect.volume;
+    const animatedVolume = caclulateKeyFrameValue(
+      effect.keyframes,
+      scene.currentTime - strip.start,
+      "volume",
+      effect.volume,
+      scene.fps
+    );
+
+    audioElement.volume = animatedVolume;
     if (currentStatus === AudioStatus.Seeking && scene.isPlaying) {
       return;
     }

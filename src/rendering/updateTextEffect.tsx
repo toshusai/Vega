@@ -1,17 +1,16 @@
 import {
   Asset,
   AudioAsset,
-  Ease,
   FontAsset,
-  getEasingFunction,
   ImageAsset,
-  KeyFrame,
   Strip,
   TextEffect,
   VideoAsset,
 } from "@/packages/types";
 import { SceneState } from "@/store/scene";
 import { PickProperties } from "@/types/PickProperties";
+
+import { caclulateKeyFrameValue } from "./caclulateKeyFrameValue";
 
 const loadedFontAssetMap = new Map<string, boolean>();
 
@@ -143,45 +142,4 @@ export function updateTextEffect(
   });
 }
 
-export const caclulateKeyFrameValue = (
-  keyframes: KeyFrame[],
-  currentTime: number,
-  property: string | number | symbol,
-  defaultValue: number,
-  fps: number
-) => {
-  // const prevKeyframe = keyframes
-  //   .find((k) => k.property === property && k.time < currentTime + 1 / fps);
-  // const nextKeyframe = keyframes
-  //   .find((k) => k.property === property && k.time > currentTime - 1 / fps);
 
-  // get nearest prev keyframe
-  const prevKeyframe = keyframes
-    .filter((k) => k.property === property && k.time < currentTime + 1 / fps)
-    .sort((a, b) => b.time - a.time)[0];
-  // get nearest next keyframe
-  const nextKeyframe = keyframes
-    .filter((k) => k.property === property && k.time > currentTime - 1 / fps)
-    .sort((a, b) => a.time - b.time)[0];
-
-  if (!prevKeyframe && nextKeyframe) {
-    return nextKeyframe.value;
-  }
-  if (prevKeyframe && !nextKeyframe) {
-    return prevKeyframe.value;
-  }
-  if (prevKeyframe && nextKeyframe) {
-    let ratio =
-      (currentTime - prevKeyframe.time) /
-      (nextKeyframe.time - prevKeyframe.time);
-    const ease = getEasingFunction(prevKeyframe.ease || Ease.Linear);
-    if (isNaN(ratio) || ratio === Infinity || ratio === -Infinity) {
-      ratio = 0;
-    }
-    return (
-      prevKeyframe.value +
-      (nextKeyframe.value - prevKeyframe.value) * ease(ratio)
-    );
-  }
-  return defaultValue;
-};

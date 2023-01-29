@@ -2,6 +2,8 @@ import { AudioEffect } from "@/packages/types";
 
 const numberKeys: (keyof AudioEffect)[] = ["volume", "offset"];
 
+const keyframesKeys: (keyof AudioEffect)[] = ["volume"];
+
 const scaleKeysMap: {
   [key in keyof AudioEffect]?: number;
 } = {
@@ -17,6 +19,7 @@ const minMaxKeysMap: {
 
 export const audioEffectOptions = {
   numberKeys,
+  keyframesKeys,
   scaleKeysMap,
   minMaxKeysMap,
 };

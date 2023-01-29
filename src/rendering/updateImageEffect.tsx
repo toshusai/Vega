@@ -2,7 +2,7 @@ import { ImageEffect , Strip } from "@/packages/types";
 import { SceneState } from "@/store/scene";
 import { PickProperties } from "@/types/PickProperties";
 
-import { caclulateKeyFrameValue } from "./updateTextEffect";
+import { caclulateKeyFrameValue } from "./caclulateKeyFrameValue";
 
 const loadedImageElementMap = new Map<string, HTMLImageElement>();
 
