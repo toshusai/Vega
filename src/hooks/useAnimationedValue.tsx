@@ -2,7 +2,7 @@ import { useCurrentTime } from "@/hooks/useCurrentTime";
 import { useFps } from "@/hooks/useFps";
 import { Strip } from "@/packages/types";
 import { Effect } from "@/packages/types/src";
-import { caclulateKeyFrameValue } from "@/rendering/updateTextEffect";
+import { caclulateKeyFrameValue } from "@/rendering/caclulateKeyFrameValue";
 import { PickProperties } from "@/types/PickProperties";
 
 export function useAnimationedValue<T extends Effect>(effect: T, strip: Strip) {
