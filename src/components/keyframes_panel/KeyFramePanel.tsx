@@ -12,7 +12,13 @@ import { TimeCursor } from "@/components/core/TimeCursor";
 import { TimeView } from "@/components/core/TimeView";
 import { useWidth } from "@/hooks/useWidth";
 import { Key, KeyboardInput } from "@/KeyboardInput";
-import { Effect, getEasingFunction , hasKeyFrame,KeyFrame , Strip  } from "@/packages/types";
+import {
+  Effect,
+  getEasingFunction,
+  hasKeyFrameProperty,
+  KeyFrame,
+  Strip,
+} from "@/packages/types";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
@@ -167,7 +173,7 @@ export const KeyFramePanel: FC = () => {
 
         const newEffects: Effect[] = [];
         strip.effects.forEach((effect) => {
-          if (!hasKeyFrame(effect)) {
+          if (!hasKeyFrameProperty(effect)) {
             return;
           }
           const newEffect: Effect & { keyframes: KeyFrame[] } = {
@@ -276,7 +282,7 @@ export const KeyFramePanel: FC = () => {
   const handleDeleteKeyframe = () => {
     if (!strip) return;
     const newEffects = strip.effects.map((effect) => {
-      if (!hasKeyFrame(effect)) {
+      if (!hasKeyFrameProperty(effect)) {
         return effect;
       }
       const newKeyframes = effect.keyframes.filter(

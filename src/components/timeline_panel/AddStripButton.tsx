@@ -8,7 +8,14 @@ import { iconProps } from "@/components/core/iconProps";
 import { IconButton } from "@/components/core/styled/IconButton";
 import { DropdownMenu } from "@/components/DropdownMenu";
 import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
-import { AudioEffect , Effect , ImageEffect , Strip , TextEffect , VideoEffect } from "@/packages/types";
+import {
+  AudioEffect,
+  Effect,
+  ImageEffect,
+  Strip,
+  TextEffect,
+  VideoEffect,
+} from "@/packages/types";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
 
@@ -108,6 +115,7 @@ export const AddStripButton: FC = () => {
       id: uuid(),
       type: "video",
       videoAssetId: "",
+      keyframes: [],
       x: 0,
       y: 0,
       width: 1280,
