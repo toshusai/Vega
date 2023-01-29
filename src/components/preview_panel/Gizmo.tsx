@@ -1,82 +1,16 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import { uuid } from "short-uuid";
 import styled from "styled-components";
 
 import { SelectRectProps } from "@/components/core/styled/SelectRect";
-import {
-  Ease,
-  Effect,
-  isTextEffect,
-  KeyFrame,
-  TextEffect,
-} from "@/packages/types";
+import { isTextEffect, TextEffect } from "@/packages/types";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
-import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { getDragHander } from "@/utils/getDragHander";
-import { hasKeyFrame } from "@/utils/hasKeyFrame";
-import { roundToFrame } from "@/utils/roundToFrame";
 
+import { makeNewKeyframes } from "./utils/makeNewKeyframes";
 import { textEffectToRect } from "./utils/textEffectToRect";
-
-export function makeNewKeyframes<T extends Effect>(
-  partial: Partial<T>,
-  effect: T,
-  currentTime: number,
-  strip: { start: number },
-  fps: number
-) {
-  const changedKeys = Object.keys(partial) as (keyof T)[];
-  const newKFs: KeyFrame[] = [];
-  changedKeys.forEach((key) => {
-    if (hasKeyFrame<T>(effect, key)) {
-      const propKey = key as keyof T;
-      const value = partial[propKey] as any;
-      if (value === undefined) {
-        return;
-      }
-      const onKeyFrame = exactKeyFrame<T>(
-        effect,
-        key as keyof T,
-        currentTime - strip.start
-      );
-      if (onKeyFrame) {
-        newKFs.push({
-          ...onKeyFrame,
-          value,
-        });
-      } else {
-        newKFs.push({
-          id: uuid(),
-          property: key.toString(),
-          time: roundToFrame(currentTime - strip.start, fps),
-          value,
-          ease: Ease.Linear,
-        });
-      }
-    }
-  });
-  if (newKFs.length === 0) {
-    return false;
-  }
-
-  // drop same time keyframes
-  const old = effect.keyframes.filter((keyframe) => {
-    return (
-      !newKFs.find((kf) => {
-        return (
-          Math.abs(kf.time - keyframe.time) < 1 / fps &&
-          kf.property === keyframe.property
-        );
-      }) && !newKFs.find((kf) => kf.id === keyframe.id)
-    );
-  });
-
-  const finalKeyFrames = [...newKFs, ...old];
-  return finalKeyFrames;
-}
 
 export const Gizmo: FC<{
   left: number;
@@ -176,6 +110,7 @@ export const Gizmo: FC<{
     />
   );
 };
+
 const StyledGizmo = styled.div.attrs<SelectRectProps>((props) => ({
   style: {
     left: props.$left + "px",

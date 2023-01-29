@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 
-import { makeNewKeyframes } from "@/components/preview_panel/Gizmo";
+import { makeNewKeyframes } from "@/components/preview_panel/utils/makeNewKeyframes";
 import { Ease, KeyFrame, Strip } from "@/packages/types";
 import { Effect } from "@/packages/types/src";
 import { actions } from "@/store/scene";
