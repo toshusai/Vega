@@ -11,9 +11,9 @@ import { isTextEffect, Strip, TextEffect } from "@/packages/types";
 import { caclulateKeyFrameValue } from "@/rendering/updateTextEffect";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
-import { PickProperties } from "@/types/PickProperties";
 import { UndoManager } from "@/UndoManager";
 
+import { textEffectConfig } from "./textEffectConfig";
 import { PropertyName, Row } from "./StripPanel";
 
 export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
@@ -60,33 +60,6 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     label: a.name,
   }));
 
-  type NumberProps = PickProperties<TextEffect, number | undefined>;
-  const numberKeys: (keyof NumberProps)[] = [
-    "x",
-    "y",
-    "fontSize",
-    "shadowBlur",
-    "outlineWidth",
-  ];
-
-  const stringKeys: (keyof TextEffect)[] = [
-    "color",
-    "outlineColor",
-    "shadowColor",
-  ];
-
-  const scaleKeysMap: NumberProps = {
-    fontSize: 1,
-    shadowBlur: 1,
-    x: 1,
-    y: 1,
-  };
-  const viewKeysMap: { [key in keyof NumberProps]: (v: number) => string } = {
-    fontSize: (v) => v.toString(),
-    x: (v) => v.toFixed(0),
-    y: (v) => v.toFixed(0),
-  };
-
   const noFontAsset =
     fontAssets.find((a) => a.id === textEffect.fontAssetId) === undefined;
 
@@ -120,7 +93,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
           }
         />
       </Row>
-      {stringKeys.map((key) => {
+      {textEffectConfig.stringKeys.map((key) => {
         return (
           <Row key={key}>
             <PropertyName>{key}</PropertyName>
@@ -139,7 +112,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
           </Row>
         );
       })}
-      {numberKeys.map((key) => {
+      {textEffectConfig.numberKeys.map((key) => {
         return (
           <Row key={key}>
             <PropertyName>{key}</PropertyName>
@@ -164,8 +137,8 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
                 textEffect[key] as number,
                 fps
               )}
-              scale={scaleKeysMap[key]}
-              view={viewKeysMap[key]}
+              scale={textEffectConfig.scaleKeysMap[key]}
+              view={textEffectConfig.viewKeysMap[key]}
               onInput={(value) => emit({ [key]: value })}
               onChange={(value) =>
                 UndoManager.main
