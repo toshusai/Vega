@@ -8,7 +8,8 @@ import { NumberEditInput } from "./core/NumberEditInput";
 import { HeaderMenuButton } from "./HeaderMenuButton";
 import { Modal } from "./Modal";
 import { ModalBody } from "./ModalBody";
-import { PropertyName, Row } from "./strip_panel/StripPanel";
+import { PropertyName } from "./PropertyName";
+import { Row } from "./Row";
 
 export const SettingsMenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);

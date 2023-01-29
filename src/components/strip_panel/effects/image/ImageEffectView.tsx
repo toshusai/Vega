@@ -1,53 +1,33 @@
 import { FC } from "react";
-import { Key } from "tabler-icons-react";
 
-import { iconProps } from "@/components/core/iconProps";
 import { NumberEditInput } from "@/components/core/NumberEditInput";
-import { Item, Select } from "@/components/core/Select";
+import { Select } from "@/components/core/Select";
+import { KeyframeButton } from "@/components/KeyframeButton";
+import { PropertyName } from "@/components/PropertyName";
+import { Row } from "@/components/Row";
+import { useAnimationedValue } from "@/hooks/useAnimationedValue";
+import { useAssetOptions } from "@/hooks/useAssetOptions";
+import { useUpdateEffect } from "@/hooks/useUpdateEffect";
 import { ImageEffect, Strip } from "@/packages/types";
-import { isImageAsset } from "@/rendering/updateTextEffect";
-import { useSelector } from "@/store/useSelector";
+import { useStripTime } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { hasKeyFrame } from "@/utils/hasKeyFrame";
 
-import { useAnimationedValue } from "./hooks/useAnimationedValue";
-import { useUpdateEffect } from "./hooks/useUpdateEffect";
 import { imageEffectOptions } from "./imageEffectOptions";
-import { KeyFrameIconButton } from "./KeyFrameIconButton";
-import { PropertyName, Row } from "./StripPanel";
 
 export const ImageEffectView: FC<{
   imageEffect: ImageEffect;
   strip: Strip;
 }> = (props) => {
   const { imageEffect } = props;
-  const currentTime = useSelector((state) => state.scene.currentTime);
-  const assets = useSelector((state) => state.scene.assets);
-  const imageAssets = assets.filter(isImageAsset);
-
   const { emit, addKeyFrame } = useUpdateEffect<ImageEffect>(
     imageEffect,
     props.strip
   );
   const animation = useAnimationedValue<ImageEffect>(imageEffect, props.strip);
-
-  const imageAssetItems: Item[] = imageAssets.map((a) => ({
-    value: a.id,
-    label: a.name,
-  }));
-
-  const noImageAsset =
-    imageAssets.find((a) => a.id === imageEffect.imageAssetId) === undefined;
-
-  if (noImageAsset) {
-    imageAssetItems.unshift({
-      value: imageEffect.imageAssetId,
-      label: "Asset Not Found",
-      disabled: true,
-    });
-  }
-  const time = currentTime - props.strip.start;
+  const imageAssetItems = useAssetOptions("image", imageEffect.imageAssetId);
+  const time = useStripTime(props.strip);
 
   return (
     <>
@@ -91,27 +71,5 @@ export const ImageEffectView: FC<{
         />
       </Row>
     </>
-  );
-};
-
-export const KeyframeButton: FC<{
-  onClick: () => void;
-  highlight: boolean;
-  active: boolean;
-}> = (props) => {
-  return (
-    <KeyFrameIconButton>
-      <Key
-        {...iconProps}
-        onClick={props.onClick}
-        color={
-          props.highlight
-            ? "var(--color-strip-selected)"
-            : props.active
-            ? "var(--color-primary)"
-            : "white"
-        }
-      />
-    </KeyFrameIconButton>
   );
 };

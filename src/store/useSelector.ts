@@ -1,5 +1,6 @@
 import { useSelector as useSelectorRR } from "react-redux";
 
+import { Strip } from "@/packages/types";
 import { SelectorType } from "@/store";
 
 export function useSelector<T>(f: (state: SelectorType) => T): T {
@@ -20,4 +21,8 @@ export function useSelectedStrip() {
       state.scene.selectedStripIds.includes(s.id)
     )
   );
+}
+
+export function useStripTime(strip: Strip) {
+  return useSelector((state) => state.scene.currentTime - strip.start);
 }
