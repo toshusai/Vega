@@ -4,7 +4,6 @@ import { uuid } from "short-uuid";
 import styled from "styled-components";
 
 import { SelectRectProps } from "@/components/core/styled/SelectRect";
-import { hasKeyFrame } from "@/components/strip_panel/hasKeyFrame";
 import {
   Ease,
   Effect,
@@ -17,6 +16,7 @@ import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { getDragHander } from "@/utils/getDragHander";
+import { hasKeyFrame } from "@/utils/hasKeyFrame";
 import { roundToFrame } from "@/utils/roundToFrame";
 
 import { textEffectToRect } from "./utils/textEffectToRect";
