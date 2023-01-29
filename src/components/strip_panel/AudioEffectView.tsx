@@ -20,7 +20,7 @@ export const AudioEffectView: FC<{
 
   const emit = (partial: Partial<AudioEffect>) => {
     dispatch(
-      actions.updateEddect({
+      actions.updateEffect({
         effect: { ...audioEffect, ...partial },
         stripId: props.strip.id,
       })

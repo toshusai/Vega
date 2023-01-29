@@ -21,7 +21,7 @@ export const VideoEffectView: FC<{
 
   const emit = (partial: Partial<VideoEffect>) => {
     dispatch(
-      actions.updateEddect({
+      actions.updateEffect({
         effect: { ...videoEffect, ...partial },
         stripId: props.strip.id,
       })

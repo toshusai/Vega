@@ -13,8 +13,8 @@ import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
 
-import { textEffectConfig } from "./textEffectConfig";
 import { PropertyName, Row } from "./StripPanel";
+import { textEffectConfig } from "./textEffectConfig";
 
 export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   props
@@ -43,7 +43,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     allTextEffects.forEach((e) => {
       const strip = effectIdToStripMap.get(e.id)!;
       dispatch(
-        actions.updateEddect({
+        actions.updateEffect({
           effect: { ...e, ...partial },
           stripId: strip.id,
         })
