@@ -2,8 +2,8 @@ import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
+import { useSelector } from "@/hooks/useSelector";
 import { actions } from "@/store/scene";
-import { useSelector } from "@/store/useSelector";
 
 import { Item, Select } from "./core/Select";
 import { HeaderMenuButton } from "./HeaderMenuButton";

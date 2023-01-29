@@ -1,8 +1,8 @@
 import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 
+import { useSelector } from "@/hooks/useSelector";
 import { actions } from "@/store/scene";
-import { useSelector } from "@/store/useSelector";
 
 import { NumberEditInput } from "./core/NumberEditInput";
 import { HeaderMenuButton } from "./HeaderMenuButton";

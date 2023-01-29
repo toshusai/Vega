@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { ClickEditInput } from "@/components/core/ClickEditInput";
 import { Panel } from "@/components/core/Panel";
+import { useSelector } from "@/hooks/useSelector";
 import {
   AudioAsset,
   FontAsset,
@@ -19,7 +20,6 @@ import {
   isVideoAsset,
   loadFont,
 } from "@/rendering/updateTextEffect";
-import { useSelector } from "@/store/useSelector";
 
 export const AssetDetailsPanel: FC = () => {
   const selectedAssetIds = useSelector((state) => state.scene.selectedAssetIds);

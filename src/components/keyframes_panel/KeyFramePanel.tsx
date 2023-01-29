@@ -10,6 +10,7 @@ import { SelectRect } from "@/components/core/styled/SelectRect";
 import { ToolTip } from "@/components/core/styled/ToolTip";
 import { TimeCursor } from "@/components/core/TimeCursor";
 import { TimeView } from "@/components/core/TimeView";
+import { useSelector } from "@/hooks/useSelector";
 import { useWidth } from "@/hooks/useWidth";
 import { Key, KeyboardInput } from "@/KeyboardInput";
 import {
@@ -20,7 +21,6 @@ import {
   Strip,
 } from "@/packages/types";
 import { actions } from "@/store/scene";
-import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
 import { getDragHander } from "@/utils/getDragHander";
 import { restrictStartEnd } from "@/utils/restrictStartEnd";

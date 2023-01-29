@@ -6,6 +6,7 @@ import { iconProps } from "@/components/core/iconProps";
 import { Panel } from "@/components/core/Panel";
 import { IconButton } from "@/components/core/styled/IconButton";
 import { Gizmo } from "@/components/preview_panel/Gizmo";
+import { useSelector } from "@/hooks/useSelector";
 import { Key, KeyboardInput } from "@/KeyboardInput";
 import { isAudioEffect , isImageEffect , isScriptEffect , isTextEffect , isVideoEffect } from "@/packages/types";
 import { Recorder } from "@/rendering/recorder";
@@ -18,7 +19,6 @@ import {
 import { updateVideoEffect } from "@/rendering/updateVideoEffect";
 import store from "@/store";
 import { actions } from "@/store/scene";
-import { useSelector } from "@/store/useSelector";
 import { download } from "@/utils/download";
 import { getDragHander } from "@/utils/getDragHander";
 

@@ -1,5 +1,5 @@
 import { Item } from "@/components/core/Select";
-import { useSelector } from "@/store/useSelector";
+import { useSelector } from "@/hooks/useSelector";
 
 
 export function useAssetOptions(type: string, assetId: string) {

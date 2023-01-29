@@ -2,10 +2,12 @@ import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 
 import { makeNewKeyframes } from "@/components/preview_panel/utils/makeNewKeyframes";
+import { useCurrentTime } from "@/hooks/useCurrentTime";
+import { useFps } from "@/hooks/useFps";
+import { useSelectedStrip } from "@/hooks/useSelectedStrip";
 import { Ease, KeyFrame, Strip } from "@/packages/types";
 import { Effect } from "@/packages/types/src";
 import { actions } from "@/store/scene";
-import { useCurrentTime, useFps, useSelectedStrip } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
 
 export function useUpdateEffect<T extends Effect>(effect: T, strip: Strip) {

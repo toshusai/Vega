@@ -2,7 +2,7 @@ import { FC } from "react";
 
 import { PanelBody } from "@/components/asset_details_panel/AssetDetailsPanel";
 import { Panel } from "@/components/core/Panel";
-import { useSelector } from "@/store/useSelector";
+import { useSelector } from "@/hooks/useSelector";
 
 import { Effects } from "./Effects";
 
