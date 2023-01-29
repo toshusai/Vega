@@ -58,7 +58,7 @@ export const Gizmo: FC<{
     );
 
     dispatch(
-      actions.updateEddect({
+      actions.updateEffect({
         effect: {
           ...textEffects[0],
           ...partial,

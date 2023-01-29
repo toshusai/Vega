@@ -22,7 +22,7 @@ export function useUpdateEffect<T extends Effect>(effect: T, strip: Strip) {
     );
     const redo = () => {
       dispatch(
-        actions.updateEddect({
+        actions.updateEffect({
           effect: {
             ...effect,
             ...partial,
@@ -39,7 +39,7 @@ export function useUpdateEffect<T extends Effect>(effect: T, strip: Strip) {
 
     const undo = () => {
       dispatch(
-        actions.updateEddect({
+        actions.updateEffect({
           effect: effect,
           stripId: strip.id,
         })

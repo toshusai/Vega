@@ -131,7 +131,7 @@ export const sceneSlice = createSlice({
     ) => {
       state.recordingState = action.payload;
     },
-    updateEddect: (
+    updateEffect: (
       state,
       action: {
         payload: {

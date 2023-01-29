@@ -188,7 +188,7 @@ export const KeyFramePanel: FC = () => {
           };
           newEffects.push(newEffect);
           dispatch(
-            actions.updateEddect({
+            actions.updateEffect({
               stripId: strip.id,
               effect: newEffect,
             })
