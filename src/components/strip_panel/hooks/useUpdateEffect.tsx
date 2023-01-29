@@ -52,12 +52,14 @@ export function useUpdateEffect<T extends Effect>(effect: T, strip: Strip) {
     };
 
     const undo = () => {
-      dispatch(
-        actions.updateEffect({
-          effect: effect,
-          stripId: strip.id,
-        })
-      );
+      allEffects.forEach((e) => {
+        dispatch(
+          actions.updateEffect({
+            effect: e,
+            stripId: strip.id,
+          })
+        );
+      });
     };
     UndoManager.main.add({ undo, redo }).run();
   };
