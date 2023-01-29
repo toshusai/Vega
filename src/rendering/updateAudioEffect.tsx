@@ -1,7 +1,7 @@
 import { Asset, AudioEffect, Strip } from "@/packages/types";
 import { SceneState } from "@/store/scene";
 
-import { caclulateKeyFrameValue } from "./caclulateKeyFrameValue";
+import { calculateKeyFrameValue } from "./calculateKeyFrameValue";
 
 const loadedAudioElementMap = new Map<string, HTMLAudioElement>();
 
@@ -126,7 +126,7 @@ export function updateAudioEffect(
       audioStatusMap.set(elementMapKey, AudioStatus.Seeking);
     } else if (currentStatus === AudioStatus.Seeking && modeLoadingBlack) {
     }
-    const animatedVolume = caclulateKeyFrameValue(
+    const animatedVolume = calculateKeyFrameValue(
       effect.keyframes,
       scene.currentTime - strip.start,
       "volume",

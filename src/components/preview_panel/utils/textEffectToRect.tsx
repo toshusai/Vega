@@ -1,6 +1,6 @@
 import { SelectRectProps } from "@/components/core/styled/SelectRect";
 import { TextEffect } from "@/packages/types";
-import { caclulateKeyFrameValue } from "@/rendering/caclulateKeyFrameValue";
+import { calculateKeyFrameValue } from "@/rendering/calculateKeyFrameValue";
 import {
   measureMap,
 } from "@/rendering/updateTextEffect";
@@ -14,8 +14,8 @@ export function textEffectToRect(
   fps: number
 ): SelectRectProps | null {
   let { x, y } = effect;
-  x = caclulateKeyFrameValue(effect.keyframes, currentTime, "x", effect.x, fps);
-  y = caclulateKeyFrameValue(effect.keyframes, currentTime, "y", effect.y, fps);
+  x = calculateKeyFrameValue(effect.keyframes, currentTime, "x", effect.x, fps);
+  y = calculateKeyFrameValue(effect.keyframes, currentTime, "y", effect.y, fps);
 
   const measure = measureMap.get(effect.id);
   if (!measure) {

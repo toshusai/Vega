@@ -10,7 +10,7 @@ import {
 import { SceneState } from "@/store/scene";
 import { PickProperties } from "@/types/PickProperties";
 
-import { caclulateKeyFrameValue } from "./caclulateKeyFrameValue";
+import { calculateKeyFrameValue } from "./calculateKeyFrameValue";
 
 const loadedFontAssetMap = new Map<string, boolean>();
 
@@ -78,7 +78,7 @@ export function updateTextEffect(
     if (typeof value !== "number") {
       return;
     }
-    animatedEffect[k] = caclulateKeyFrameValue(
+    animatedEffect[k] = calculateKeyFrameValue(
       effect.keyframes,
       scene.currentTime - strip.start,
       key,

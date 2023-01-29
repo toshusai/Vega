@@ -2,7 +2,7 @@ import { useCurrentTime } from "@/hooks/useCurrentTime";
 import { useFps } from "@/hooks/useFps";
 import { Strip } from "@/packages/types";
 import { Effect } from "@/packages/types/src";
-import { caclulateKeyFrameValue } from "@/rendering/caclulateKeyFrameValue";
+import { calculateKeyFrameValue } from "@/rendering/calculateKeyFrameValue";
 import { PickProperties } from "@/types/PickProperties";
 
 export function useAnimationedValue<T extends Effect>(effect: T, strip: Strip) {
@@ -11,7 +11,7 @@ export function useAnimationedValue<T extends Effect>(effect: T, strip: Strip) {
   const time = currentTime - strip.start;
   const fps = useFps();
   const animation = (key: keyof NumberProps) => {
-    return caclulateKeyFrameValue(
+    return calculateKeyFrameValue(
       effect.keyframes,
       time,
       key,
