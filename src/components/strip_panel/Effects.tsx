@@ -13,11 +13,11 @@ import {
 } from "@/packages/types";
 import { actions } from "@/store/scene";
 
-import { AudioEffectView } from "./AudioEffectView";
-import { ImageEffectView } from "./ImageEffectView";
+import { AudioEffectView } from "./effects/audio/AudioEffectView";
+import { ImageEffectView } from "./effects/image/ImageEffectView";
+import { TextEffectView } from "./effects/text/TextEffectView";
+import { VideoEffectView } from "./effects/video/VideoEffectView";
 import { ScriptEffectView } from "./ScriptEffectView";
-import { TextEffectView } from "./TextEffectView";
-import { VideoEffectView } from "./VideoEffectView";
 
 export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
   const { effects } = props;
@@ -67,5 +67,3 @@ export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
     </div>
   );
 };
-
-

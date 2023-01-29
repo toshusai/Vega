@@ -4,7 +4,7 @@ import { X } from "tabler-icons-react";
 import { PanelBody } from "./asset_details_panel/AssetDetailsPanel";
 import { iconProps } from "./core/iconProps";
 import { Panel } from "./core/Panel";
-import { KeyFrameIconButton } from "./strip_panel/KeyFrameIconButton";
+import { KeyFrameIconButton } from "./strip_panel/styled/KeyFrameIconButton";
 
 export const ModalBody: FC<{
   title?: string;

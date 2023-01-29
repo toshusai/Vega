@@ -1,5 +1,4 @@
 import { FC } from "react";
-import styled from "styled-components";
 
 import { PanelBody } from "@/components/asset_details_panel/AssetDetailsPanel";
 import { Panel } from "@/components/core/Panel";
@@ -37,10 +36,4 @@ export const StripPanel: FC = () => {
   );
 };
 
-export const Row = styled.div`
-  display: flex;
-`;
 
-export const PropertyName = styled.div`
-  margin-right: auto;
-`;
