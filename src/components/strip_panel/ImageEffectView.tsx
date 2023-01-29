@@ -7,18 +7,15 @@ import { Item, Select } from "@/components/core/Select";
 import { ImageEffect, Strip } from "@/packages/types";
 import { isImageAsset } from "@/rendering/updateTextEffect";
 import { useSelector } from "@/store/useSelector";
+import { PickProperties } from "@/types/PickProperties";
 import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 
 import { hasKeyFrame } from "./hasKeyFrame";
+import { useAnimationedValue } from "./hooks/makeEmit";
+import { useUpdateEffect } from "./hooks/useUpdateEffect";
 import { KeyFrameIconButton } from "./KeyFrameIconButton";
-import { useAnimationedValue } from "./makeEmit";
 import { PropertyName, Row } from "./StripPanel";
-import { useUpdateEffect } from "./useUpdateEffect";
-
-export type PickProperties<T, TFilter> = {
-  [K in keyof T as T[K] extends TFilter ? K : never]: T[K];
-};
 
 type NumberProps = PickProperties<ImageEffect, number | undefined>;
 
@@ -133,5 +130,3 @@ export const ImageEffectView: FC<{
     </>
   );
 };
-
-

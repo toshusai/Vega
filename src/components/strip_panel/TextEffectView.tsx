@@ -11,9 +11,9 @@ import { isTextEffect, Strip, TextEffect } from "@/packages/types";
 import { caclulateKeyFrameValue } from "@/rendering/updateTextEffect";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
+import { PickProperties } from "@/types/PickProperties";
 import { UndoManager } from "@/UndoManager";
 
-import { PickProperties } from "./ImageEffectView";
 import { PropertyName, Row } from "./StripPanel";
 
 export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (

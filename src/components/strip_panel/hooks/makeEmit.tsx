@@ -2,8 +2,7 @@ import { Strip } from "@/packages/types";
 import { Effect } from "@/packages/types/src";
 import { caclulateKeyFrameValue } from "@/rendering/updateTextEffect";
 import { useCurrentTime, useFps } from "@/store/useSelector";
-
-import { PickProperties } from "./ImageEffectView";
+import { PickProperties } from "@/types/PickProperties";
 
 export function useAnimationedValue<T extends Effect>(effect: T, strip: Strip) {
   type NumberProps = PickProperties<T, number | undefined>;

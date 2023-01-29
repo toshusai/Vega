@@ -7,9 +7,9 @@ import { Strip , VideoEffect } from "@/packages/types";
 import { isVideoAsset } from "@/rendering/updateTextEffect";
 import { actions } from "@/store/scene";
 import { useSelector } from "@/store/useSelector";
+import { PickProperties } from "@/types/PickProperties";
 import { UndoManager } from "@/UndoManager";
 
-import { PickProperties } from "./ImageEffectView";
 import { PropertyName,Row } from "./StripPanel";
 
 export const VideoEffectView: FC<{
