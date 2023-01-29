@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { useDispatch } from "react-redux";
 
 import {
   ClickEditInput,
@@ -7,12 +6,15 @@ import {
 } from "@/components/core/ClickEditInput";
 import { NumberEditInput } from "@/components/core/NumberEditInput";
 import { Item, Select } from "@/components/core/Select";
-import { isTextEffect, Strip, TextEffect } from "@/packages/types";
-import { caclulateKeyFrameValue } from "@/rendering/updateTextEffect";
-import { actions } from "@/store/scene";
+import { Strip, TextEffect } from "@/packages/types";
 import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
+import { exactKeyFrame } from "@/utils/exactKeyFrame";
+import { hasKeyFrame } from "@/utils/hasKeyFrame";
 
+import { useAnimationedValue } from "./hooks/useAnimationedValue";
+import { useUpdateEffect } from "./hooks/useUpdateEffect";
+import { KeyframeButton } from "./ImageEffectView";
 import { PropertyName, Row } from "./StripPanel";
 import { textEffectConfig } from "./textEffectConfig";
 
@@ -20,38 +22,30 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   props
 ) => {
   const { textEffect } = props;
-  const dispatch = useDispatch();
   const currentTime = useSelector((state) => state.scene.currentTime);
-  const fps = useSelector((state) => state.scene.fps);
   const assets = useSelector((state) => state.scene.assets);
 
-  const selectedStrips = useSelector((state) =>
-    state.scene.strips.filter((s) =>
-      state.scene.selectedStripIds.includes(s.id)
-    )
+  const { emit, addKeyFrame } = useUpdateEffect<TextEffect>(
+    textEffect,
+    props.strip
   );
+  const animation = useAnimationedValue<TextEffect>(textEffect, props.strip);
 
-  const allTextEffects = selectedStrips.flatMap((s) =>
-    s.effects.filter(isTextEffect)
-  );
+  // Multiple edit
+  // const selectedStrips = useSelector((state) =>
+  //   state.scene.strips.filter((s) =>
+  //     state.scene.selectedStripIds.includes(s.id)
+  //   )
+  // );
+  // const allTextEffects = selectedStrips.flatMap((s) =>
+  //   s.effects.filter(isTextEffect)
+  // );
+  // const effectIdToStripMap = new Map(
+  //   selectedStrips.flatMap((s) =>
+  //     s.effects.filter(isTextEffect).map((e) => [e.id, s])
+  //   )
+  // );
 
-  const effectIdToStripMap = new Map(
-    selectedStrips.flatMap((s) =>
-      s.effects.filter(isTextEffect).map((e) => [e.id, s])
-    )
-  );
-
-  const emit = (partial: Partial<TextEffect>) => {
-    allTextEffects.forEach((e) => {
-      const strip = effectIdToStripMap.get(e.id)!;
-      dispatch(
-        actions.updateEffect({
-          effect: { ...e, ...partial },
-          stripId: strip.id,
-        })
-      );
-    });
-  };
   const undo = () => emit({ ...textEffect });
 
   const fontAssets = assets.filter((a) => a.type === "font");
@@ -71,7 +65,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
       disabled: true,
     });
   }
-
+  const time = currentTime - props.strip.start;
   return (
     <>
       <Row>
@@ -117,34 +111,22 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
         return (
           <Row key={key}>
             <PropertyName>{key}</PropertyName>
-            {/* <KeyFrameIconButton>
-              <Key
-                {...iconProps}
-                color={
-                  exactKeyFrame(textEffect, key, time)
-                    ? "var(--color-strip-selected)"
-                    : hasKeyFrame(key)
-                    ? "var(--color-primary)"
-                    : "white"
-                }
-              />
-            </KeyFrameIconButton> */}
-
+            <KeyframeButton
+              onClick={() => addKeyFrame(key)}
+              highlight={!!exactKeyFrame(textEffect, key, time)}
+              active={hasKeyFrame(textEffect, key)}
+            ></KeyframeButton>
             <NumberEditInput
-              value={caclulateKeyFrameValue(
-                textEffect.keyframes,
-                currentTime - props.strip.start,
-                key,
-                textEffect[key] as number,
-                fps
-              )}
+              value={animation(key)}
               scale={textEffectConfig.scaleKeysMap[key]}
               view={textEffectConfig.viewKeysMap[key]}
               onInput={(value) => emit({ [key]: value })}
               onChange={(value) =>
                 UndoManager.main
                   .add({
-                    undo,
+                    undo: () => {
+                      emit({ [key]: textEffect[key] });
+                    },
                     redo: () => emit({ [key]: value }),
                   })
                   .run()
