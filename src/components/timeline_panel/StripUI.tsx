@@ -1,8 +1,8 @@
 import { FC, memo, useEffect, useRef } from "react";
 import styled from "styled-components";
 
+import { useSelector } from "@/hooks/useSelector";
 import { isImageEffect, isTextEffect, Strip } from "@/packages/types";
-import { useSelector } from "@/store/useSelector";
 
 export const StripUI: FC<
   Strip & {

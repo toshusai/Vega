@@ -8,6 +8,7 @@ import { iconProps } from "@/components/core/iconProps";
 import { IconButton } from "@/components/core/styled/IconButton";
 import { DropdownMenu } from "@/components/DropdownMenu";
 import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
+import { useSelector } from "@/hooks/useSelector";
 import {
   AudioEffect,
   Effect,
@@ -17,7 +18,6 @@ import {
   VideoEffect,
 } from "@/packages/types";
 import { actions } from "@/store/scene";
-import { useSelector } from "@/store/useSelector";
 
 export const AddStripButton: FC = () => {
   const ref = useRef<HTMLDivElement>(null);

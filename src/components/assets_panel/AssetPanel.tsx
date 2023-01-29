@@ -16,6 +16,7 @@ import { iconProps } from "@/components/core/iconProps";
 import { Panel } from "@/components/core/Panel";
 import { IconButton } from "@/components/core/styled/IconButton";
 import { ToolTip } from "@/components/core/styled/ToolTip";
+import { useSelector } from "@/hooks/useSelector";
 import {
   Asset,
   AudioAsset,
@@ -26,7 +27,6 @@ import {
 } from "@/packages/types";
 import { isAudioAsset, isImageAsset } from "@/rendering/updateTextEffect";
 import { actions } from "@/store/scene";
-import { useSelector } from "@/store/useSelector";
 import { filePick } from "@/utils/filePick";
 
 const supportedVideoExtensions = ["mp4", "webm"];

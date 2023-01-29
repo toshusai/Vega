@@ -6,6 +6,7 @@ import { StyledContextMenuButton } from "@/components/core/context_menu/ContextM
 import { iconProps } from "@/components/core/iconProps";
 import { IconButton } from "@/components/core/styled/IconButton";
 import { DropdownMenu } from "@/components/DropdownMenu";
+import { useSelector } from "@/hooks/useSelector";
 import {
   allEase,
   easeInCubic,
@@ -14,7 +15,6 @@ import {
   Strip,
 } from "@/packages/types";
 import { actions } from "@/store/scene";
-import { useSelector } from "@/store/useSelector";
 import { UndoManager } from "@/UndoManager";
 
 import { MakeSVG } from "./MakeSVG";
