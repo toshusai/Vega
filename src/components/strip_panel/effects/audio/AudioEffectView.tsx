@@ -17,7 +17,7 @@ export const AudioEffectView: FC<{
 }> = (props) => {
   const { audioEffect } = props;
   const { emit } = useUpdateEffect<AudioEffect>(audioEffect, props.strip);
-  const audioAssetItems = useAssetOptions("audio", audioEffect.audioAssetId);
+  const audioAssetItems = useAssetOptions("audio");
   return (
     <>
       {audioEffectOptions.numberKeys.map((key) => {

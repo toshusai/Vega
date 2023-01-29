@@ -26,7 +26,7 @@ export const ImageEffectView: FC<{
     props.strip
   );
   const animation = useAnimationedValue<ImageEffect>(imageEffect, props.strip);
-  const imageAssetItems = useAssetOptions("image", imageEffect.imageAssetId);
+  const imageAssetItems = useAssetOptions("image");
   const time = useStripTime(props.strip);
 
   return (

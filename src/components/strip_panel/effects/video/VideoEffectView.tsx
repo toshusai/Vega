@@ -17,7 +17,7 @@ export const VideoEffectView: FC<{
 }> = (props) => {
   const { videoEffect } = props;
   const { emit } = useUpdateEffect<VideoEffect>(videoEffect, props.strip);
-  const videoAssetItems = useAssetOptions("video", videoEffect.videoAssetId);
+  const videoAssetItems = useAssetOptions("video");
   return (
     <>
       {videoEffectOptions.numberKeys.map((key) => {

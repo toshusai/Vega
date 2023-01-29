@@ -2,7 +2,7 @@ import { Item } from "@/components/core/Select";
 import { useSelector } from "@/hooks/useSelector";
 
 
-export function useAssetOptions(type: string, assetId: string) {
+export function useAssetOptions(type: string) {
   const assets = useSelector((state) => state.scene.assets);
   const filteredAssets = assets.filter((a) => a.type === type);
 
@@ -12,7 +12,7 @@ export function useAssetOptions(type: string, assetId: string) {
   }));
 
   filteredAssetItems.unshift({
-    value: assetId ?? "",
+    value: "",
     label: "No asset",
     disabled: true,
   });

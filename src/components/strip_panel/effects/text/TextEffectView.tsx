@@ -30,7 +30,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     props.strip
   );
   const animation = useAnimationedValue<TextEffect>(textEffect, props.strip);
-  const fontAssetItems = useAssetOptions("font", textEffect.fontAssetId);
+  const fontAssetItems = useAssetOptions("font");
   return (
     <>
       <Row>
