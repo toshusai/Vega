@@ -6,8 +6,7 @@ export function exactKeyFrame<
   }
 >(effect: T, key: keyof T, time: number) {
   if (!effect.keyframes) {
-    console.log("no keyframes", effect, key);
-    return;
+    return false;
   }
   return effect.keyframes.find(
     (k) => k.property === key && Math.abs(k.time - time) < 1 / 60 / 2
