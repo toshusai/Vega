@@ -7,44 +7,15 @@ import { Item, Select } from "@/components/core/Select";
 import { ImageEffect, Strip } from "@/packages/types";
 import { isImageAsset } from "@/rendering/updateTextEffect";
 import { useSelector } from "@/store/useSelector";
-import { PickProperties } from "@/types/PickProperties";
 import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { hasKeyFrame } from "@/utils/hasKeyFrame";
-
-import { useAnimationedValue } from "./hooks/makeEmit";
+ 
+import { useAnimationedValue } from "./hooks/useAnimationedValue";
 import { useUpdateEffect } from "./hooks/useUpdateEffect";
 import { KeyFrameIconButton } from "./KeyFrameIconButton";
+import { imageEffectOptions } from "./imageEffectOptions";
 import { PropertyName, Row } from "./StripPanel";
-
-type NumberProps = PickProperties<ImageEffect, number | undefined>;
-
-const numberKeys: (keyof NumberProps)[] = [
-  "x",
-  "y",
-  "width",
-  "height",
-  "opacity",
-];
-
-const scaleKeysMap: NumberProps = {
-  x: 1,
-  y: 1,
-  opacity: 0.01,
-};
-
-const viewKeysMap: { [key in keyof NumberProps]: (v: number) => string } = {
-  x: (v: number) => v.toFixed(0),
-  y: (v: number) => v.toFixed(0),
-};
-
-const minMaxKeysMap: {
-  [key in keyof NumberProps]: [number, number] | undefined;
-} = {
-  x: undefined,
-  y: undefined,
-  opacity: [0, 1],
-};
 
 export const ImageEffectView: FC<{
   imageEffect: ImageEffect;
@@ -80,7 +51,7 @@ export const ImageEffectView: FC<{
 
   return (
     <>
-      {numberKeys.map((key) => {
+      {imageEffectOptions.numberKeys.map((key) => {
         return (
           <Row key={key}>
             <PropertyName>{key}</PropertyName>
@@ -99,10 +70,10 @@ export const ImageEffectView: FC<{
             </KeyFrameIconButton>
             <NumberEditInput
               value={animation(key)}
-              scale={scaleKeysMap[key]}
-              max={minMaxKeysMap[key]?.[1]}
-              min={minMaxKeysMap[key]?.[0]}
-              view={viewKeysMap[key]}
+              scale={imageEffectOptions.scaleKeysMap[key]}
+              max={imageEffectOptions.minMaxKeysMap[key]?.[1]}
+              min={imageEffectOptions.minMaxKeysMap[key]?.[0]}
+              view={imageEffectOptions.viewKeysMap[key]}
               onInput={(value) => emit({ [key]: value })}
               onChange={(value) =>
                 UndoManager.main
