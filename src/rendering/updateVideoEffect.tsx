@@ -97,9 +97,11 @@ export function updateVideoEffect(
     videoElement.onpause = () => {
       videoStatusMap.set(elementMapKey, VideoStatus.Paused);
     };
-    const gapFrames = 5;
+    const gapFrames = 60;
+    const playbackRate = effect.playbackRate ?? 1;
     const diff = Math.abs(
-      videoElement.currentTime - scene.currentTime + strip.start
+      videoElement.currentTime -
+        (scene.currentTime - strip.start) * playbackRate
     );
     if (currentStatus === VideoStatus.Playing && !scene.isPlaying) {
       videoElement.pause();
@@ -112,7 +114,8 @@ export function updateVideoEffect(
       currentStatus !== VideoStatus.Seeking
     ) {
       // should seek if video currentTime is too far from scene currentTime
-      videoElement.currentTime = scene.currentTime - strip.start;
+      videoElement.currentTime =
+        (scene.currentTime - strip.start) * playbackRate;
       videoStatusMap.set(elementMapKey, VideoStatus.Seeking);
     } else if (currentStatus === VideoStatus.Seeking && modeLoadingBlack) {
       ctx.shadowColor = "";
@@ -122,6 +125,9 @@ export function updateVideoEffect(
     }
     if (currentStatus === VideoStatus.Seeking && scene.isPlaying) {
       // return;
+    }
+    if (videoElement.playbackRate != effect.playbackRate) {
+      videoElement.playbackRate = effect.playbackRate ?? 1;
     }
     ctx.shadowColor = "";
     ctx.shadowBlur = 0;

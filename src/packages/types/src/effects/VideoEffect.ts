@@ -20,4 +20,6 @@ export type VideoEffect = {
   height?: number;
 
   keyframes: KeyFrame[];
+
+  playbackRate?: number;
 };
