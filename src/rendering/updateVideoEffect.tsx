@@ -99,10 +99,9 @@ export function updateVideoEffect(
     };
     const gapFrames = 60;
     const playbackRate = effect.playbackRate ?? 1;
-    const diff = Math.abs(
-      videoElement.currentTime -
-        (scene.currentTime - strip.start) * playbackRate
-    );
+    const offset = effect.offset ?? 1;
+    const target = (scene.currentTime - strip.start + offset) * playbackRate;
+    const diff = Math.abs(videoElement.currentTime - target);
     if (currentStatus === VideoStatus.Playing && !scene.isPlaying) {
       videoElement.pause();
       videoStatusMap.set(elementMapKey, VideoStatus.Paused);
@@ -114,8 +113,7 @@ export function updateVideoEffect(
       currentStatus !== VideoStatus.Seeking
     ) {
       // should seek if video currentTime is too far from scene currentTime
-      videoElement.currentTime =
-        (scene.currentTime - strip.start) * playbackRate;
+      videoElement.currentTime = target;
       videoStatusMap.set(elementMapKey, VideoStatus.Seeking);
     } else if (currentStatus === VideoStatus.Seeking && modeLoadingBlack) {
       ctx.shadowColor = "";

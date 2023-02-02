@@ -22,4 +22,6 @@ export type VideoEffect = {
   keyframes: KeyFrame[];
 
   playbackRate?: number;
+
+  offset?: number;
 };
