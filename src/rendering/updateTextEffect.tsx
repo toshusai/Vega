@@ -105,8 +105,10 @@ export function updateTextEffect(
   ctx.shadowBlur = animatedEffect.shadowBlur ?? 0;
   ctx.lineJoin = "round";
   ctx.strokeStyle = animatedEffect.outlineColor ?? "transparent";
-  ctx.lineWidth = animatedEffect.outlineWidth ?? 0;
-
+  ctx.lineWidth = animatedEffect.outlineWidth ?? 1;
+  if ((animatedEffect.outlineWidth ?? 0) <= 1) {
+    ctx.strokeStyle = "transparent";
+  }
   for (let i = 0; i < animatedEffect.text.length; i++) {
     const char = animatedEffect.text[i];
     if (char === "\n") {
@@ -141,5 +143,3 @@ export function updateTextEffect(
     height: top - y + lineHeight,
   });
 }
-
-
