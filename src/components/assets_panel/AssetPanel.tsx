@@ -29,7 +29,7 @@ import { isAudioAsset, isImageAsset } from "@/rendering/updateTextEffect";
 import { actions } from "@/store/scene";
 import { filePick } from "@/utils/filePick";
 
-const supportedVideoExtensions = ["mp4", "webm"];
+const supportedVideoExtensions = ["mp4", "webm", "mov"];
 const supportedFontExtensions = ["ttf"];
 const supportedAudioExtensions = ["mp3", "wav"];
 const supportedImageExtensions = ["png", "jpg", "jpeg", "svg"];
