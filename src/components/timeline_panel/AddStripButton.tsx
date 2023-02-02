@@ -73,7 +73,7 @@ export const AddStripButton: FC = () => {
   const addNewStripWithEffect = (effect: Effect) => {
     setShow(false);
     const layer = getAvailableLayers();
-    if (!layer) return;
+    if (layer === null) return;
     dispatch(
       actions.updateStrip({
         ...getNewStrip(layer, currentTime),
