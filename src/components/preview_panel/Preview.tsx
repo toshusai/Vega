@@ -25,6 +25,7 @@ import store from "@/store";
 import { actions } from "@/store/scene";
 import { download } from "@/utils/download";
 import { getDragHander } from "@/utils/getDragHander";
+import { roundToFrame } from "@/utils/roundToFrame";
 
 import { textEffectToRect } from "./utils/textEffectToRect";
 
@@ -187,7 +188,10 @@ export const Preview: FC = () => {
       setDragging(false);
     });
     dispatch(actions.setInitialized(true));
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: false });
+    if (!ctx) return;
+    ctx.imageSmoothingQuality = "low";
+    ctx.imageSmoothingEnabled = false;
     let prevTime = 0;
 
     const recorder = new Recorder(canvas);
@@ -221,7 +225,11 @@ export const Preview: FC = () => {
         recorder.stop();
       }
       if (scene.isPlaying) {
-        dispatch(actions.setCurrentTime(scene.currentTime + delta / 1000));
+        dispatch(
+          actions.setCurrentTime(
+            roundToFrame(scene.currentTime + delta / 1000, fps)
+          )
+        );
       }
 
       ctx.fillStyle = "white";
@@ -278,7 +286,7 @@ export const Preview: FC = () => {
       requestAnimationFrame(update);
     };
     update(0);
-  }, [left, top, scale, initialized, dispatch, resetScale]);
+  }, [left, top, scale, initialized, dispatch, resetScale, fps]);
   return (
     <Panel width={100} height={100}>
       <div
