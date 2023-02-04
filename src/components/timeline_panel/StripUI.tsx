@@ -128,6 +128,7 @@ const AudioEffectStripUI: FC<{
   return (
     <div
       style={{
+        userSelect: "none",
         height: "80%",
         margin: "auto 12px",
         maxWidth: "calc(100% - 24px)",
@@ -151,6 +152,7 @@ const VideoEffectStripUI: FC<{
   return (
     <video
       style={{
+        userSelect: "none",
         height: "80%",
         objectFit: "cover",
         margin: "auto 12px",
@@ -176,6 +178,7 @@ const ImageEffectStripUI: FC<{
       src={asset.path}
       style={{
         height: "80%",
+        userSelect: "none",
         objectFit: "cover",
         margin: "auto 12px",
         background: "white",
