@@ -1,8 +1,16 @@
 import { FC, memo, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { Music } from "tabler-icons-react";
 
+import { iconProps } from "@/components/core/iconProps";
 import { useSelector } from "@/hooks/useSelector";
-import { isImageEffect, isTextEffect, Strip } from "@/packages/types";
+import {
+  isAudioEffect,
+  isImageEffect,
+  isTextEffect,
+  isVideoEffect,
+  Strip,
+} from "@/packages/types";
 
 export const StripUI: FC<
   Strip & {
@@ -54,6 +62,8 @@ export const StripUI: FC<
     >
       <TextEffectStripUI strip={props} />
       <ImageEffectStripUI strip={props} />
+      <VideoEffectStripUI strip={props} />
+      <AudioEffectStripUI strip={props} />
       <StripHandle
         onMouseDown={props.onMouseDownLeftHandle}
         style={{ left: "4px" }}
@@ -107,6 +117,51 @@ export const MemoStripUI = memo(StripUI, (prev, next) => {
   );
 });
 
+const AudioEffectStripUI: FC<{
+  strip: Strip;
+}> = (props) => {
+  const assets = useSelector((state) => state.scene.assets);
+  const effect = props.strip.effects.find(isAudioEffect);
+  if (!effect) return null;
+  const asset = assets.find((a) => a.id === effect.audioAssetId);
+  if (!asset) return null;
+  return (
+    <div
+      style={{
+        height: "80%",
+        margin: "auto 12px",
+        maxWidth: "calc(100% - 24px)",
+        pointerEvents: "none",
+        display: "flex",
+      }}
+    >
+      <Music {...iconProps} size={24}></Music>
+    </div>
+  );
+};
+
+const VideoEffectStripUI: FC<{
+  strip: Strip;
+}> = (props) => {
+  const assets = useSelector((state) => state.scene.assets);
+  const effect = props.strip.effects.find(isVideoEffect);
+  if (!effect) return null;
+  const asset = assets.find((a) => a.id === effect.videoAssetId);
+  if (!asset) return null;
+  return (
+    <video
+      style={{
+        height: "80%",
+        objectFit: "cover",
+        margin: "auto 12px",
+        maxWidth: "calc(100% - 24px)",
+        pointerEvents: "none",
+      }}
+      src={asset.path}
+    />
+  );
+};
+
 const ImageEffectStripUI: FC<{
   strip: Strip;
 }> = (props) => {
@@ -121,8 +176,11 @@ const ImageEffectStripUI: FC<{
       src={asset.path}
       style={{
         height: "80%",
-        margin: "auto",
         objectFit: "cover",
+        margin: "auto 12px",
+        background: "white",
+        maxWidth: "calc(100% - 24px)",
+        overflow: "hidden",
         pointerEvents: "none",
       }}
     />
@@ -136,44 +194,58 @@ const TextEffectStripUI: FC<{
   const textEffect = props.strip.effects.find(isTextEffect);
   if (!textEffect) return null;
   const asset = assets.find((a) => a.id === textEffect.fontAssetId);
-  const normalizeSize = 20;
-  const sizeRate = normalizeSize / textEffect.fontSize;
+  // const normalizeSize = 20;
+  // const sizeRate = normalizeSize / textEffect.fontSize;
   return (
-    <svg
-      viewBox="0 0 128 40"
+    <div
       style={{
-        minWidth: "128px",
-        minHeight: "40px",
-        pointerEvents: "none",
+        margin: "0 12px",
+        maxWidth: "calc(100% - 24px)",
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+        alignSelf: "center",
+        fontFamily: asset ? asset.name : "sans-serif",
       }}
     >
-      <text
-        x="0"
-        y="50%"
-        style={{
-          fontFamily: asset ? asset.name : "sans-serif",
-          fontWeight: textEffect.fontStyle === "bold" ? "bold" : "normal",
-          fontSize: `${normalizeSize}px`,
-          stroke: `${textEffect.outlineColor}`,
-          strokeWidth: `${(textEffect.outlineWidth ?? 0) * sizeRate}px`,
-          strokeLinejoin: "round",
-        }}
-      >
-        {textEffect.text}
-      </text>
-      <text
-        x="0"
-        y="50%"
-        style={{
-          fontFamily: asset ? asset.name : "sans-serif",
-          fontWeight: textEffect.fontStyle === "bold" ? "bold" : "normal",
-          color: textEffect.color,
-          fontSize: `${normalizeSize}px`,
-        }}
-        fill="currentColor"
-      >
-        {textEffect.text}
-      </text>
-    </svg>
+      {textEffect.text}
+    </div>
   );
+  // return (
+  //   <svg
+  //     viewBox="0 0 128 40"
+  //     style={{
+  //       minWidth: "128px",
+  //       minHeight: "40px",
+  //       pointerEvents: "none",
+  //     }}
+  //   >
+  //     <text
+  //       x="0"
+  //       y="50%"
+  //       style={{
+  //         fontFamily: asset ? asset.name : "sans-serif",
+  //         fontWeight: textEffect.fontStyle === "bold" ? "bold" : "normal",
+  //         fontSize: `${normalizeSize}px`,
+  //         stroke: `${textEffect.outlineColor}`,
+  //         strokeWidth: `${(textEffect.outlineWidth ?? 0) * sizeRate}px`,
+  //         strokeLinejoin: "round",
+  //       }}
+  //     >
+  //       {textEffect.text}
+  //     </text>
+  //     <text
+  //       x="0"
+  //       y="50%"
+  //       style={{
+  //         fontFamily: asset ? asset.name : "sans-serif",
+  //         fontWeight: textEffect.fontStyle === "bold" ? "bold" : "normal",
+  //         color: textEffect.color,
+  //         fontSize: `${normalizeSize}px`,
+  //       }}
+  //       fill="currentColor"
+  //     >
+  //       {textEffect.text}
+  //     </text>
+  //   </svg>
+  // );
 };
