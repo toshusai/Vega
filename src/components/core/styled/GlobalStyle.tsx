@@ -4,7 +4,7 @@ export const GlobalStyle = createGlobalStyle`
 :root {
   --color-background-2: #222222;
   --color-background: #3a3a3a;
-  --color-primary: #076deb;
+  --color-primary: #136adf;
   --color-primary-bg: #1d1d1d;
 
   --color-border: #545454;
@@ -13,11 +13,11 @@ export const GlobalStyle = createGlobalStyle`
   --color-input-background-disabled: #3a3a3a;
   --color-text: #ffffff;
 
-  --color-text-strip: #076deb;
+  --color-text-strip: #136adf;
   --color-text-disabled: #545454;
   --color-text-strip-border: #3e87e0;
   --color-strip-handle: #0000002e;
-  --color-strip-selected: #ff8827;
+  --color-strip-selected: #fb8d33;
 }
 
 body{
