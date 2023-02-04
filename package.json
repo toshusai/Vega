@@ -49,6 +49,12 @@
   },
   "build": {
     "asar": true,
+    "mac": {
+      "icon": "src/public/icon.png"
+    },
+    "win": {
+      "icon": "src/public/icon.png"
+    },
     "files": [
       "main"
     ],
