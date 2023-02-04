@@ -436,6 +436,7 @@ export const Timeline: FC = () => {
       <div
         ref={ref}
         style={{
+          userSelect: "none",
           height: "100%",
           display: "flex",
           flexDirection: "column",
