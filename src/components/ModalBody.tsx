@@ -2,8 +2,8 @@ import { FC } from "react";
 import { X } from "tabler-icons-react";
 
 import { PanelBody } from "./asset_details_panel/AssetDetailsPanel";
+import { Card } from "./core/Card";
 import { iconProps } from "./core/iconProps";
-import { Panel } from "./core/Panel";
 import { KeyFrameIconButton } from "./strip_panel/styled/KeyFrameIconButton";
 
 export const ModalBody: FC<{
@@ -11,7 +11,7 @@ export const ModalBody: FC<{
   onClose?: () => void;
 }> = (props) => {
   return (
-    <Panel
+    <Card
       width={"auto"}
       height={"auto"}
       style={{
@@ -38,6 +38,6 @@ export const ModalBody: FC<{
         </div>
         {props.children}
       </PanelBody>
-    </Panel>
+    </Card>
   );
 };

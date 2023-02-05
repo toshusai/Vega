@@ -12,8 +12,8 @@ import {
   Video,
 } from "tabler-icons-react";
 
+import { Card } from "@/components/core/Card";
 import { iconProps } from "@/components/core/iconProps";
-import { Panel } from "@/components/core/Panel";
 import { IconButton } from "@/components/core/styled/IconButton";
 import { ToolTip } from "@/components/core/styled/ToolTip";
 import { useSelector } from "@/hooks/useSelector";
@@ -107,7 +107,7 @@ export const AssetPanel: FC = () => {
   };
 
   return (
-    <Panel
+    <Card
       height={100}
       width={100}
       style={{
@@ -140,7 +140,7 @@ export const AssetPanel: FC = () => {
           />
         );
       })}
-    </Panel>
+    </Card>
   );
 };
 

@@ -2,8 +2,8 @@ import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
 
+import { Card } from "@/components/core/Card";
 import { iconProps } from "@/components/core/iconProps";
-import { Panel } from "@/components/core/Panel";
 import { IconButton } from "@/components/core/styled/IconButton";
 import { Gizmo } from "@/components/preview_panel/Gizmo";
 import { useSelector } from "@/hooks/useSelector";
@@ -288,7 +288,7 @@ export const Preview: FC = () => {
     update(0);
   }, [left, top, scale, initialized, dispatch, resetScale, fps]);
   return (
-    <Panel width={100} height={100}>
+    <Card width={100} height={100}>
       <div
         style={{
           width: "100%",
@@ -368,6 +368,6 @@ export const Preview: FC = () => {
           scale={scale}
         />
       </div>
-    </Panel>
+    </Card>
   );
 };

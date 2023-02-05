@@ -2,8 +2,8 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Trash } from "tabler-icons-react";
 
+import { Card } from "@/components/core/Card";
 import { iconProps } from "@/components/core/iconProps";
-import { Panel } from "@/components/core/Panel";
 import { ScaleScrollBar } from "@/components/core/ScaleScrollBar";
 import { IconButton } from "@/components/core/styled/IconButton";
 import { SelectRect } from "@/components/core/styled/SelectRect";
@@ -142,7 +142,7 @@ export const KeyFramePanel: FC = () => {
   ]);
 
   if (selectedStrips.length !== 1) {
-    return <Panel width={100} height={100} />;
+    return <Card width={100} height={100} />;
   }
   const handleMouseDownKeyFrame = (keyframe: KeyFrame) =>
     getDragHander<
@@ -306,10 +306,10 @@ export const KeyFramePanel: FC = () => {
     UndoManager.main.add({ redo, undo }).run();
   };
 
-  if (!strip) return <Panel width={100} height={100} />;
+  if (!strip) return <Card width={100} height={100} />;
 
   return (
-    <Panel width={100} height={100}>
+    <Card width={100} height={100}>
       <div
         style={{
           display: "flex",
@@ -424,6 +424,6 @@ export const KeyFramePanel: FC = () => {
           />
         </div>
       </div>
-    </Panel>
+    </Card>
   );
 };

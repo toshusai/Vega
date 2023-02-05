@@ -9,8 +9,8 @@ import {
   Trash,
 } from "tabler-icons-react";
 
+import { Card } from "@/components/core/Card";
 import { iconProps } from "@/components/core/iconProps";
-import { Panel } from "@/components/core/Panel";
 import { MemoScaleScrollBar } from "@/components/core/ScaleScrollBar";
 import { IconButton } from "@/components/core/styled/IconButton";
 import { SelectRect } from "@/components/core/styled/SelectRect";
@@ -432,7 +432,7 @@ export const Timeline: FC = () => {
   }, 0);
 
   return (
-    <Panel width={100} height={100}>
+    <Card width={100} height={100}>
       <div
         ref={ref}
         style={{
@@ -569,6 +569,6 @@ export const Timeline: FC = () => {
           }}
         />
       </div>
-    </Panel>
+    </Card>
   );
 };
