@@ -23,7 +23,7 @@ import { canMove } from "@/interfaces/strips/canMove";
 import { checkOverlap } from "@/interfaces/strips/checkOverlap";
 import { moveStrip } from "@/interfaces/strips/moveStrip";
 import { Key, KeyboardInput } from "@/KeyboardInput";
-import { isAudioEffect, Strip } from "@/packages/types";
+import { isAudioEffect, Strip } from "@/packages/vega-types";
 import { releaseAudioAsset } from "@/rendering/updateAudioEffect";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";

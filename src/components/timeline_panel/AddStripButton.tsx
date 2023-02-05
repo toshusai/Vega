@@ -16,7 +16,7 @@ import {
   Strip,
   TextEffect,
   VideoEffect,
-} from "@/packages/types";
+} from "@/packages/vega-types";
 import { actions } from "@/store/scene";
 
 export const AddStripButton: FC = () => {

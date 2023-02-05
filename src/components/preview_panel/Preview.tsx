@@ -14,7 +14,7 @@ import {
   isScriptEffect,
   isTextEffect,
   isVideoEffect,
-} from "@/packages/types";
+} from "@/packages/vega-types";
 import { Recorder } from "@/rendering/recorder";
 import { updateAudioEffect } from "@/rendering/updateAudioEffect";
 import { updateImageEffect } from "@/rendering/updateImageEffect";

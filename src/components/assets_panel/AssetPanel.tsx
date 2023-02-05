@@ -24,7 +24,7 @@ import {
   ImageAsset,
   isScriptAsset,
   VideoAsset,
-} from "@/packages/types";
+} from "@/packages/vega-types";
 import { isAudioAsset, isImageAsset } from "@/rendering/updateTextEffect";
 import { actions } from "@/store/scene";
 import { filePick } from "@/utils/filePick";

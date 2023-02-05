@@ -10,7 +10,7 @@ import {
   isTextEffect,
   isVideoEffect,
   Strip,
-} from "@/packages/types";
+} from "@/packages/vega-types";
 
 export const StripUI: FC<
   Strip & {

@@ -1,4 +1,4 @@
-import { Strip } from "@/packages/types";
+import { Strip } from "@/packages/vega-types";
 import { roundToFrame } from "@/utils/roundToFrame";
 
 import { snap } from "./snap";

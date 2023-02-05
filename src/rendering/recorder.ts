@@ -1,4 +1,4 @@
-import { isAudioEffect, isTextEffect, isVideoEffect } from "@/packages/types";
+import { isAudioEffect, isTextEffect, isVideoEffect } from "@/packages/vega-types";
 import { SceneState } from "@/store/scene";
 
 import {

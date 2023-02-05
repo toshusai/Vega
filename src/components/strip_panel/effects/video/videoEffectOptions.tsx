@@ -1,4 +1,4 @@
-import { VideoEffect } from "@/packages/types";
+import { VideoEffect } from "@/packages/vega-types";
 import { PickProperties } from "@/types/PickProperties";
 
 type NumberProps = PickProperties<VideoEffect, number | undefined>;

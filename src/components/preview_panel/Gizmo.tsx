@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { SelectRectProps } from "@/components/core/styled/SelectRect";
 import { useSelector } from "@/hooks/useSelector";
-import { isTextEffect, TextEffect } from "@/packages/types";
+import { isTextEffect, TextEffect } from "@/packages/vega-types";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 import { getDragHander } from "@/utils/getDragHander";

@@ -19,7 +19,7 @@ import {
   hasKeyFrameProperty,
   KeyFrame,
   Strip,
-} from "@/packages/types";
+} from "@/packages/vega-types";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 import { getDragHander } from "@/utils/getDragHander";
