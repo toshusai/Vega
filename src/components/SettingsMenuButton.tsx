@@ -2,12 +2,9 @@ import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useSelector } from "@/hooks/useSelector";
+import { Modal , ModalBody , ToolbarButton,VNumberInput  } from "@/packages/vega-ui";
 import { actions } from "@/store/scene";
 
-import { Modal } from "./core/Modal";
-import { ModalBody } from "./core/ModalBody";
-import { VNumberInput } from "./core/NumberEditInput";
-import { ToolbarButton } from "./core/ToolbarButton";
 import { PropertyName } from "./PropertyName";
 import { Row } from "./Row";
 

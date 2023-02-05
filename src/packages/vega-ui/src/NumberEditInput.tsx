@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
-import { useNativeOnChange } from "@/hooks/useNativeOnChange";
-import { getDragHander } from "@/utils/getDragHander";
+import { useNativeOnChange } from "./utils/useNativeOnChange";
+import { getDragHander } from "./utils/getDragHander";
 
 import { StyledInput } from "./styled/StyledInput";
 import { minMax } from "./utils/minMax";

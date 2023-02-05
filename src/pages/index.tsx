@@ -3,9 +3,6 @@ import { Provider } from "react-redux";
 
 import { AssetDetailsPanel } from "@/components/asset_details_panel/AssetDetailsPanel";
 import { AssetPanel } from "@/components/assets_panel/AssetPanel";
-import { HPanel } from "@/components/core/panel/HPanel";
-import { VPanel } from "@/components/core/panel/VPanel";
-import { GlobalStyle } from "@/components/core/styled/GlobalStyle";
 import { KeyFramePanel } from "@/components/keyframes_panel/KeyFramePanel";
 import { MenuButton } from "@/components/MenuButton";
 import { Preview } from "@/components/preview_panel/Preview";
@@ -13,6 +10,7 @@ import { RecordMenuButton } from "@/components/RecordMenuButton";
 import { SettingsMenuButton } from "@/components/SettingsMenuButton";
 import { StripPanel } from "@/components/strip_panel/StripPanel";
 import { Timeline } from "@/components/timeline_panel/Timeline";
+import { GlobalStyle,HPanel , VPanel  } from "@/packages/vega-ui";
 import store from "@/store";
 import { initGlobalEvent } from "@/utils/initGlobalEvent";
 

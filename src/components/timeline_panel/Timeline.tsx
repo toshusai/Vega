@@ -9,25 +9,27 @@ import {
   Trash,
 } from "tabler-icons-react";
 
-import { Card } from "@/components/core/Card";
-import { iconProps } from "@/components/core/iconProps";
-import { MemoScaleScrollBar } from "@/components/core/ScaleScrollBar";
-import { IconButton } from "@/components/core/styled/IconButton";
-import { SelectRect } from "@/components/core/styled/SelectRect";
-import { ToolTip } from "@/components/core/styled/ToolTip";
-import { TimeCursor } from "@/components/core/TimeCursor";
-import { MemoTimeView } from "@/components/core/TimeView";
 import { useSelector } from "@/hooks/useSelector";
-import { useWidth } from "@/hooks/useWidth";
 import { canMove } from "@/interfaces/strips/canMove";
 import { checkOverlap } from "@/interfaces/strips/checkOverlap";
 import { moveStrip } from "@/interfaces/strips/moveStrip";
 import { Key, KeyboardInput } from "@/KeyboardInput";
 import { isAudioEffect, Strip } from "@/packages/vega-types";
+import {
+  Card,
+  getDragHander,
+  IconButton,
+  iconProps,
+  MemoScaleScrollBar,
+  MemoTimeView,
+  SelectRect,
+  TimeCursor,
+  ToolTip,
+  useWidth,
+} from "@/packages/vega-ui";
 import { releaseAudioAsset } from "@/rendering/updateAudioEffect";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
-import { getDragHander } from "@/utils/getDragHander";
 import { roundToFrame } from "@/utils/roundToFrame";
 
 import { AddStripButton } from "./AddStripButton";

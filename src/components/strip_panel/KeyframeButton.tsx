@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { Key } from "tabler-icons-react";
 
-import { iconProps } from "@/components/core/iconProps";
-import { TransparentIconButton } from "@/components/core/TransparentIconButton";
+import { iconProps , TransparentIconButton } from "@/packages/vega-ui";
 
 export const KeyframeButton: FC<{
   onClick: () => void;

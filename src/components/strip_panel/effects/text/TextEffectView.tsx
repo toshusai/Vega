@@ -1,9 +1,5 @@
 import { FC } from "react";
 
-import { VNumberInput } from "@/components/core/NumberEditInput";
-import { VInput } from "@/components/core/VInput";
-import { VSelect } from "@/components/core/VSelect";
-import { VTextarea } from "@/components/core/VTextarea";
 import { PropertyName } from "@/components/PropertyName";
 import { Row } from "@/components/Row";
 import { KeyframeButton } from "@/components/strip_panel/KeyframeButton";
@@ -12,6 +8,7 @@ import { useAssetOptions } from "@/hooks/useAssetOptions";
 import { useStripTime } from "@/hooks/useStripTime";
 import { useUpdateEffect } from "@/hooks/useUpdateEffect";
 import { Strip, TextEffect } from "@/packages/vega-types";
+import { VInput , VNumberInput , VSelect , VTextarea } from "@/packages/vega-ui";
 import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { hasKeyFrame } from "@/utils/hasKeyFrame";

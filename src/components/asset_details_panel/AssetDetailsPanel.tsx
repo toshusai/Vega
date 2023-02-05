@@ -1,8 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
 
-import { Card } from "@/components/core/Card";
-import { PanelBody } from "@/components/core/PanelBody";
-import { VInput } from "@/components/core/VInput";
 import { useSelector } from "@/hooks/useSelector";
 import {
   AudioAsset,
@@ -13,6 +10,7 @@ import {
   ScriptMeta,
   VideoAsset,
 } from "@/packages/vega-types";
+import { Card, PanelBody, VInput } from "@/packages/vega-ui";
 import {
   isAudioAsset,
   isImageAsset,

@@ -1,5 +1,5 @@
-import { Item } from "@/components/core/VSelect";
 import { useSelector } from "@/hooks/useSelector";
+import { Item } from "@/packages/vega-ui";
 
 
 export function useAssetOptions(type: string) {
