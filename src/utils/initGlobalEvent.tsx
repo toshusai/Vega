@@ -6,8 +6,10 @@ import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 
 import { sortStringify } from "./formatForSave";
+import { registerGlobalVar } from "./registerGlobalVar";
 
 export function initGlobalEvent() {
+  registerGlobalVar();
   KeyboardInput.init(() => {
     document.addEventListener("visibilitychange", () => {
       store.dispatch(actions.setIsPlaying(false));

@@ -1,6 +1,5 @@
 import React from "react";
 import { Provider } from "react-redux";
-import styled from "styled-components";
 
 import { AssetDetailsPanel } from "@/components/asset_details_panel/AssetDetailsPanel";
 import { AssetPanel } from "@/components/assets_panel/AssetPanel";
@@ -16,11 +15,6 @@ import { StripPanel } from "@/components/strip_panel/StripPanel";
 import { Timeline } from "@/components/timeline_panel/Timeline";
 import store from "@/store";
 import { initGlobalEvent } from "@/utils/initGlobalEvent";
-
-if (typeof window !== "undefined") {
-  window.React = React;
-  window.styled = styled;
-}
 
 const IndexPage = () => {
   initGlobalEvent();
