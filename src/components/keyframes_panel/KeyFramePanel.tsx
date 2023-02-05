@@ -2,16 +2,7 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Trash } from "tabler-icons-react";
 
-import { Card } from "@/components/core/Card";
-import { iconProps } from "@/components/core/iconProps";
-import { ScaleScrollBar } from "@/components/core/ScaleScrollBar";
-import { IconButton } from "@/components/core/styled/IconButton";
-import { SelectRect } from "@/components/core/styled/SelectRect";
-import { ToolTip } from "@/components/core/styled/ToolTip";
-import { TimeCursor } from "@/components/core/TimeCursor";
-import { TimeView } from "@/components/core/TimeView";
 import { useSelector } from "@/hooks/useSelector";
-import { useWidth } from "@/hooks/useWidth";
 import { Key, KeyboardInput } from "@/KeyboardInput";
 import {
   Effect,
@@ -20,9 +11,20 @@ import {
   KeyFrame,
   Strip,
 } from "@/packages/vega-types";
+import {
+  Card,
+  getDragHander,
+  IconButton,
+  iconProps,
+  ScaleScrollBar,
+  SelectRect,
+  TimeCursor,
+  TimeView,
+  ToolTip,
+  useWidth,
+} from "@/packages/vega-ui";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
-import { getDragHander } from "@/utils/getDragHander";
 import { restrictStartEnd } from "@/utils/restrictStartEnd";
 import { roundToFrame } from "@/utils/roundToFrame";
 

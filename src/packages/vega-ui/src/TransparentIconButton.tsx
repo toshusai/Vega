@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { IconButton } from "@/components/core/styled/IconButton";
+import { IconButton } from "./styled/IconButton";
 
 export const TransparentIconButton = styled(IconButton)`
   // FIXME: can not override without important

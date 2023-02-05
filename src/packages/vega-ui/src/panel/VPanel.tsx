@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 
-import { getDragHander } from "@/utils/getDragHander";
+import { getDragHander } from "../utils/getDragHander";
 
 import { DividerBox } from "./DividerBox";
 

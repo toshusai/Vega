@@ -2,9 +2,6 @@ import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
 
-import { Card } from "@/components/core/Card";
-import { iconProps } from "@/components/core/iconProps";
-import { IconButton } from "@/components/core/styled/IconButton";
 import { Gizmo } from "@/components/preview_panel/Gizmo";
 import { useSelector } from "@/hooks/useSelector";
 import { Key, KeyboardInput } from "@/KeyboardInput";
@@ -15,6 +12,7 @@ import {
   isTextEffect,
   isVideoEffect,
 } from "@/packages/vega-types";
+import { Card , getDragHander,IconButton , iconProps  } from "@/packages/vega-ui";
 import { Recorder } from "@/rendering/recorder";
 import { updateAudioEffect } from "@/rendering/updateAudioEffect";
 import { updateImageEffect } from "@/rendering/updateImageEffect";
@@ -24,7 +22,6 @@ import { updateVideoEffect } from "@/rendering/updateVideoEffect";
 import store from "@/store";
 import { actions } from "@/store/scene";
 import { download } from "@/utils/download";
-import { getDragHander } from "@/utils/getDragHander";
 import { roundToFrame } from "@/utils/roundToFrame";
 
 import { textEffectToRect } from "./utils/textEffectToRect";

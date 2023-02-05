@@ -3,12 +3,9 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import { useSelector } from "@/hooks/useSelector";
+import { Item, Modal , ModalBody , ToolbarButton , VSelect } from "@/packages/vega-ui";
 import { actions } from "@/store/scene";
 
-import { Modal } from "./core/Modal";
-import { ModalBody } from "./core/ModalBody";
-import { ToolbarButton } from "./core/ToolbarButton";
-import { Item, VSelect } from "./core/VSelect";
 import { PropertyName } from "./PropertyName";
 import { Row } from "./Row";
 

@@ -1,12 +1,11 @@
 import { FC } from "react";
 
-import { VNumberInput } from "@/components/core/NumberEditInput";
-import { VSelect } from "@/components/core/VSelect";
 import { PropertyName } from "@/components/PropertyName";
 import { Row } from "@/components/Row";
 import { useAssetOptions } from "@/hooks/useAssetOptions";
 import { useUpdateEffect } from "@/hooks/useUpdateEffect";
 import { Strip, VideoEffect } from "@/packages/vega-types";
+import { VNumberInput , VSelect } from "@/packages/vega-ui";
 import { UndoManager } from "@/UndoManager";
 
 import { videoEffectOptions } from "./videoEffectOptions";

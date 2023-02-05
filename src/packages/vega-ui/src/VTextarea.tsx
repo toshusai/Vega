@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { useNativeOnChange } from "@/hooks/useNativeOnChange";
+import { useNativeOnChange } from "./utils/useNativeOnChange";
 
 import { StyledTextarea } from "./styled/StyledTextarea";
 import { ClickEditInputProps } from "./VInput";

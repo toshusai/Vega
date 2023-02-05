@@ -9,6 +9,7 @@ import {
 
 import { readFile } from "@/ipc/readFile";
 import { writeFileUserDataDir } from "@/ipc/writeFileUserDataDir";
+import { DropdownMenu , iconProps , StyledContextMenuButton,ToolbarButton  } from "@/packages/vega-ui";
 import { loadAllAssets } from "@/rendering/recorder";
 import store from "@/store";
 import { appAction } from "@/store/app";
@@ -19,11 +20,6 @@ import { download } from "@/utils/download";
 import { filePick } from "@/utils/filePick";
 import { sortStringify } from "@/utils/formatForSave";
 import { readRecentFiles } from "@/utils/readRecentFiles";
-
-import { StyledContextMenuButton } from "./core/context_menu/StyledContextMenuButton";
-import { DropdownMenu } from "./core/DropdownMenu";
-import { iconProps } from "./core/iconProps";
-import { ToolbarButton } from "./core/ToolbarButton";
 
 export const MenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);

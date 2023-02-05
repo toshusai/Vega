@@ -2,10 +2,6 @@ import { FC, useRef } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { StyledContextMenuButton } from "@/components/core/context_menu/StyledContextMenuButton";
-import { DropdownMenu } from "@/components/core/DropdownMenu";
-import { iconProps } from "@/components/core/iconProps";
-import { IconButton } from "@/components/core/styled/IconButton";
 import { useSelector } from "@/hooks/useSelector";
 import {
   allEase,
@@ -14,6 +10,12 @@ import {
   getEasingFunction,
   Strip,
 } from "@/packages/vega-types";
+import {
+  DropdownMenu,
+  IconButton,
+  iconProps,
+  StyledContextMenuButton,
+} from "@/packages/vega-ui";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 

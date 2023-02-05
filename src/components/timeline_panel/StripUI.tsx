@@ -2,7 +2,6 @@ import { FC, memo, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Music } from "tabler-icons-react";
 
-import { iconProps } from "@/components/core/iconProps";
 import { useSelector } from "@/hooks/useSelector";
 import {
   isAudioEffect,
@@ -11,6 +10,7 @@ import {
   isVideoEffect,
   Strip,
 } from "@/packages/vega-types";
+import { iconProps } from "@/packages/vega-ui";
 
 export const StripUI: FC<
   Strip & {

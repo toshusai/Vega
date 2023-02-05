@@ -1,8 +1,7 @@
 import { FC } from "react";
 
-import { Card } from "@/components/core/Card";
-import { PanelBody } from "@/components/core/PanelBody";
 import { useSelector } from "@/hooks/useSelector";
+import { Card , PanelBody } from "@/packages/vega-ui";
 
 import { Effects } from "./Effects";
 

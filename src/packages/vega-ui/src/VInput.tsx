@@ -1,6 +1,6 @@
 import { FC, memo } from "react";
 
-import { useNativeOnChange } from "@/hooks/useNativeOnChange";
+import { useNativeOnChange } from "./utils/useNativeOnChange";
 
 import { StyledInput } from "./styled/StyledInput";
 
