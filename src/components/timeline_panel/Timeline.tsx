@@ -81,8 +81,15 @@ export const Timeline: FC = () => {
 
   const handleWheelTimeView = useCallback(
     (e: WheelEvent) => {
-      const value = e.deltaY * 0.0001;
+      let isTouchPad = false;
+      if ("wheelDeltaY" in e) {
+        isTouchPad = e.wheelDeltaY
+          ? e.wheelDeltaY === -3 * e.deltaY
+          : e.deltaMode === 0;
+      }
+
       if (KeyboardInput.isPressed(Key.Alt)) {
+        const value = e.deltaY * 0.0001;
         e.preventDefault();
         const newStart = start - value;
         const newEnd = end + value;
@@ -92,8 +99,16 @@ export const Timeline: FC = () => {
             end: newEnd,
           })
         );
-      } else if (KeyboardInput.isPressed(Key.Shift)) {
-        const value = e.deltaX * 0.0001;
+      } else if (KeyboardInput.isPressed(Key.Shift) || isTouchPad) {
+        let delta = e.deltaY;
+        if (isTouchPad && KeyboardInput.isPressed(Key.Shift)) {
+          delta = e.deltaY;
+        } else if (isTouchPad) {
+          delta = e.deltaX;
+        }
+
+        const value = delta * 0.0001;
+
         let newStart = start + value;
         let newEnd = end + value;
         if (start + value < 0) {
@@ -179,7 +194,6 @@ export const Timeline: FC = () => {
     ref.current?.addEventListener("wheel", handleWheelTimeView, {
       passive: false,
     });
-
     return () => {
       el?.removeEventListener("copy", copy);
       el?.removeEventListener("paste", paste);
