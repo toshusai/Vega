@@ -1,8 +1,8 @@
 import { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
+import { Card } from "@/components/core/Card";
 import { ClickEditInput } from "@/components/core/ClickEditInput";
-import { Panel } from "@/components/core/Panel";
 import { useSelector } from "@/hooks/useSelector";
 import {
   AudioAsset,
@@ -29,11 +29,11 @@ export const AssetDetailsPanel: FC = () => {
   );
 
   if (selectedAssets.length !== 1) {
-    return <Panel width={100} height={100} />;
+    return <Card width={100} height={100} />;
   }
   const selectedAsset = selectedAssets[0];
   return (
-    <Panel width={100} height={100}>
+    <Card width={100} height={100}>
       <PanelBody
         style={{
           overflow: "hidden",
@@ -76,7 +76,7 @@ export const AssetDetailsPanel: FC = () => {
           )}
         </div>
       </PanelBody>
-    </Panel>
+    </Card>
   );
 };
 export const PanelBody = styled.div`

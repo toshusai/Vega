@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 import { PanelBody } from "@/components/asset_details_panel/AssetDetailsPanel";
-import { Panel } from "@/components/core/Panel";
+import { Card } from "@/components/core/Card";
 import { useSelector } from "@/hooks/useSelector";
 
 import { Effects } from "./Effects";
@@ -14,11 +14,11 @@ export const StripPanel: FC = () => {
 
   const strip = selectedStrips[0];
   if (!strip) {
-    return <Panel width={100} height={100}></Panel>;
+    return <Card width={100} height={100}></Card>;
   }
 
   return (
-    <Panel width={100} height={100} style={{ overflow: "auto" }}>
+    <Card width={100} height={100} style={{ overflow: "auto" }}>
       <PanelBody>
         <div style={{ display: "flex" }}>
           <div>start:</div>
@@ -32,7 +32,7 @@ export const StripPanel: FC = () => {
         </div>
         <Effects effects={strip.effects} strip={strip} />
       </PanelBody>
-    </Panel>
+    </Card>
   );
 };
 

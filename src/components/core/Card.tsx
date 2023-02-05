@@ -1,14 +1,14 @@
 import { FC } from "react";
 import styled from "styled-components";
 
-export const Panel: FC<{
+export const Card: FC<{
   width: number | string;
   height: number | string;
   box?: boolean;
   style?: React.CSSProperties;
 }> = (props) => {
   return (
-    <PanelRoot
+    <CardRoot
       style={{
         width:
           typeof props.width === "string" ? props.width : props.width + "%",
@@ -18,12 +18,12 @@ export const Panel: FC<{
         ...props.style,
       }}
     >
-      <PanelInner>{props.children}</PanelInner>
-    </PanelRoot>
+      <CardInner>{props.children}</CardInner>
+    </CardRoot>
   );
 };
 
-const PanelRoot = styled.div`
+const CardRoot = styled.div`
   background-color: var(--color-background);
   border-radius: 8px;
   position: relative;
@@ -31,7 +31,7 @@ const PanelRoot = styled.div`
   width: 100%;
 `;
 
-const PanelInner = styled.div`
+const CardInner = styled.div`
   margin: 8px 4px;
   position: relative;
   height: calc(100% - 16px);
