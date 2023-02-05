@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 import { AssetDetailsPanel } from "@/components/asset_details_panel/AssetDetailsPanel";
 import { AssetPanel } from "@/components/assets_panel/AssetPanel";
+import { HPanel } from "@/components/core/panel/HPanel";
+import { VPanel } from "@/components/core/panel/VPanel";
 import { GlobalStyle } from "@/components/core/styled/GlobalStyle";
 import { KeyFramePanel } from "@/components/keyframes_panel/KeyFramePanel";
 import { MenuButton } from "@/components/MenuButton";
@@ -14,9 +16,6 @@ import { StripPanel } from "@/components/strip_panel/StripPanel";
 import { Timeline } from "@/components/timeline_panel/Timeline";
 import store from "@/store";
 import { initGlobalEvent } from "@/utils/initGlobalEvent";
-
-import { HPanel } from "./HPanel";
-import { VPanel } from "./VPanel";
 
 if (typeof window !== "undefined") {
   window.React = React;
