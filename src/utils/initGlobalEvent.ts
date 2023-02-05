@@ -5,16 +5,9 @@ import { appAction } from "@/store/app";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 
+import { checkFocus } from "./checkFocus";
 import { sortStringify } from "./formatForSave";
 import { registerGlobalVar } from "./registerGlobalVar";
-
-function checkFocus() {
-  const el = document.activeElement;
-  if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA")) {
-    return true;
-  }
-  return false;
-}
 
 export function initGlobalEvent() {
   registerGlobalVar();
