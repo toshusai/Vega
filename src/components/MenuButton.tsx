@@ -20,10 +20,10 @@ import { filePick } from "@/utils/filePick";
 import { sortStringify } from "@/utils/formatForSave";
 import { readRecentFiles } from "@/utils/readRecentFiles";
 
-import { StyledContextMenuButton } from "./core/context_menu/ContextMenu";
+import { StyledContextMenuButton } from "./core/context_menu/StyledContextMenuButton";
+import { DropdownMenu } from "./core/DropdownMenu";
 import { iconProps } from "./core/iconProps";
-import { DropdownMenu } from "./DropdownMenu";
-import { HeaderMenuButton } from "./HeaderMenuButton";
+import { ToolbarButton } from "./core/ToolbarButton";
 
 export const MenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -126,9 +126,9 @@ export const MenuButton: FC = () => {
         position: "relative",
       }}
     >
-      <HeaderMenuButton onClick={handleClick}>
+      <ToolbarButton onClick={handleClick}>
         File{hasChanged ? "*" : null}
-      </HeaderMenuButton>
+      </ToolbarButton>
       {showMenu && (
         <DropdownMenu>
           <StyledContextMenuButton onClick={handleFilePick}>

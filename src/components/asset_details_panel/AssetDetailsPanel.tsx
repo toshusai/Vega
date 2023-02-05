@@ -1,8 +1,8 @@
 import { FC, useEffect, useRef, useState } from "react";
-import styled from "styled-components";
 
 import { Card } from "@/components/core/Card";
-import { ClickEditInput } from "@/components/core/ClickEditInput";
+import { PanelBody } from "@/components/core/PanelBody";
+import { VInput } from "@/components/core/VInput";
 import { useSelector } from "@/hooks/useSelector";
 import {
   AudioAsset,
@@ -42,14 +42,14 @@ export const AssetDetailsPanel: FC = () => {
       >
         <div style={{ display: "flex" }}>
           <div>name:</div>
-          <ClickEditInput
+          <VInput
             style={{ marginLeft: "auto", width: "100%" }}
             value={selectedAsset.name}
           />
         </div>
         <div style={{ display: "flex" }}>
           <div>path:</div>
-          <ClickEditInput
+          <VInput
             style={{ marginLeft: "auto", width: "100%" }}
             value={selectedAsset.path}
           />
@@ -79,16 +79,6 @@ export const AssetDetailsPanel: FC = () => {
     </Card>
   );
 };
-export const PanelBody = styled.div`
-  color: white;
-  font-family: "Ricty Diminished";
-  line-height: 16px;
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-`;
-
 const TextAssetDetailsPanel: FC<{
   asset: FontAsset;
 }> = (props) => {

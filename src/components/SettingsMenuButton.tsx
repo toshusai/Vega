@@ -4,10 +4,10 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "@/hooks/useSelector";
 import { actions } from "@/store/scene";
 
-import { NumberEditInput } from "./core/NumberEditInput";
-import { HeaderMenuButton } from "./HeaderMenuButton";
-import { Modal } from "./Modal";
-import { ModalBody } from "./ModalBody";
+import { Modal } from "./core/Modal";
+import { ModalBody } from "./core/ModalBody";
+import { VNumberInput } from "./core/NumberEditInput";
+import { ToolbarButton } from "./core/ToolbarButton";
 import { PropertyName } from "./PropertyName";
 import { Row } from "./Row";
 
@@ -31,7 +31,7 @@ export const SettingsMenuButton: FC = () => {
         position: "relative",
       }}
     >
-      <HeaderMenuButton onClick={handleClick}>Settings</HeaderMenuButton>
+      <ToolbarButton onClick={handleClick}>Settings</ToolbarButton>
       <Modal isOpen={showMenu} onClose={handleClose}>
         <SettingsModal onClose={handleClose} />
       </Modal>
@@ -51,7 +51,7 @@ const SettingsModal: FC<{
     <ModalBody title="Settings" onClose={props.onClose}>
       <Row>
         <PropertyName>Length(sec):</PropertyName>
-        <NumberEditInput
+        <VNumberInput
           min={1}
           max={1200}
           scale={0.1}
@@ -66,7 +66,7 @@ const SettingsModal: FC<{
       </Row>
       <Row>
         <PropertyName>width:</PropertyName>
-        <NumberEditInput
+        <VNumberInput
           min={1}
           max={1920}
           scale={1}
@@ -81,7 +81,7 @@ const SettingsModal: FC<{
       </Row>
       <Row>
         <PropertyName>height:</PropertyName>
-        <NumberEditInput
+        <VNumberInput
           min={1}
           max={1280}
           scale={1}

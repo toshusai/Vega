@@ -3,16 +3,15 @@ import { FC, memo } from "react";
 import { useNativeOnChange } from "@/hooks/useNativeOnChange";
 
 import { StyledInput } from "./styled/StyledInput";
-import { StyledTextarea } from "./styled/StyledTextarea";
 
-type ClickEditInputProps = {
+export type ClickEditInputProps = {
   value?: string;
   style?: React.CSSProperties;
   onChange?: (value: string) => void;
   onInput?: (value: string) => void;
 };
 
-export const ClickEditInput: FC<ClickEditInputProps> = (props) => {
+export const VInput: FC<ClickEditInputProps> = (props) => {
   const { inputRef, value, setValue } = useNativeOnChange(
     props.value ?? "",
     (value) => props.onChange?.(value as string)
@@ -33,26 +32,6 @@ export const ClickEditInput: FC<ClickEditInputProps> = (props) => {
   );
 };
 
-export const ClickEditTextarea: FC<ClickEditInputProps> = (props) => {
-  const { inputRef, value, setValue } = useNativeOnChange<HTMLTextAreaElement>(
-    props.value ?? "",
-    (value) => props.onChange?.(value as string)
-  );
-  return (
-    <>
-      <StyledTextarea
-        onChange={(e) => {
-          props.onInput?.(e.target.value);
-          setValue(e.target.value);
-        }}
-        ref={inputRef}
-        style={props.style}
-        value={value}
-      />
-    </>
-  );
-};
-
-export const MemoClickEditInput = memo(ClickEditInput, (prev, next) => {
+export const MemoClickEditInput = memo(VInput, (prev, next) => {
   return prev.value === next.value && prev.onChange === next.onChange;
 });

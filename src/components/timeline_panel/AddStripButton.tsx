@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 import { Music, Photo, Plus, Tex, Video } from "tabler-icons-react";
 
-import { StyledContextMenuButton } from "@/components/core/context_menu/ContextMenu";
+import { StyledContextMenuButton } from "@/components/core/context_menu/StyledContextMenuButton";
+import { DropdownMenu } from "@/components/core/DropdownMenu";
 import { iconProps } from "@/components/core/iconProps";
 import { IconButton } from "@/components/core/styled/IconButton";
-import { DropdownMenu } from "@/components/DropdownMenu";
 import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
 import { useSelector } from "@/hooks/useSelector";
 import {

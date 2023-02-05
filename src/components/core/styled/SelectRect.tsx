@@ -14,7 +14,7 @@ export const SelectRect = styled.div.attrs<SelectRectProps>((props) => ({
     top: props.$top + "px",
     height: props.$height + "px",
   },
-})) <SelectRectProps> `
+}))<SelectRectProps>`
   position: absolute;
   background: rgba(110, 132, 255, 0.557);
   pointer-events: none;

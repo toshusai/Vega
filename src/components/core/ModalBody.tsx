@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { X } from "tabler-icons-react";
 
-import { PanelBody } from "./asset_details_panel/AssetDetailsPanel";
-import { Card } from "./core/Card";
-import { iconProps } from "./core/iconProps";
-import { KeyFrameIconButton } from "./strip_panel/styled/KeyFrameIconButton";
+import { Card } from "./Card";
+import { iconProps } from "./iconProps";
+import { PanelBody } from "./PanelBody";
+import { TransparentIconButton } from "./TransparentIconButton";
 
 export const ModalBody: FC<{
   title?: string;
@@ -31,9 +31,9 @@ export const ModalBody: FC<{
             {props.title}
           </div>
           <div>
-            <KeyFrameIconButton onClick={props.onClose}>
+            <TransparentIconButton onClick={props.onClose}>
               <X {...iconProps} />
-            </KeyFrameIconButton>
+            </TransparentIconButton>
           </div>
         </div>
         {props.children}

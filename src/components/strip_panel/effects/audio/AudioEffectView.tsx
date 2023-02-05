@@ -1,10 +1,10 @@
 import { FC } from "react";
 
-import { NumberEditInput } from "@/components/core/NumberEditInput";
-import { Select } from "@/components/core/Select";
-import { KeyframeButton } from "@/components/KeyframeButton";
+import { VNumberInput } from "@/components/core/NumberEditInput";
+import { VSelect } from "@/components/core/VSelect";
 import { PropertyName } from "@/components/PropertyName";
 import { Row } from "@/components/Row";
+import { KeyframeButton } from "@/components/strip_panel/KeyframeButton";
 import { useAssetOptions } from "@/hooks/useAssetOptions";
 import { useStripTime } from "@/hooks/useStripTime";
 import { useUpdateEffect } from "@/hooks/useUpdateEffect";
@@ -40,7 +40,7 @@ export const AudioEffectView: FC<{
               ></KeyframeButton>
             )}
 
-            <NumberEditInput
+            <VNumberInput
               value={audioEffect[key] as number}
               scale={audioEffectOptions.scaleKeysMap[key]}
               onInput={(value) => emit({ [key]: value })}
@@ -61,7 +61,7 @@ export const AudioEffectView: FC<{
 
       <Row>
         <PropertyName>audio</PropertyName>
-        <Select
+        <VSelect
           items={audioAssetItems}
           onChange={(value) => emit({ audioAssetId: value })}
           value={audioEffect.audioAssetId}

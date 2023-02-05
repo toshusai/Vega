@@ -5,10 +5,10 @@ import styled from "styled-components";
 import { useSelector } from "@/hooks/useSelector";
 import { actions } from "@/store/scene";
 
-import { Item, Select } from "./core/Select";
-import { HeaderMenuButton } from "./HeaderMenuButton";
-import { Modal } from "./Modal";
-import { ModalBody } from "./ModalBody";
+import { Modal } from "./core/Modal";
+import { ModalBody } from "./core/ModalBody";
+import { ToolbarButton } from "./core/ToolbarButton";
+import { Item, VSelect } from "./core/VSelect";
 import { PropertyName } from "./PropertyName";
 import { Row } from "./Row";
 
@@ -32,7 +32,7 @@ export const RecordMenuButton: FC = () => {
         position: "relative",
       }}
     >
-      <HeaderMenuButton onClick={handleClick}>Record</HeaderMenuButton>
+      <ToolbarButton onClick={handleClick}>Record</ToolbarButton>
       <Modal isOpen={showMenu} onClose={handleClose}>
         <RenderPanel onClose={handleClose}></RenderPanel>
       </Modal>
@@ -67,7 +67,7 @@ const RenderPanel: FC<{
     <ModalBody title="Record" onClose={props.onClose}>
       <Row>
         <PropertyName>Export</PropertyName>
-        <Select
+        <VSelect
           disabled={recordingState === "recording"}
           items={exportOptionItems}
           value={selectedExportOption}

@@ -1,7 +1,7 @@
 import { FC } from "react";
 
-import { NumberEditInput } from "@/components/core/NumberEditInput";
-import { Select } from "@/components/core/Select";
+import { VNumberInput } from "@/components/core/NumberEditInput";
+import { VSelect } from "@/components/core/VSelect";
 import { PropertyName } from "@/components/PropertyName";
 import { Row } from "@/components/Row";
 import { useAssetOptions } from "@/hooks/useAssetOptions";
@@ -24,7 +24,7 @@ export const VideoEffectView: FC<{
         return (
           <Row key={key}>
             <PropertyName>{key}</PropertyName>
-            <NumberEditInput
+            <VNumberInput
               value={videoEffect[key] as number}
               scale={videoEffectOptions.scaleKeysMap[key]}
               view={videoEffectOptions.viewKeysMap[key]}
@@ -44,7 +44,7 @@ export const VideoEffectView: FC<{
 
       <Row>
         <PropertyName>video</PropertyName>
-        <Select
+        <VSelect
           items={videoAssetItems}
           onChange={(value) => emit({ videoAssetId: value })}
           value={videoEffect.videoAssetId}

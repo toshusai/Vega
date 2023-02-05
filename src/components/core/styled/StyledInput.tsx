@@ -14,7 +14,7 @@ export const StyledInput = styled.input`
   padding-left: 8px;
   caret-color: red;
   max-width: 128px;
-  
+
   :focus {
     outline: none;
     border-radius: 8px;

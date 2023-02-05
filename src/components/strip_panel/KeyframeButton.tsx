@@ -2,8 +2,7 @@ import { FC } from "react";
 import { Key } from "tabler-icons-react";
 
 import { iconProps } from "@/components/core/iconProps";
-
-import { KeyFrameIconButton } from "./strip_panel/styled/KeyFrameIconButton";
+import { TransparentIconButton } from "@/components/core/TransparentIconButton";
 
 export const KeyframeButton: FC<{
   onClick: () => void;
@@ -11,7 +10,7 @@ export const KeyframeButton: FC<{
   active: boolean;
 }> = (props) => {
   return (
-    <KeyFrameIconButton>
+    <TransparentIconButton>
       <Key
         {...iconProps}
         onClick={props.onClick}
@@ -23,6 +22,6 @@ export const KeyframeButton: FC<{
             : "white"
         }
       />
-    </KeyFrameIconButton>
+    </TransparentIconButton>
   );
 };

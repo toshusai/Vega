@@ -4,6 +4,7 @@ import { useNativeOnChange } from "@/hooks/useNativeOnChange";
 import { getDragHander } from "@/utils/getDragHander";
 
 import { StyledInput } from "./styled/StyledInput";
+import { minMax } from "./utils/minMax";
 
 type NumberEditInputProps = {
   value?: number;
@@ -16,17 +17,7 @@ type NumberEditInputProps = {
   max?: number;
 };
 
-function minMax(value: number, min: number, max: number) {
-  if (value < min) {
-    return min;
-  }
-  if (value > max) {
-    return max;
-  }
-  return value;
-}
-
-export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
+export const VNumberInput: FC<NumberEditInputProps> = (props) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const { inputRef, value, setValue } = useNativeOnChange(
@@ -59,7 +50,7 @@ export const NumberEditInput: FC<NumberEditInputProps> = (props) => {
         inputRef.current?.focus();
         inputRef.current?.select();
       } else {
-        let value =  (props.value ?? 0) + ctx.diffX * (props.scale ?? 1);
+        let value = (props.value ?? 0) + ctx.diffX * (props.scale ?? 1);
         value = _minMax(value);
         props.onChange?.(value);
       }

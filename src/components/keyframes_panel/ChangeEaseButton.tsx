@@ -2,10 +2,10 @@ import { FC, useRef } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { StyledContextMenuButton } from "@/components/core/context_menu/ContextMenu";
+import { StyledContextMenuButton } from "@/components/core/context_menu/StyledContextMenuButton";
+import { DropdownMenu } from "@/components/core/DropdownMenu";
 import { iconProps } from "@/components/core/iconProps";
 import { IconButton } from "@/components/core/styled/IconButton";
-import { DropdownMenu } from "@/components/DropdownMenu";
 import { useSelector } from "@/hooks/useSelector";
 import {
   allEase,

@@ -1,4 +1,4 @@
-import { Item } from "@/components/core/Select";
+import { Item } from "@/components/core/VSelect";
 import { useSelector } from "@/hooks/useSelector";
 
 
