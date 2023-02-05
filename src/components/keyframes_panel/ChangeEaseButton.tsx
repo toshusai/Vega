@@ -15,6 +15,7 @@ import {
   IconButton,
   iconProps,
   StyledContextMenuButton,
+  ToolTip,
 } from "@/packages/vega-ui";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
@@ -79,6 +80,7 @@ export const ChangeEaseButton: FC = () => {
           circleColor="lightgray"
           hideBorder
         />
+        <ToolTip> Change Ease </ToolTip>
       </IconButton>
       {show && (
         <DropdownMenu>

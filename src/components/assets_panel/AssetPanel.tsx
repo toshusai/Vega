@@ -104,13 +104,7 @@ export const AssetPanel: FC = () => {
   };
 
   return (
-    <Card
-      height={100}
-      width={100}
-      style={{
-        overflowY: "auto",
-      }}
-    >
+    <Card height={100} width={100}>
       <div
         style={{
           marginBottom: "8px",
@@ -127,16 +121,23 @@ export const AssetPanel: FC = () => {
           <ToolTip>Delete selected asset</ToolTip>
         </IconButton>
       </div>
-      {assets.map((asset) => {
-        return (
-          <AssetListItem
-            key={asset.id}
-            asset={asset}
-            selected={selectedAssetIds.includes(asset.id)}
-            onClick={() => handleSelectAsset(asset)}
-          />
-        );
-      })}
+      <div
+        style={{
+          overflowY: "auto",
+          height: "calc(100% - 24px)",
+        }}
+      >
+        {assets.map((asset) => {
+          return (
+            <AssetListItem
+              key={asset.id}
+              asset={asset}
+              selected={selectedAssetIds.includes(asset.id)}
+              onClick={() => handleSelectAsset(asset)}
+            />
+          );
+        })}
+      </div>
     </Card>
   );
 };
