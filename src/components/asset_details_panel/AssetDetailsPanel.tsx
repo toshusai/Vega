@@ -12,7 +12,7 @@ import {
   ScriptAsset,
   ScriptMeta,
   VideoAsset,
-} from "@/packages/types";
+} from "@/packages/vega-types";
 import {
   isAudioAsset,
   isImageAsset,

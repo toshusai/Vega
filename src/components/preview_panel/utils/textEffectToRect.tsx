@@ -1,5 +1,5 @@
 import { SelectRectProps } from "@/components/core/styled/SelectRect";
-import { TextEffect } from "@/packages/types";
+import { TextEffect } from "@/packages/vega-types";
 import { calculateKeyFrameValue } from "@/rendering/calculateKeyFrameValue";
 import {
   measureMap,

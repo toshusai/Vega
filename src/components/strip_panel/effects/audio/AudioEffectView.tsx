@@ -8,7 +8,7 @@ import { KeyframeButton } from "@/components/strip_panel/KeyframeButton";
 import { useAssetOptions } from "@/hooks/useAssetOptions";
 import { useStripTime } from "@/hooks/useStripTime";
 import { useUpdateEffect } from "@/hooks/useUpdateEffect";
-import { AudioEffect, Strip } from "@/packages/types";
+import { AudioEffect, Strip } from "@/packages/vega-types";
 import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { hasKeyFrame } from "@/utils/hasKeyFrame";

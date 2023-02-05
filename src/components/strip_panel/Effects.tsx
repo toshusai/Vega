@@ -10,7 +10,7 @@ import {
   isTextEffect,
   isVideoEffect,
   Strip,
-} from "@/packages/types";
+} from "@/packages/vega-types";
 import { actions } from "@/store/scene";
 
 import { AudioEffectView } from "./effects/audio/AudioEffectView";
