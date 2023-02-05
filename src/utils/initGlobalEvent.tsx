@@ -8,6 +8,14 @@ import { UndoManager } from "@/UndoManager";
 import { sortStringify } from "./formatForSave";
 import { registerGlobalVar } from "./registerGlobalVar";
 
+function checkFocus() {
+  const el = document.activeElement;
+  if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA")) {
+    return true;
+  }
+  return false;
+}
+
 export function initGlobalEvent() {
   registerGlobalVar();
   KeyboardInput.init(() => {
@@ -20,9 +28,9 @@ export function initGlobalEvent() {
         audio.pause();
       });
     });
+
     KeyboardInput.addKeyDownListener(Key.KeyS, (e) => {
-      const el = document.activeElement;
-      if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA")) {
+      if (checkFocus()) {
         return;
       }
       e.preventDefault();
@@ -37,7 +45,11 @@ export function initGlobalEvent() {
         UndoManager.main.emit("change");
       }
     });
+
     KeyboardInput.addKeyDownListener(Key.KeyZ, (e) => {
+      if (checkFocus()) {
+        return;
+      }
       e.preventDefault();
       if (
         KeyboardInput.isPressed(Key.Shift) &&
