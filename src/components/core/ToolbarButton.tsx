@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
-
-export const HeaderMenuButton = styled.button`
+export const ToolbarButton = styled.button`
   background-color: var(--color-background-2);
   color: var(--color-text);
   border: 0;

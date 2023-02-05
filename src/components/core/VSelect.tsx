@@ -7,6 +7,7 @@ export type Item = {
   value: string;
   disabled?: boolean;
 };
+
 type Props = {
   items: Item[];
   value: string;
@@ -14,7 +15,7 @@ type Props = {
   disabled?: boolean;
 };
 
-export const Select: FC<Props> = (props) => {
+export const VSelect: FC<Props> = (props) => {
   return (
     <StyledSelect
       value={props.value}

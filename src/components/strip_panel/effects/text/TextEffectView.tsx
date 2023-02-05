@@ -1,14 +1,12 @@
 import { FC } from "react";
 
-import {
-  ClickEditInput,
-  ClickEditTextarea,
-} from "@/components/core/ClickEditInput";
-import { NumberEditInput } from "@/components/core/NumberEditInput";
-import { Select } from "@/components/core/Select";
-import { KeyframeButton } from "@/components/KeyframeButton";
+import { VNumberInput } from "@/components/core/NumberEditInput";
+import { VInput } from "@/components/core/VInput";
+import { VSelect } from "@/components/core/VSelect";
+import { VTextarea } from "@/components/core/VTextarea";
 import { PropertyName } from "@/components/PropertyName";
 import { Row } from "@/components/Row";
+import { KeyframeButton } from "@/components/strip_panel/KeyframeButton";
 import { useAnimationedValue } from "@/hooks/useAnimationedValue";
 import { useAssetOptions } from "@/hooks/useAssetOptions";
 import { useStripTime } from "@/hooks/useStripTime";
@@ -35,7 +33,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
     <>
       <Row>
         <PropertyName>text</PropertyName>
-        <ClickEditTextarea
+        <VTextarea
           style={{
             maxWidth: "100%",
             width: "100%",
@@ -57,7 +55,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
         return (
           <Row key={key}>
             <PropertyName>{key}</PropertyName>
-            <ClickEditInput
+            <VInput
               value={textEffect[key] as string}
               onInput={(value) => emit({ [key]: value })}
               onChange={(value) =>
@@ -81,7 +79,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
               highlight={!!exactKeyFrame(textEffect, key, time)}
               active={hasKeyFrame(textEffect, key)}
             ></KeyframeButton>
-            <NumberEditInput
+            <VNumberInput
               value={animation(key)}
               scale={textEffectConfig.scaleKeysMap[key]}
               view={textEffectConfig.viewKeysMap[key]}
@@ -100,7 +98,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
       })}
       <Row>
         <PropertyName>font</PropertyName>
-        <Select
+        <VSelect
           items={fontAssetItems}
           onChange={(value) => emit({ fontAssetId: value })}
           value={textEffect.fontAssetId ?? ""}
@@ -108,7 +106,7 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
       </Row>
       <Row>
         <PropertyName>font style</PropertyName>
-        <Select
+        <VSelect
           items={["normal", "bold", "italic", "bold italic"].map((v) => ({
             value: v,
             label: v,

@@ -86,6 +86,7 @@ export const ScaleScrollBar: FC<{
     </div>
   );
 };
+
 const ScaleScrollBarHandle = styled.div`
   position: absolute;
   top: 0;

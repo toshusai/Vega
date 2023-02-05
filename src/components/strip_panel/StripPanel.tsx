@@ -1,7 +1,7 @@
 import { FC } from "react";
 
-import { PanelBody } from "@/components/asset_details_panel/AssetDetailsPanel";
 import { Card } from "@/components/core/Card";
+import { PanelBody } from "@/components/core/PanelBody";
 import { useSelector } from "@/hooks/useSelector";
 
 import { Effects } from "./Effects";

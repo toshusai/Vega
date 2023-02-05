@@ -1,10 +1,10 @@
 import { FC } from "react";
 
-import { NumberEditInput } from "@/components/core/NumberEditInput";
-import { Select } from "@/components/core/Select";
-import { KeyframeButton } from "@/components/KeyframeButton";
+import { VNumberInput } from "@/components/core/NumberEditInput";
+import { VSelect } from "@/components/core/VSelect";
 import { PropertyName } from "@/components/PropertyName";
 import { Row } from "@/components/Row";
+import { KeyframeButton } from "@/components/strip_panel/KeyframeButton";
 import { useAnimationedValue } from "@/hooks/useAnimationedValue";
 import { useAssetOptions } from "@/hooks/useAssetOptions";
 import { useStripTime } from "@/hooks/useStripTime";
@@ -40,7 +40,7 @@ export const ImageEffectView: FC<{
               highlight={!!exactKeyFrame(imageEffect, key, time)}
               active={hasKeyFrame(imageEffect, key)}
             ></KeyframeButton>
-            <NumberEditInput
+            <VNumberInput
               value={animation(key)}
               scale={imageEffectOptions.scaleKeysMap[key]}
               max={imageEffectOptions.minMaxKeysMap[key]?.[1]}
@@ -64,7 +64,7 @@ export const ImageEffectView: FC<{
 
       <Row>
         <PropertyName>image</PropertyName>
-        <Select
+        <VSelect
           items={imageAssetItems}
           onChange={(value) => emit({ imageAssetId: value })}
           value={imageEffect.imageAssetId}
