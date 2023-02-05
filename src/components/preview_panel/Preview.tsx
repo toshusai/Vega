@@ -12,7 +12,7 @@ import {
   isTextEffect,
   isVideoEffect,
 } from "@/packages/vega-types";
-import { Card , getDragHander,IconButton , iconProps  } from "@/packages/vega-ui";
+import { BottomToolTip, Card , getDragHander,IconButton , iconProps  } from "@/packages/vega-ui";
 import { Recorder } from "@/rendering/recorder";
 import { updateAudioEffect } from "@/rendering/updateAudioEffect";
 import { updateImageEffect } from "@/rendering/updateImageEffect";
@@ -313,6 +313,7 @@ export const Preview: FC = () => {
             }}
           >
             <ZoomOut {...iconProps} />
+            <BottomToolTip>Zoom Out</BottomToolTip>
           </IconButton>
           <div
             style={{
@@ -333,6 +334,7 @@ export const Preview: FC = () => {
             }}
           >
             <ZoomIn {...iconProps} />
+            <BottomToolTip>Zoom In</BottomToolTip>
           </IconButton>
 
           <IconButton
@@ -341,6 +343,7 @@ export const Preview: FC = () => {
             }}
           >
             <ZoomReset {...iconProps} />
+            <BottomToolTip>Reset Zoom</BottomToolTip>
           </IconButton>
         </div>
         <canvas

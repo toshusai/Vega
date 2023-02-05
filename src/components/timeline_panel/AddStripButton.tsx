@@ -13,7 +13,13 @@ import {
   TextEffect,
   VideoEffect,
 } from "@/packages/vega-types";
-import { DropdownMenu , IconButton,iconProps , StyledContextMenuButton  } from "@/packages/vega-ui";
+import {
+  DropdownMenu,
+  IconButton,
+  iconProps,
+  StyledContextMenuButton,
+  ToolTip,
+} from "@/packages/vega-ui";
 import { actions } from "@/store/scene";
 
 export const AddStripButton: FC = () => {
@@ -152,6 +158,9 @@ export const AddStripButton: FC = () => {
     >
       <IconButton onClick={handleClick}>
         <Plus {...iconProps} />
+        <ToolTip>
+          Add Strip
+        </ToolTip>
       </IconButton>
       {show && (
         <DropdownMenu>

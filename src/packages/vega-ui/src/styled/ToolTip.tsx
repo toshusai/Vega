@@ -1,8 +1,7 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-export const ToolTip = styled.div`
+const toolTipBase = css`
   position: absolute;
-  top: calc(-100% + -16px);
   left: 50%;
   transform: translateX(-50%);
   padding: 4px 8px;
@@ -15,4 +14,13 @@ export const ToolTip = styled.div`
   opacity: 0;
   transition: opacity 0.2s;
   pointer-events: none;
+`;
+
+export const ToolTip = styled.div`
+  ${toolTipBase}
+  top: calc(-100% + -16px);
+`;
+export const BottomToolTip = styled.div`
+  ${toolTipBase}
+  bottom: calc(-100% + -16px);
 `;
