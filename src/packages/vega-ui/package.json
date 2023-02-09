@@ -1,0 +1,27 @@
+{
+  "name": "vega-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/cjs/index.js",
+  "types": "dist/src/index.d.ts",
+  "module": "dist/esm/index.js",
+  "scripts": {
+    "build": "./node_modules/typescript/bin/tsc --declaration --emitDeclarationOnly --declarationDir './dist' && node build.js"
+  },
+  "author": "tosuhsai.net@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^16.9.9",
+    "@types/styled-components": "^5.1.26",
+    "esbuild": "^0.16.9",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "styled-components": "^5.3.6",
+    "typescript": "^4.9.4"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "styled-components": "^5.3.6"
+  }
+}
