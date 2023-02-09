@@ -54,10 +54,6 @@
     "win": {
       "icon": "src/public/icon.png"
     },
-    "files": [
-      "dist/**/*",
-      "package.json"
-    ],
     "extraResources": [
       "out"
     ]
