@@ -4,6 +4,7 @@
   "version": "4.0.0",
   "main": "main/index.js",
   "productName": "Vega",
+  "license": "MIT",
   "scripts": {
     "clean": "rimraf dist main renderer/out renderer/.next",
     "dev": "npm run build-electron && electron .",
@@ -46,9 +47,16 @@
     "typescript": "^4.0.5"
   },
   "build": {
+    "appId": "com.toshusai.vega",
     "extends": null,
     "asar": true,
     "mac": {
+      "target": {
+        "target": "default",
+        "arch": [
+          "arm64"
+        ]
+      },
       "icon": "src/public/icon.png"
     },
     "win": {
