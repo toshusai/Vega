@@ -1,9 +1,7 @@
 name: release
 
-on:
-  push:
-    tags:
-      - 'v*'
+on: 
+  workflow_dispatch: 
 
 jobs:
   release:
@@ -27,8 +25,14 @@ jobs:
         working-directory: ./src/packaging/vega-ui
       - name: Install dependencies
         run: yarn
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
+      - name: build
+        run: yarn build
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          github_token: ${{ secrets.github_token }}
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+          draft: true
+          files: |
+            dist/*.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
