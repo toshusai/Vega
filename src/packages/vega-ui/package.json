@@ -6,7 +6,7 @@
   "types": "dist/src/index.d.ts",
   "module": "dist/esm/index.js",
   "scripts": {
-    "build": "./node_modules/typescript/bin/tsc --declaration --emitDeclarationOnly --declarationDir './dist' && node build.js"
+    "build": "tsc --declaration --emitDeclarationOnly --declarationDir './dist' && node build.js"
   },
   "author": "tosuhsai.net@gmail.com",
   "license": "MIT",
