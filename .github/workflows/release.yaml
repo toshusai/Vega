@@ -18,10 +18,10 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Install dependencies
-        run: yarn
+        run: yarn && yarn build
         working-directory: ./src/packages/vega-types
       - name: Install dependencies
-        run: yarn
+        run: yarn && yarn build
         working-directory: ./src/packages/vega-ui
       - name: Install dependencies
         run: yarn
