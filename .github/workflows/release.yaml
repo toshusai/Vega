@@ -12,6 +12,11 @@ jobs:
         os: [macos-latest]
 
     steps:
+      - name: Set context
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }} 
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - uses: actions/checkout@v2
       - name: use Node.js
         uses: actions/setup-node@v2.1.2
@@ -34,3 +39,5 @@ jobs:
           draft: true
           files: |
             dist/*.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
