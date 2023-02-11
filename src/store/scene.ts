@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { Asset, Effect, Strip } from "@/packages/vega-types";
+import { Asset, Effect, Strip } from "@/core/types";
 import { restrictStartEnd } from "@/utils/restrictStartEnd";
 
 export type SceneState = {

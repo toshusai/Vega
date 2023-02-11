@@ -9,7 +9,7 @@ import {
   Effect,
   getEasingFunction,
   Strip,
-} from "@/packages/vega-types";
+} from "@/core/types";
 import {
   DropdownMenu,
   IconButton,

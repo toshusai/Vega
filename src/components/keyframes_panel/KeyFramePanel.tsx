@@ -10,7 +10,7 @@ import {
   hasKeyFrameProperty,
   KeyFrame,
   Strip,
-} from "@/packages/vega-types";
+} from "@/core/types";
 import {
   Card,
   getDragHander,

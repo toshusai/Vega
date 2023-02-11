@@ -1,4 +1,4 @@
-import { Asset, AudioEffect, Strip } from "@/packages/vega-types";
+import { Asset, AudioEffect, Strip } from "@/core/types";
 import { SceneState } from "@/store/scene";
 
 import { calculateKeyFrameValue } from "./calculateKeyFrameValue";

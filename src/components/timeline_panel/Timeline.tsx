@@ -14,7 +14,7 @@ import { canMove } from "@/interfaces/strips/canMove";
 import { checkOverlap } from "@/interfaces/strips/checkOverlap";
 import { moveStrip } from "@/interfaces/strips/moveStrip";
 import { Key, KeyboardInput } from "@/KeyboardInput";
-import { isAudioEffect, Strip } from "@/packages/vega-types";
+import { isAudioEffect, Strip } from "@/core/types";
 import {
   Card,
   getDragHander,

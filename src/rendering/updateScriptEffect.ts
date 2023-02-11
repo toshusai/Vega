@@ -1,7 +1,7 @@
 import { uuid } from "short-uuid";
 
+import { ScriptEffect, Strip } from "@/core/types";
 import { EffectPlugin } from "@/interfaces/plugins/CustomEffect";
-import { ScriptEffect, Strip } from "@/packages/vega-types";
 import { SceneState } from "@/store/scene";
 
 enum Status {

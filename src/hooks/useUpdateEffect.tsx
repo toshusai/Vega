@@ -2,10 +2,10 @@ import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 
 import { makeNewKeyframes } from "@/components/preview_panel/utils/makeNewKeyframes";
+import { Ease, Effect,KeyFrame, Strip  } from "@/core/types";
 import { useCurrentTime } from "@/hooks/useCurrentTime";
 import { useFps } from "@/hooks/useFps";
 import { useSelectedStrip } from "@/hooks/useSelectedStrip";
-import { Ease, Effect,KeyFrame, Strip  } from "@/packages/vega-types";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 
