@@ -38,3 +38,11 @@ next-env.d.ts
 main
 .next
 dist
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
