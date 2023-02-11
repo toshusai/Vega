@@ -1,4 +1,4 @@
-import { ImageEffect , Strip } from "@/shared/src";
+import { ImageEffect , Strip } from "@/packages/vega-types";
 import { SceneState } from "@/store/scene";
 import { PickProperties } from "@/types/PickProperties";
 

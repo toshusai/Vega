@@ -9,14 +9,14 @@ import {
   Effect,
   getEasingFunction,
   Strip,
-} from "@/shared/src";
+} from "@/packages/vega-types";
 import {
   DropdownMenu,
   IconButton,
   iconProps,
   StyledContextMenuButton,
   ToolTip,
-} from "@/shared/src";
+} from "@/packages/vega-ui";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 

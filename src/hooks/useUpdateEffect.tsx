@@ -5,7 +5,7 @@ import { makeNewKeyframes } from "@/components/preview_panel/utils/makeNewKeyfra
 import { useCurrentTime } from "@/hooks/useCurrentTime";
 import { useFps } from "@/hooks/useFps";
 import { useSelectedStrip } from "@/hooks/useSelectedStrip";
-import { Ease, Effect,KeyFrame, Strip  } from "@/shared/src";
+import { Ease, Effect,KeyFrame, Strip  } from "@/packages/vega-types";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 

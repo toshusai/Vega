@@ -1,5 +1,5 @@
 import { useSelector } from "@/hooks/useSelector";
-import { Item } from "@/shared/src";
+import { Item } from "@/packages/vega-ui";
 
 
 export function useAssetOptions(type: string) {

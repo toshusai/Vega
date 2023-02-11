@@ -1,4 +1,4 @@
-import { Effect } from "@/shared/src";
+import { Effect } from "@/packages/vega-types";
 
 export function hasKeyFrame<T extends Effect>(
   effect: T,

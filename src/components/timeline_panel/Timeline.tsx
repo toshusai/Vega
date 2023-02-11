@@ -14,7 +14,7 @@ import { canMove } from "@/interfaces/strips/canMove";
 import { checkOverlap } from "@/interfaces/strips/checkOverlap";
 import { moveStrip } from "@/interfaces/strips/moveStrip";
 import { Key, KeyboardInput } from "@/KeyboardInput";
-import { isAudioEffect, Strip } from "@/shared/src";
+import { isAudioEffect, Strip } from "@/packages/vega-types";
 import {
   Card,
   getDragHander,
@@ -26,7 +26,7 @@ import {
   TimeCursor,
   ToolTip,
   useWidth,
-} from "@/shared/src";
+} from "@/packages/vega-ui";
 import { releaseAudioAsset } from "@/rendering/updateAudioEffect";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
