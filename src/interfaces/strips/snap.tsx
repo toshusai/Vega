@@ -1,4 +1,4 @@
-import { Strip } from "@/shared/src";
+import { Strip } from "@/packages/vega-types";
 import { roundToFrame } from "@/utils/roundToFrame";
 
 export function snap(

@@ -1,4 +1,4 @@
-import { Asset, Strip, VideoEffect } from "@/shared/src";
+import { Asset, Strip, VideoEffect } from "@/packages/vega-types";
 import store from "@/store";
 import { SceneState } from "@/store/scene";
 

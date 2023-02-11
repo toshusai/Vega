@@ -1,4 +1,4 @@
-import { AudioEffect } from "@/shared/src";
+import { AudioEffect } from "@/packages/vega-types";
 
 const numberKeys: (keyof AudioEffect)[] = ["volume", "offset"];
 

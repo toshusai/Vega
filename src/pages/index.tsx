@@ -10,7 +10,7 @@ import { RecordMenuButton } from "@/components/RecordMenuButton";
 import { SettingsMenuButton } from "@/components/SettingsMenuButton";
 import { StripPanel } from "@/components/strip_panel/StripPanel";
 import { Timeline } from "@/components/timeline_panel/Timeline";
-import { GlobalStyle,HPanel , VPanel  } from "@/shared/src";
+import { GlobalStyle,HPanel , VPanel  } from "@/packages/vega-ui";
 import store from "@/store";
 import { initGlobalEvent } from "@/utils/initGlobalEvent";
 

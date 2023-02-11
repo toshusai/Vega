@@ -2,7 +2,7 @@
   "extends": ["next", "plugin:import/recommended"],
   "plugins": ["unused-imports", "simple-import-sort", "@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
-  "ignorePatterns": ["src/shared/*"],
+  "ignorePatterns": ["src/packages/*"],
   "rules": {
     "no-restricted-imports": ["error", { "patterns": ["../"] }],
     "react-hooks/exhaustive-deps": "error",

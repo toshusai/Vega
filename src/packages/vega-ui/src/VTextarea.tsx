@@ -1,7 +1,8 @@
 import { FC } from "react";
 
-import { StyledTextarea } from "./styled/StyledTextarea";
 import { useNativeOnChange } from "./utils/useNativeOnChange";
+
+import { StyledTextarea } from "./styled/StyledTextarea";
 import { ClickEditInputProps } from "./VInput";
 
 export const VTextarea: FC<ClickEditInputProps> = (props) => {

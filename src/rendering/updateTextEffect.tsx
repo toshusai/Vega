@@ -6,7 +6,7 @@ import {
   Strip,
   TextEffect,
   VideoAsset,
-} from "@/shared/src";
+} from "@/packages/vega-types";
 import { SceneState } from "@/store/scene";
 import { PickProperties } from "@/types/PickProperties";
 
