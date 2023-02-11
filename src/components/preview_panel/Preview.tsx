@@ -5,20 +5,24 @@ import { ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
 import { Gizmo } from "@/components/preview_panel/Gizmo";
 import { useSelector } from "@/hooks/useSelector";
 import { Key, KeyboardInput } from "@/KeyboardInput";
-import {
-  isAudioEffect,
-  isImageEffect,
-  isScriptEffect,
-  isTextEffect,
-  isVideoEffect,
-} from "@/shared/src";
-import { BottomToolTip, Card , getDragHander,IconButton , iconProps  } from "@/shared/src";
 import { Recorder } from "@/rendering/recorder";
 import { updateAudioEffect } from "@/rendering/updateAudioEffect";
 import { updateImageEffect } from "@/rendering/updateImageEffect";
 import { handler } from "@/rendering/updateScriptEffect";
 import { updateTextEffect } from "@/rendering/updateTextEffect";
 import { updateVideoEffect } from "@/rendering/updateVideoEffect";
+import {
+  BottomToolTip,
+  Card,
+  getDragHander,
+  IconButton,
+  iconProps,
+  isAudioEffect,
+  isImageEffect,
+  isScriptEffect,
+  isTextEffect,
+  isVideoEffect,
+} from "@/shared/src";
 import store from "@/store";
 import { actions } from "@/store/scene";
 import { download } from "@/utils/download";
@@ -223,9 +227,7 @@ export const Preview: FC = () => {
       }
       if (scene.isPlaying) {
         dispatch(
-          actions.setCurrentTime(
-            roundToFrame(scene.currentTime + delta / 1000, fps)
-          )
+          actions.setCurrentTime(roundToFrame(scene.currentTime + 1 / (fps-1), fps))
         );
       }
 
