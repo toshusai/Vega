@@ -2,7 +2,7 @@
   "name": "vega-types",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "types/index.ts",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc --declaration --emitDeclarationOnly --declarationDir './dist'"

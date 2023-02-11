@@ -20,6 +20,7 @@ build({
   ...shared,
   format: "esm",
   outfile: pkg.module,
+  jsx: "transform",
   target: ["ES6"],
 });
 
