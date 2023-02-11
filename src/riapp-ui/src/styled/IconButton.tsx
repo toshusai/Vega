@@ -13,6 +13,7 @@ export const IconButton = styled.button`
   display: flex;
   border-radius: 4px;
   background-color: var(--color-input-background);
+  user-select: none;
 
   :hover > ${ToolTip} {
     opacity: 1;
