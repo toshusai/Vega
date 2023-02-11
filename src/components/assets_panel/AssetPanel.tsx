@@ -21,8 +21,8 @@ import {
   VideoAsset,
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import { Card, IconButton, iconProps, ToolTip } from "@/packages/vega-ui";
 import { isAudioAsset, isImageAsset } from "@/rendering/updateTextEffect";
+import { Card, IconButton, iconProps, ToolTip } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 import { filePick } from "@/utils/filePick";
 

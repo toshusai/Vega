@@ -12,13 +12,13 @@ import {
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
 import { Key, KeyboardInput } from "@/KeyboardInput";
-import { BottomToolTip, Card , getDragHander,IconButton , iconProps  } from "@/packages/vega-ui";
 import { Recorder } from "@/rendering/recorder";
 import { updateAudioEffect } from "@/rendering/updateAudioEffect";
 import { updateImageEffect } from "@/rendering/updateImageEffect";
 import { handler } from "@/rendering/updateScriptEffect";
 import { updateTextEffect } from "@/rendering/updateTextEffect";
 import { updateVideoEffect } from "@/rendering/updateVideoEffect";
+import { BottomToolTip, Card , getDragHander,IconButton , iconProps  } from "@/riapp-ui/src";
 import store from "@/store";
 import { actions } from "@/store/scene";
 import { download } from "@/utils/download";

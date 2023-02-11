@@ -1,9 +1,9 @@
 import { TextEffect } from "@/core/types";
-import { SelectRectProps } from "@/packages/vega-ui";
 import { calculateKeyFrameValue } from "@/rendering/calculateKeyFrameValue";
 import {
   measureMap,
 } from "@/rendering/updateTextEffect";
+import { SelectRectProps } from "@/riapp-ui/src";
 
 export function textEffectToRect(
   effect: TextEffect,

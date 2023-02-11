@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { isTextEffect, TextEffect } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import { getDragHander,SelectRectProps  } from "@/packages/vega-ui";
+import { getDragHander,SelectRectProps  } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 

@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 import { useSelector } from "@/hooks/useSelector";
-import { Card , PanelBody } from "@/packages/vega-ui";
+import { Card , PanelBody } from "@/riapp-ui/src";
 
 import { Effects } from "./Effects";
 

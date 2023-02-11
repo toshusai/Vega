@@ -5,7 +5,7 @@ import { Row } from "@/components/Row";
 import { Strip, VideoEffect } from "@/core/types";
 import { useAssetOptions } from "@/hooks/useAssetOptions";
 import { useUpdateEffect } from "@/hooks/useUpdateEffect";
-import { VNumberInput , VSelect } from "@/packages/vega-ui";
+import { VNumberInput , VSelect } from "@/riapp-ui/src";
 import { UndoManager } from "@/UndoManager";
 
 import { videoEffectOptions } from "./videoEffectOptions";

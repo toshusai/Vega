@@ -10,7 +10,7 @@ import {
   Strip,
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import { iconProps } from "@/packages/vega-ui";
+import { iconProps } from "@/riapp-ui/src";
 
 export const StripUI: FC<
   Strip & {

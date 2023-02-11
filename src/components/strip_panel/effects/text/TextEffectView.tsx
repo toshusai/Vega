@@ -8,7 +8,7 @@ import { useAnimationedValue } from "@/hooks/useAnimationedValue";
 import { useAssetOptions } from "@/hooks/useAssetOptions";
 import { useStripTime } from "@/hooks/useStripTime";
 import { useUpdateEffect } from "@/hooks/useUpdateEffect";
-import { VInput , VNumberInput , VSelect , VTextarea } from "@/packages/vega-ui";
+import { VInput , VNumberInput , VSelect , VTextarea } from "@/riapp-ui/src";
 import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { hasKeyFrame } from "@/utils/hasKeyFrame";
