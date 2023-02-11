@@ -1,4 +1,4 @@
-import { ImageEffect } from "@/packages/vega-types";
+import { ImageEffect } from "@/shared/src";
 import { PickProperties } from "@/types/PickProperties";
 
 type NumberProps = PickProperties<ImageEffect, number | undefined>;

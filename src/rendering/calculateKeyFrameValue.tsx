@@ -1,4 +1,4 @@
-import { Ease, getEasingFunction, KeyFrame } from "@/packages/vega-types";
+import { Ease, getEasingFunction, KeyFrame } from "@/shared/src";
 
 export function calculateKeyFrameValue(
   keyframes: KeyFrame[],

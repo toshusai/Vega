@@ -1,4 +1,4 @@
-import { TextEffect } from "@/packages/vega-types";
+import { TextEffect } from "@/shared/src";
 import { PickProperties } from "@/types/PickProperties";
 
 type NumberProps = PickProperties<TextEffect, number | undefined>;

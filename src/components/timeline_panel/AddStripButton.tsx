@@ -12,14 +12,14 @@ import {
   Strip,
   TextEffect,
   VideoEffect,
-} from "@/packages/vega-types";
+} from "@/shared/src";
 import {
   DropdownMenu,
   IconButton,
   iconProps,
   StyledContextMenuButton,
   ToolTip,
-} from "@/packages/vega-ui";
+} from "@/shared/src";
 import { actions } from "@/store/scene";
 
 export const AddStripButton: FC = () => {

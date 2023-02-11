@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { ScriptEffect,Strip  } from "@/packages/vega-types";
+import { ScriptEffect,Strip  } from "@/shared/src";
 import { SceneState } from "@/store/scene";
 
 export type UpdateHandler<T> = (

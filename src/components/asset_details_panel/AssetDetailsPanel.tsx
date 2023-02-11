@@ -9,8 +9,8 @@ import {
   ScriptAsset,
   ScriptMeta,
   VideoAsset,
-} from "@/packages/vega-types";
-import { Card, PanelBody, VInput } from "@/packages/vega-ui";
+} from "@/shared/src";
+import { Card, PanelBody, VInput } from "@/shared/src";
 import {
   isAudioAsset,
   isImageAsset,

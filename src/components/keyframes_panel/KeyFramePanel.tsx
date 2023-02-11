@@ -10,7 +10,7 @@ import {
   hasKeyFrameProperty,
   KeyFrame,
   Strip,
-} from "@/packages/vega-types";
+} from "@/shared/src";
 import {
   Card,
   getDragHander,
@@ -22,7 +22,7 @@ import {
   TimeView,
   ToolTip,
   useWidth,
-} from "@/packages/vega-ui";
+} from "@/shared/src";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 import { restrictStartEnd } from "@/utils/restrictStartEnd";

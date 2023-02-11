@@ -1,8 +1,7 @@
 import { FC, memo } from "react";
 
-import { useNativeOnChange } from "./utils/useNativeOnChange";
-
 import { StyledInput } from "./styled/StyledInput";
+import { useNativeOnChange } from "./utils/useNativeOnChange";
 
 export type ClickEditInputProps = {
   value?: string;

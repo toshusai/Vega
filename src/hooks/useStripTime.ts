@@ -1,4 +1,4 @@
-import { Strip } from "@/packages/vega-types";
+import { Strip } from "@/shared/src";
 
 import { useSelector } from "./useSelector";
 

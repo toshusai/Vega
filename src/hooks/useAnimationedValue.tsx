@@ -1,6 +1,6 @@
 import { useCurrentTime } from "@/hooks/useCurrentTime";
 import { useFps } from "@/hooks/useFps";
-import { Effect, Strip } from "@/packages/vega-types";
+import { Effect, Strip } from "@/shared/src";
 import { calculateKeyFrameValue } from "@/rendering/calculateKeyFrameValue";
 import { PickProperties } from "@/types/PickProperties";
 

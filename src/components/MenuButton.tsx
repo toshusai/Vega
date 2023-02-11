@@ -9,8 +9,8 @@ import {
 
 import { readFile } from "@/ipc/readFile";
 import { writeFileUserDataDir } from "@/ipc/writeFileUserDataDir";
-import { DropdownMenu , iconProps , StyledContextMenuButton,ToolbarButton  } from "@/packages/vega-ui";
 import { loadAllAssets } from "@/rendering/recorder";
+import { DropdownMenu , iconProps , StyledContextMenuButton,ToolbarButton  } from "@/shared/src";
 import store from "@/store";
 import { appAction } from "@/store/app";
 import { actions, SceneState } from "@/store/scene";
