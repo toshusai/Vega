@@ -208,6 +208,7 @@ const TextEffectStripUI: FC<{
         whiteSpace: "nowrap",
         alignSelf: "center",
         fontFamily: asset ? asset.name : "sans-serif",
+        userSelect: "none",
       }}
     >
       {textEffect.text}
