@@ -11,8 +11,8 @@ import {
   isScriptEffect,
   isTextEffect,
   isVideoEffect,
-} from "@/packages/vega-types";
-import { BottomToolTip, Card , getDragHander,IconButton , iconProps  } from "@/packages/vega-ui";
+} from "@/shared/src";
+import { BottomToolTip, Card , getDragHander,IconButton , iconProps  } from "@/shared/src";
 import { Recorder } from "@/rendering/recorder";
 import { updateAudioEffect } from "@/rendering/updateAudioEffect";
 import { updateImageEffect } from "@/rendering/updateImageEffect";

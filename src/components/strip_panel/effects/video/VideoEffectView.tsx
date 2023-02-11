@@ -4,8 +4,8 @@ import { PropertyName } from "@/components/PropertyName";
 import { Row } from "@/components/Row";
 import { useAssetOptions } from "@/hooks/useAssetOptions";
 import { useUpdateEffect } from "@/hooks/useUpdateEffect";
-import { Strip, VideoEffect } from "@/packages/vega-types";
-import { VNumberInput , VSelect } from "@/packages/vega-ui";
+import { Strip, VideoEffect } from "@/shared/src";
+import { VNumberInput , VSelect } from "@/shared/src";
 import { UndoManager } from "@/UndoManager";
 
 import { videoEffectOptions } from "./videoEffectOptions";

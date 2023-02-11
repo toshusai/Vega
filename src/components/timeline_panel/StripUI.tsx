@@ -9,8 +9,8 @@ import {
   isTextEffect,
   isVideoEffect,
   Strip,
-} from "@/packages/vega-types";
-import { iconProps } from "@/packages/vega-ui";
+} from "@/shared/src";
+import { iconProps } from "@/shared/src";
 
 export const StripUI: FC<
   Strip & {

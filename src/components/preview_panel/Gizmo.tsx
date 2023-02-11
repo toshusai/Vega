@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import { useSelector } from "@/hooks/useSelector";
-import { isTextEffect, TextEffect } from "@/packages/vega-types";
-import { getDragHander,SelectRectProps  } from "@/packages/vega-ui";
+import { isTextEffect, TextEffect } from "@/shared/src";
+import { getDragHander,SelectRectProps  } from "@/shared/src";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 

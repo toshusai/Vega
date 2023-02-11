@@ -20,8 +20,8 @@ import {
   ImageAsset,
   isScriptAsset,
   VideoAsset,
-} from "@/packages/vega-types";
-import { Card, IconButton, iconProps, ToolTip } from "@/packages/vega-ui";
+} from "@/shared/src";
+import { Card, IconButton, iconProps, ToolTip } from "@/shared/src";
 import { isAudioAsset, isImageAsset } from "@/rendering/updateTextEffect";
 import { actions } from "@/store/scene";
 import { filePick } from "@/utils/filePick";
