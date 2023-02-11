@@ -9,12 +9,13 @@ import {
   Trash,
 } from "tabler-icons-react";
 
+import { isAudioEffect, Strip } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
 import { canMove } from "@/interfaces/strips/canMove";
 import { checkOverlap } from "@/interfaces/strips/checkOverlap";
 import { moveStrip } from "@/interfaces/strips/moveStrip";
 import { Key, KeyboardInput } from "@/KeyboardInput";
-import { isAudioEffect, Strip } from "@/core/types";
+import { releaseAudioAsset } from "@/rendering/updateAudioEffect";
 import {
   Card,
   getDragHander,
@@ -26,8 +27,7 @@ import {
   TimeCursor,
   ToolTip,
   useWidth,
-} from "@/packages/vega-ui";
-import { releaseAudioAsset } from "@/rendering/updateAudioEffect";
+} from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 import { roundToFrame } from "@/utils/roundToFrame";

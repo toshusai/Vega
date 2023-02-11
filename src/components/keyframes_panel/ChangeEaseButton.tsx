@@ -2,7 +2,6 @@ import { FC, useRef } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { useSelector } from "@/hooks/useSelector";
 import {
   allEase,
   easeInCubic,
@@ -10,13 +9,14 @@ import {
   getEasingFunction,
   Strip,
 } from "@/core/types";
+import { useSelector } from "@/hooks/useSelector";
 import {
   DropdownMenu,
   IconButton,
   iconProps,
   StyledContextMenuButton,
   ToolTip,
-} from "@/packages/vega-ui";
+} from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 

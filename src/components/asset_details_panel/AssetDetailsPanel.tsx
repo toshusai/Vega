@@ -10,7 +10,6 @@ import {
   VideoAsset,
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import { Card, PanelBody, VInput } from "@/packages/vega-ui";
 import {
   isAudioAsset,
   isImageAsset,
@@ -18,6 +17,7 @@ import {
   isVideoAsset,
   loadFont,
 } from "@/rendering/updateTextEffect";
+import { Card, PanelBody, VInput } from "@/riapp-ui/src";
 
 export const AssetDetailsPanel: FC = () => {
   const selectedAssetIds = useSelector((state) => state.scene.selectedAssetIds);

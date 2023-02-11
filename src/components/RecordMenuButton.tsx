@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import { useSelector } from "@/hooks/useSelector";
-import { Item, Modal , ModalBody , ToolbarButton , VSelect } from "@/packages/vega-ui";
+import { Item, Modal , ModalBody , ToolbarButton , VSelect } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 
 import { PropertyName } from "./PropertyName";

@@ -1,5 +1,5 @@
 import { useSelector } from "@/hooks/useSelector";
-import { Item } from "@/packages/vega-ui";
+import { Item } from "@/riapp-ui/src";
 
 
 export function useAssetOptions(type: string) {

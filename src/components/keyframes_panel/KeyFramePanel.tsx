@@ -2,8 +2,6 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Trash } from "tabler-icons-react";
 
-import { useSelector } from "@/hooks/useSelector";
-import { Key, KeyboardInput } from "@/KeyboardInput";
 import {
   Effect,
   getEasingFunction,
@@ -11,6 +9,8 @@ import {
   KeyFrame,
   Strip,
 } from "@/core/types";
+import { useSelector } from "@/hooks/useSelector";
+import { Key, KeyboardInput } from "@/KeyboardInput";
 import {
   Card,
   getDragHander,
@@ -22,7 +22,7 @@ import {
   TimeView,
   ToolTip,
   useWidth,
-} from "@/packages/vega-ui";
+} from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 import { restrictStartEnd } from "@/utils/restrictStartEnd";

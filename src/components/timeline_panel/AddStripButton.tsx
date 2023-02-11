@@ -4,7 +4,6 @@ import { uuid } from "short-uuid";
 import { Music, Photo, Plus, Tex, Video } from "tabler-icons-react";
 
 import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
-import { useSelector } from "@/hooks/useSelector";
 import {
   AudioEffect,
   Effect,
@@ -13,13 +12,14 @@ import {
   TextEffect,
   VideoEffect,
 } from "@/core/types";
+import { useSelector } from "@/hooks/useSelector";
 import {
   DropdownMenu,
   IconButton,
   iconProps,
   StyledContextMenuButton,
   ToolTip,
-} from "@/packages/vega-ui";
+} from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 
 export const AddStripButton: FC = () => {
