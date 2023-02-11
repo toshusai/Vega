@@ -2,9 +2,9 @@ import { FC } from "react";
 
 import { PropertyName } from "@/components/PropertyName";
 import { Row } from "@/components/Row";
+import { Strip, VideoEffect } from "@/core/types";
 import { useAssetOptions } from "@/hooks/useAssetOptions";
 import { useUpdateEffect } from "@/hooks/useUpdateEffect";
-import { Strip, VideoEffect } from "@/packages/vega-types";
 import { VNumberInput , VSelect } from "@/packages/vega-ui";
 import { UndoManager } from "@/UndoManager";
 

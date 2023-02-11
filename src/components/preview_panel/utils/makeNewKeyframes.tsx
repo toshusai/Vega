@@ -3,7 +3,7 @@ import { uuid } from "short-uuid";
 import {
   Ease,
   Effect, KeyFrame
-} from "@/packages/vega-types";
+} from "@/core/types";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { hasKeyFrame } from "@/utils/hasKeyFrame";
 import { roundToFrame } from "@/utils/roundToFrame";

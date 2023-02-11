@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 
-import { writeFile } from "@/ipc/writeFile";
 import {
   Effect,
   isAudioEffect,
@@ -10,7 +9,8 @@ import {
   isTextEffect,
   isVideoEffect,
   Strip,
-} from "@/packages/vega-types";
+} from "@/core/types";
+import { writeFile } from "@/ipc/writeFile";
 import { actions } from "@/store/scene";
 
 import { AudioEffectView } from "./effects/audio/AudioEffectView";

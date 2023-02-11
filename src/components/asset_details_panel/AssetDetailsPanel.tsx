@@ -1,6 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
 
-import { useSelector } from "@/hooks/useSelector";
 import {
   AudioAsset,
   FontAsset,
@@ -9,7 +8,8 @@ import {
   ScriptAsset,
   ScriptMeta,
   VideoAsset,
-} from "@/packages/vega-types";
+} from "@/core/types";
+import { useSelector } from "@/hooks/useSelector";
 import { Card, PanelBody, VInput } from "@/packages/vega-ui";
 import {
   isAudioAsset,

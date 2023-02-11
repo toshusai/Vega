@@ -12,7 +12,6 @@ import {
   Video,
 } from "tabler-icons-react";
 
-import { useSelector } from "@/hooks/useSelector";
 import {
   Asset,
   AudioAsset,
@@ -20,7 +19,8 @@ import {
   ImageAsset,
   isScriptAsset,
   VideoAsset,
-} from "@/packages/vega-types";
+} from "@/core/types";
+import { useSelector } from "@/hooks/useSelector";
 import { Card, IconButton, iconProps, ToolTip } from "@/packages/vega-ui";
 import { isAudioAsset, isImageAsset } from "@/rendering/updateTextEffect";
 import { actions } from "@/store/scene";

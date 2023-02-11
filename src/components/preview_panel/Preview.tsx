@@ -3,15 +3,15 @@ import { useDispatch } from "react-redux";
 import { ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
 
 import { Gizmo } from "@/components/preview_panel/Gizmo";
-import { useSelector } from "@/hooks/useSelector";
-import { Key, KeyboardInput } from "@/KeyboardInput";
 import {
   isAudioEffect,
   isImageEffect,
   isScriptEffect,
   isTextEffect,
   isVideoEffect,
-} from "@/packages/vega-types";
+} from "@/core/types";
+import { useSelector } from "@/hooks/useSelector";
+import { Key, KeyboardInput } from "@/KeyboardInput";
 import { BottomToolTip, Card , getDragHander,IconButton , iconProps  } from "@/packages/vega-ui";
 import { Recorder } from "@/rendering/recorder";
 import { updateAudioEffect } from "@/rendering/updateAudioEffect";

@@ -1,4 +1,4 @@
-import { KeyFrame } from "@/packages/vega-types";
+import { KeyFrame } from "@/core/types";
 
 export function exactKeyFrame<
   T extends {

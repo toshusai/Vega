@@ -12,7 +12,7 @@ import {
   Strip,
   TextEffect,
   VideoEffect,
-} from "@/packages/vega-types";
+} from "@/core/types";
 import {
   DropdownMenu,
   IconButton,
