@@ -1,11 +1,11 @@
 import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
 
 import { useSelector } from "@/hooks/useSelector";
 import { Item, Modal , ModalBody , ToolbarButton , VSelect } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 
+import { Button } from "./Button";
 import { PropertyName } from "./PropertyName";
 import { Row } from "./Row";
 
@@ -85,26 +85,4 @@ const RenderPanel: FC<{
   );
 };
 
-const Button = styled.button`
-  cursor: pointer;
-  display: block;
-  color: var(--color-text);
-  box-sizing: border-box;
-  font-size: 12px;
-  line-height: 12px;
-  margin: 0;
-  border: 1px solid var(--color-border);
-  background-color: var(--color-input-background);
-  border-radius: 8px;
-  height: 16px;
-  padding-left: 8px;
-  max-width: 128px;
-  :active {
-    background-color: var(--color-input-background-focus);
-  }
-  :disabled {
-    background-color: var(--color-input-background-disabled);
-    color: var(--color-text-disabled);
-  }
-  font-family: "Ricty Diminished";
-`;
+

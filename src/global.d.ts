@@ -1,5 +1,7 @@
 import { type IpcRenderer, IpcRendererEvent } from "electron";
-import styled from "styled-components";
+import styled, { type CSSProp } from "styled-components";
+import type {} from "styled-components/cssprop";
+
 interface IpcRenderer extends NodeJS.EventEmitter {
   invoke(channel: string, ...args: any[]): Promise<any>;
   on(
@@ -22,6 +24,13 @@ interface IpcRenderer extends NodeJS.EventEmitter {
 import * as Core from "@/core";
 import * as RiAppUi from "@/riapp-ui";
 
+interface MyTheme {} // declare custom theme type
+
+declare module "react" {
+  interface Attributes {
+    css?: CSSProp<MyTheme>;
+  }
+}
 declare global {
   const ipcRenderer: IpcRenderer;
   interface Window {

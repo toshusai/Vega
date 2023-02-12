@@ -51,12 +51,19 @@ window.dispatchEvent(new CustomEvent("${tmpEventId}", { detail: _${tmpEventId} }
       const handlePluginLoaded = (event: Event) => {
         if (event.type !== tmpEventId) return;
         if (!(event instanceof CustomEvent)) return;
-        const userScript = event.detail;
-        userScriptMap.set(effect.scriptAssetId, userScript);
-        scriptStatusMap.set(effect.scriptAssetId, Status.LOADED);
-        esmBridgeElement.remove();
-        userScriptElement.remove();
-        window.removeEventListener(tmpEventId, handlePluginLoaded);
+        fetch(scriptAsset.path + "/package.json")
+          .then((res) => res.json())
+          .then((json) => {
+            const userScript = event.detail;
+            userScriptMap.set(effect.scriptAssetId, {
+              ...userScript,
+              pkg: json,
+            });
+            scriptStatusMap.set(effect.scriptAssetId, Status.LOADED);
+            esmBridgeElement.remove();
+            userScriptElement.remove();
+            window.removeEventListener(tmpEventId, handlePluginLoaded);
+          });
       };
       window.addEventListener(tmpEventId, handlePluginLoaded);
 
