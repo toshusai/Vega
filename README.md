@@ -2,6 +2,8 @@
 
 Vega is a open source video editing software.
 
+![Vega](src/public/screenshot.png)
+
 ## Platfroms
 
 - :window: Windows
