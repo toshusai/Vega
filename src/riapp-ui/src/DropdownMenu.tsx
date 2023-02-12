@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const DropdownMenu = styled.div`
   position: absolute;
-  z-index: 1000;
+  z-index: 10000;
   top: 16px;
   left: 0;
   background-color: var(--color-background);
