@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { ScriptEffect,Strip  } from "@/core/types";
+import { AppContext, Effect, ScriptEffect, Strip } from "@/core/types";
 import { SceneState } from "@/store/scene";
 
 export type UpdateHandler<T> = (
@@ -12,7 +12,7 @@ export type UpdateHandler<T> = (
 ) => void;
 
 export type EffectPlugin = {
-  Component?: FC;
+  Component?: FC<{ scriptEffect: Effect; strip: Strip; appCtx: AppContext }>;
   update?: UpdateHandler<ScriptEffect>;
   beforeRender?: UpdateHandler<ScriptEffect>;
 };
