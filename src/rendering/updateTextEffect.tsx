@@ -100,6 +100,7 @@ export function updateTextEffect(
   let left = animatedEffect.x;
   let maxLeft = 0;
   const lineHeight = animatedEffect.fontSize;
+  const characterSpacing = animatedEffect.characterSpacing ?? 0;
   ctx.shadowColor = animatedEffect.shadowColor ?? "transparent";
   ctx.shadowBlur = animatedEffect.shadowBlur ?? 0;
   ctx.lineJoin = "round";
@@ -117,7 +118,7 @@ export function updateTextEffect(
     }
     const w = ctx.measureText(char).width;
     ctx.strokeText(char, left, top);
-    left += w + 0;
+    left += w + characterSpacing;
     maxLeft = Math.max(maxLeft, left);
   }
 
@@ -133,7 +134,7 @@ export function updateTextEffect(
     }
     const w = ctx.measureText(char).width;
     ctx.fillText(char, left, top);
-    left += w + 0;
+    left += w + characterSpacing;
     maxLeft = Math.max(maxLeft, left);
   }
 

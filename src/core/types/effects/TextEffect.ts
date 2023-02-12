@@ -14,5 +14,6 @@ export type TextEffect = {
   shadowBlur?: number;
   outlineColor?: string;
   outlineWidth?: number;
+  characterSpacing?: number;
   keyframes: KeyFrame[];
 };

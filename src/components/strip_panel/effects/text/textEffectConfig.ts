@@ -8,6 +8,7 @@ const numberKeys: (keyof NumberProps)[] = [
   "fontSize",
   "shadowBlur",
   "outlineWidth",
+  "characterSpacing",
 ];
 const stringKeys: (keyof TextEffect)[] = [
   "color",
