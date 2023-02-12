@@ -1,6 +1,7 @@
-import { Asset, Strip, VideoEffect } from "@/core/types";
+import { Asset, calculateKeyFrameValue, Strip, VideoEffect } from "@/core/types";
 import store from "@/store";
 import { SceneState } from "@/store/scene";
+import { PickProperties } from "@/types/PickProperties";
 
 const loadedVideoElementMap = new Map<string, HTMLVideoElement>();
 
@@ -127,6 +128,23 @@ export function updateVideoEffect(
     if (videoElement.playbackRate != effect.playbackRate) {
       videoElement.playbackRate = effect.playbackRate ?? 1;
     }
+    const animatedEffect: VideoEffect = {
+      ...effect,
+    };
+    Object.keys(effect).forEach((key) => {
+      const k = key as keyof PickProperties<VideoEffect, number>;
+      const value = effect[k];
+      if (typeof value !== "number") {
+        return;
+      }
+      animatedEffect[k] = calculateKeyFrameValue(
+        effect.keyframes,
+        scene.currentTime - strip.start,
+        key,
+        value,
+        scene.fps
+      );
+    });
     ctx.shadowColor = "";
     ctx.shadowBlur = 0;
     ctx.drawImage(
@@ -135,10 +153,10 @@ export function updateVideoEffect(
       0,
       videoElement.videoWidth,
       videoElement.videoHeight,
-      effect.x,
-      effect.y,
-      effect.width || videoElement.videoWidth,
-      effect.height || videoElement.videoHeight
+      animatedEffect.x,
+      animatedEffect.y,
+      animatedEffect.width || videoElement.videoWidth,
+      animatedEffect.height || videoElement.videoHeight
     );
   }
 }

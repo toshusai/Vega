@@ -16,7 +16,7 @@ app.on("ready", async () => {
   await prepareNext("./src");
 
   const mainWindow = new BrowserWindow({
-    width: 1270,
+    width: 1280,
     height: 720,
     webPreferences: {
       nodeIntegration: false,
