@@ -1,5 +1,5 @@
 import { TextEffect } from "@/core/types";
-import { calculateKeyFrameValue } from "@/rendering/calculateKeyFrameValue";
+import { calculateKeyFrameValue } from "@/core/types/utils/calculateKeyFrameValue";
 import {
   measureMap,
 } from "@/rendering/updateTextEffect";

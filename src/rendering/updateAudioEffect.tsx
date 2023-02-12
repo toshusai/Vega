@@ -1,7 +1,6 @@
 import { Asset, AudioEffect, Strip } from "@/core/types";
+import { calculateKeyFrameValue } from "@/core/types/utils/calculateKeyFrameValue";
 import { SceneState } from "@/store/scene";
-
-import { calculateKeyFrameValue } from "./calculateKeyFrameValue";
 
 const loadedAudioElementMap = new Map<string, HTMLAudioElement>();
 

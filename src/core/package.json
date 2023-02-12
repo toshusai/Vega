@@ -2,14 +2,15 @@
   "name": "vega-types",
   "version": "1.0.0",
   "description": "",
-  "main": "types/index.ts",
-  "types": "dist/index.d.ts",
+  "module": "dist/esm/index.js",
+  "types": "dist/core/index.d.ts",
   "scripts": {
-    "build": "tsc --declaration --emitDeclarationOnly --declarationDir './dist'"
+    "build": "tsc --declaration --emitDeclarationOnly --declarationDir './dist'  && node build.js"
   },
   "author": "tosuhsai.net@gmail.com",
   "license": "MIT",
   "devDependencies": {
+    "esbuild": "^0.17.7",
     "typescript": "^4.9.4"
   }
 }
