@@ -43,6 +43,8 @@ export const VideoEffectView: FC<{
               scale={videoEffectOptions.scaleKeysMap[key]}
               view={videoEffectOptions.viewKeysMap[key]}
               onInput={(value) => emit({ [key]: value })}
+              min={(videoEffectOptions.minMaxMap[key] ?? [])[0]}
+              max={(videoEffectOptions.minMaxMap[key] ?? [])[1]}
               onChange={(value) =>
                 UndoManager.main
                   .add({
