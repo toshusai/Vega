@@ -22,4 +22,5 @@ export type EffectPlugin = {
   Component?: FC<{ scriptEffect: Effect; strip: Strip; appCtx: AppContext }>;
   update?: UpdateHandler<ScriptEffect>;
   beforeRender?: UpdateHandler<ScriptEffect>;
+  defaultEffect?: Effect;
 };

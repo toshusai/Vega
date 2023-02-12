@@ -1,10 +1,8 @@
-import { FC, useRef } from "react";
+import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { css } from "styled-components";
-import { Plus, Trash } from "tabler-icons-react";
+import { Trash } from "tabler-icons-react";
 
-import { Button } from "@/components/Button";
-import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
 import {
   Effect,
   isAudioEffect,
@@ -14,11 +12,8 @@ import {
   isVideoEffect,
   Strip,
 } from "@/core/types";
-import { userScriptMap } from "@/rendering/updateScriptEffect";
 import {
-  DropdownMenu,
   iconProps,
-  StyledContextMenuButton,
   TransparentIconButton,
 } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
@@ -95,43 +90,4 @@ export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
   );
 };
 
-export const AddEffectButton = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  const { show, onMouseLeave, setShow } = useClickOutside(ref);
 
-  let names: string[] = [];
-  for (const [, ep] of userScriptMap.entries()) {
-    names.push(ep.pkg?.name ?? "");
-  }
-
-  return (
-    <div
-      ref={ref}
-      onMouseLeave={onMouseLeave}
-      style={{
-        display: "flex",
-        position: "relative",
-        boxSizing: "border-box",
-      }}
-    >
-      <Button
-        onClick={() => setShow((v) => !v)}
-        css={css`
-          display: flex;
-        `}
-      >
-        <Plus {...iconProps}></Plus>
-        <div>add effects</div>
-      </Button>
-      {show && (
-        <DropdownMenu>
-          {names.map((name, i) => {
-            return (
-              <StyledContextMenuButton key={i}>{name}</StyledContextMenuButton>
-            );
-          })}
-        </DropdownMenu>
-      )}
-    </div>
-  );
-};
