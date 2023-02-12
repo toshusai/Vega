@@ -1,16 +1,31 @@
 import { FC } from "react";
+import { useDispatch } from "react-redux";
 import { css } from "styled-components";
 
+import { Effect } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
 import { Card } from "@/riapp-ui/src";
+import { actions } from "@/store/scene";
 
-import { AddEffectButton, Effects } from "./Effects";
+import { AddEffectButton } from "./AddEffectButton";
+import { Effects } from "./Effects";
 
 export const StripPanel: FC = () => {
   const selectedStripIds = useSelector((state) => state.scene.selectedStripIds);
   const strips = useSelector((state) => state.scene.strips);
   const selectedStrips = strips.filter((s) => selectedStripIds.includes(s.id));
   const fps = useSelector((state) => state.scene.fps);
+
+  const dispatch = useDispatch();
+
+  const handleAddEffect = (effect: Effect) => {
+    dispatch(
+      actions.updateStrip({
+        ...strip,
+        effects: [...strip.effects, effect],
+      })
+    );
+  };
 
   const strip = selectedStrips[0];
   if (!strip) {
@@ -25,7 +40,7 @@ export const StripPanel: FC = () => {
           justifyContent: "center",
         }}
       >
-        <AddEffectButton />
+        <AddEffectButton onAddEffect={handleAddEffect} />
       </div>
       <div
         css={css`

@@ -1,6 +1,7 @@
 import { Effect } from "./Effect";
 import { KeyFrame } from "./KeyFrame";
 
+
 export type ScriptEffect = {
   id: string;
   type: "script";

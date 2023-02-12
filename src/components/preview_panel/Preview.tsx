@@ -18,7 +18,13 @@ import { updateImageEffect } from "@/rendering/updateImageEffect";
 import { handler } from "@/rendering/updateScriptEffect";
 import { updateTextEffect } from "@/rendering/updateTextEffect";
 import { updateVideoEffect } from "@/rendering/updateVideoEffect";
-import { BottomToolTip, Card , getDragHander,IconButton , iconProps  } from "@/riapp-ui/src";
+import {
+  BottomToolTip,
+  Card,
+  getDragHander,
+  IconButton,
+  iconProps,
+} from "@/riapp-ui/src";
 import store from "@/store";
 import { actions } from "@/store/scene";
 import { download } from "@/utils/download";
@@ -196,6 +202,7 @@ export const Preview: FC = () => {
     const update = (t: number) => {
       if (!ctx) return;
       const delta = t - prevTime;
+      delta
       prevTime = t;
 
       const scene = store.getState().scene;
@@ -223,7 +230,9 @@ export const Preview: FC = () => {
       }
       if (scene.isPlaying) {
         dispatch(
-          actions.setCurrentTime(roundToFrame(scene.currentTime + 1 / (fps-1), fps))
+          actions.setCurrentTime(
+            roundToFrame(scene.currentTime + 1 / (fps - 1), fps)
+          )
         );
       }
 
