@@ -9,12 +9,14 @@ const numberKeys: (keyof NumberProps)[] = [
   "width",
   "height",
   "playbackRate",
+  "offset"
 ];
 
 const scaleKeysMap: NumberProps = {
   x: 1,
   y: 1,
   playbackRate: 0.01,
+  offset: 0.01,
 };
 
 const viewKeysMap: {
@@ -23,6 +25,7 @@ const viewKeysMap: {
   x: (v) => v.toFixed(0),
   y: (v) => v.toFixed(0),
   playbackRate: (v) => (v).toFixed(2),
+  offset: (v) => (v).toFixed(2),
 };
 
 export const minMaxMap: {
@@ -33,6 +36,7 @@ export const minMaxMap: {
   width: [0, Infinity],
   height: [0, Infinity],
   playbackRate: [0, 100],
+  offset: [0, Infinity],
 };
 
 export const videoEffectOptions = {
