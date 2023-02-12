@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { useDispatch } from "react-redux";
 
 import {
   Effect,
@@ -10,8 +9,6 @@ import {
   isVideoEffect,
   Strip,
 } from "@/core/types";
-import { writeFile } from "@/ipc/writeFile";
-import { actions } from "@/store/scene";
 
 import { AudioEffectView } from "./effects/audio/AudioEffectView";
 import { ImageEffectView } from "./effects/image/ImageEffectView";
@@ -21,7 +18,6 @@ import { ScriptEffectView } from "./ScriptEffectView";
 
 export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
   const { effects } = props;
-  const dispatch = useDispatch();
 
   return (
     <div>
@@ -49,17 +45,7 @@ export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
               <AudioEffectView audioEffect={effect} strip={props.strip} />
             )}
             {isScriptEffect(effect) && (
-              <ScriptEffectView
-                scriptEffect={effect}
-                strip={props.strip}
-                appCtx={{
-                  dispatch,
-                  actions,
-                  fs: {
-                    writeFile: writeFile,
-                  },
-                }}
-              />
+              <ScriptEffectView scriptEffect={effect} strip={props.strip} />
             )}
           </div>
         );

@@ -20,13 +20,13 @@ interface IpcRenderer extends NodeJS.EventEmitter {
 }
 
 import * as Core from "@/core";
-import * as ReAppUi from "@/riapp-ui";
+import * as RiAppUi from "@/riapp-ui";
 
 declare global {
   const ipcRenderer: IpcRenderer;
   interface Window {
     styled: styled;
     Core: typeof Core;
-    ReAppUi: typeof ReAppUi;
+    RiAppUi: typeof RiAppUi;
   }
 }
