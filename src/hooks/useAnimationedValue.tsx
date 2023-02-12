@@ -1,7 +1,7 @@
 import { Effect, Strip } from "@/core/types";
+import { calculateKeyFrameValue } from "@/core/types/utils/calculateKeyFrameValue";
 import { useCurrentTime } from "@/hooks/useCurrentTime";
 import { useFps } from "@/hooks/useFps";
-import { calculateKeyFrameValue } from "@/rendering/calculateKeyFrameValue";
 import { PickProperties } from "@/types/PickProperties";
 
 export function useAnimationedValue<T extends Effect>(effect: T, strip: Strip) {

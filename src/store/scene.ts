@@ -166,6 +166,7 @@ export const sceneSlice = createSlice({
       if (index >= 0) {
         strip.effects[index] = effect;
       }
+      console.log(effect)
     },
 
     removeStrip: (

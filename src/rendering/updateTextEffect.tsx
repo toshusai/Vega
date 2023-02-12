@@ -7,10 +7,9 @@ import {
   TextEffect,
   VideoAsset,
 } from "@/core/types";
+import { calculateKeyFrameValue } from "@/core/types/utils/calculateKeyFrameValue";
 import { SceneState } from "@/store/scene";
 import { PickProperties } from "@/types/PickProperties";
-
-import { calculateKeyFrameValue } from "./calculateKeyFrameValue";
 
 const loadedFontAssetMap = new Map<string, boolean>();
 

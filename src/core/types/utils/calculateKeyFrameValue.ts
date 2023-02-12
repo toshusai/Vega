@@ -1,4 +1,4 @@
-import { Ease, getEasingFunction, KeyFrame } from "@/core/types";
+import { Ease, getEasingFunction, KeyFrame } from "../../../core";
 
 export function calculateKeyFrameValue(
   keyframes: KeyFrame[],
