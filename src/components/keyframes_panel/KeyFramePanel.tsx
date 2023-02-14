@@ -143,6 +143,10 @@ export const KeyFramePanel: FC = () => {
     uniqueProperties,
   ]);
 
+  const recordingState = useSelector((state) => state.scene.recordingState);
+  if (recordingState === "recording") {
+    return null;
+  }
   if (selectedStrips.length !== 1) {
     return <Card width={100} height={100} />;
   }

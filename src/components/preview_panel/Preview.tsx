@@ -202,7 +202,7 @@ export const Preview: FC = () => {
     const update = (t: number) => {
       if (!ctx) return;
       const delta = t - prevTime;
-      delta
+      delta;
       prevTime = t;
 
       const scene = store.getState().scene;
@@ -211,9 +211,7 @@ export const Preview: FC = () => {
           dispatch(actions.setRecordingState("idle"));
           dispatch(actions.setCurrentTime(0));
           dispatch(actions.setIsPlaying(false));
-          if (store.getState().scene.recordingState === "recording") {
-            download(blob, "video.webm");
-          }
+          download(blob, "video.webm");
         };
 
         recorder.start(scene);

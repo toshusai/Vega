@@ -1,10 +1,16 @@
-import { isAudioEffect, isTextEffect, isVideoEffect } from "@/core/types";
+import {
+  isAudioEffect,
+  isScriptAsset,
+  isTextEffect,
+  isVideoEffect,
+} from "@/core/types";
 import { SceneState } from "@/store/scene";
 
 import {
   createAudioElementOrGetFromCache,
   getAudioElement,
 } from "./updateAudioEffect";
+import { loadScript } from "./updateScriptEffect";
 import {
   isAudioAsset,
   isTextAsset,
@@ -40,6 +46,11 @@ export function loadAllAssets(scene: SceneState) {
         }
       }
     });
+  });
+  assets.forEach((asset) => {
+    if (isScriptAsset(asset)) {
+      loadScript(asset);
+    }
   });
 }
 

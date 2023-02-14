@@ -18,6 +18,7 @@ import {
   FontAsset,
   ImageAsset,
   isScriptAsset,
+  ScriptAsset,
   VideoAsset,
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
@@ -30,6 +31,7 @@ const supportedVideoExtensions = ["mp4", "webm", "mov"];
 const supportedFontExtensions = ["ttf"];
 const supportedAudioExtensions = ["mp3", "wav"];
 const supportedImageExtensions = ["png", "jpg", "jpeg", "svg"];
+const supportedScriptExtensions = ["json"];
 
 function isImage(path: string) {
   return supportedImageExtensions.some((ext) => path.endsWith(ext));
@@ -44,6 +46,10 @@ function isFont(path: string) {
 }
 function isAudio(path: string) {
   return supportedAudioExtensions.some((ext) => path.endsWith(ext));
+}
+
+function isScript(path: string) {
+  return supportedScriptExtensions.some((ext) => path.endsWith(ext));
 }
 
 export const AssetPanel: FC = () => {
@@ -91,6 +97,14 @@ export const AssetPanel: FC = () => {
           path: `file://${path}`,
           type: "audio",
           name: path.split("/").join("_"),
+        };
+        dispatch(actions.updateAssets(asset));
+      } else if (isScript(path)) {
+        const asset: ScriptAsset = {
+          id: uuid(),
+          path: `file://${path.replace("/package.json", "")}`,
+          type: "script",
+          name: path.split("/")[path.split("/").length - 2],
         };
         dispatch(actions.updateAssets(asset));
       } else {
