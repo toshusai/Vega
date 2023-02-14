@@ -1,4 +1,6 @@
 import { FC, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "tabler-icons-react";
 
 import {
   AudioAsset,
@@ -17,7 +19,9 @@ import {
   isVideoAsset,
   loadFont,
 } from "@/rendering/updateTextEffect";
-import { Card, PanelBody, VInput } from "@/riapp-ui/src";
+import { Card, IconButton, iconProps, PanelBody, VInput } from "@/riapp-ui/src";
+import { actions } from "@/store/scene";
+import { filePick } from "@/utils/filePick";
 
 export const AssetDetailsPanel: FC = () => {
   const selectedAssetIds = useSelector((state) => state.scene.selectedAssetIds);
@@ -25,6 +29,14 @@ export const AssetDetailsPanel: FC = () => {
   const selectedAssets = assets.filter((asset) =>
     selectedAssetIds.includes(asset.id)
   );
+  const dispatch = useDispatch();
+
+  const changeAssetPath = () => {
+    filePick((_, path) => {
+      const newAsset = { ...selectedAssets[0], path: `file://` + path };
+      dispatch(actions.updateAssets(newAsset));
+    }, "*");
+  };
 
   if (selectedAssets.length !== 1) {
     return <Card width={100} height={100} />;
@@ -47,10 +59,15 @@ export const AssetDetailsPanel: FC = () => {
         </div>
         <div style={{ display: "flex" }}>
           <div>path:</div>
-          <VInput
-            style={{ marginLeft: "auto", width: "100%" }}
-            value={selectedAsset.path}
-          />
+          <IconButton
+            style={{ marginLeft: "auto" }}
+            onClick={() => {
+              changeAssetPath();
+            }}
+          >
+            <Link {...iconProps} />
+          </IconButton>
+          <VInput style={{ width: "100%" }} value={selectedAsset.path} />
         </div>
         <div
           style={{
