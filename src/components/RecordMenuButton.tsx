@@ -2,10 +2,10 @@ import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useSelector } from "@/hooks/useSelector";
-import { Item, Modal , ModalBody , ToolbarButton , VSelect } from "@/riapp-ui/src";
+import { Item, Modal, ModalBody, ToolbarButton, VSelect } from "@/riapp-ui/src";
+import { Button } from "@/riapp-ui/src/styled/Button";
 import { actions } from "@/store/scene";
 
-import { Button } from "./Button";
 import { PropertyName } from "./PropertyName";
 import { Row } from "./Row";
 
@@ -84,5 +84,3 @@ const RenderPanel: FC<{
     </ModalBody>
   );
 };
-
-

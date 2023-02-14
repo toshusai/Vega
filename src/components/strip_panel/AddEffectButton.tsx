@@ -3,12 +3,12 @@ import { uuid } from "short-uuid";
 import { css } from "styled-components";
 import { Plus } from "tabler-icons-react";
 
-import { Button } from "@/components/Button";
 import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
 import { ScriptEffect } from "@/core/types";
 import { EffectPlugin } from "@/interfaces/plugins/CustomEffect";
 import { userScriptMap } from "@/rendering/updateScriptEffect";
 import {
+  Button,
   DropdownMenu,
   iconProps,
   StyledContextMenuButton,
@@ -53,7 +53,7 @@ export const AddEffectButton: FC<{
       <Button
         onClick={() => setShow((v) => !v)}
         css={css`
-          display: flex;
+          display: flex !important;
         `}
       >
         <Plus {...iconProps}></Plus>

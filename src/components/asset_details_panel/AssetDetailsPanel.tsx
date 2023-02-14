@@ -190,6 +190,11 @@ const ScriptAssetDetailsPanel: FC<{
       });
   }, [props.asset.path]);
 
+  const recordingState = useSelector((state) => state.scene.recordingState);
+  if (recordingState === "recording") {
+    return null;
+  }
+
   if (!metaData) return <div>loading...</div>;
 
   return (

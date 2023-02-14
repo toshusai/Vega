@@ -447,6 +447,11 @@ export const Timeline: FC = () => {
     return Math.max(max, strip.layer);
   }, 0);
 
+  const recordingState = useSelector((state) => state.scene.recordingState);
+  if (recordingState === "recording") {
+    return null;
+  }
+
   return (
     <Card width={100} height={100}>
       <div

@@ -14,7 +14,7 @@ type Props = {
   onChange: (value: string) => void;
 };
 
-export const Button: FC<Props> = (props) => {
+export const DropdownLike: FC<Props> = (props) => {
   return (
     <IconButton
       style={{
