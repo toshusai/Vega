@@ -5634,6 +5634,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vega-types@file:./src/core::locator=vega%40workspace%3A.":
+  version: 1.0.0
+  resolution: "vega-types@file:./src/core#./src/core::hash=e90307&locator=vega%40workspace%3A."
+  checksum: 7d07e5dfc8c096f0b0644d16b1ebb6d02602b9580cfcba03ff497f8bcc5c2b788314b53c188d7e0fa2bd3db9ff5d0d4871bc9f171ce8851b990a4454e7f50a8a
+  languageName: node
+  linkType: hard
+
+"vega-ui@file:./src/riapp-ui::locator=vega%40workspace%3A.":
+  version: 1.0.0
+  resolution: "vega-ui@file:./src/riapp-ui#./src/riapp-ui::hash=7b77ef&locator=vega%40workspace%3A."
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    styled-components: ^5.3.6
+  checksum: 6d6279d26cf897e8750770fe271b000449cd5eb08be2a7fea1c18dce1df42f5accc2dad8cbe380b6fcde627753ec982ade5b491bdd31cf0cb2fa510be151b77d
+  languageName: node
+  linkType: hard
+
 "vega@workspace:.":
   version: 0.0.0-use.local
   resolution: "vega@workspace:."
@@ -5664,6 +5682,8 @@ __metadata:
     styled-components: ^5.3.6
     tabler-icons-react: ^1.56.0
     typescript: ^4.0.5
+    vega-types: ./src/core
+    vega-ui: ./src/riapp-ui
     yarn: ^1.22.19
   languageName: unknown
   linkType: soft
