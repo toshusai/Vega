@@ -12,6 +12,9 @@ import {
 import { useSelector } from "@/hooks/useSelector";
 import { iconProps } from "@/riapp-ui/src";
 
+export const STRIP_HEIGHT = 20;
+export const STRIP_GAP = 1;
+
 export const StripUI: FC<
   Strip & {
     pxPerSec: number;
@@ -26,9 +29,6 @@ export const StripUI: FC<
     onMouseDownRightHandle: (e: React.MouseEvent) => void;
   }
 > = (props) => {
-  const height = 40;
-  const gap = 4;
-
   const left = (props.start - props.offset) * props.pxPerSec;
   const width = props.length * props.pxPerSec;
 
@@ -45,13 +45,13 @@ export const StripUI: FC<
         position: "absolute",
         left: `${left}px`,
         width: `${props.length * props.pxPerSec}px`,
-        height: `${height}px`,
-        top: `${props.layer * 40 + gap * (props.layer + 1)}px`,
+        height: `${STRIP_HEIGHT}px`,
+        top: `${props.layer * STRIP_HEIGHT + STRIP_GAP * (props.layer)}px`,
         backgroundColor: "var(--color-text-strip)",
         border: props.selected
-          ? "2px solid var(--color-strip-selected)"
-          : "2px solid var(--color-text-strip-border)",
-        borderRadius: "4px",
+          ? "1px solid var(--color-strip-selected)"
+          : "1px solid var(--color-text-strip-border)",
+        // borderRadius: "4px",
         userSelect: "none",
         boxSizing: "border-box",
         zIndex: props.invalid ? 100 : 0,
@@ -66,11 +66,11 @@ export const StripUI: FC<
       <AudioEffectStripUI strip={props} />
       <StripHandle
         onMouseDown={props.onMouseDownLeftHandle}
-        style={{ left: "4px" }}
+        style={{ left: "1px" }}
       />
       <StripHandle
         onMouseDown={props.onMouseDownRightHandle}
-        style={{ right: "4px" }}
+        style={{ right: "1px" }}
       />
       {props.invalid && (
         <div
@@ -92,10 +92,8 @@ const StripHandle = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 6px;
-  top: 4px;
-  border-radius: 8px;
-  height: 28px;
+  width: 4px;
+  top: 0px;
   background-color: var(--color-strip-handle);
   cursor: ew-resize;
 `;
