@@ -33,7 +33,7 @@ import { UndoManager } from "@/UndoManager";
 import { roundToFrame } from "@/utils/roundToFrame";
 
 import { AddStripButton } from "./AddStripButton";
-import { MemoStripUI } from "./StripUI";
+import { MemoStripUI, STRIP_GAP, STRIP_HEIGHT } from "./StripUI";
 
 export const Timeline: FC = () => {
   const strips = useSelector((state) => state.scene.strips);
@@ -360,8 +360,8 @@ export const Timeline: FC = () => {
       const selectedStrips = strips.filter((strip) => {
         const left = (strip.start - start * timelineLength) * pxPerSec;
         const right = left + strip.length * pxPerSec;
-        const top = strip.layer * 44 + 4;
-        const bottom = top + 40;
+        const top = strip.layer * (STRIP_HEIGHT + STRIP_GAP);
+        const bottom = top + STRIP_HEIGHT;
         return (
           left < rect.left + rect.width &&
           right > rect.left &&
@@ -545,6 +545,19 @@ export const Timeline: FC = () => {
               $top={rect?.top ?? 0}
               $width={rect?.width ?? 0}
             ></SelectRect>
+            {[...Array(maxLayer + 1)].map((_, i) => (
+              <div
+                key={i}
+                style={{
+                  position: "absolute",
+                  background: "black",
+                  left: 0,
+                  top: `${(i + 1) * (STRIP_HEIGHT + STRIP_GAP) - STRIP_GAP}px`,
+                  borderBottom: "1px solid lightgray",
+                  width: "100%",
+                }}
+              ></div>
+            ))}
             {strips.map((strip) => (
               <MemoStripUI
                 {...strip}

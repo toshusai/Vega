@@ -1,3 +1,4 @@
+import { STRIP_GAP, STRIP_HEIGHT } from "@/components/timeline_panel/StripUI";
 import { Strip } from "@/core/types";
 import { roundToFrame } from "@/utils/roundToFrame";
 
@@ -45,7 +46,10 @@ export function moveStrip(
     newLength = snaped.newLength;
   }
 
-  const newLayer = roundToFrame(strip.layer + Math.round(diffY / 44), fps);
+  const newLayer = roundToFrame(
+    strip.layer + Math.round(diffY / (STRIP_HEIGHT + STRIP_GAP)),
+    fps
+  );
   const newStrip = {
     ...strip,
     start: newStart,
