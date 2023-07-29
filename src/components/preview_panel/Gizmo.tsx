@@ -1,15 +1,21 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { ImageEffect, VideoEffect } from "vega-types";
 
-import { isTextEffect, TextEffect } from "@/core/types";
+import {
+  isImageEffect,
+  isTextEffect,
+  isVideoEffect,
+  TextEffect,
+} from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import { getDragHander,SelectRectProps  } from "@/riapp-ui/src";
+import { getDragHander, SelectRectProps } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 
 import { makeNewKeyframes } from "./utils/makeNewKeyframes";
-import { textEffectToRect } from "./utils/textEffectToRect";
+import { effectToRect } from "./utils/textEffectToRect";
 
 export const Gizmo: FC<{
   left: number;
@@ -31,13 +37,18 @@ export const Gizmo: FC<{
 
   const strip = selectedStrips[0];
 
-  const textEffects = strip.effects.filter(isTextEffect);
+  const textEffects: (TextEffect | ImageEffect | VideoEffect)[] =
+    strip.effects.filter((effect) => {
+      return (
+        isTextEffect(effect) || isImageEffect(effect) || isVideoEffect(effect)
+      );
+    }) as (TextEffect | ImageEffect | VideoEffect)[];
 
   if (textEffects.length !== 1) {
     return null;
   }
 
-  const rect = textEffectToRect(
+  const rect = effectToRect(
     textEffects[0],
     props.scale,
     props.left,
@@ -47,8 +58,8 @@ export const Gizmo: FC<{
   );
   if (!rect) return null;
 
-  const emit = (partial: Partial<TextEffect>) => {
-    const newKFs = makeNewKeyframes<TextEffect>(
+  const emit = (partial: Partial<TextEffect | ImageEffect | VideoEffect>) => {
+    const newKFs = makeNewKeyframes(
       partial,
       textEffects[0],
       currentTime,
