@@ -3,7 +3,7 @@ import styled, { type CSSProp } from "styled-components";
 import type {} from "styled-components/cssprop";
 
 import * as Core from "@/core";
-import * as RiAppUi from "@/riapp-ui";
+import * as RiAppUi from "@/riapp-ui/src";
 
 interface IpcRenderer extends NodeJS.EventEmitter {
   invoke(channel: string, ...args: any[]): Promise<any>;
