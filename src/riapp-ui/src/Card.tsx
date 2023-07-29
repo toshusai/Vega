@@ -1,5 +1,6 @@
 import { FC } from "react";
 import styled from "styled-components";
+import { COLOR_BACKGROUND_NAME } from "./styled";
 
 export const Card: FC<{
   width: number | string;
@@ -24,7 +25,7 @@ export const Card: FC<{
 };
 
 const CardRoot = styled.div`
-  background-color: var(--color-background);
+  background-color: var(${COLOR_BACKGROUND_NAME});
   position: relative;
   height: 100%;
   width: 100%;

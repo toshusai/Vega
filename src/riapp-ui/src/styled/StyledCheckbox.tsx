@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { COLOR_BORDER_NAME, COLOR_BUTTON_BACKGROUND_NAME } from "./GlobalStyle";
 
 export const StyledCheckbox = styled.input`
   margin: 0;
@@ -7,8 +8,8 @@ export const StyledCheckbox = styled.input`
   box-sizing: border-box;
   font-size: 12px;
   line-height: 12px;
-  border: 1px solid var(--color-border);
-  background-color: var(--color-button-background);
+  border: 1px solid var(${COLOR_BORDER_NAME});
+  background-color: var(${COLOR_BUTTON_BACKGROUND_NAME});
   border-radius: 2px;
   height: 16px;
   width: 16px;

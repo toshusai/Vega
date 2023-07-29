@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, useRef } from "react";
 import styled from "styled-components";
+import { COLOR_BACKGROUND_2_NAME, COLOR_BORDER_NAME } from "../styled";
 
 interface ContextMenuProps {
   show: boolean;
@@ -19,8 +20,8 @@ const StyledDiv = styled.div.attrs<{
   };
 })<{ x: number; y: number }>`
   position: fixed;
-  background-color: var(--color-background-2);
-  border: 1px solid var(--color-border);
+  background-color: var(${COLOR_BACKGROUND_2_NAME});
+  border: 1px solid var(${COLOR_BORDER_NAME});
   color: var(--color-text);
   font-size: 12px;
   line-height: 12px;
@@ -61,5 +62,3 @@ const Overlay = styled.div`
   z-index: 1000;
   background-color: rgba(0, 0, 0, 0.1);
 `;
-
-

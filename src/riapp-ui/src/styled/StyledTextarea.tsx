@@ -1,4 +1,9 @@
 import styled from "styled-components";
+import {
+  COLOR_BORDER_NAME,
+  COLOR_INPUT_BACKGROUND_FOCUS_NAME,
+  COLOR_INPUT_BACKGROUND_NAME,
+} from "./GlobalStyle";
 
 export const StyledTextarea = styled.textarea`
   display: block;
@@ -7,8 +12,8 @@ export const StyledTextarea = styled.textarea`
   font-size: 12px;
   line-height: 12px;
   margin: 0;
-  border: 1px solid var(--color-border);
-  background-color: var(--color-input-background);
+  border: 1px solid var(${COLOR_BORDER_NAME});
+  background-color: var(${COLOR_INPUT_BACKGROUND_NAME});
   border-radius: 8px;
   height: 16px;
   padding-left: 8px;
@@ -21,7 +26,7 @@ export const StyledTextarea = styled.textarea`
   :focus {
     outline: none;
     border-radius: 8px;
-    background-color: var(--color-input-background-focus);
+    background-color: var(${COLOR_INPUT_BACKGROUND_FOCUS_NAME});
   }
 
   font-family: "Ricty Diminished";
