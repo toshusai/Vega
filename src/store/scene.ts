@@ -116,7 +116,7 @@ export const sceneSlice = createSlice({
       }
     ) => {
       const { start, end } = action.payload;
-      const result = restrictStartEnd(start, end, state.length, 1);
+      const result = restrictStartEnd(start, end, state.length, 0.1);
       state.viewStartRate = result[0];
       state.viewEndRate = result[1];
     },
