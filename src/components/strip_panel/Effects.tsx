@@ -12,10 +12,7 @@ import {
   isVideoEffect,
   Strip,
 } from "@/core/types";
-import {
-  iconProps,
-  TransparentIconButton,
-} from "@/riapp-ui/src";
+import { iconProps, TransparentIconButton } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 
 import { AudioEffectView } from "./effects/audio/AudioEffectView";
@@ -42,7 +39,7 @@ export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
     <div>
       {effects.map((effect) => {
         return (
-          <div key={effect.id} style={{ marginTop: "8px" }}>
+          <div key={effect.id}>
             <div
               css={css`
                 display: flex;
@@ -50,7 +47,6 @@ export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
             >
               <strong
                 style={{
-                  marginBottom: "4px",
                   display: "block",
                 }}
               >
@@ -89,5 +85,3 @@ export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
     </div>
   );
 };
-
-

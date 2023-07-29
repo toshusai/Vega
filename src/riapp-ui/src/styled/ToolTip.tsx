@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { COLOR_BACKGROUND_2_NAME } from "./GlobalStyle";
 
 const toolTipBase = css`
   position: absolute;
@@ -6,7 +7,7 @@ const toolTipBase = css`
   transform: translateX(-50%);
   padding: 4px 8px;
   border-radius: 4px;
-  background-color: var(--color-background-2);
+  background-color: var(${COLOR_BACKGROUND_2_NAME});
   color: var(--color-text);
   font-size: 12px;
   white-space: nowrap;

@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, ReactNode, useRef } from "react";
 import styled from "styled-components";
+import { COLOR_BACKGROUND_2_NAME, COLOR_BORDER_NAME } from "../src";
 
 interface ContextMenuProps {
   show: boolean;
@@ -20,8 +21,8 @@ const StyledDiv = styled.div.attrs<{
   };
 })<{ x: number; y: number }>`
   position: fixed;
-  background-color: var(--color-background-2);
-  border: 1px solid var(--color-border);
+  background-color: var(${COLOR_BACKGROUND_2_NAME});
+  border: 1px solid var(${COLOR_BORDER_NAME});
   color: var(--color-text);
   font-size: 12px;
   line-height: 12px;

@@ -35,40 +35,41 @@ export const StripPanel: FC = () => {
   return (
     <Card width={100} height={100}>
       <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <AddEffectButton onAddEffect={handleAddEffect} />
-      </div>
-      <div
         css={css`
           overflow-y: auto;
           display: flex;
           flex-direction: column;
-          height: calc(100% - 16px);
+          gap: 8px;
         `}
       >
-        <strong
-          style={{
-            marginBottom: "4px",
-            display: "block",
-          }}
-        >
-          strip
-        </strong>
-        <div style={{ display: "flex" }}>
-          <div>start:</div>
-          {strip.start.toFixed(3)}, (fame:{" "}
-          {(strip.start / (1 / fps)).toFixed(0)})
-        </div>
-        <div style={{ display: "flex" }}>
-          <div>length:</div>
-          {strip.length.toFixed(3)}, (fame:{" "}
-          {(strip.length / (1 / fps)).toFixed(0)})
+        <div>
+          <strong
+            style={{
+              display: "block",
+            }}
+          >
+            strip
+          </strong>
+          <div style={{ display: "flex" }}>
+            <div>start:</div>
+            {strip.start.toFixed(3)}, (fame:{" "}
+            {(strip.start / (1 / fps)).toFixed(0)})
+          </div>
+          <div style={{ display: "flex" }}>
+            <div>length:</div>
+            {strip.length.toFixed(3)}, (fame:{" "}
+            {(strip.length / (1 / fps)).toFixed(0)})
+          </div>
         </div>
         <Effects effects={strip.effects} strip={strip} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <AddEffectButton onAddEffect={handleAddEffect} />
+        </div>
       </div>
     </Card>
   );
