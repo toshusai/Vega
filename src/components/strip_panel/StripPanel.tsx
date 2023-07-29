@@ -33,9 +33,14 @@ export const StripPanel: FC = () => {
   }
 
   return (
-    <Card width={100} height={100} style={{
-      overflow: "auto"
-    }}>
+    <Card
+      width={100}
+      height={100}
+      style={{
+        overflow: "auto",
+        padding: "0 8px",
+      }}
+    >
       <div
         css={css`
           overflow-y: auto;
