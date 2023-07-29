@@ -1,4 +1,5 @@
-import { FC, useRef } from "react";
+import React, { FC, RefObject, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { uuid } from "short-uuid";
 import { css } from "styled-components";
 import { Plus } from "tabler-icons-react";
@@ -18,6 +19,7 @@ export const AddEffectButton: FC<{
   onAddEffect: (effect: ScriptEffect) => void;
 }> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
+  const [showThis, setShowThis] = React.useState(false);
   const { show, onMouseLeave, setShow } = useClickOutside(ref);
 
   let pkgs: (EffectPlugin & { assetId: string })[] = [];
@@ -29,6 +31,10 @@ export const AddEffectButton: FC<{
     });
   }
 
+  useEffect(() => {
+    setShowThis(pkgs.length > 0);
+  }, [pkgs.length]);
+
   const handleClick = (pkg: EffectPlugin & { assetId: string }) => {
     setShow(false);
     props.onAddEffect({
@@ -39,6 +45,8 @@ export const AddEffectButton: FC<{
       ...pkg.defaultEffect,
     } as ScriptEffect);
   };
+
+  if (!showThis) return null;
 
   return (
     <div
@@ -59,17 +67,38 @@ export const AddEffectButton: FC<{
         <Plus {...iconProps}></Plus>
         <div>add effects</div>
       </Button>
-      {show && (
-        <DropdownMenu>
-          {pkgs.map((pkg, i) => {
-            return (
-              <StyledContextMenuButton onClick={() => handleClick(pkg)} key={i}>
-                {pkg.pkg?.name}
-              </StyledContextMenuButton>
-            );
-          })}
-        </DropdownMenu>
-      )}
+      {show &&
+        createPortal(
+          <DropdownMenu2 targetRef={ref}>
+            {pkgs.map((pkg, i) => {
+              return (
+                <StyledContextMenuButton
+                  onClick={() => handleClick(pkg)}
+                  key={i}
+                >
+                  {pkg.pkg?.name}
+                </StyledContextMenuButton>
+              );
+            })}
+          </DropdownMenu2>,
+          document.body
+        )}
     </div>
   );
 };
+
+function DropdownMenu2(props: {
+  targetRef: RefObject<HTMLDivElement>;
+  children: React.ReactNode;
+}) {
+  const el = props.targetRef.current;
+  if (!el) return null;
+  const rect = el.getBoundingClientRect();
+  return (
+    <DropdownMenu
+      style={{ position: "absolute", top: rect.bottom, left: rect.left }}
+    >
+      {props.children}
+    </DropdownMenu>
+  );
+}
