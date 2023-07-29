@@ -22,9 +22,9 @@ import {
   IconButton,
   iconProps,
   MemoScaleScrollBar,
-  MemoTimeView,
   SelectRect,
   TimeCursor,
+  TimeView,
   ToolTip,
   useWidth,
 } from "@/riapp-ui/src";
@@ -68,10 +68,8 @@ export const Timeline: FC = () => {
       }
     },
     ({ startEvent: e }) => {
-      // TODO fix magic number
       // TODO merge with KeyFramePanel
-      const newCurrentTime =
-        (e.clientX - 8) / pxPerSec + start * timelineLength;
+      const newCurrentTime = e.clientX / pxPerSec + start * timelineLength;
       if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
         dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
       }
@@ -516,7 +514,7 @@ export const Timeline: FC = () => {
             overflow: "hidden",
           }}
         >
-          <MemoTimeView
+          <TimeView
             offsetSec={start * timelineLength}
             endSec={timelineLength}
             pxPerSec={pxPerSec}
@@ -584,7 +582,7 @@ export const Timeline: FC = () => {
               style={{
                 position: "absolute",
                 height: "44px",
-                top: `${(maxLayer + 1) * 44}px`,
+                top: `${(maxLayer + 1) * (STRIP_GAP + STRIP_HEIGHT)}px`,
                 width: "1px",
               }}
             ></div>

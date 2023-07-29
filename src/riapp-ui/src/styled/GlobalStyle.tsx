@@ -4,16 +4,18 @@ export const GlobalStyle = createGlobalStyle`
 :root {
   --color-background-2: #222222;
   --color-background: #3a3a3a;
-  --color-primary: #136adf;
+  --color-primary: #2c7be3;
   --color-primary-bg: #1d1d1d;
 
   --color-border: #545454;
-  --color-input-background: #7a7a7a;
+  --color-input-background: #8b8b8b;
   --color-input-background-focus: #272727;
   --color-input-background-disabled: #3a3a3a;
   --color-text: #ffffff;
 
-  --color-text-strip: #136adf;
+  --color-button-background: #5c5c5c;
+
+  --color-text-strip: #3481e6;
   --color-text-disabled: #545454;
   --color-text-strip-border: #3e87e0;
   --color-strip-handle: #0000002e;
@@ -27,16 +29,14 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     overflow: visible;
-    border-radius: 8px;
 }
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
     background-color: var(--color-border);
-    border-radius: 8px;
     right: 0;
-    border: 2px solid var(--color-input-background);
+    border: 1px solid var(--color-input-background);
 }
 ::-webkit-scrollbar-track {
   background: transparent;

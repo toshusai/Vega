@@ -8,7 +8,7 @@ export const StyledSelect = styled.select`
   line-height: 12px;
   margin: 0;
   border: 1px solid var(--color-border);
-  background-color: var(--color-input-background);
+  background-color: var(--color-button-background);
   border-radius: 8px;
   height: 16px;
   padding-left: 8px;

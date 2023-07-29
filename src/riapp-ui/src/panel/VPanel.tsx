@@ -26,7 +26,7 @@ export const VPanel: FC<{
   defaultRate?: number;
 }> = (props) => {
   const [rate, setRate] = React.useState(props.defaultRate ?? 0.5);
-  const topHeight = `calc(${(rate * 100).toFixed(0)}% - 2px)`;
+  const topHeight = `calc(${(rate * 100)}% - 2px)`;
   const bottomHeight = `calc(${(1 - rate) * 100}% - 2px)`;
   const handleMouseDown = getDragHander((ctx) => {
     const { diffY } = ctx;

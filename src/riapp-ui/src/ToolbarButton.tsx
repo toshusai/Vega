@@ -7,7 +7,6 @@ export const ToolbarButton = styled.button`
   padding: 2px 8px;
   height: 16px;
   font-size: 12px;
-  border-radius: 4px;
   font-family: "Ricty Diminished";
   cursor: pointer;
   :hover {

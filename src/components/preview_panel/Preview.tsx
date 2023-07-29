@@ -309,7 +309,8 @@ export const Preview: FC = () => {
             marginBottom: "2px",
             zIndex: 2,
             position: "relative",
-            backgroundColor: "rgba(0,0,0,0.5)",
+            backgroundColor: "var(--color-background)",
+            borderBottom: "1px solid var(--color-border)",
           }}
         >
           <IconButton
