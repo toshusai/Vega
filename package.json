@@ -27,8 +27,6 @@
     "short-uuid": "^4.2.2",
     "styled-components": "^5.3.6",
     "tabler-icons-react": "^1.56.0",
-    "vega-types": "./src/core",
-    "vega-ui": "./src/riapp-ui",
     "yarn": "^1.22.19"
   },
   "devDependencies": {
