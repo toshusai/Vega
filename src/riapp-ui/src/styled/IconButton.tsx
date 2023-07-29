@@ -12,7 +12,7 @@ export const IconButton = styled.button`
   cursor: pointer;
   display: flex;
   border-radius: 4px;
-  background-color: var(--color-input-background);
+  background-color: var(--color-button-background);
   user-select: none;
 
   :hover > ${ToolTip} {

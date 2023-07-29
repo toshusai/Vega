@@ -44,13 +44,11 @@ export const ScaleScrollBar: FC<{
     <div
       ref={ref}
       style={{
-        left: `${props.start}px`,
         width: `100%`,
-        minHeight: "16px",
+        minHeight: "10px",
         backgroundColor: "var(--color-input-background)",
         userSelect: "none",
-        borderRadius: "8px",
-        border: "1px solid var(--color-border)",
+        border: "1px solid var(--color-input-background)",
         boxSizing: "border-box",
         position: "relative",
       }}
@@ -58,7 +56,6 @@ export const ScaleScrollBar: FC<{
       <div
         style={{
           position: "absolute",
-          borderRadius: "8px",
           left: `calc(${Math.max(
             0,
             (props.end - props.start) * (ref.current?.clientWidth ?? 0) <=
@@ -69,18 +66,18 @@ export const ScaleScrollBar: FC<{
           )}%)`,
           width: `calc(${(props.end - props.start) * 100}%)`,
           minWidth: `${minimumWidthPx}px`,
-          height: "14px",
-          backgroundColor: "var(--color-text-strip)",
+          height: "8px",
+          backgroundColor: "var(--color-border)",
         }}
         onMouseDown={handleMouseDownStrip}
       >
         <ScaleScrollBarHandle
           onMouseDown={handleMouseDownLeftHandle}
-          style={{ left: "4px" }}
+          style={{ left: "0px" }}
         />
         <ScaleScrollBarHandle
           onMouseDown={handleMouseDownRightHandle}
-          style={{ right: "4px" }}
+          style={{ right: "0px" }}
         />
       </div>
     </div>
@@ -91,12 +88,10 @@ const ScaleScrollBarHandle = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 6px;
-  top: 2px;
-  border-radius: 8px;
-  height: 10px;
-  background-color: var(--color-strip-handle);
-  cursor: ew-resize;
+  width: 8px;
+  height: 8px;
+  background-color: #3a3a3a;
+  cursor: pointer;
 `;
 
 export const MemoScaleScrollBar = memo(ScaleScrollBar, (prev, next) => {

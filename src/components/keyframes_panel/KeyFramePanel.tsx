@@ -62,7 +62,7 @@ export const KeyFramePanel: FC = () => {
       // TODO fix magic number
       if (!strip) return 0;
       const newCurrentTime =
-        (e.clientX - 40) / pxPerSec + start * strip.length + strip.start;
+        (e.clientX - 32) / pxPerSec + start * strip.length + strip.start;
       if (newCurrentTime >= 0 && newCurrentTime <= strip.length + strip.start) {
         dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
       }

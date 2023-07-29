@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import styled, { css } from "styled-components";
 
 import { AssetDetailsPanel } from "@/components/asset_details_panel/AssetDetailsPanel";
 import { AssetPanel } from "@/components/assets_panel/AssetPanel";
@@ -10,7 +11,7 @@ import { RecordMenuButton } from "@/components/RecordMenuButton";
 import { SettingsMenuButton } from "@/components/SettingsMenuButton";
 import { StripPanel } from "@/components/strip_panel/StripPanel";
 import { Timeline } from "@/components/timeline_panel/Timeline";
-import { GlobalStyle,HPanel , VPanel  } from "@/riapp-ui/src";
+import { GlobalStyle, HPanel, VPanel } from "@/riapp-ui/src";
 import store from "@/store";
 import { initGlobalEvent } from "@/utils/initGlobalEvent";
 
@@ -20,51 +21,66 @@ const IndexPage = () => {
     <>
       <GlobalStyle />
       <Provider store={store}>
-        <div
-          style={{
-            display: "flex",
-            height: "16px",
-            padding: "4px 4px 0px 4px",
-          }}
-        >
-          <MenuButton />
-          <RecordMenuButton />
-          <SettingsMenuButton />
-        </div>
+        <RootDiv>
+          <div
+            style={{
+              display: "flex",
+              height: "16px",
+            }}
+          >
+            <MenuButton />
+            <RecordMenuButton />
+            <SettingsMenuButton />
+          </div>
 
-        <div
-          style={{
-            padding: "4px",
-            // 20px header + 8px padding
-            height: "calc(100% - 28px)",
-            width: "calc(100% - 8px)",
-            overflow: "hidden",
-          }}
-        >
-          <VPanel
-            top={
-              <HPanel
-                left={
-                  <VPanel top={<StripPanel />} bottom={<KeyFramePanel />} />
-                }
-                right={<Preview />}
-                defaultRate={0.3}
-              />
-            }
-            bottom={
-              <HPanel
-                left={<Timeline />}
-                right={
-                  <HPanel left={<AssetDetailsPanel />} right={<AssetPanel />} />
-                }
-                defaultRate={0.7}
-              />
-            }
-          />
-        </div>
+          <div
+            style={{
+              paddingTop: "0px",
+              // 20px header + 8px padding
+              height: "100%",
+              width: "100%",
+              overflow: "hidden",
+            }}
+          >
+            <VPanel
+              top={
+                <HPanel
+                  left={
+                    <VPanel top={<StripPanel />} bottom={<KeyFramePanel />} />
+                  }
+                  right={<Preview />}
+                  defaultRate={0.3}
+                />
+              }
+              bottom={
+                <HPanel
+                  left={<Timeline />}
+                  right={
+                    <HPanel
+                      left={<AssetDetailsPanel />}
+                      right={<AssetPanel />}
+                    />
+                  }
+                  defaultRate={0.7}
+                />
+              }
+            />
+          </div>
+          <div
+            css={css`
+              height: 8px;
+            `}
+          ></div>
+        </RootDiv>
       </Provider>
     </>
   );
 };
+
+const RootDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
 
 export default IndexPage;

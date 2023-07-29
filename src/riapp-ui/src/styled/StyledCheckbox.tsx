@@ -8,7 +8,7 @@ export const StyledCheckbox = styled.input`
   font-size: 12px;
   line-height: 12px;
   border: 1px solid var(--color-border);
-  background-color: var(--color-input-background);
+  background-color: var(--color-button-background);
   border-radius: 2px;
   height: 16px;
   width: 16px;
