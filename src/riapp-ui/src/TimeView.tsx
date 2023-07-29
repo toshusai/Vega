@@ -29,6 +29,7 @@ function getStepPixel(
   const stepPx = step[stepI] * pxPerSec;
   const viewNumber = Math.ceil(width / stepPx);
   const offset = (offsetSec * pxPerSec) % stepPx;
+  if (isNaN(viewNumber)) return [];
   return [...Array(viewNumber).keys()].map((i) => {
     return i * stepPx - offset;
   });
