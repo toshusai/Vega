@@ -6,16 +6,30 @@
   "types": "dist/src/index.d.ts",
   "module": "dist/esm/index.js",
   "scripts": {
-    "build": "tsc --declaration --emitDeclarationOnly --declarationDir './dist' && node build.js"
+    "build": "tsc --declaration --emitDeclarationOnly --declarationDir './dist' && node build.js",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "author": "tosuhsai.net@gmail.com",
   "license": "MIT",
   "devDependencies": {
+    "@babel/preset-env": "^7.22.9",
+    "@babel/preset-react": "^7.22.5",
+    "@babel/preset-typescript": "^7.22.5",
+    "@storybook/addon-essentials": "^7.1.1",
+    "@storybook/addon-interactions": "^7.1.1",
+    "@storybook/addon-links": "^7.1.1",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.1.1",
+    "@storybook/react": "^7.1.1",
+    "@storybook/react-webpack5": "^7.1.1",
+    "@storybook/testing-library": "^0.2.0",
     "@types/react": "^16.9.9",
     "@types/styled-components": "^5.1.26",
     "esbuild": "^0.16.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "storybook": "^7.1.1",
     "styled-components": "^5.3.6",
     "typescript": "^4.9.4"
   },
