@@ -140,8 +140,12 @@ const ImageAssetDetailsPanel: FC<{
     if (imgRef.current) {
       setWidth(imgRef.current.naturalWidth);
       setHeight(imgRef.current.naturalHeight);
+      imgRef.current.onload = () => {
+        setWidth(imgRef.current?.naturalWidth);
+        setHeight(imgRef.current?.naturalHeight);
+      };
     }
-  }, [props.asset.path]);
+  }, []);
 
   return (
     <div>
