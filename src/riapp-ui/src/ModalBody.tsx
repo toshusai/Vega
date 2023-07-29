@@ -16,6 +16,7 @@ export const ModalBody: FC<{
       height={"auto"}
       style={{
         margin: "auto",
+        padding: "8px",
       }}
     >
       <PanelBody
