@@ -83,9 +83,14 @@ const TimeViewRootDiv = styled.div`
   color: white;
 `;
 
-const TimePointDiv = styled.div<{ $left: number }>`
+const TimePointDiv = styled.div.attrs<{
+  $left: number;
+}>((props) => ({
+  style: {
+    left: props.$left,
+  },
+}))<{ $left: number }>`
   position: absolute;
-  left: ${(props) => props.$left}px;
   border-left: 1px solid gray;
   height: 4px;
   bottom: 0px;

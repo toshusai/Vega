@@ -15,11 +15,14 @@ export function TimeText(props: { time: number; left: number }) {
   );
 }
 
-const TimeTextDiv = styled.div<{
+const TimeTextDiv = styled.div.attrs<{
   $left: number;
-}>`
+}>((props) => ({
+  style: {
+    left: props.$left,
+  },
+}))<{ $left: number }>`
   position: absolute;
-  left: ${(props) => props.$left}px;
   height: 20px;
   border-left: 1px solid lightgray;
 `;
