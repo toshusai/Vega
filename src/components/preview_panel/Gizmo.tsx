@@ -1,13 +1,14 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { ImageEffect, VideoEffect } from "vega-types";
 
 import {
+  ImageEffect,
   isImageEffect,
   isTextEffect,
   isVideoEffect,
   TextEffect,
+  VideoEffect,
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
 import { getDragHander, SelectRectProps } from "@/riapp-ui/src";
