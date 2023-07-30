@@ -1,12 +1,11 @@
 import { FC } from "react";
 
-import { useWidth } from "./hooks/useWidth";
+import { useWidth } from "../hooks/useWidth";
 import styled from "styled-components";
 import { TimeText } from "./TimeText";
 
 type TimeViewProps = {
   offsetSec: number;
-  endSec: number;
   pxPerSec: number;
   fps: number;
   frameMode: boolean;
