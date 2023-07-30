@@ -22,10 +22,11 @@ import {
   IconButton,
   iconProps,
   MemoScaleScrollBar,
-  SelectRect,
+  SelectRectDiv,
   TimeCursor,
   TimeView,
   ToolTip,
+  useSelectRect,
   useWidth,
 } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
@@ -54,6 +55,7 @@ export const Timeline: FC = () => {
   const isSnap = useSelector((state) => state.scene.isSnap);
 
   const dispatch = useDispatch();
+  const { handleMouseDownForSelect, rect } = useSelectRect();
 
   useEffect(() => {
     setPxPerSec(width / ((end - start) * timelineLength));
@@ -319,40 +321,6 @@ export const Timeline: FC = () => {
       }
     );
 
-  const [rect, setRect] = useState<{
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-  } | null>(null);
-
-  const handleMouseDownForSelect = getDragHander(
-    ({ diffX, diffY, startEvent }) => {
-      const el = startEvent.target as HTMLElement;
-      const rect = el.getBoundingClientRect();
-      let left = startEvent.clientX - rect.left;
-      let top = startEvent.clientY - rect.top + el.scrollTop;
-      let width = diffX;
-      let height = diffY;
-      if (width < 0) {
-        left += width;
-        width = -width;
-      }
-      if (height < 0) {
-        top += height;
-        height = -height;
-      }
-      setRect({ left, top, width, height });
-    },
-    () => {},
-    (ctx) => {
-      setRect(null);
-      if (ctx.diffX === 0 && ctx.diffY === 0) {
-        dispatch(actions.setSelectedStripIds([]));
-      }
-    }
-  );
-
   useEffect(() => {
     if (rect) {
       const selectedStrips = strips.filter((strip) => {
@@ -370,6 +338,8 @@ export const Timeline: FC = () => {
       dispatch(
         actions.setSelectedStripIds(selectedStrips.map((strip) => strip.id))
       );
+    } else {
+      dispatch(actions.setSelectedStripIds([]));
     }
   }, [dispatch, pxPerSec, rect, start, strips, timelineLength]);
 
@@ -516,7 +486,6 @@ export const Timeline: FC = () => {
         >
           <TimeView
             offsetSec={start * timelineLength}
-            endSec={timelineLength}
             pxPerSec={pxPerSec}
             fps={fps}
             frameMode={true}
@@ -537,12 +506,12 @@ export const Timeline: FC = () => {
             ref={scrollRef}
             onMouseDown={handleMouseDownForSelect}
           >
-            <SelectRect
+            <SelectRectDiv
               $height={rect?.height ?? 0}
               $left={rect?.left ?? 0}
               $top={rect?.top ?? 0}
               $width={rect?.width ?? 0}
-            ></SelectRect>
+            ></SelectRectDiv>
             {[...Array(maxLayer + 1)].map((_, i) => (
               <div
                 key={i}

@@ -7,7 +7,7 @@ export type SelectRectProps = {
   $height: number;
 };
 
-export const SelectRect = styled.div.attrs<SelectRectProps>((props) => ({
+export const SelectRectDiv = styled.div.attrs<SelectRectProps>((props) => ({
   style: {
     left: props.$left + "px",
     width: props.$width + "px",
