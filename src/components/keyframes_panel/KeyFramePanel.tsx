@@ -83,7 +83,9 @@ export const KeyFramePanel: FC = () => {
     setPxPerSec(width / ((end - start) * strip.length));
   }, [width, start, end, selectedStrips]);
   const dispatch = useDispatch();
-  const { handleMouseDownForSelect, rect } = useSelectRect();
+  const { handleMouseDownForSelect, rect } = useSelectRect(() => {
+    dispatch(actions.setSelectKeyframeIds([]));
+  });
   const strip = selectedStrips[0] as Strip | undefined;
 
   const allKeyframes = useMemo<KeyFrame[]>(
@@ -126,8 +128,6 @@ export const KeyFramePanel: FC = () => {
       dispatch(
         actions.setSelectKeyframeIds(selectedKeyframes.map((strip) => strip.id))
       );
-    } else {
-      dispatch(actions.setSelectKeyframeIds([]));
     }
   }, [
     allKeyframes,
