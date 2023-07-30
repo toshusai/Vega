@@ -17,10 +17,11 @@ import {
   IconButton,
   iconProps,
   ScaleScrollBar,
-  SelectRect,
+  SelectRectDiv,
   TimeCursor,
   TimeView,
   ToolTip,
+  useSelectRect,
   useWidth,
 } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
@@ -82,13 +83,7 @@ export const KeyFramePanel: FC = () => {
     setPxPerSec(width / ((end - start) * strip.length));
   }, [width, start, end, selectedStrips]);
   const dispatch = useDispatch();
-  const [rect, setRect] = useState<{
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-  } | null>(null);
-
+  const { handleMouseDownForSelect, rect } = useSelectRect();
   const strip = selectedStrips[0] as Strip | undefined;
 
   const allKeyframes = useMemo<KeyFrame[]>(
@@ -131,6 +126,8 @@ export const KeyFramePanel: FC = () => {
       dispatch(
         actions.setSelectKeyframeIds(selectedKeyframes.map((strip) => strip.id))
       );
+    } else {
+      dispatch(actions.setSelectKeyframeIds([]));
     }
   }, [
     allKeyframes,
@@ -258,33 +255,6 @@ export const KeyFramePanel: FC = () => {
       }
     );
 
-  const handleMouseDownForSelect = getDragHander(
-    ({ diffX, diffY, startEvent }) => {
-      const el = startEvent.target as HTMLElement;
-      const rect = el.getBoundingClientRect();
-      let left = startEvent.clientX - rect.left;
-      let top = startEvent.clientY - rect.top;
-      let width = diffX;
-      let height = diffY;
-      if (width < 0) {
-        left += width;
-        width = -width;
-      }
-      if (height < 0) {
-        top += height;
-        height = -height;
-      }
-      setRect({ left, top, width, height });
-    },
-    undefined,
-    (ctx) => {
-      setRect(null);
-      if (ctx.diffX === 0 && ctx.diffY === 0) {
-        dispatch(actions.setSelectKeyframeIds([]));
-      }
-    }
-  );
-
   const handleDeleteKeyframe = () => {
     if (!strip) return;
     const newEffects = strip.effects.map((effect) => {
@@ -361,7 +331,6 @@ export const KeyFramePanel: FC = () => {
           style={{ width: "100%", position: "relative", overflow: "hidden" }}
         >
           <TimeView
-            endSec={strip.length}
             offsetSec={start * strip.length}
             pxPerSec={pxPerSec}
             fps={fps}
@@ -385,12 +354,12 @@ export const KeyFramePanel: FC = () => {
             }}
             onMouseDown={handleMouseDownForSelect}
           >
-            <SelectRect
+            <SelectRectDiv
               $height={rect?.height ?? 0}
               $left={rect?.left ?? 0}
               $top={rect?.top ?? 0}
               $width={rect?.width ?? 0}
-            ></SelectRect>
+            ></SelectRectDiv>
             {allKeyframes.map((keyframe, j) => {
               const x = (keyframe.time - start * strip.length) * pxPerSec;
               const propertiesIndex = Array.from(uniqueProperties).indexOf(
