@@ -1,7 +1,7 @@
 import { FC, memo, useRef } from "react";
 import styled from "styled-components";
 
-import { getDragHander } from "./utils/getDragHander";
+import { getDragHander } from "../utils/getDragHander";
 
 export const ScaleScrollBar: FC<{
   start: number;
@@ -11,17 +11,20 @@ export const ScaleScrollBar: FC<{
 }> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
   const handleMouseDownLeftHandle = getDragHander(({ diffX }) => {
-    const newStart = Math.max(
-      props.start + diffX / ref.current!.clientWidth,
-      0
-    );
-    if (props.end - newStart < (props.minimumRange ?? 0)) return;
+    let newStart = Math.max(props.start + diffX / ref.current!.clientWidth, 0);
+    const mimumWidthRate = minimumWidthPx / (ref.current?.clientWidth ?? 0);
+    if (props.end - newStart < mimumWidthRate) {
+      newStart = props.end - mimumWidthRate;
+    }
     props.onScaleChange?.(newStart, props.end);
   });
 
   const handleMouseDownRightHandle = getDragHander(({ diffX }) => {
-    const newEnd = Math.min(props.end + diffX / ref.current!.clientWidth, 1);
-    if (newEnd - props.start < (props.minimumRange ?? 0)) return;
+    let newEnd = Math.min(props.end + diffX / ref.current!.clientWidth, 1);
+    const mimumWidthRate = minimumWidthPx / (ref.current?.clientWidth ?? 0);
+    if (newEnd - props.start < mimumWidthRate) {
+      newEnd = props.start + mimumWidthRate;
+    }
     props.onScaleChange?.(props.start, newEnd);
   });
 
@@ -38,7 +41,7 @@ export const ScaleScrollBar: FC<{
     props.onScaleChange?.(newStart, newEnd);
   });
 
-  const minimumWidthPx = 24;
+  const minimumWidthPx = 17;
 
   return (
     <div
@@ -56,14 +59,13 @@ export const ScaleScrollBar: FC<{
       <div
         style={{
           position: "absolute",
-          left: `calc(${Math.max(
-            0,
-            (props.end - props.start) * (ref.current?.clientWidth ?? 0) <=
-              minimumWidthPx
-              ? (props.end - minimumWidthPx / (ref.current?.clientWidth ?? 0)) *
-                  100
-              : props.start * 100
-          )}%)`,
+          top: "20px",
+        }}
+      ></div>
+      <div
+        style={{
+          position: "absolute",
+          left: `calc(${props.start * 100}%)`,
           width: `calc(${(props.end - props.start) * 100}%)`,
           minWidth: `${minimumWidthPx}px`,
           height: "8px",
