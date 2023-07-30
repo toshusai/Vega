@@ -6,7 +6,7 @@ import { getDragHander } from "../utils/getDragHander";
 import { StyledInput } from "../styled/StyledInput";
 import { minMax } from "../utils/minMax";
 
-type NumberEditInputProps = {
+type VNumberInputProps = {
   value?: number;
   scale?: number;
   view?: (value: number) => string;
@@ -17,7 +17,7 @@ type NumberEditInputProps = {
   max?: number;
 };
 
-export const VNumberInput: FC<NumberEditInputProps> = (props) => {
+export const VNumberInput: FC<VNumberInputProps> = (props) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const { inputRef, value, setValue } = useNativeOnChange(

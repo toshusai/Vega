@@ -3,7 +3,7 @@ export * from "./DropdownLike";
 export * from "./DropdownMenu";
 export * from "./Modal";
 export * from "./ModalBody";
-export * from "./NumberEditInput";
+export * from "./VNumberInput";
 export * from "./PanelBody";
 export * from "./ScaleScrollBar";
 export * from "./TimeCursor";
