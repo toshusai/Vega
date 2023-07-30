@@ -7,7 +7,7 @@ import { DividerBox } from "./DividerBox";
 
 const HPanelDivider = styled.div`
   min-width: 4px;
-  height: 100%;
+  min-height: 100%;
   background-color: var(--color-panel-divider);
   cursor: col-resize;
   user-select: none;
