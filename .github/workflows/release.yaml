@@ -24,6 +24,12 @@ jobs:
           node-version: 16
       - name: Install dependencies
         run: yarn
+      - name: Install dependencies
+        run: yarn
+        working-directory: ./src/core
+      - name: Install dependencies
+        run: yarn
+        working-directory: ./src/riapp-ui
       - name: build
         run: yarn build
       - name: Create release
