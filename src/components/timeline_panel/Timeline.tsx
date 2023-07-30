@@ -55,7 +55,9 @@ export const Timeline: FC = () => {
   const isSnap = useSelector((state) => state.scene.isSnap);
 
   const dispatch = useDispatch();
-  const { handleMouseDownForSelect, rect } = useSelectRect();
+  const { handleMouseDownForSelect, rect } = useSelectRect(() => {
+    dispatch(actions.setSelectedStripIds([]));
+  });
 
   useEffect(() => {
     setPxPerSec(width / ((end - start) * timelineLength));
@@ -338,8 +340,6 @@ export const Timeline: FC = () => {
       dispatch(
         actions.setSelectedStripIds(selectedStrips.map((strip) => strip.id))
       );
-    } else {
-      dispatch(actions.setSelectedStripIds([]));
     }
   }, [dispatch, pxPerSec, rect, start, strips, timelineLength]);
 

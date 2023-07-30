@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { getDragHander } from "../utils";
 
-export function useSelectRect() {
+export function useSelectRect(onUnselect?: () => void) {
   const [rect, setRect] = useState<{
     left: number;
     top: number;
@@ -27,8 +27,11 @@ export function useSelectRect() {
       setRect({ left, top, width, height });
     },
     undefined,
-    () => {
+    (ctx) => {
       setRect(null);
+      if (ctx.diffX === 0 && ctx.diffY === 0) {
+        onUnselect?.();
+      }
     }
   );
   return {
