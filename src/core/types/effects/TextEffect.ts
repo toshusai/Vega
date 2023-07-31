@@ -15,5 +15,12 @@ export type TextEffect = {
   outlineColor?: string;
   outlineWidth?: number;
   characterSpacing?: number;
+  align?: TextAlign;
   keyframes: KeyFrame[];
 };
+
+export enum TextAlign {
+  left = "left",
+  center = "center",
+  right = "right",
+}
