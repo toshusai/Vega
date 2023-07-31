@@ -45,16 +45,20 @@ const IndexPage = () => {
             <VPanel
               top={
                 <HPanel
-                  left={
-                    <VPanel top={<StripPanel />} bottom={<KeyFramePanel />} />
-                  }
+                  left={<StripPanel />}
                   right={<Preview />}
                   defaultRate={0.3}
                 />
               }
               bottom={
                 <HPanel
-                  left={<Timeline />}
+                  left={
+                    <VPanel
+                      top={<Timeline />}
+                      bottom={<KeyFramePanel />}
+                      defaultRate={0.7}
+                    />
+                  }
                   right={
                     <HPanel
                       left={<AssetDetailsPanel />}
