@@ -101,7 +101,8 @@ export function updateTextEffect(
   const y = animatedEffect.y;
   let top = animatedEffect.y;
   let left = animatedEffect.x;
-  let maxLeft = 0;
+  let width = 0;
+  let maxWidth = 0;
   const lineHeight = animatedEffect.fontSize;
   const characterSpacing = animatedEffect.characterSpacing ?? 0;
   ctx.shadowColor = animatedEffect.shadowColor ?? "transparent";
@@ -112,37 +113,67 @@ export function updateTextEffect(
   if ((animatedEffect.outlineWidth ?? 0) <= 1) {
     ctx.strokeStyle = "transparent";
   }
+
+  const lines = animatedEffect.text.split("\n");
+  const lineWidths = lines.map((line) => {
+    return ctx.measureText(line).width;
+  });
+
+  let lineIndex = 0;
+
+  function moveAlign() {
+    if (animatedEffect.align === "center") {
+      left -= lineWidths[lineIndex] / 2;
+      left -= ((lines[lineIndex].length - 1) * characterSpacing) / 2;
+    } else if (animatedEffect.align === "right") {
+      left -= lineWidths[lineIndex];
+      left -= (lines[lineIndex].length - 1) * characterSpacing;
+    }
+  }
+
+  moveAlign();
   for (let i = 0; i < animatedEffect.text.length; i++) {
     const char = animatedEffect.text[i];
     if (char === "\n") {
       top += lineHeight;
       left = x;
+      lineIndex++;
+      width = 0;
+      moveAlign();
       continue;
     }
     const w = ctx.measureText(char).width;
     ctx.strokeText(char, left, top);
     left += w + characterSpacing;
-    maxLeft = Math.max(maxLeft, left);
+    width += w + characterSpacing;
+    maxWidth = Math.max(maxWidth, width);
   }
 
   ctx.fillStyle = animatedEffect.color ?? "black";
   top = y;
   left = x;
+  lineIndex = 0;
+  width = 0;
+  moveAlign();
   for (let i = 0; i < animatedEffect.text.length; i++) {
     const char = animatedEffect.text[i];
     if (char === "\n") {
       top += lineHeight;
       left = x;
+      lineIndex++;
+      width = 0;
+      moveAlign();
       continue;
     }
     const w = ctx.measureText(char).width;
     ctx.fillText(char, left, top);
     left += w + characterSpacing;
-    maxLeft = Math.max(maxLeft, left);
+    width += w + characterSpacing;
+    maxWidth = Math.max(maxWidth, width);
   }
 
   measureMap.set(animatedEffect.id, {
-    width: maxLeft - x,
+    width: maxWidth,
     height: top - y + lineHeight,
   });
 }

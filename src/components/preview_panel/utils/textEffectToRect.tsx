@@ -64,8 +64,16 @@ export function textEffectToRect(
     return null;
   }
   const lineBreaks = effect.text.split("\n").length - 1;
+  let $left = x * scale + left;
+  if (effect.align === "center") {
+    $left -= (measure.width / 2) * scale;
+  } else if (effect.align === "right") {
+    $left -= measure.width * scale;
+  }
+  console.log(left);
+
   return {
-    $left: x * scale + left,
+    $left,
     $top:
       y * scale + top - (measure.height - effect.fontSize * lineBreaks) * scale,
     $width: measure.width * scale,

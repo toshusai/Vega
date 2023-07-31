@@ -3,17 +3,23 @@ import { FC } from "react";
 import { PropertyName } from "@/components/PropertyName";
 import { Row } from "@/components/Row";
 import { KeyframeButton } from "@/components/strip_panel/KeyframeButton";
-import { Strip, TextEffect } from "@/core/types";
+import { Strip, TextAlign, TextEffect } from "@/core/types";
 import { useAnimationedValue } from "@/hooks/useAnimationedValue";
 import { useAssetOptions } from "@/hooks/useAssetOptions";
 import { useStripTime } from "@/hooks/useStripTime";
 import { useUpdateEffect } from "@/hooks/useUpdateEffect";
-import { VInput , VNumberInput , VSelect , VTextarea } from "@/riapp-ui/src";
+import { Item, VInput, VNumberInput, VSelect, VTextarea } from "@/riapp-ui/src";
 import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { hasKeyFrame } from "@/utils/hasKeyFrame";
 
 import { textEffectConfig } from "./textEffectConfig";
+
+const alignItems: Item[] = [
+  { label: "left", value: "left" },
+  { label: "center", value: "center" },
+  { label: "right", value: "right" },
+];
 
 export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
   props
@@ -93,6 +99,14 @@ export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
           </Row>
         );
       })}
+      <Row>
+        <PropertyName>align</PropertyName>
+        <VSelect
+          items={alignItems}
+          onChange={(value) => emit({ align: value as TextAlign })}
+          value={textEffect.align ?? "left"}
+        />
+      </Row>
       <Row>
         <PropertyName>font</PropertyName>
         <VSelect
