@@ -60,7 +60,8 @@ export const TimeView: FC<TimeViewProps> = (props) => {
           <TimeText
             time={
               props.frameMode
-                ? (left / props.pxPerSec) * props.fps
+                ? (left / props.pxPerSec) * props.fps +
+                  props.offsetSec * props.fps
                 : left / props.pxPerSec + props.offsetSec
             }
             key={left}
