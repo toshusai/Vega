@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { COLOR_BACKGROUND_NAME } from "./styled";
 
 export const Card: FC<{
-  width: number | string;
-  height: number | string;
+  width?: number | string;
+  height?: number | string;
   box?: boolean;
   style?: React.CSSProperties;
 }> = (props) => {
