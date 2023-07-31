@@ -32,7 +32,7 @@ export function loadFont(fontAsset: FontAsset) {
   if (!loadedFontAssetMap.has(fontAsset.id) && fontAsset) {
     const style = document.createElement("style");
     style.innerHTML = `@font-face {
-      font-family: ${fontAsset.name};
+      font-family: _${fontAsset.id};
       src: url(${fontAsset.path});
     }`;
     document.head.appendChild(style);
@@ -77,6 +77,9 @@ export function updateTextEffect(
     if (typeof value !== "number") {
       return;
     }
+    if (effect.keyframes.length === 0) {
+      return;
+    }
     animatedEffect[k] = calculateKeyFrameValue(
       effect.keyframes,
       scene.currentTime - strip.start,
@@ -89,10 +92,10 @@ export function updateTextEffect(
   ctx.fillStyle = "black";
   ctx.font =
     (animatedEffect.fontStyle ?? "") +
-      " " +
-      animatedEffect.fontSize +
-      "px " +
-      fontAsset?.name || "sans-serif";
+    " " +
+    animatedEffect.fontSize +
+    "px " +
+    (fontAsset !== undefined ? "_" + fontAsset.id : "sans-serif");
 
   const x = animatedEffect.x;
   const y = animatedEffect.y;
