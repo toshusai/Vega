@@ -34,7 +34,7 @@ import { UndoManager } from "@/UndoManager";
 import { roundToFrame } from "@/utils/roundToFrame";
 
 import { AddStripButton } from "./AddStripButton";
-import { MemoStripUI, STRIP_GAP, STRIP_HEIGHT } from "./StripUI";
+import { STRIP_GAP, STRIP_HEIGHT, StripUI } from "./StripUI";
 
 export const Timeline: FC = () => {
   const strips = useSelector((state) => state.scene.strips);
@@ -526,7 +526,7 @@ export const Timeline: FC = () => {
               ></div>
             ))}
             {strips.map((strip) => (
-              <MemoStripUI
+              <StripUI
                 {...strip}
                 key={strip.id}
                 fps={fps}
