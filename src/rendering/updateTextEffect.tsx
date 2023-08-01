@@ -10,6 +10,7 @@ import {
 import { calculateKeyFrameValue } from "@/core/types/utils/calculateKeyFrameValue";
 import { SceneState } from "@/store/scene";
 import { PickProperties } from "@/types/PickProperties";
+import { roundToFrame } from "@/utils/roundToFrame";
 
 const loadedFontAssetMap = new Map<string, boolean>();
 
@@ -54,9 +55,12 @@ export function updateTextEffect(
   strip: Strip,
   scene: SceneState
 ) {
+  const currentFrame = roundToFrame(scene.currentTime, scene.fps);
+  const currentStripFrame = roundToFrame(strip.start, scene.fps);
+  const stripLengthFrame = roundToFrame(strip.length, scene.fps);
   if (
-    scene.currentTime < strip.start ||
-    scene.currentTime > strip.start + strip.length - 1 / scene.fps
+    currentFrame < currentStripFrame ||
+    currentFrame >= currentStripFrame + stripLengthFrame
   ) {
     return;
   }
