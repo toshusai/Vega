@@ -32,6 +32,9 @@ export const StripUI: FC<
 
   useEffect(() => {});
 
+  const firstEffect = props.effects[0];
+  if (firstEffect === undefined) return null;
+
   if (left + width < 0) return null;
 
   return (
@@ -47,10 +50,10 @@ export const StripUI: FC<
       selected={props.selected}
       onMouseDown={props.onMouseDown}
     >
-      <TextEffectStripUI strip={props} />
-      <ImageEffectStripUI strip={props} />
-      <VideoEffectStripUI strip={props} />
-      <AudioEffectStripUI strip={props} />
+      {firstEffect.type === "text" && <TextEffectStripUI strip={props} />}
+      {firstEffect.type === "image" && <ImageEffectStripUI strip={props} />}
+      {firstEffect.type === "video" && <VideoEffectStripUI strip={props} />}
+      {firstEffect.type === "audio" && <AudioEffectStripUI strip={props} />}
       <StripHandle
         onMouseDown={props.onMouseDownLeftHandle}
         style={{ left: "1px" }}
