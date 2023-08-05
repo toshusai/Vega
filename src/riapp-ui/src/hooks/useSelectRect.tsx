@@ -12,8 +12,8 @@ export function useSelectRect(onUnselect?: () => void) {
     ({ diffX, diffY, startEvent }) => {
       const el = startEvent.target as HTMLElement;
       const rect = el.getBoundingClientRect();
-      let left = startEvent.clientX - rect.left;
-      let top = startEvent.clientY - rect.top;
+      let left = startEvent.clientX - rect.left + el.scrollLeft;
+      let top = startEvent.clientY - rect.top + el.scrollTop;
       let width = diffX;
       let height = diffY;
       if (width < 0) {
