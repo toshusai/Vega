@@ -447,7 +447,9 @@ export const Timeline: FC = () => {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          userSelect: "none",
+        }}
+        onDragStart={(e) => {
+          e.preventDefault();
         }}
         onContextMenu={(e) => {
           e.preventDefault();
