@@ -30,6 +30,7 @@ import { actions } from "@/store/scene";
 import { download } from "@/utils/download";
 import { roundToFrame } from "@/utils/roundToFrame";
 
+import { CurrentTime } from "./CurrentTime";
 import { textEffectToRect } from "./utils/textEffectToRect";
 
 export const Preview: FC = () => {
@@ -313,6 +314,8 @@ export const Preview: FC = () => {
             borderBottom: "1px solid var(--color-border)",
           }}
         >
+          <CurrentTime />
+
           <IconButton
             onClick={() => {
               changeScale(scale * 0.9, true);
