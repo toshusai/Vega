@@ -79,7 +79,6 @@ export function textEffectToRect(
   } else if (effect.align === "right") {
     $left -= measure.width * scale;
   }
-  console.log(left);
 
   return {
     $left,
