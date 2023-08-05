@@ -46,7 +46,6 @@ export const EditableView = memo(function EditableView(props: {
           ref={inputRef}
           onBlur={() => {
             setEditable(false);
-            console.log("blur");
           }}
           onChange={(value) => {
             props.onChange(value);
