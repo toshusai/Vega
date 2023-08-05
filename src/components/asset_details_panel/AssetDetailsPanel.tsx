@@ -1,5 +1,6 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { css } from "styled-components";
 import { Link } from "tabler-icons-react";
 
 import {
@@ -22,6 +23,8 @@ import {
 import { Card, IconButton, iconProps, PanelBody, VInput } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 import { filePick } from "@/utils/filePick";
+
+import { EditableView } from "./EditableView";
 
 export const AssetDetailsPanel: FC = () => {
   const selectedAssetIds = useSelector((state) => state.scene.selectedAssetIds);
@@ -50,11 +53,19 @@ export const AssetDetailsPanel: FC = () => {
           height: "100%",
         }}
       >
-        <div style={{ display: "flex" }}>
+        <div
+          css={css`
+            display: flex;
+            justify-content: space-between;
+          `}
+        >
           <div>name:</div>
-          <VInput
-            style={{ marginLeft: "auto", width: "100%" }}
-            value={selectedAsset.name}
+          <EditableView
+            text={selectedAsset.name}
+            onChange={(value) => {
+              const newAsset = { ...selectedAssets[0], name: value };
+              dispatch(actions.updateAssets(newAsset));
+            }}
           />
         </div>
         <div style={{ display: "flex" }}>

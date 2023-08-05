@@ -1,35 +1,46 @@
-import { FC, memo } from "react";
+import { FC, forwardRef, memo } from "react";
 
 import { StyledInput } from "./styled/StyledInput";
 import { useNativeOnChange } from "./utils/useNativeOnChange";
+import { mergeRefs } from "./mergeRefs";
 
 export type ClickEditInputProps = {
   value?: string;
-  style?: React.CSSProperties;
   onChange?: (value: string) => void;
   onInput?: (value: string) => void;
-};
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange" | "onInput">;
 
-export const VInput: FC<ClickEditInputProps> = (props) => {
-  const { inputRef, value, setValue } = useNativeOnChange(
-    props.value ?? "",
-    (value) => props.onChange?.(value as string)
-  );
+export const VInput = forwardRef<HTMLInputElement, ClickEditInputProps>(
+  (props, forwardRef) => {
+    const {
+      value: propsValue,
+      style,
+      onChange,
+      onInput,
+      ...inputProps
+    } = props;
 
-  return (
-    <>
-      <StyledInput
-        onChange={(e) => {
-          props.onInput?.(e.target.value);
-          setValue(e.target.value);
-        }}
-        ref={inputRef}
-        style={props.style}
-        value={value}
-      />
-    </>
-  );
-};
+    const { inputRef, value, setValue } = useNativeOnChange(
+      propsValue ?? "",
+      (value) => onChange?.(value as string)
+    );
+
+    return (
+      <>
+        <StyledInput
+          onChange={(e) => {
+            onInput?.(e.target.value);
+            setValue(e.target.value);
+          }}
+          ref={mergeRefs<HTMLInputElement>([inputRef, forwardRef])}
+          style={style}
+          value={value}
+          {...inputProps}
+        />
+      </>
+    );
+  }
+);
 
 export const MemoClickEditInput = memo(VInput, (prev, next) => {
   return prev.value === next.value && prev.onChange === next.onChange;
