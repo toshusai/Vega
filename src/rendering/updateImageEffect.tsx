@@ -1,4 +1,4 @@
-import { ImageEffect , Strip } from "@/core/types";
+import { ImageEffect, Strip } from "@/core/types";
 import { calculateKeyFrameValue } from "@/core/types/utils/calculateKeyFrameValue";
 import { SceneState } from "@/store/scene";
 import { PickProperties } from "@/types/PickProperties";
@@ -55,17 +55,38 @@ export function updateImageEffect(
     ctx.shadowBlur = 0;
     ctx.globalAlpha = animatedEffect.opacity ?? 1;
 
+    let x = animatedEffect.x;
+    let y = animatedEffect.y;
+    let width = animatedEffect.width ?? imageElement.width;
+    let height = animatedEffect.height ?? imageElement.height;
+    let scaleX = 1;
+    let scaleY = 1;
+    if (width < 0) {
+      scaleX = -1;
+      width = width;
+      x = -x;
+    }
+    if (height < 0) {
+      scaleY = -1;
+      height = height;
+    }
+    if (scaleX !== 1 || scaleY !== 1) {
+      ctx.scale(scaleX, scaleY);
+    }
     ctx.drawImage(
       imageElement,
       0,
       0,
       imageElement.width,
       imageElement.height,
-      animatedEffect.x,
-      animatedEffect.y,
-      animatedEffect.width ?? imageElement.width,
-      animatedEffect.height ?? imageElement.height
+      x,
+      y,
+      width,
+      height
     );
+    if (scaleX !== 1 || scaleY !== 1) {
+      ctx.scale(scaleX, scaleY);
+    }
     ctx.globalAlpha = 1;
   }
 }

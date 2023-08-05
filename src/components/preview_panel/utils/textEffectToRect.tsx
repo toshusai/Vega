@@ -39,11 +39,20 @@ function imageEffectToRect(
   x = calculateKeyFrameValue(effect.keyframes, currentTime, "x", effect.x, fps);
   y = calculateKeyFrameValue(effect.keyframes, currentTime, "y", effect.y, fps);
 
+  let width = effect.width ?? 0;
+  let height = effect.height ?? 0;
+  if (width < 0) {
+    width = -width;
+  }
+  if (height < 0) {
+    height = -height;
+  }
+
   return {
     $left: x * scale + left,
     $top: y * scale + top,
-    $width: (effect.width ?? 0) * scale,
-    $height: (effect.height ?? 0) * scale,
+    $width: (width ?? 0) * scale,
+    $height: (height ?? 0) * scale,
   };
 }
 
