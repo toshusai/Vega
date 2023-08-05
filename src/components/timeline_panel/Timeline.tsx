@@ -428,6 +428,7 @@ export const Timeline: FC = () => {
           height: "100%",
           display: "flex",
           flexDirection: "column",
+          userSelect: "none",
         }}
         onContextMenu={(e) => {
           e.preventDefault();
