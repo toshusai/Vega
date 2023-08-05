@@ -27,7 +27,11 @@ export const StyledTextarea = styled.textarea`
     outline: none;
     border-radius: 8px;
     background-color: var(${COLOR_INPUT_BACKGROUND_FOCUS_NAME});
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
   }
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
 
   font-family: "Ricty Diminished";
 `;
