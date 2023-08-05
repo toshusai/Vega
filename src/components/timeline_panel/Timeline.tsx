@@ -583,6 +583,7 @@ export const Timeline: FC = () => {
           start={start}
           end={end}
           onScaleChange={(start, end) => {
+            // May it has a bug Maximum update depth exceeded.
             dispatch(
               actions.setViewStartAndEndRate({
                 start,
