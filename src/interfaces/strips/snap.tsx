@@ -8,26 +8,33 @@ export function snap(
   strip: Strip,
   fps: number,
   keepStart: boolean,
-  keepEnd: boolean) {
+  keepEnd: boolean
+) {
   allSnapPoints = allSnapPoints.sort((a, b) => a - b);
   const snapStartPositionToOtherStrips = () => {
-    const snapPoints = allSnapPoints.filter(
-      (p) => Math.abs(p - newStart) < 0.4
-    );
-    if (snapPoints.length > 0) {
-      return snapPoints[0];
+    let minDiff = 100000;
+    let minDiffPoint = null;
+    for (const p of allSnapPoints) {
+      const diff = Math.abs(p - newStart);
+      if (diff < minDiff) {
+        minDiff = diff;
+        minDiffPoint = p;
+      }
     }
-    return null;
+    return minDiffPoint;
   };
 
   const snapEndPositionToOtherStrips = () => {
-    const snapPoints = allSnapPoints.filter(
-      (p) => Math.abs(p - (newStart + newLength)) < 0.4
-    );
-    if (snapPoints.length > 0) {
-      return snapPoints[0];
+    let minDiff = 100000;
+    let minDiffPoint = null;
+    for (const p of allSnapPoints) {
+      const diff = Math.abs(p - (newStart + newLength));
+      if (diff < minDiff) {
+        minDiff = diff;
+        minDiffPoint = p;
+      }
     }
-    return null;
+    return minDiffPoint;
   };
   const snapStart = snapStartPositionToOtherStrips();
   if (snapStart !== null && !keepStart) {

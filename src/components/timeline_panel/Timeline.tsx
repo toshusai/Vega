@@ -70,6 +70,21 @@ export const Timeline: FC = () => {
       if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
         dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
       }
+      if (KeyboardInput.isPressed(Key.Shift)) {
+        const snapPoints = [0, timelineLength]
+          .concat(strips.map((strip) => strip.start))
+          .concat(strips.map((strip) => strip.start + strip.length));
+        let min = Infinity;
+        let minPoint = 0;
+        for (const point of snapPoints) {
+          const distance = Math.abs(newCurrentTime - point);
+          if (distance < min) {
+            min = distance;
+            minPoint = point;
+          }
+        }
+        dispatch(actions.setCurrentTime(roundToFrame(minPoint, fps)));
+      }
     },
     ({ startEvent: e }) => {
       // TODO merge with KeyFramePanel
