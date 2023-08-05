@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import styled from "styled-components";
 import { ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
 
 import { Gizmo } from "@/components/preview_panel/Gizmo";
@@ -292,28 +293,12 @@ export const Preview: FC = () => {
   }, [left, top, scale, initialized, dispatch, resetScale, fps]);
   return (
     <Card width={100} height={100}>
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          overflow: "hidden",
-          position: "relative",
-        }}
+      <RootDiv
         ref={rootRef}
         onMouseDown={handleMouseDown}
         onWheel={handleWheel}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: "2px",
-            zIndex: 2,
-            position: "relative",
-            backgroundColor: "var(--color-background)",
-            borderBottom: "1px solid var(--color-border)",
-          }}
-        >
+        <BarDiv>
           <CurrentTime />
 
           <IconButton
@@ -324,19 +309,7 @@ export const Preview: FC = () => {
             <ZoomOut {...iconProps} />
             <BottomToolTip>Zoom Out</BottomToolTip>
           </IconButton>
-          <div
-            style={{
-              height: "16px",
-              display: "flex",
-              fontSize: "12px",
-              margin: "auto 4px",
-              alignItems: "center",
-              fontFamily: "Ricty Diminished",
-              color: "white",
-            }}
-          >
-            {(scale * 100).toFixed(0) + "%"}
-          </div>
+          <ScaleDiv>{(scale * 100).toFixed(0) + "%"}</ScaleDiv>
           <IconButton
             onClick={() => {
               changeScale(scale * 1.1, true);
@@ -354,16 +327,12 @@ export const Preview: FC = () => {
             <ZoomReset {...iconProps} />
             <BottomToolTip>Reset Zoom</BottomToolTip>
           </IconButton>
-        </div>
-        <canvas
+        </BarDiv>
+        <Canvas
           style={{
-            position: "absolute",
-            pointerEvents: "none",
-            transformOrigin: "top left",
             left: left + "px",
             top: top + "px",
             transform: `scale(${scale})`,
-            imageRendering: "pixelated",
           }}
           width={width}
           height={height}
@@ -376,7 +345,41 @@ export const Preview: FC = () => {
           top={top}
           scale={scale}
         />
-      </div>
+      </RootDiv>
     </Card>
   );
 };
+
+const Canvas = styled.canvas`
+  position: absolute;
+  pointer-events: none;
+  transform-origin: top left;
+  image-rendering: pixelated;
+`;
+
+const ScaleDiv = styled.div`
+  height: 16px;
+  display: flex;
+  font-size: 12px;
+  margin: auto 4px;
+  align-items: center;
+  font-family: "Ricty Diminished";
+  color: white;
+`;
+
+const BarDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2px;
+  z-index: 2;
+  position: relative;
+  background-color: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+`;
+
+const RootDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+`;
