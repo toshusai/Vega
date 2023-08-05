@@ -6,7 +6,8 @@ export function useWidth(deps: any[] = []) {
   useEffect(() => {
     if (!ref.current) return;
     const handleResize = () => {
-      setWidth(ref.current!.clientWidth);
+      if (!ref.current) return;
+      setWidth(ref.current.clientWidth);
     };
     window.addEventListener("resize", handleResize);
     return () => {

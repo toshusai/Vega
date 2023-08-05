@@ -99,17 +99,21 @@ export const Timeline: FC = () => {
   const handleWheelTimeView = useCallback(
     (e: WheelEvent) => {
       let isTouchPad = false;
+      const shiftKey = KeyboardInput.isPressed(Key.Shift);
       if ("wheelDeltaY" in e) {
-        isTouchPad = e.wheelDeltaY
-          ? e.wheelDeltaY === -3 * e.deltaY
-          : e.deltaMode === 0;
+        if (!(shiftKey && e.deltaX !== 0)) {
+          isTouchPad = e.wheelDeltaY
+            ? e.wheelDeltaY === -3 * e.deltaY
+            : e.deltaMode === 0;
+        }
       }
 
       if (KeyboardInput.isPressed(Key.Alt)) {
         const value = e.deltaY * 0.0001;
         e.preventDefault();
-        const newStart = start - value;
-        const newEnd = end + value;
+        const center = e.clientX / width;
+        const newStart = start - value * center;
+        const newEnd = end + value * (1 - center);
         dispatch(
           actions.setViewStartAndEndRate({
             start: newStart,
@@ -117,7 +121,7 @@ export const Timeline: FC = () => {
           })
         );
       } else if (KeyboardInput.isPressed(Key.Shift) || isTouchPad) {
-        let delta = e.deltaY;
+        let delta = e.deltaX;
         if (isTouchPad && KeyboardInput.isPressed(Key.Shift)) {
           delta = e.deltaY;
         } else if (isTouchPad) {
@@ -144,7 +148,7 @@ export const Timeline: FC = () => {
         );
       }
     },
-    [dispatch, end, start]
+    [dispatch, end, start, width]
   );
   useEffect(() => {
     const el = ref.current;
