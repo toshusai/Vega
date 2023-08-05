@@ -5,6 +5,10 @@ import { PickProperties } from "@/types/PickProperties";
 
 const loadedImageElementMap = new Map<string, HTMLImageElement>();
 
+export function getImageElement(effect: ImageEffect) {
+  return loadedImageElementMap.get(effect.id + effect.imageAssetId);
+}
+
 export function updateImageEffect(
   ctx: CanvasRenderingContext2D,
   effect: ImageEffect,
