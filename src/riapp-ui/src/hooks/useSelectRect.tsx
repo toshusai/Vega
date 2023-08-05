@@ -8,12 +8,19 @@ export function useSelectRect(onUnselect?: () => void) {
     width: number;
     height: number;
   } | null>(null);
-  const handleMouseDownForSelect = getDragHander(
-    ({ diffX, diffY, startEvent }) => {
+  const handleMouseDownForSelect = getDragHander<
+    {
+      scrollLeft: number;
+      scrollTop: number;
+    },
+    void
+  >(
+    ({ diffX, diffY, startEvent, pass }) => {
       const el = startEvent.target as HTMLElement;
       const rect = el.getBoundingClientRect();
-      let left = startEvent.clientX - rect.left + el.scrollLeft;
-      let top = startEvent.clientY - rect.top + el.scrollTop;
+      if (!pass) return;
+      let left = startEvent.clientX - rect.left + pass.scrollLeft;
+      let top = startEvent.clientY - rect.top + pass.scrollTop;
       let width = diffX;
       let height = diffY;
       if (width < 0) {
@@ -26,7 +33,13 @@ export function useSelectRect(onUnselect?: () => void) {
       }
       setRect({ left, top, width, height });
     },
-    undefined,
+    ({ startEvent }) => {
+      const el = startEvent.target as HTMLElement;
+      return {
+        scrollLeft: el.scrollLeft,
+        scrollTop: el.scrollTop,
+      };
+    },
     (ctx) => {
       setRect(null);
       if (ctx.diffX === 0 && ctx.diffY === 0) {
