@@ -113,7 +113,7 @@ const TextAssetDetailsPanel: FC<{
     <div>
       <div
         style={{
-          fontFamily: props.asset.name,
+          fontFamily: `_${props.asset.id}`,
           fontSize: "16px",
           lineHeight: "20px",
         }}
