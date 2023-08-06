@@ -255,19 +255,33 @@ export const Timeline: FC = () => {
           (strip) => newSelectedStripIds.includes(strip.id) === false
         );
 
+        let firstStrip = selectedStrips[0];
+        if (firstStrip === undefined) {
+          return null;
+        }
+
+        const newMovedStrip = moveStrip(
+          firstStrip,
+          diffX,
+          diffY,
+          pxPerSec,
+          fps,
+          keepEnd,
+          keepStart,
+          timelineLength,
+          withoutSelectedStrips,
+          isSnap
+        );
+
+        const diffStart = newMovedStrip.start - firstStrip.start;
+        const diffLayer = newMovedStrip.layer - firstStrip.layer;
+
         const newStrips = selectedStrips.map((strip) => {
-          return moveStrip(
-            strip,
-            diffX,
-            diffY,
-            pxPerSec,
-            fps,
-            keepEnd,
-            keepStart,
-            timelineLength,
-            withoutSelectedStrips,
-            isSnap
-          );
+          return {
+            ...strip,
+            start: strip.start + diffStart,
+            layer: strip.layer + diffLayer,
+          };
         });
 
         const invalidIds = newStrips
