@@ -10,7 +10,12 @@ import {
 import { readFile } from "@/ipc/readFile";
 import { writeFileUserDataDir } from "@/ipc/writeFileUserDataDir";
 import { loadAllAssets } from "@/rendering/recorder";
-import { DropdownMenu , iconProps , StyledContextMenuButton,ToolbarButton  } from "@/riapp-ui/src";
+import {
+  DropdownMenu,
+  iconProps,
+  StyledContextMenuButton,
+  ToolbarButton,
+} from "@/riapp-ui/src";
 import store from "@/store";
 import { appAction } from "@/store/app";
 import { actions, SceneState } from "@/store/scene";
