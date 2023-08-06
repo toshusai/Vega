@@ -10,7 +10,8 @@ import {
 import { calculateKeyFrameValue } from "@/core/types/utils/calculateKeyFrameValue";
 import { SceneState } from "@/store/scene";
 import { PickProperties } from "@/types/PickProperties";
-import { floorFrame } from "@/utils/roundToFrame";
+
+import { stripIsVisible } from "./stripIsVisible";
 
 const loadedFontAssetMap = new Map<string, boolean>();
 
@@ -55,10 +56,8 @@ export function updateTextEffect(
   strip: Strip,
   scene: SceneState
 ) {
-  const currentFrame = floorFrame(scene.currentTime, scene.fps);
-  const currentStripFrame = floorFrame(strip.start, scene.fps);
-  const endFrame = floorFrame(strip.start + strip.length, scene.fps);
-  if (currentFrame < currentStripFrame || currentFrame >= endFrame) {
+  const visible = stripIsVisible(strip, scene.currentTime, scene.fps);
+  if (!visible) {
     return;
   }
   const fontAsset = scene.assets.find(

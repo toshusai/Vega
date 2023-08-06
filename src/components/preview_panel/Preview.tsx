@@ -32,7 +32,7 @@ import { download } from "@/utils/download";
 import { roundToFrame } from "@/utils/roundToFrame";
 
 import { CurrentTime } from "./CurrentTime";
-import { textEffectToRect } from "./utils/textEffectToRect";
+import { useHandleSelectStrip } from "./useHandleSelectStrip";
 
 export const Preview: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -42,7 +42,6 @@ export const Preview: FC = () => {
   const dispatch = useDispatch();
   const rootRef = useRef<HTMLDivElement>(null);
 
-  const strips = useSelector((state) => state.scene.strips);
   const fps = useSelector((state) => state.scene.fps);
 
   const left = useSelector((state) => state.scene.canvasLeft ?? 0);
@@ -112,59 +111,27 @@ export const Preview: FC = () => {
     setTop(rect.height / 2 - (height * 0.3) / 2);
   }, [changeScale, height, setLeft, setTop, width]);
 
-  const currentTime = useSelector((state) => state.scene.currentTime);
-
-  const handleMouseDown = getDragHander<{ left: number; top: number }, null>(
-    (ctx) => {
-      if (dragging && ctx.pass) {
-        setLeft(ctx.diffX + ctx.pass.left);
-        setTop(ctx.diffY + ctx.pass.top);
-      }
-      return null;
-    },
-    (ctx) => {
-      if (KeyboardInput.isPressed(Key.Alt)) {
-        return {
-          left: left,
-          top: top,
-        };
-      }
-      const el = rootRef.current as HTMLDivElement;
-      const rect = el.getBoundingClientRect();
-
-      const clickXInRootSpace = ctx.startEvent.clientX - rect.left;
-      const clickYInRootSpace = ctx.startEvent.clientY - rect.top;
-
-      strips.forEach((strip) => {
-        strip.effects.forEach((effect) => {
-          if (isTextEffect(effect)) {
-            const rect = textEffectToRect(
-              effect,
-              scale,
-              left,
-              top,
-              currentTime - strip.start,
-              fps
-            );
-            if (
-              rect &&
-              clickXInRootSpace > rect.$left &&
-              clickXInRootSpace < rect.$left + rect.$width &&
-              clickYInRootSpace > rect.$top &&
-              clickYInRootSpace < rect.$top + rect.$height
-            ) {
-              dispatch(actions.setSelectedStripIds([strip.id]));
-            }
+  const handleMouseDown = useCallback(
+    (e: any) =>
+      getDragHander<{ left: number; top: number }, null>(
+        (ctx) => {
+          if (dragging && ctx.pass) {
+            setLeft(ctx.diffX + ctx.pass.left);
+            setTop(ctx.diffY + ctx.pass.top);
           }
-        });
-      });
-
-      return {
-        left: left,
-        top: top,
-      };
-    }
+          return null;
+        },
+        () => {
+          return {
+            left: left,
+            top: top,
+          };
+        }
+      )(e),
+    [dragging, setLeft, setTop, left, top]
   );
+
+  const handleMouseDownForSelect = useHandleSelectStrip();
 
   useEffect(() => {
     if (initialized) {
@@ -295,7 +262,11 @@ export const Preview: FC = () => {
     <Card width={100} height={100}>
       <RootDiv
         ref={rootRef}
-        onMouseDown={handleMouseDown}
+        id={PreviewRootID}
+        onMouseDown={(e) => {
+          handleMouseDown(e);
+          handleMouseDownForSelect(e.nativeEvent);
+        }}
         onWheel={handleWheel}
       >
         <BarDiv>
@@ -383,3 +354,5 @@ const RootDiv = styled.div`
   overflow: hidden;
   position: relative;
 `;
+
+export const PreviewRootID = "preview-root";

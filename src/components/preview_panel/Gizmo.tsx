@@ -15,6 +15,7 @@ import { getDragHander, SelectRectProps } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 
+import { useHandleSelectStrip } from "./useHandleSelectStrip";
 import { makeNewKeyframes } from "./utils/makeNewKeyframes";
 import { effectToRect } from "./utils/textEffectToRect";
 
@@ -31,6 +32,8 @@ export const Gizmo: FC<{
   const currentTime = useSelector((state) => state.scene.currentTime);
   const fps = useSelector((state) => state.scene.fps);
   const dispatch = useDispatch();
+
+  const handleSelectStrip = useHandleSelectStrip();
 
   if (selectedStrips.length !== 1) {
     return null;
@@ -95,6 +98,9 @@ export const Gizmo: FC<{
     },
     undefined,
     (ctx) => {
+      if (ctx.diffX === 0 && ctx.diffY === 0) {
+        handleSelectStrip(ctx.startEvent);
+      }
       UndoManager.main
         .add({
           undo: () => {
@@ -116,7 +122,9 @@ export const Gizmo: FC<{
         pointerEvents: props.userSelectNone ? "none" : "auto",
       }}
       {...rect}
-      onMouseDown={handleMouseDown}
+      onMouseDown={(e) => {
+        handleMouseDown(e);
+      }}
       onWheel={props.onWheel}
     />
   );
