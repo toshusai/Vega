@@ -15,6 +15,7 @@ import { getDragHander, SelectRectProps } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 
+import { createResizeHandler } from "./createResizeHandler";
 import { useHandleSelectStrip } from "./useHandleSelectStrip";
 import { makeNewKeyframes } from "./utils/makeNewKeyframes";
 import { effectToRect } from "./utils/textEffectToRect";
@@ -116,6 +117,8 @@ export const Gizmo: FC<{
     }
   );
 
+  const handleResize = createResizeHandler(textEffects[0], props.scale, emit);
+
   return (
     <StyledGizmo
       style={{
@@ -126,9 +129,31 @@ export const Gizmo: FC<{
         handleMouseDown(e);
       }}
       onWheel={props.onWheel}
-    />
+    >
+      {[Horizontal.Left, Horizontal.Right].map((horizontal) => {
+        return [Vertical.Top, Vertical.Bottom].map((vertical) => {
+          return (
+            <GizmoControl
+              key={`${horizontal}-${vertical}`}
+              horizontal={horizontal}
+              vertical={vertical}
+              onMouseDown={(e) => handleResize(e, { horizontal, vertical })}
+            />
+          );
+        });
+      })}
+    </StyledGizmo>
   );
 };
+
+export enum Horizontal {
+  Left,
+  Right,
+}
+export enum Vertical {
+  Top,
+  Bottom,
+}
 
 const StyledGizmo = styled.div.attrs<SelectRectProps>((props) => ({
   style: {
@@ -143,4 +168,47 @@ const StyledGizmo = styled.div.attrs<SelectRectProps>((props) => ({
   box-sizing: content-box;
   transform-origin: top left;
   transform: translate(-1px, -1px);
+`;
+
+const GizmoControl = styled.div<{
+  horizontal: Horizontal;
+  vertical: Vertical;
+}>`
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--color-primary);
+  ${({ horizontal }) => {
+    if (horizontal === Horizontal.Left) {
+      return `
+        left: -4px;
+      `;
+    } else {
+      return `
+        right: -4px;
+      `;
+    }
+  }}
+  ${({ vertical }) => {
+    if (vertical === Vertical.Top) {
+      return `
+        top: -4px;
+      `;
+    } else {
+      return `
+        bottom: -4px;
+      `;
+    }
+  }}
+  cursor: ${({ horizontal, vertical }) => {
+    if (horizontal === Horizontal.Left && vertical === Vertical.Top) {
+      return "nwse-resize";
+    } else if (horizontal === Horizontal.Right && vertical === Vertical.Top) {
+      return "nesw-resize";
+    } else if (horizontal === Horizontal.Left && vertical === Vertical.Bottom) {
+      return "nesw-resize";
+    } else {
+      return "nwse-resize";
+    }
+  }}
 `;
