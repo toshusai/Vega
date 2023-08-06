@@ -6,6 +6,8 @@ import {
 } from "./styled";
 
 export const DropdownMenu = styled.div`
+  display: flex;
+  flex-direction: column;
   position: absolute;
   z-index: 10000;
   top: 16px;

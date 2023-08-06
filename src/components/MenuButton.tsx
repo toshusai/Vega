@@ -1,18 +1,13 @@
-import { FC, ReactChild, useEffect, useRef, useState } from "react";
-import {
-  ArrowRight,
-  Clock,
-  DeviceFloppy,
-  File,
-  type IconProps,
-} from "tabler-icons-react";
+import { FC, useEffect, useRef, useState } from "react";
+import { Clock, DeviceFloppy, File } from "tabler-icons-react";
 
 import { readFile } from "@/ipc/readFile";
 import { writeFileUserDataDir } from "@/ipc/writeFileUserDataDir";
 import { loadAllAssets } from "@/rendering/recorder";
 import {
   DropdownMenu,
-  iconProps,
+  MenuItem,
+  MenuWithClildren,
   StyledContextMenuButton,
   ToolbarButton,
 } from "@/riapp-ui/src";
@@ -156,107 +151,5 @@ export const MenuButton: FC = () => {
         </DropdownMenu>
       )}
     </div>
-  );
-};
-
-const MenuItem: FC<{
-  leftIcon?: FC<IconProps>;
-  text: string;
-  shortcut?: string;
-}> = (props) => {
-  return (
-    <>
-      {props.leftIcon ? (
-        props.leftIcon({
-          ...iconProps,
-          style: {
-            ...iconProps.style,
-            margin: "",
-          },
-        })
-      ) : (
-        <div style={{ marginLeft: "12px" }}></div>
-      )}
-      <div style={{ marginLeft: "2px", marginRight: "8px" }}>{props.text}</div>
-      <div
-        style={{
-          marginLeft: "auto",
-          color: "rgba(255, 255, 255, 0.5)",
-          display: "flex",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {props.shortcut}
-      </div>
-      <div style={{ marginRight: "12px" }}></div>
-    </>
-  );
-};
-
-type Props = {
-  title: ReactChild;
-  leftIcon?: FC<IconProps>;
-};
-const MenuWithClildren: FC<Props> = (props) => {
-  const [showMenu, setShowMenu] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
-  const onMouseEnter = () => {
-    setShowMenu(true);
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-  };
-  const onMouseLeave = () => {
-    const id = setTimeout(() => {
-      if (timeoutId) {
-        setShowMenu(false);
-      }
-    }, 100);
-    setTimeoutId(id);
-  };
-
-  return (
-    <StyledContextMenuButton
-      style={{
-        display: "flex",
-        position: "relative",
-        whiteSpace: "nowrap",
-      }}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-    >
-      {props.leftIcon ? (
-        props.leftIcon({
-          ...iconProps,
-          style: {
-            ...iconProps.style,
-            marginLeft: "",
-          },
-        })
-      ) : (
-        <div style={{ marginLeft: "12px" }}></div>
-      )}
-      <div style={{ marginLeft: "2px", marginRight: "8px" }}>{props.title}</div>
-      <ArrowRight
-        {...iconProps}
-        color={"rgba(255, 255, 255, 0.5)"}
-        style={{
-          ...iconProps.style,
-          marginRight: "",
-          marginLeft: "auto",
-        }}
-      />
-      {showMenu && (
-        <DropdownMenu
-          style={{
-            position: "absolute",
-            left: "calc(100%)",
-            top: "-2px",
-          }}
-        >
-          {props.children}
-        </DropdownMenu>
-      )}
-    </StyledContextMenuButton>
   );
 };
