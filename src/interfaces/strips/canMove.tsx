@@ -2,7 +2,7 @@ import { Strip } from "@/core/types";
 
 import { checkOverlap } from "./checkOverlap";
 
-const MAX_LAYER = 32;
+export const MAX_LAYER = 32;
 
 export function canMove(
   strip: Strip,

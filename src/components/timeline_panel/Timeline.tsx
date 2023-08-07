@@ -11,7 +11,7 @@ import {
 
 import { isAudioEffect, Strip } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import { canMove } from "@/interfaces/strips/canMove";
+import { canMove, MAX_LAYER } from "@/interfaces/strips/canMove";
 import { checkOverlap } from "@/interfaces/strips/checkOverlap";
 import { moveStrip } from "@/interfaces/strips/moveStrip";
 import { Key, KeyboardInput } from "@/KeyboardInput";
@@ -182,7 +182,7 @@ export const Timeline: FC = () => {
       };
 
       e.preventDefault();
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < MAX_LAYER; i++) {
         const newStrips = createNewStrips(pastedStrips, i);
         let isOverlap = false;
         for (const strip of newStrips) {
@@ -274,6 +274,7 @@ export const Timeline: FC = () => {
         );
 
         const diffStart = newMovedStrip.start - firstStrip.start;
+        const diffLength = newMovedStrip.length - firstStrip.length;
         const diffLayer = newMovedStrip.layer - firstStrip.layer;
 
         const newStrips = selectedStrips.map((strip) => {
@@ -281,6 +282,7 @@ export const Timeline: FC = () => {
             ...strip,
             start: strip.start + diffStart,
             layer: strip.layer + diffLayer,
+            length: strip.length + diffLength,
           };
         });
 
