@@ -20,6 +20,7 @@ export type UpdateHandler<T> = (
 export type EffectPlugin = {
   pkg?: ScriptMeta;
   Component?: FC<{ scriptEffect: Effect; strip: Strip; appCtx: AppContext }>;
+  AssetPanel?: FC<{ appCtx: AppContext }>;
   update?: UpdateHandler<ScriptEffect>;
   beforeRender?: UpdateHandler<ScriptEffect>;
   defaultEffect?: Effect;
