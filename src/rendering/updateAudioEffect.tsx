@@ -8,17 +8,16 @@ enum AudioStatus {
   Loading = "loading",
   Playing = "playing",
   Paused = "paused",
-  Seeking = "seeking",
   Deleted = "deleted",
 }
 
 const audioStatusMap = new Map<string, AudioStatus>();
 
-const modeLoadingBlack = false;
-
 function getKeyForEffect(effect: AudioEffect) {
   return effect.id + effect.audioAssetId;
 }
+
+const eventRegiteredMap = new Map<string, boolean>();
 
 export function getAudioElement(effect: AudioEffect) {
   const key = getKeyForEffect(effect);
@@ -51,6 +50,7 @@ export function createAudioElementOrGetFromCache(
   audioElement.style.display = "none";
   document.body.appendChild(audioElement);
   audioStatusMap.set(key, AudioStatus.Loading);
+  audioElement.loop = false;
   audioElement.onloadeddata = () => {
     audioStatusMap.set(key, AudioStatus.Paused);
     audioElement?.pause();
@@ -93,37 +93,31 @@ export function updateAudioEffect(
     if (currentStatus === AudioStatus.Loading) {
       return;
     }
-    audioElement.onseeked = () => {
-      if (scene.isPlaying) {
-        audioElement?.play();
+
+    if (!eventRegiteredMap.get(elementMapKey)) {
+      audioElement.onplay = () => {
         audioStatusMap.set(elementMapKey, AudioStatus.Playing);
-      } else {
-        audioElement?.pause();
+      };
+      audioElement.onpause = () => {
         audioStatusMap.set(elementMapKey, AudioStatus.Paused);
-      }
-    };
-    audioElement.onplay = () => {
-      audioStatusMap.set(elementMapKey, AudioStatus.Playing);
-    };
-    audioElement.onpause = () => {
-      audioStatusMap.set(elementMapKey, AudioStatus.Paused);
-    };
+      };
+      eventRegiteredMap.set(elementMapKey, true);
+    }
+
     const gapFrames = 5;
-    const target = scene.currentTime - strip.start + effect.offset;
-    const diff = Math.abs(audioElement.currentTime - target);
+    const targetTime = scene.currentTime - strip.start + effect.offset;
+    if (targetTime > audioElement.duration) {
+      audioElement.pause();
+      return;
+    }
+    const diff = Math.abs(audioElement.currentTime - targetTime);
     if (currentStatus === AudioStatus.Playing && !scene.isPlaying) {
       audioElement.pause();
     } else if (currentStatus === AudioStatus.Paused && scene.isPlaying) {
       audioElement.play();
-    } else if (
-      diff > (1 / scene.fps) * gapFrames &&
-      currentStatus !== AudioStatus.Seeking
-    ) {
-      // should seek if audio currentTime is too far from scene currentTime
-      audioElement.currentTime =
-        scene.currentTime - strip.start + effect.offset;
-      audioStatusMap.set(elementMapKey, AudioStatus.Seeking);
-    } else if (currentStatus === AudioStatus.Seeking && modeLoadingBlack) {
+      audioStatusMap.set(elementMapKey, AudioStatus.Playing);
+    } else if (diff > (1 / scene.fps) * gapFrames) {
+      audioElement.currentTime = targetTime;
     }
     const animatedVolume = calculateKeyFrameValue(
       effect.keyframes,
@@ -134,8 +128,5 @@ export function updateAudioEffect(
     );
 
     audioElement.volume = animatedVolume;
-    if (currentStatus === AudioStatus.Seeking && scene.isPlaying) {
-      return;
-    }
   }
 }
