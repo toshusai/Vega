@@ -1,3 +1,5 @@
+import { useCallback, useMemo } from "react";
+
 type DragHanderContext<T, U> = {
   startX: number;
   startY: number;
@@ -6,13 +8,25 @@ type DragHanderContext<T, U> = {
   startEvent: MouseEvent;
   pass?: T;
   movePass?: U;
+  event: MouseEvent;
 };
+
+export function useDragHandler<T, U>(
+  cb: (context: DragHanderContext<T, U>) => U,
+  onDown?: (context: DragHanderContext<T, U>) => T,
+  onUp?: (context: DragHanderContext<T, U>) => void,
+  deps: any[] = []
+) {
+  const memoHandler = useMemo(() => getDragHander(cb, onDown, onUp), deps);
+  return memoHandler;
+}
 
 export function getDragHander<T, U>(
   cb: (context: DragHanderContext<T, U>) => U,
   onDown?: (context: DragHanderContext<T, U>) => T,
   onUp?: (context: DragHanderContext<T, U>) => void
 ) {
+  console.log("getDragHander");
   return (downEvent: React.MouseEvent) => {
     const pass = onDown?.({
       startX: 0,
@@ -20,6 +34,7 @@ export function getDragHander<T, U>(
       diffX: 0,
       diffY: 0,
       startEvent: downEvent.nativeEvent,
+      event: downEvent.nativeEvent,
     });
     downEvent.stopPropagation();
     const startX = downEvent.clientX;
@@ -37,6 +52,7 @@ export function getDragHander<T, U>(
         diffY,
         startEvent: downEvent.nativeEvent,
         pass,
+        event: e,
       });
     };
 
@@ -51,6 +67,7 @@ export function getDragHander<T, U>(
         startEvent: e,
         pass,
         movePass,
+        event: e,
       });
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
