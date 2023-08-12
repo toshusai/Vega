@@ -5,7 +5,7 @@ import { css } from "styled-components";
 import { Plus } from "tabler-icons-react";
 
 import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
-import { ScriptEffect } from "@/core/types";
+import { AudioEffect, Effect, ScriptEffect } from "@/core/types";
 import { EffectPlugin } from "@/interfaces/plugins/CustomEffect";
 import { userScriptMap } from "@/rendering/updateScriptEffect";
 import {
@@ -16,7 +16,7 @@ import {
 } from "@/riapp-ui/src";
 
 export const AddEffectButton: FC<{
-  onAddEffect: (effect: ScriptEffect) => void;
+  onAddEffect: (effect: Effect) => void;
 }> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [showThis, setShowThis] = React.useState(false);
@@ -80,6 +80,21 @@ export const AddEffectButton: FC<{
                 </StyledContextMenuButton>
               );
             })}
+            <StyledContextMenuButton
+              onClick={() => {
+                const audioEffect: AudioEffect = {
+                  audioAssetId: "",
+                  id: uuid(),
+                  keyframes: [],
+                  type: "audio",
+                  offset: 0,
+                  volume: 1,
+                };
+                props.onAddEffect(audioEffect);
+              }}
+            >
+              AudioEffect
+            </StyledContextMenuButton>
           </DropdownMenu2>,
           document.body
         )}
