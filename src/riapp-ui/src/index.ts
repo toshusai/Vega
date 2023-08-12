@@ -13,6 +13,7 @@ export * from "./TransparentIconButton";
 export * from "./VInput";
 export * from "./VSelect";
 export * from "./VTextarea";
+export * from "./AutoHeightTextarea";
 export * from "./iconProps";
 export * from "./Menu";
 export * from "./hooks";
