@@ -16,6 +16,8 @@ export const EditableView = memo(function EditableView(props: {
   const [eidtable, setEditable] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
+  const [value, setValue] = useState(props.text);
+
   useEffect(() => {
     if (eidtable) {
       inputRef.current?.focus();
@@ -53,7 +55,7 @@ export const EditableView = memo(function EditableView(props: {
       ) : (
         <AutoHeightTextarea
           style={{ width: "100%", maxWidth: "100%" }}
-          value={removeLineBreaks(props.text)}
+          value={removeLineBreaks(value)}
           ref={inputRef}
           onBlur={() => {
             setEditable(false);
@@ -62,7 +64,7 @@ export const EditableView = memo(function EditableView(props: {
             props.onChange(removeLineBreaks(value));
           }}
           onInput={(value) => {
-            props.onChange(removeLineBreaks(value));
+            setValue(value);
           }}
         />
       )}
