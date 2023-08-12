@@ -12,7 +12,7 @@ import {
   isVideoEffect,
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import { Key, KeyboardInput } from "@/KeyboardInput";
+import { Key, KeyboardInput } from "@/riapp-ui/src/KeyboardInput";
 import { Recorder } from "@/rendering/recorder";
 import { updateAudioEffect } from "@/rendering/updateAudioEffect";
 import { updateImageEffect } from "@/rendering/updateImageEffect";

@@ -14,7 +14,7 @@ import { useSelector } from "@/hooks/useSelector";
 import { canMove, MAX_LAYER } from "@/interfaces/strips/canMove";
 import { checkOverlap } from "@/interfaces/strips/checkOverlap";
 import { moveStrip } from "@/interfaces/strips/moveStrip";
-import { Key, KeyboardInput } from "@/KeyboardInput";
+import { Key, KeyboardInput } from "@/riapp-ui/src/KeyboardInput";
 import { releaseAudioAsset } from "@/rendering/updateAudioEffect";
 import {
   Card,

@@ -1,5 +1,5 @@
 import { writeFile } from "@/ipc/writeFile";
-import { Key, KeyboardInput } from "@/KeyboardInput";
+import { Key, KeyboardInput } from "@/riapp-ui/src/KeyboardInput";
 import store from "@/store";
 import { appAction } from "@/store/app";
 import { actions } from "@/store/scene";

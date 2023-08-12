@@ -10,7 +10,6 @@ import {
   Strip,
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import { Key, KeyboardInput } from "@/KeyboardInput";
 import {
   Card,
   getDragHander,
@@ -24,6 +23,7 @@ import {
   useSelectRect,
   useWidth,
 } from "@/riapp-ui/src";
+import { Key, KeyboardInput } from "@/riapp-ui/src/KeyboardInput";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 import { restrictStartEnd } from "@/utils/restrictStartEnd";
