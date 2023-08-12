@@ -125,6 +125,9 @@ export const AssetPanel: FC = () => {
       data: asset,
     };
   });
+  items.sort((a, b) => {
+    return a.data.name.localeCompare(b.data.name);
+  });
 
   return (
     <Card height={100} width={100}>
