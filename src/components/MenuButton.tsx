@@ -24,7 +24,6 @@ import { readRecentFiles } from "@/utils/readRecentFiles";
 export const MenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const [recentFiles, setRecentFiles] = useState<string[]>([]);
 
   const [hasChanged, setHasChanged] = useState(false);
 
@@ -47,20 +46,6 @@ export const MenuButton: FC = () => {
 
   const handleClick = () => {
     setShowMenu(!showMenu);
-    const handleMouseDown = (e: MouseEvent) => {
-      if (ref.current && ref.current.contains(e.target as Node)) {
-        return;
-      }
-      setShowMenu(false);
-      window.removeEventListener("mousedown", handleMouseDown, {
-        capture: true,
-      });
-    };
-    const recentFiles = readRecentFiles();
-    setRecentFiles(recentFiles);
-    window.addEventListener("mousedown", handleMouseDown, {
-      capture: true,
-    });
   };
 
   const handleFilePick = () => {
@@ -99,20 +84,6 @@ export const MenuButton: FC = () => {
     download(json, "vega.json");
     setShowMenu(false);
   };
-  const handleOpen = (path: string) => () => {
-    const recentFiles = readRecentFiles();
-    if (!recentFiles.includes(path)) {
-      recentFiles.push(path);
-    }
-    const projectDataStr = readFile(path);
-    const projectData = JSON.parse(projectDataStr);
-    loadAllAssets(projectData);
-    store.dispatch(actions.setAll(projectData));
-    store.dispatch(appAction.setReadedDataJsonString(projectDataStr));
-    store.dispatch(appAction.setCurrentPath(path));
-    writeFileUserDataDir("recentFiles.json", JSON.stringify(recentFiles));
-    setShowMenu(false);
-  };
 
   return (
     <div
@@ -131,15 +102,11 @@ export const MenuButton: FC = () => {
             <MenuItem leftIcon={File} text="Open" shortcut="⌘ O"></MenuItem>
           </StyledContextMenuButton>
 
-          <MenuWithClildren title={"Open Recent"} leftIcon={Clock}>
-            {recentFiles.map((path) => {
-              return (
-                <StyledContextMenuButton key={path} onClick={handleOpen(path)}>
-                  <MenuItem text={path}></MenuItem>
-                </StyledContextMenuButton>
-              );
-            })}
-          </MenuWithClildren>
+          <RecentFilesMenu
+            onClose={() => {
+              setShowMenu(false);
+            }}
+          />
 
           <StyledContextMenuButton onClick={handleSave}>
             <MenuItem
@@ -153,3 +120,43 @@ export const MenuButton: FC = () => {
     </div>
   );
 };
+
+export function openFile(path: string) {
+  const recentFiles = readRecentFiles();
+  if (!recentFiles.includes(path)) {
+    recentFiles.push(path);
+  }
+  const projectDataStr = readFile(path);
+  const projectData = JSON.parse(projectDataStr);
+  loadAllAssets(projectData);
+  store.dispatch(actions.setAll(projectData));
+  store.dispatch(appAction.setReadedDataJsonString(projectDataStr));
+  store.dispatch(appAction.setCurrentPath(path));
+  writeFileUserDataDir("recentFiles.json", JSON.stringify(recentFiles));
+}
+
+function RecentFilesMenu(props: { onClose?: () => void }) {
+  const [recentFiles, setRecentFiles] = useState<string[]>([]);
+  const handleOpen = (path: string) => () => {
+    openFile(path);
+    props.onClose?.();
+  };
+
+  useEffect(() => {
+    const recentFiles = readRecentFiles();
+    setRecentFiles(recentFiles);
+  }, []);
+  return (
+    <MenuWithClildren title={"Open Recent"} leftIcon={Clock}>
+      {recentFiles.map((path) => {
+        return (
+          <StyledContextMenuButton key={path} onClick={handleOpen(path)}>
+            <MenuItem text={path}></MenuItem>
+          </StyledContextMenuButton>
+        );
+      })}
+    </MenuWithClildren>
+  );
+}
+
+

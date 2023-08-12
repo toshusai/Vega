@@ -9,6 +9,7 @@ import { MenuButton } from "@/components/MenuButton";
 import { Preview } from "@/components/preview_panel/Preview";
 import { RecordMenuButton } from "@/components/RecordMenuButton";
 import { SettingsMenuButton } from "@/components/SettingsMenuButton";
+import { SplashModal } from "@/components/SplashModal";
 import { StripPanel } from "@/components/strip_panel/StripPanel";
 import { Timeline } from "@/components/timeline_panel/Timeline";
 import { GlobalStyle, HPanel, VPanel } from "@/riapp-ui/src";
@@ -22,6 +23,7 @@ const IndexPage = () => {
       <GlobalStyle />
       <Provider store={store}>
         <RootDiv>
+          <SplashModal />
           <div
             style={{
               display: "flex",

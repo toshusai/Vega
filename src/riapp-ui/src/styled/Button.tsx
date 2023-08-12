@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   COLOR_BORDER_NAME,
   COLOR_BUTTON_BACKGROUND_NAME,
@@ -7,7 +7,7 @@ import {
   COLOR_TEXT_DISABLED_NAME,
 } from "./GlobalStyle";
 
-export const Button = styled.button`
+export const buttonCss = css`
   cursor: pointer;
   display: block;
   color: var(--color-text);
@@ -29,4 +29,8 @@ export const Button = styled.button`
     color: var(${COLOR_TEXT_DISABLED_NAME});
   }
   font-family: "Ricty Diminished";
+`;
+
+export const Button = styled.button`
+  ${buttonCss}
 `;

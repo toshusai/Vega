@@ -24,7 +24,7 @@ export function MenuWithClildren(props: {
       if (timeoutId) {
         setShowMenu(false);
       }
-    }, 100);
+    }, 200);
     setTimeoutId(id);
   };
 
