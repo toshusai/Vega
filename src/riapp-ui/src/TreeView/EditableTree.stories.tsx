@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect } from "react";
 
-import { KeyboardInput } from "../KeyboardInput";
+import { Key, KeyboardInput } from "../KeyboardInput";
 import { EditableTree } from "./EditableTree";
 import { TreeViewItem } from "./TreeItem";
 import { useTreeItems } from "./useTreeItems";
+import { DummyClick } from "../../__tests__/DummyClick";
+import { wait } from "../utils/wait";
 
 const meta = {
   component: EditableTree,
@@ -68,14 +70,59 @@ const items: Item[] = [
   },
 ];
 
-const renderItem: (item: Item) => React.ReactNode = (item: Item) => {
-  return <div>{item.data.name}</div>;
-};
-
 export const Basic: StoryObj<typeof meta> = {
   args: {
     items,
   },
+  render: (props) => {
+    useEffect(() => {
+      KeyboardInput.init(() => {});
+    }, []);
+    const [items, handleOrderChange] = useTreeItems<Data>(
+      props.items as TreeViewItem<Data>[]
+    );
+    return (
+      <>
+        <EditableTree<Data, Item>
+          onOrderChange={handleOrderChange}
+          items={items as Item[]}
+          renderItem={(item) => {
+            return <div style={{}}>{item.data.name}</div>;
+          }}
+          onClick={(item) => {}}
+        />
+      </>
+    );
+  },
+};
+
+export const $Select2ItemsAndDaDToDir: StoryObj<typeof meta> = {
+  args: {
+    items,
+  },
+  play: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const mouse = new DummyClick();
+    const lis = document.querySelectorAll(`li`);
+    for (let i = 0; i < lis.length; i++) {
+      const el = lis[i];
+      if (el.textContent === "item-1") {
+        await mouse.down(el);
+        await mouse.up(el);
+      }
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Shift" }));
+      await wait(100);
+      if (el.textContent === "item-3") {
+        const p = await mouse.down(el);
+        document.dispatchEvent(new KeyboardEvent("keyup", { key: "Shift" }));
+        await wait(100);
+        await mouse.move(p.x, p.y, p.x, p.y + 24, 1000);
+        await mouse.upFromPos(p.x, p.y + 24);
+      }
+    }
+    mouse.destory();
+  },
+
   render: (props) => {
     useEffect(() => {
       KeyboardInput.init(() => {});

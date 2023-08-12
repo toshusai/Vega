@@ -7,44 +7,60 @@ const meta = {
 
 export default meta;
 
-export const Basic: StoryObj<typeof meta> = {
-  args: {
-    items: [
+const items: any[] = [
+  {
+    id: "root",
+    data: {
+      name: "root",
+    },
+    children: [
       {
-        id: "root",
-        name: "root",
+        id: "item-1",
+        data: {
+          name: "item-1",
+        },
+      },
+      {
+        id: "item-2",
+        data: {
+          name: "item-2",
+        },
+      },
+      {
+        id: "dir-2",
+        data: {
+          name: "dir-2",
+        },
         children: [
           {
-            id: "child1",
-            name: "child1",
+            id: "item-3",
+            data: {
+              name: "item-3",
+            },
           },
           {
-            id: "child2",
-            name: "child2",
-          },
-          {
-            id: "child3",
-            name: "child3",
-            children: [
-              {
-                id: "child3-1",
-                name: "child3-1",
-              },
-              {
-                id: "child3-2",
-                name: "child3-2",
-              },
-            ],
-          },
-          {
-            id: "child4",
-            name: "child4",
+            id: "item-4",
+            data: {
+              name: "item-4",
+            },
           },
         ],
       },
+      {
+        id: "dir-1",
+        children: [],
+        data: {
+          name: "dir-1",
+        },
+      },
     ],
-    renderItem: (item) => {
-      return <div>{item.name}</div>;
+  },
+];
+export const Basic: StoryObj<typeof meta> = {
+  args: {
+    items: items,
+    renderItem: (item: any) => {
+      return <div>{item.data.name}</div>;
     },
   },
 };
