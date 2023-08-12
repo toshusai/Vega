@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 
@@ -14,6 +14,7 @@ export function EditableTree<U, T extends TreeViewItem<U>>(props: {
   renderItem: (item: T) => React.ReactNode;
   depth?: number;
   onOrderChange?: (start: T, end: T, pos: PosType) => void;
+  onChangeSelection?: (items: T[]) => void;
   onClick?: (item: T) => void;
 }) {
   const lineRef = React.useRef<HTMLDivElement>(null);
@@ -21,6 +22,10 @@ export function EditableTree<U, T extends TreeViewItem<U>>(props: {
   const [pos, setPos] = useState<PosType | null>(null);
 
   const [dragging, setDragging] = useState(false);
+
+  useEffect(() => {
+    props.onChangeSelection?.(selectedItems);
+  }, [selectedItems]);
 
   const handleMouseDown = useDragHandler(
     (ctx) => {
@@ -201,4 +206,5 @@ const EditableTreeRoot = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  overflow: hidden;
 `;

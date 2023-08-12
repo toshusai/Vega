@@ -1,6 +1,6 @@
 import React from "react";
 
-import { DirectoryTreeItem } from "./DirectoryTreeItem";
+import { DirectoryTreeItem, PointerEventsNone } from "./DirectoryTreeItem";
 import { TreeItem, TreeViewItem } from "./TreeItem";
 import { useIsSelectedItem } from "./useIsSelectedItem";
 
@@ -73,13 +73,7 @@ function TreeItemOrDir<U, T extends TreeViewItem<U>>(props: {
           onClick={(e) => props.onClick?.(item, e)}
           depth={(props.depth ?? 0) + 1}
         >
-          <div
-            style={{
-              pointerEvents: "none",
-            }}
-          >
-            {props.renderItem(item)}
-          </div>
+          <PointerEventsNone>{props.renderItem(item)}</PointerEventsNone>
         </TreeItem>
       )}
     </>

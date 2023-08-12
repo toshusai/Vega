@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   FilePlus,
   Music,
@@ -24,6 +24,8 @@ import {
 import { useSelector } from "@/hooks/useSelector";
 import { isAudioAsset, isImageAsset } from "@/rendering/updateTextEffect";
 import { Card, IconButton, iconProps, ToolTip } from "@/riapp-ui/src";
+import { EditableTree } from "@/riapp-ui/src/TreeView/EditableTree";
+import { TreeViewItem } from "@/riapp-ui/src/TreeView/TreeItem";
 import { actions } from "@/store/scene";
 import { filePick } from "@/utils/filePick";
 
@@ -117,6 +119,13 @@ export const AssetPanel: FC = () => {
     dispatch(actions.removeAsset(selectedAssetIds));
   };
 
+  const items = assets.map((asset) => {
+    return {
+      id: asset.id,
+      data: asset,
+    };
+  });
+
   return (
     <Card height={100} width={100}>
       <div
@@ -141,16 +150,26 @@ export const AssetPanel: FC = () => {
           height: "calc(100% - 24px)",
         }}
       >
-        {assets.map((asset) => {
-          return (
-            <AssetListItem
-              key={asset.id}
-              asset={asset}
-              selected={selectedAssetIds.includes(asset.id)}
-              onClick={() => handleSelectAsset(asset)}
-            />
-          );
-        })}
+        <EditableTree
+          renderItem={(item: TreeViewItem<Asset>) => {
+            return (
+              <AssetListItem
+                key={item.id}
+                asset={item.data}
+                selected={selectedAssetIds.includes(item.id)}
+                onClick={() => handleSelectAsset(item.data)}
+              />
+            );
+          }}
+          items={items}
+          onChangeSelection={(items) => {
+            if (items.length == 1) {
+              handleSelectAsset(items[0].data);
+            } else {
+              dispatch(actions.setSelectedAssetIds([]));
+            }
+          }}
+        />
       </div>
     </Card>
   );
@@ -162,25 +181,26 @@ const AssetListItem: FC<{
   onClick: () => void;
 }> = (props) => {
   return (
-    <Div
-      tabIndex={0}
-      onClick={props.onClick}
-      style={{
-        backgroundColor: props.selected ? "#444" : "transparent",
-      }}
-    >
+    <Div tabIndex={0} onClick={props.onClick}>
       {props.asset.type === "video" ? (
-        <Video style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
+        <Video style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
       ) : props.asset.type === "font" ? (
-        <Tex style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
+        <Tex style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
       ) : isImageAsset(props.asset) ? (
-        <Photo style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
+        <Photo style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
       ) : isAudioAsset(props.asset) ? (
-        <Music style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
+        <Music style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
       ) : isScriptAsset(props.asset) ? (
-        <Script style={{ margin: "auto 2px", minWidth: "16px" }} size={16} />
+        <Script style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
       ) : null}
-      <div>{props.asset.name}</div>
+      <div
+        css={css`
+          text-overflow: ellipsis;
+          overflow: hidden;
+        `}
+      >
+        {props.asset.name}
+      </div>
     </Div>
   );
 };
@@ -191,19 +211,20 @@ const Div = styled.div`
   white-space: nowrap;
   overflow: hidden;
   font-family: "Ricty Diminished";
-  line-height: 16px;
-  font-size: 12px;
-  height: 16px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  align-items: center;
+  line-height: 12px;
+  font-size: 10px;
+  height: 12px;
   cursor: default;
   user-select: none;
   box-sizing: border-box;
 
   :hover {
-    background-color: #333;
   }
 
   :focus {
-    background-color: #444;
     border-bottom: 1px solid #fff;
   }
 `;

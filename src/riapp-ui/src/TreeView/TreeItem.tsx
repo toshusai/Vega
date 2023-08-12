@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 import {
-  COLOR_BACKGROUND_2_NAME,
   COLOR_BUTTON_BACKGROUND_NAME,
   COLOR_INPUT_BACKGROUND_FOCUS_NAME,
 } from "../styled";
@@ -12,6 +11,8 @@ export type TreeViewItem<T> = {
   children?: TreeViewItem<T>[];
   data: T;
 };
+
+export const NEST_SPACE = 6;
 
 export function TreeItem<T>(
   props: {
@@ -24,7 +25,7 @@ export function TreeItem<T>(
   return (
     <TreeItemRoot
       selected={props.selected}
-      padding={props.depth ? props.depth * 12 : 0}
+      padding={props.depth ? props.depth * NEST_SPACE : 0}
       {...rest}
     >
       {props.children}

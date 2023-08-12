@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { TreeItem, TreeViewItem } from "./TreeItem";
+import { NEST_SPACE, TreeItem, TreeViewItem } from "./TreeItem";
 import { TreeView, WithTreeItemEvent } from "./TreeView";
 import { useIsSelectedItem } from "./useIsSelectedItem";
 
@@ -35,13 +35,7 @@ export const DirectoryTreeItem = React.memo(function DirectoryTreeView<
         ) : (
           <Button style={{ visibility: "hidden" }}>-</Button>
         )}
-        <div
-          style={{
-            pointerEvents: "none",
-          }}
-        >
-          {props.renderItem(props.item)}
-        </div>
+        <PointerEventsNone>{props.renderItem(props.item)}</PointerEventsNone>
       </TreeItem>
       {open && (
         <TreeView
@@ -58,6 +52,13 @@ export const DirectoryTreeItem = React.memo(function DirectoryTreeView<
   );
 });
 
+export const PointerEventsNone = styled.div`
+  pointer-events: none;
+  display: flex;
+  width: calc(100% - 12px);
+`;
+
+
 const Button = styled.button`
   border: none;
   background-color: transparent;
@@ -65,7 +66,8 @@ const Button = styled.button`
   padding: 0;
   margin: 0;
   color: var(--color-text);
-  width: 12px;
+  width: ${NEST_SPACE}px;
+  min-width: ${NEST_SPACE}px;
   display: flex;
   justify-content: center;
   align-items: center;

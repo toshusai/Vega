@@ -69,6 +69,7 @@ body{
   position: relative;
   line-height: 16px;
   font-size: 12px;
+  overflow: hidden;
 }
 #__next{
   height: 100%;
