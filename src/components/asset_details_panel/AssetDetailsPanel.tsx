@@ -22,7 +22,14 @@ import {
   isVideoAsset,
   loadFont,
 } from "@/rendering/updateTextEffect";
-import { Card, IconButton, iconProps, PanelBody, VInput } from "@/riapp-ui/src";
+import {
+  AutoHeightTextarea,
+  Card,
+  Flex,
+  IconButton,
+  iconProps,
+  PanelBody,
+} from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 import { filePick } from "@/utils/filePick";
 
@@ -55,13 +62,8 @@ export const AssetDetailsPanel: FC = () => {
           height: "100%",
         }}
       >
-        <div
-          css={css`
-            display: flex;
-            justify-content: space-between;
-          `}
-        >
-          <div>name:</div>
+        <div>
+          <div>name</div>
           <EditableView
             text={selectedAsset.name}
             onChange={(value) => {
@@ -70,17 +72,26 @@ export const AssetDetailsPanel: FC = () => {
             }}
           />
         </div>
-        <div style={{ display: "flex" }}>
-          <div>path:</div>
-          <IconButton
-            style={{ marginLeft: "auto" }}
-            onClick={() => {
-              changeAssetPath();
-            }}
-          >
-            <Link {...iconProps} />
-          </IconButton>
-          <VInput style={{ width: "100%" }} value={selectedAsset.path} />
+        <div>
+          <div>path</div>
+          <Flex>
+            <IconButton
+              style={{ marginLeft: "auto" }}
+              onClick={() => {
+                changeAssetPath();
+              }}
+            >
+              <Link {...iconProps} />
+            </IconButton>
+            <AutoHeightTextarea
+              css={css`
+                width: 100%;
+                max-width: 100%;
+              `}
+              style={{ width: "100%", maxWidth: "100%" }}
+              value={selectedAsset.path.replace(/\n/g, "")}
+            />
+          </Flex>
         </div>
         <div
           style={{

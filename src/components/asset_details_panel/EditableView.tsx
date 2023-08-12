@@ -2,14 +2,19 @@ import { memo, useEffect, useRef, useState } from "react";
 import { css } from "styled-components";
 import { Pencil } from "tabler-icons-react";
 
-import { IconButton, iconProps, VInput } from "@/riapp-ui/src";
+import {
+  AutoHeightTextarea,
+  Flex,
+  IconButton,
+  iconProps,
+} from "@/riapp-ui/src";
 
 export const EditableView = memo(function EditableView(props: {
   text: string;
   onChange: (value: string) => void;
 }) {
   const [eidtable, setEditable] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (eidtable) {
@@ -17,8 +22,14 @@ export const EditableView = memo(function EditableView(props: {
     }
   }, [eidtable]);
   return (
-    <>
-      {!eidtable && (
+    <Flex>
+      {eidtable ? (
+        <div
+          css={css`
+            width: 16px;
+          `}
+        />
+      ) : (
         <IconButton
           style={{ marginLeft: "auto" }}
           onClick={() => {
@@ -32,29 +43,33 @@ export const EditableView = memo(function EditableView(props: {
       {!eidtable ? (
         <div
           css={css`
-            width: 120px;
-            white-space: nowrap;
             padding-left: 8px;
+            width: 100%;
+            max-width: 100%;
           `}
         >
           {props.text}
         </div>
       ) : (
-        <VInput
-          style={{ width: "100%" }}
-          value={props.text}
+        <AutoHeightTextarea
+          style={{ width: "100%", maxWidth: "100%" }}
+          value={removeLineBreaks(props.text)}
           ref={inputRef}
           onBlur={() => {
             setEditable(false);
           }}
           onChange={(value) => {
-            props.onChange(value);
+            props.onChange(removeLineBreaks(value));
           }}
           onInput={(value) => {
-            props.onChange(value);
+            props.onChange(removeLineBreaks(value));
           }}
         />
       )}
-    </>
+    </Flex>
   );
 });
+
+function removeLineBreaks(str: string) {
+  return str.replace(/\n/g, "");
+}
