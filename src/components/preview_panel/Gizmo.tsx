@@ -164,39 +164,41 @@ const StyledGizmo = styled.div.attrs<SelectRectProps>((props) => ({
   },
 }))<SelectRectProps>`
   position: absolute;
-  border: 2px solid var(--color-primary);
+  border: 1px solid var(--color-primary);
   box-sizing: content-box;
   transform-origin: top left;
   transform: translate(-1px, -1px);
 `;
 
+const SIZE = 4;
 const GizmoControl = styled.div<{
   horizontal: Horizontal;
   vertical: Vertical;
 }>`
   position: absolute;
-  width: 8px;
-  height: 8px;
-  background: var(--color-primary);
+  width: ${SIZE}px;
+  height: ${SIZE}px;
+  background: white;
+  border: 1px solid var(--color-primary);
   ${({ horizontal }) => {
     if (horizontal === Horizontal.Left) {
       return `
-        left: -4px;
+        left: -${SIZE / 2}px;
       `;
     } else {
       return `
-        right: -4px;
+        right: -${SIZE / 2}px;
       `;
     }
   }}
   ${({ vertical }) => {
     if (vertical === Vertical.Top) {
       return `
-        top: -4px;
+        top: -${SIZE / 2}px;
       `;
     } else {
       return `
-        bottom: -4px;
+        bottom: -${SIZE / 2}px;
       `;
     }
   }}
