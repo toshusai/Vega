@@ -16,6 +16,7 @@ export function EditableTree<U, T extends TreeViewItem<U>>(props: {
   onOrderChange?: (start: T, end: T, pos: PosType) => void;
   onChangeSelection?: (items: T[]) => void;
   onClick?: (item: T) => void;
+  sortable?: boolean;
 }) {
   const lineRef = React.useRef<HTMLDivElement>(null);
   const [selectedItems, setSelectedItems] = useState<T[]>([]);
@@ -31,6 +32,7 @@ export function EditableTree<U, T extends TreeViewItem<U>>(props: {
     (ctx) => {
       setDragging(true);
       const e = ctx.event;
+      e.preventDefault()
       const tx = e.clientX;
       const ty = e.clientY;
       if (dragRef.current) {
@@ -70,6 +72,8 @@ export function EditableTree<U, T extends TreeViewItem<U>>(props: {
         if (!ref.current?.contains(target)) {
           return;
         }
+        if (!props.sortable && posType === PosType.Top) return;
+        if (!props.sortable && posType === PosType.Bottom) return;
         let top = 0;
         if (posType === PosType.Top) {
           top = target.offsetTop;
