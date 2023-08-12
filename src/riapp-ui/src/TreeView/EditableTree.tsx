@@ -1,176 +1,196 @@
-import React from "react";
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import styled from "styled-components";
+
+import { Key, KeyboardInput } from "../KeyboardInput";
 import { useDragHandler } from "../utils";
 import { TreeViewItem } from "./TreeItem";
-import { checkPosType, PosType } from "./utils/checkPosType";
 import { TreeView } from "./TreeView";
+import { checkPosType, checkPosType2, PosType } from "./utils/checkPosType";
+import { SelectedItemsContext } from "./SelectedItemsContext";
 
 export function EditableTree<U, T extends TreeViewItem<U>>(props: {
   items?: T[];
   renderItem: (item: T) => React.ReactNode;
   depth?: number;
   onOrderChange?: (start: T, end: T, pos: PosType) => void;
+  onClick?: (item: T) => void;
 }) {
   const lineRef = React.useRef<HTMLDivElement>(null);
-  const di = React.useRef<T | null>(null);
-  const pos = React.useRef<PosType | null>(null);
-  const handleMouseDown = useDragHandler<
-    | {
-        el: HTMLElement | null;
-      }
-    | undefined,
-    | {
-        el: HTMLElement | null;
-      }
-    | undefined
-  >(
-    (ctx) => {
-      const el = ctx.pass?.el;
-      if (!el) return;
-      const tx = ctx.startX + ctx.diffX;
-      const ty = ctx.startY + ctx.diffY;
-      el.style.top = ty + "px";
-      el.style.left = tx + "px";
+  const [selectedItems, setSelectedItems] = useState<T[]>([]);
+  const [pos, setPos] = useState<PosType | null>(null);
 
+  const [dragging, setDragging] = useState(false);
+
+  const handleMouseDown = useDragHandler(
+    (ctx) => {
+      setDragging(true);
       const e = ctx.event;
-      const posType = checkPosType(e);
-      const target = e.target as HTMLElement;
-      if (!ref.current?.contains(target)) {
-        return;
+      const tx = e.clientX;
+      const ty = e.clientY;
+      if (dragRef.current) {
+        dragRef.current.style.top = ty - 12 + "px";
+        dragRef.current.style.left = tx + "px";
       }
-      let top = 0;
-      if (posType === PosType.Top) {
-        top = target.offsetTop;
-      }
-      if (posType === PosType.Bottom) {
-        top = target.offsetTop + target.offsetHeight;
-      }
-      if (posType === PosType.Middle) {
-        top = target.offsetTop + target.offsetHeight / 2 - 6;
-      }
-      pos.current = posType ?? null;
-      if (lineRef.current) {
-        lineRef.current.style.top = top + "px";
-        const style = getComputedStyle(target);
-        const pd = style.getPropertyValue("padding-left");
-        const left = parseInt(pd.substring(0, pd.length - 2));
-        lineRef.current.style.marginLeft = left + "px";
-        lineRef.current.style.height =
-          posType === PosType.Middle ? "12px" : "1px";
-        lineRef.current.style.border =
-          posType === PosType.Middle
-            ? "1px solid var(--color-primary)"
-            : "none";
-        lineRef.current.style.backgroundColor =
-          posType === PosType.Middle ? "transparent" : "";
-        lineRef.current.style.width = target.clientWidth - left + "px";
-        lineRef.current.style.visibility = "visible";
-      }
-
-      return {
-        el,
-      };
     },
-    (ctx) => {
-      const el = ctx.startEvent.target as HTMLElement;
-      if (!el) {
-        return;
-      }
-      if (el.tagName === "BUTTON") return;
-      ctx.startEvent.stopImmediatePropagation();
-      ctx.startEvent.preventDefault();
-      ctx.startEvent.stopPropagation();
-      const clone = el.cloneNode(true) as HTMLElement;
-      clone.style.position = "absolute";
-      clone.style.zIndex = "1000";
-      clone.style.top = ctx.startEvent.clientY + "px";
-      clone.style.left = ctx.startEvent.clientX + "px";
-      clone.style.pointerEvents = "none";
-
-      document.body.appendChild(clone);
-      return {
-        el: clone,
-      };
-    },
-    (ctx) => {
-      const el = ctx.pass?.el;
-      if (!el) return;
-      el.remove();
-      if (lineRef.current) {
-        lineRef.current.style.visibility = "hidden";
-      }
+    undefined,
+    () => {
+      setDragging(false);
     }
   );
 
   const handleMouseDownMemo = React.useCallback(
     (item: T, e: React.MouseEvent<Element, MouseEvent>) => {
-      di.current = item;
       handleMouseDown(e);
+      if (KeyboardInput.isPressed(Key.Shift)) {
+        setSelectedItems((items) => {
+          return [...(items ?? []), item];
+        });
+      } else if (!selectedItems.find((i) => i.id === item.id)) {
+        setSelectedItems([item]);
+      }
     },
-    [handleMouseDown]
+    [handleMouseDown, selectedItems]
+  );
+
+  const handleMouseMove = React.useCallback(
+    (item: T, e: React.MouseEvent<Element, MouseEvent>) => {
+      if (dragging) {
+        const posType =
+          item.children === undefined
+            ? checkPosType2(e.nativeEvent)
+            : checkPosType(e.nativeEvent);
+        const target = e.target as HTMLElement;
+        if (target.tagName === "BUTTON") return;
+        if (!ref.current?.contains(target)) {
+          return;
+        }
+        let top = 0;
+        if (posType === PosType.Top) {
+          top = target.offsetTop;
+        }
+        if (posType === PosType.Bottom) {
+          top = target.offsetTop + target.offsetHeight;
+        }
+        if (posType === PosType.Middle) {
+          top = target.offsetTop + target.offsetHeight / 2 - 6;
+        }
+        if (posType !== undefined) setPos(posType);
+        if (lineRef.current) {
+          lineRef.current.style.top = top + "px";
+          const style = getComputedStyle(target);
+          const pd = style.getPropertyValue("padding-left");
+          const left = parseInt(pd.substring(0, pd.length - 2));
+          lineRef.current.style.marginLeft = left + "px";
+          lineRef.current.style.width = target.clientWidth - left + "px";
+          lineRef.current.style.visibility = "visible";
+        }
+      }
+    },
+    [dragging]
   );
 
   const handleMouseUpMemo = React.useCallback(
     (item: T, e: React.MouseEvent<Element, MouseEvent>) => {
-      if (!di.current) return;
-      if (di.current.id === item.id) return;
-      props.onOrderChange?.(di.current, item, pos.current ?? PosType.Middle);
-      di.current = null;
+      if (dragging) {
+        selectedItems.forEach((i) => {
+          props.onOrderChange?.(i, item, pos ?? PosType.Middle);
+        });
+      } else {
+        if (!KeyboardInput.isPressed(Key.Shift)) {
+          setSelectedItems([item]);
+        }
+      }
+      setDragging(false);
+      setPos(null);
+      lineRef.current?.style.setProperty("visibility", "hidden");
     },
-    []
+    [dragging, selectedItems, props, pos]
   );
+
+  const handleMouseLeave = React.useCallback(() => {
+    setPos(null);
+    lineRef.current?.style.setProperty("visibility", "hidden");
+  }, []);
+
+  const handleMouseEnter = React.useCallback(() => {
+    setPos(null);
+    if (dragging) {
+      lineRef.current?.style.setProperty("visibility", "visible");
+    }
+  }, [dragging]);
 
   const memoTreeView = React.useMemo(() => {
     return (
       <TreeView
         items={props.items}
         depth={props.depth}
-        renderItem={props.renderItem as any}
+        renderItem={(item) => {
+          return props.renderItem(item as any);
+        }}
+        onMouseMove={handleMouseMove as any}
         onMouseDown={handleMouseDownMemo as any}
         onMouseUp={handleMouseUpMemo as any}
       />
     );
   }, [
+    props,
+    handleMouseMove,
     handleMouseDownMemo,
     handleMouseUpMemo,
-    props.depth,
-    props.items,
-    props.renderItem,
+    selectedItems,
   ]);
 
-  const handleMouseLeave = React.useCallback(() => {
-    if (lineRef.current) {
-      lineRef.current.style.visibility = "hidden";
-    }
-  }, []);
-
-  const handleMouseEnter = React.useCallback(() => {
-    if (lineRef.current && di.current) {
-      lineRef.current.style.visibility = "visible";
-    }
-  }, []);
-
   const ref = React.useRef<HTMLDivElement>(null);
+  const dragRef = React.useRef<HTMLDivElement>(null);
 
   return (
-    <EditableTreeRoot
-      ref={ref}
-      onMouseLeave={handleMouseLeave}
-      onMouseEnter={handleMouseEnter}
-    >
-      <InsertionLine ref={lineRef} />
-      {memoTreeView}
-    </EditableTreeRoot>
+    <>
+      <SelectedItemsContext.Provider value={selectedItems}>
+        <EditableTreeRoot
+          ref={ref}
+          onMouseLeave={handleMouseLeave}
+          onMouseEnter={handleMouseEnter}
+        >
+          <InsertionLine pos={pos ?? undefined} ref={lineRef} />
+          {memoTreeView}
+        </EditableTreeRoot>
+        {dragging &&
+          ReactDOM.createPortal(
+            <DragDiv ref={dragRef}>
+              {props.renderItem(selectedItems[0] as any)}
+              <div>
+                {selectedItems.length > 1 && `+${selectedItems.length - 1}`}
+              </div>
+            </DragDiv>,
+            document.body
+          )}
+      </SelectedItemsContext.Provider>
+    </>
   );
 }
 
-const InsertionLine = styled.div`
+const DragDiv = styled.div`
+  position: absolute;
+  display: flex;
+  gap: 8px;
+  z-index: 1000;
+  pointer-events: none;
+  top: -9999px;
+`;
+
+const InsertionLine = styled.div<{
+  pos?: PosType;
+}>`
   display: flex;
   position: absolute;
   visibility: hidden;
   width: 100%;
-  height: 2px;
-  background-color: var(--color-primary);
+  height: ${(props) => (props.pos === PosType.Middle ? "12px" : "1px")};
+  background-color: ${(props) =>
+    props.pos === PosType.Middle ? "transparent" : "var(--color-primary)"};
+  border: ${(props) =>
+    props.pos === PosType.Middle ? "1px dashed var(--color-primary)" : "none"};
   z-index: 1000;
   pointer-events: none;
   transform: translateY(-1px);

@@ -20,3 +20,18 @@ export function checkPosType(e: MouseEvent) {
     console.error("currentTarget is not HTMLElement", e.target);
   }
 }
+
+export function checkPosType2(e: MouseEvent) {
+  if (e.target instanceof HTMLElement) {
+    const rect = e.target.getBoundingClientRect();
+    const y = e.clientY - rect.top;
+    const height = rect.height;
+    if (y < height / 2) {
+      return PosType.Top;
+    } else {
+      return PosType.Bottom;
+    }
+  } else {
+    console.error("currentTarget is not HTMLElement", e.target);
+  }
+}

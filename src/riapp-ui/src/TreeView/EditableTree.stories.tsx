@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { useEffect } from "react";
 
+import { KeyboardInput } from "../KeyboardInput";
 import { EditableTree } from "./EditableTree";
 import { TreeViewItem } from "./TreeItem";
-import { containItem, findParentItem } from "./utils";
 import { useTreeItems } from "./useTreeItems";
 
 const meta = {
@@ -76,6 +77,9 @@ export const Basic: StoryObj<typeof meta> = {
     items,
   },
   render: (props) => {
+    useEffect(() => {
+      KeyboardInput.init(() => {});
+    }, []);
     const [items, handleOrderChange] = useTreeItems<Data>(
       props.items as TreeViewItem<Data>[]
     );
@@ -84,7 +88,10 @@ export const Basic: StoryObj<typeof meta> = {
         <EditableTree<Data, Item>
           onOrderChange={handleOrderChange}
           items={items as Item[]}
-          renderItem={renderItem}
+          renderItem={(item) => {
+            return <div style={{}}>{item.data.name}</div>;
+          }}
+          onClick={(item) => {}}
         />
       </>
     );

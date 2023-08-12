@@ -1,10 +1,14 @@
 import { useCallback, useState } from "react";
+
 import { TreeViewItem } from "./TreeItem";
+import {
+  findItem,
+  insertNextSibling,
+  insertPrevSibling,
+  pushItem,
+  removeItem,
+} from "./utils";
 import { PosType } from "./utils/checkPosType";
-import { findItem, pushItem } from "./utils";
-import { insertNextSibling } from "./utils";
-import { insertPrevSibling } from "./utils";
-import { removeItem } from "./utils";
 
 export function useTreeItems<T>(
   items: TreeViewItem<T>[]
@@ -46,7 +50,7 @@ export function useTreeItems<T>(
         return newItems;
       });
     },
-    [items]
+    []
   );
 
   return [itemsState, handleOrderChange];
