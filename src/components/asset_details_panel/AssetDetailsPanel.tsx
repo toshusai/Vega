@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { css } from "styled-components";
-import { Link } from "tabler-icons-react";
+import styled, { css } from "styled-components";
+import { AlertTriangle, Link } from "tabler-icons-react";
 
 import {
   AudioAsset,
@@ -62,36 +62,45 @@ export const AssetDetailsPanel: FC = () => {
           height: "100%",
         }}
       >
-        <div>
-          <div>name</div>
-          <EditableView
-            text={selectedAsset.name}
-            onChange={(value) => {
-              const newAsset = { ...selectedAssets[0], name: value };
-              dispatch(actions.updateAssets(newAsset));
-            }}
-          />
-        </div>
-        <div>
-          <div>path</div>
-          <Flex>
-            <IconButton
-              style={{ marginLeft: "auto" }}
-              onClick={() => {
-                changeAssetPath();
+        <div
+          css={css`
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 4px;
+          `}
+        >
+          <SectionDiv>
+            <strong>name</strong>
+            <EditableView
+              text={selectedAsset.name}
+              onChange={(value) => {
+                const newAsset = { ...selectedAssets[0], name: value };
+                dispatch(actions.updateAssets(newAsset));
               }}
-            >
-              <Link {...iconProps} />
-            </IconButton>
-            <AutoHeightTextarea
-              css={css`
-                width: 100%;
-                max-width: 100%;
-              `}
-              style={{ width: "100%", maxWidth: "100%" }}
-              value={selectedAsset.path.replace(/\n/g, "")}
             />
-          </Flex>
+          </SectionDiv>
+          <SectionDiv>
+            <strong>path</strong>
+            <Flex>
+              <IconButton
+                style={{ marginLeft: "auto" }}
+                onClick={() => {
+                  changeAssetPath();
+                }}
+              >
+                <Link {...iconProps} />
+              </IconButton>
+              <AutoHeightTextarea
+                css={css`
+                  width: 100%;
+                  max-width: 100%;
+                `}
+                style={{ width: "100%", maxWidth: "100%" }}
+                value={selectedAsset.path.replace(/\n/g, "")}
+              />
+            </Flex>
+          </SectionDiv>
         </div>
         <div
           style={{
@@ -118,6 +127,13 @@ export const AssetDetailsPanel: FC = () => {
     </Card>
   );
 };
+
+const SectionDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
 const TextAssetDetailsPanel: FC<{
   asset: FontAsset;
 }> = (props) => {
@@ -192,13 +208,41 @@ const ImageAssetDetailsPanel: FC<{
 const AudioAssetDetailsPanel: FC<{
   asset: AudioAsset;
 }> = (props) => {
+  const [isFound, setIsFound] = useState(false);
   return (
-    <div>
+    <div
+      css={css`
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      `}
+    >
+      {!isFound && (
+        <div
+          css={css`
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ff756b;
+          `}
+        >
+          <AlertTriangle size={16} />
+          <div>not found asset</div>
+        </div>
+      )}
       <audio
-        style={{
-          transform: "scale(0.5)",
-          transformOrigin: "top left",
+        onError={() => {
+          setIsFound(false);
         }}
+        onLoadedMetadata={() => {
+          setIsFound(true);
+        }}
+        css={css`
+          height: 24px;
+          width: 100%;
+        `}
         src={props.asset.path}
         controls
       />
