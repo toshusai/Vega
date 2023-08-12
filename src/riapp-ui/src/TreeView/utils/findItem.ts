@@ -1,6 +1,9 @@
 import { TreeViewItem } from "../TreeItem";
 
-function findItem(items: TreeViewItem[], id: string): TreeViewItem | null {
+export function findItem<T>(
+  items: TreeViewItem<T>[],
+  id: string
+): TreeViewItem<T> | null {
   for (const item of items) {
     if (item.id === id) {
       return item;

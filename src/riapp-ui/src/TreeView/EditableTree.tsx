@@ -5,18 +5,14 @@ import { TreeViewItem } from "./TreeItem";
 import { checkPosType, PosType } from "./utils/checkPosType";
 import { TreeView } from "./TreeView";
 
-export function EditableTree(props: {
-  items?: TreeViewItem[];
-  renderItem: (item: TreeViewItem) => React.ReactNode;
+export function EditableTree<U, T extends TreeViewItem<U>>(props: {
+  items?: T[];
+  renderItem: (item: T) => React.ReactNode;
   depth?: number;
-  onOrderChange?: (
-    start: TreeViewItem,
-    end: TreeViewItem,
-    pos: PosType
-  ) => void;
+  onOrderChange?: (start: T, end: T, pos: PosType) => void;
 }) {
   const lineRef = React.useRef<HTMLDivElement>(null);
-  const di = React.useRef<TreeViewItem | null>(null);
+  const di = React.useRef<T | null>(null);
   const pos = React.useRef<PosType | null>(null);
   const handleMouseDown = useDragHandler<
     | {
@@ -107,7 +103,7 @@ export function EditableTree(props: {
   );
 
   const handleMouseDownMemo = React.useCallback(
-    (item: TreeViewItem, e: React.MouseEvent<Element, MouseEvent>) => {
+    (item: T, e: React.MouseEvent<Element, MouseEvent>) => {
       di.current = item;
       handleMouseDown(e);
     },
@@ -115,7 +111,7 @@ export function EditableTree(props: {
   );
 
   const handleMouseUpMemo = React.useCallback(
-    (item: TreeViewItem, e: React.MouseEvent<Element, MouseEvent>) => {
+    (item: T, e: React.MouseEvent<Element, MouseEvent>) => {
       if (!di.current) return;
       if (di.current.id === item.id) return;
       props.onOrderChange?.(di.current, item, pos.current ?? PosType.Middle);
@@ -127,11 +123,11 @@ export function EditableTree(props: {
   const memoTreeView = React.useMemo(() => {
     return (
       <TreeView
-        renderItem={props.renderItem}
         items={props.items}
         depth={props.depth}
-        onMouseDown={handleMouseDownMemo}
-        onMouseUp={handleMouseUpMemo}
+        renderItem={props.renderItem as any}
+        onMouseDown={handleMouseDownMemo as any}
+        onMouseUp={handleMouseUpMemo as any}
       />
     );
   }, [
@@ -186,9 +182,3 @@ const EditableTreeRoot = styled.div`
   flex-direction: column;
   width: 100%;
 `;
-
-function inChildren(parent: HTMLElement, target: HTMLElement) {
-  if (parent === target) return true;
-  if (parent.contains(target)) return true;
-  return false;
-}

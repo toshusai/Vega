@@ -3,19 +3,21 @@ import React from "react";
 import { DirectoryTreeItem } from "./DirectoryTreeItem";
 import { TreeItem, TreeViewItem } from "./TreeItem";
 
-export const TreeView = React.memo(function TreeView(props: {
-  items?: TreeViewItem[];
-  renderItem: (item: TreeViewItem) => React.ReactNode;
+export type WithTreeItemEvent<U, T extends TreeViewItem<U>> = (
+  item: T,
+  e: React.MouseEvent<HTMLElement, MouseEvent>
+) => void;
+
+export const TreeView = React.memo(function TreeView<
+  U,
+  T extends TreeViewItem<U>
+>(props: {
+  items?: T[];
+  renderItem: (item: T) => React.ReactNode;
   depth?: number;
-  onMouseDown?: (
-    item: TreeViewItem,
-    e: React.MouseEvent<HTMLElement, MouseEvent>
-  ) => void;
+  onMouseDown?: WithTreeItemEvent<U, T>;
   onMouseMove?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-  onMouseUp?: (
-    item: TreeViewItem,
-    e: React.MouseEvent<HTMLElement, MouseEvent>
-  ) => void;
+  onMouseUp?: WithTreeItemEvent<U, T>;
 }) {
   const depth = props.depth ?? 0;
   return (
@@ -23,15 +25,14 @@ export const TreeView = React.memo(function TreeView(props: {
       {props.items?.map((item) => {
         return (
           <React.Fragment key={item.id}>
-            {item.children ? (
+            {item.children !== undefined ? (
               <DirectoryTreeItem
-                id={item.id}
-                name={item.name}
-                children={item.children}
+                item={item}
                 depth={depth}
-                onMouseDown={props.onMouseDown}
                 onMouseMove={props.onMouseMove}
-                onMouseUp={props.onMouseUp}
+                renderItem={props.renderItem as any}
+                onMouseDown={props.onMouseDown as any}
+                onMouseUp={props.onMouseUp as any}
               />
             ) : (
               <TreeItem
@@ -43,7 +44,13 @@ export const TreeView = React.memo(function TreeView(props: {
                 onMouseUp={(e) => props.onMouseUp?.(item, e)}
                 depth={depth}
               >
-                {item.name}
+                <div
+                  style={{
+                    pointerEvents: "none",
+                  }}
+                >
+                  {props.renderItem(item)}
+                </div>
               </TreeItem>
             )}
           </React.Fragment>

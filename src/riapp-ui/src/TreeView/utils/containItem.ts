@@ -1,7 +1,7 @@
 import { TreeViewItem } from "../TreeItem";
 
-export function containItem(
-  items: TreeViewItem[],
+export function containItem<T>(
+  items: TreeViewItem<T>[],
   parentId: string,
   childId: string
 ): boolean {

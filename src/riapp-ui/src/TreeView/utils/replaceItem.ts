@@ -1,10 +1,10 @@
 import { TreeViewItem } from "../TreeItem";
 
-function replaceItem(
-  items: TreeViewItem[],
+function replaceItem<T>(
+  items: TreeViewItem<T>[],
   id: string,
-  newItem: TreeViewItem
-): TreeViewItem[] {
+  newItem: TreeViewItem<T>
+): TreeViewItem<T>[] {
   return items.map((item) => {
     if (item.id === id) {
       return newItem;

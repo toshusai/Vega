@@ -1,70 +1,51 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { TreeView } from "./TreeView";
+import { TreeView, WithTreeItemEvent } from "./TreeView";
 import { TreeItem, TreeViewItem } from "./TreeItem";
 
-export const DirectoryTreeItem = React.memo(function DirectoryTreeView(
-  props: TreeViewItem & {
-    depth?: number;
-    onMouseDown?: (
-      item: TreeViewItem,
-      e: React.MouseEvent<HTMLElement, MouseEvent>
-    ) => void;
-    onMouseMove?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-    onMouseUp?: (
-      item: TreeViewItem,
-      e: React.MouseEvent<HTMLElement, MouseEvent>
-    ) => void;
-  }
-) {
+export const DirectoryTreeItem = React.memo(function DirectoryTreeView<
+  U,
+  T extends TreeViewItem<U>
+>(props: {
+  item: T;
+  depth?: number;
+  renderItem: (item: T) => React.ReactNode;
+  onMouseDown?: WithTreeItemEvent<U, T>;
+  onMouseMove?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  onMouseUp?: WithTreeItemEvent<U, T>;
+}) {
   const [open, setOpen] = useState(true);
   const depth = props.depth ?? 0;
   return (
     <TreeViewRootUl>
       <TreeItem
         depth={depth}
-        onMouseDown={(e) =>
-          props.onMouseDown?.(
-            {
-              id: props.id,
-              name: props.name,
-              children: props.children,
-            },
-            e
-          )
-        }
+        onMouseDown={(e) => props.onMouseDown?.(props.item, e)}
         onMouseMove={props.onMouseMove}
-        onMouseUp={(e) =>
-          props.onMouseUp?.(
-            {
-              id: props.id,
-              name: props.name,
-              children: props.children,
-            },
-            e
-          )
-        }
+        onMouseUp={(e) => props.onMouseUp?.(props.item, e)}
       >
-        <Button onClick={() => setOpen(!open)}>{open ? "-" : "+"}</Button>
+        {(props.item.children?.length ?? 0) > 0 ? (
+          <Button onClick={() => setOpen(!open)}>{open ? "-" : "+"}</Button>
+        ) : (
+          <Button style={{ visibility: "hidden" }}>-</Button>
+        )}
         <div
           style={{
             pointerEvents: "none",
           }}
         >
-          {props.name}
+          {props.renderItem(props.item)}
         </div>
       </TreeItem>
       {open && (
         <TreeView
           depth={depth + 1}
-          items={props.children}
-          renderItem={(item) => {
-            return item.name;
-          }}
-          onMouseDown={props.onMouseDown}
+          items={props.item.children}
+          renderItem={props.renderItem as any}
           onMouseMove={props.onMouseMove}
-          onMouseUp={props.onMouseUp}
+          onMouseDown={props.onMouseDown as any}
+          onMouseUp={props.onMouseUp as any}
         />
       )}
     </TreeViewRootUl>

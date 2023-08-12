@@ -3,13 +3,13 @@ import styled from "styled-components";
 
 import { COLOR_INPUT_BACKGROUND_FOCUS_NAME } from "../styled";
 
-export type TreeViewItem = {
+export type TreeViewItem<T> = {
   id: string;
-  name: string;
-  children?: TreeViewItem[];
+  children?: TreeViewItem<T>[];
+  data: T;
 };
 
-export function TreeItem(
+export function TreeItem<T>(
   props: {
     children: React.ReactNode;
     depth?: number;

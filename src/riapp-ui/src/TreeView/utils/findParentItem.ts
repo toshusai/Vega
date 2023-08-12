@@ -1,9 +1,9 @@
 import { TreeViewItem } from "../TreeItem";
 
-function findParentItem(
-  items: TreeViewItem[],
+export function findParentItem<T>(
+  items: TreeViewItem<T>[],
   id: string
-): TreeViewItem | null {
+): TreeViewItem<T> | null {
   for (const item of items) {
     if (item.children) {
       for (const child of item.children) {
