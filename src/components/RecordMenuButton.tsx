@@ -23,17 +23,12 @@ export const RecordMenuButton: FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        position: "relative",
-      }}
-    >
+    <>
       <ToolbarButton onClick={handleClick}>Record</ToolbarButton>
       <Modal isOpen={showMenu} onClose={handleClose}>
         <RenderPanel onClose={handleClose}></RenderPanel>
       </Modal>
-    </div>
+    </>
   );
 };
 

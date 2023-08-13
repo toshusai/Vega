@@ -1,15 +1,13 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Clock, DeviceFloppy, File } from "tabler-icons-react";
 
 import { readFile } from "@/ipc/readFile";
 import { writeFileUserDataDir } from "@/ipc/writeFileUserDataDir";
 import { loadAllAssets } from "@/rendering/recorder";
 import {
-  DropdownMenu,
   MenuItem,
   MenuWithClildren,
   StyledContextMenuButton,
-  ToolbarButton,
 } from "@/riapp-ui/src";
 import store from "@/store";
 import { appAction } from "@/store/app";
@@ -21,10 +19,10 @@ import { filePick } from "@/utils/filePick";
 import { sortStringify } from "@/utils/formatForSave";
 import { readRecentFiles } from "@/utils/readRecentFiles";
 
+import { ToolBarMenu } from "./ToolBarMenu";
+
 export const MenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
   const [hasChanged, setHasChanged] = useState(false);
 
   useEffect(() => {
@@ -43,10 +41,6 @@ export const MenuButton: FC = () => {
       UndoManager.main.removeEventListener("change", handleChange);
     };
   }, []);
-
-  const handleClick = () => {
-    setShowMenu(!showMenu);
-  };
 
   const handleFilePick = () => {
     filePick((str, path) => {
@@ -86,38 +80,31 @@ export const MenuButton: FC = () => {
   };
 
   return (
-    <div
-      ref={ref}
-      style={{
-        display: "flex",
-        position: "relative",
-      }}
-    >
-      <ToolbarButton onClick={handleClick}>
-        File{hasChanged ? "*" : null}
-      </ToolbarButton>
-      {showMenu && (
-        <DropdownMenu>
-          <StyledContextMenuButton onClick={handleFilePick}>
-            <MenuItem leftIcon={File} text="Open" shortcut="⌘ O"></MenuItem>
-          </StyledContextMenuButton>
+    <>
+      <ToolBarMenu
+        title={`File${hasChanged ? "*" : ""}`}
+        showMenu={showMenu}
+        setShowMenu={setShowMenu}
+      >
+        <StyledContextMenuButton onClick={handleFilePick}>
+          <MenuItem leftIcon={File} text="Open" shortcut="⌘ O"></MenuItem>
+        </StyledContextMenuButton>
 
-          <RecentFilesMenu
-            onClose={() => {
-              setShowMenu(false);
-            }}
-          />
+        <RecentFilesMenu
+          onClose={() => {
+            setShowMenu(false);
+          }}
+        />
 
-          <StyledContextMenuButton onClick={handleSave}>
-            <MenuItem
-              leftIcon={DeviceFloppy}
-              text="Save"
-              shortcut="⌘ S"
-            ></MenuItem>
-          </StyledContextMenuButton>
-        </DropdownMenu>
-      )}
-    </div>
+        <StyledContextMenuButton onClick={handleSave}>
+          <MenuItem
+            leftIcon={DeviceFloppy}
+            text="Save"
+            shortcut="⌘ S"
+          ></MenuItem>
+        </StyledContextMenuButton>
+      </ToolBarMenu>
+    </>
   );
 };
 
@@ -136,10 +123,12 @@ export function openFile(path: string) {
 }
 
 function RecentFilesMenu(props: { onClose?: () => void }) {
+  const [showMenu, setShowMenu] = useState(false);
   const [recentFiles, setRecentFiles] = useState<string[]>([]);
   const handleOpen = (path: string) => () => {
     openFile(path);
     props.onClose?.();
+    setShowMenu(false);
   };
 
   useEffect(() => {
@@ -147,7 +136,12 @@ function RecentFilesMenu(props: { onClose?: () => void }) {
     setRecentFiles(recentFiles);
   }, []);
   return (
-    <MenuWithClildren title={"Open Recent"} leftIcon={Clock}>
+    <MenuWithClildren
+      title={"Open Recent"}
+      leftIcon={Clock}
+      setShowMenu={setShowMenu}
+      showMenu={showMenu}
+    >
       {recentFiles.map((path) => {
         return (
           <StyledContextMenuButton key={path} onClick={handleOpen(path)}>
@@ -158,5 +152,3 @@ function RecentFilesMenu(props: { onClose?: () => void }) {
     </MenuWithClildren>
   );
 }
-
-
