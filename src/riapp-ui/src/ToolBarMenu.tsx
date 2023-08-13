@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-
-import { DropdownMenu, ToolbarButton } from "@/riapp-ui/src";
+import { ToolbarButton } from "./ToolbarButton";
+import { DropdownMenu } from "./DropdownMenu";
 
 function useKeyboardMenuHandler(
   ref: React.RefObject<HTMLDivElement>,

@@ -21,3 +21,4 @@ export * from "./panel";
 export * from "./styled";
 export * from "./utils";
 export * from "./context_menu";
+export * from "./ToolBarMenu";

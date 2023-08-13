@@ -8,6 +8,7 @@ import {
   MenuItem,
   MenuWithClildren,
   StyledContextMenuButton,
+  ToolBarMenu,
 } from "@/riapp-ui/src";
 import store from "@/store";
 import { appAction } from "@/store/app";
@@ -18,8 +19,6 @@ import { download } from "@/utils/download";
 import { filePick } from "@/utils/filePick";
 import { sortStringify } from "@/utils/formatForSave";
 import { readRecentFiles } from "@/utils/readRecentFiles";
-
-import { ToolBarMenu } from "./ToolBarMenu";
 
 export const MenuButton: FC = () => {
   const [showMenu, setShowMenu] = useState(false);
