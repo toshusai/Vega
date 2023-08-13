@@ -1,12 +1,11 @@
-import { useEffect, useLayoutEffect, useState } from "react";
-import styled, { css } from "styled-components";
-import {
-  buttonCss, MenuItem, Modal,
-  ModalBody
-} from "@/riapp-ui/src";
-import { readRecentFiles } from "@/utils/readRecentFiles";
-import { openFile } from "./MenuButton";
+import { useEffect, useState } from "react";
+import { css } from "styled-components";
 
+import { MenuItem, Modal, ModalBody } from "@/riapp-ui/src";
+import { ListItem } from "@/riapp-ui/src/ListItem";
+import { readRecentFiles } from "@/utils/readRecentFiles";
+
+import { openFile } from "./MenuButton";
 
 export function SplashModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +13,7 @@ export function SplashModal() {
     setIsOpen(false);
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setIsOpen(true);
   }, []);
   return (
@@ -23,7 +22,7 @@ export function SplashModal() {
     </Modal>
   );
 }
-function SplashModalBody(props: { onClose?: () => void; }) {
+function SplashModalBody(props: { onClose?: () => void }) {
   const [recentFiles, setRecentFiles] = useState<string[]>([]);
   useEffect(() => {
     const recentFiles = readRecentFiles();
@@ -34,7 +33,7 @@ function SplashModalBody(props: { onClose?: () => void; }) {
     props.onClose?.();
   }
   return (
-    <ModalBody onClose={props.onClose} title="Vega">
+    <ModalBody onClose={props.onClose} title="Open Project">
       <div
         css={css`
           display: flex;
@@ -43,18 +42,18 @@ function SplashModalBody(props: { onClose?: () => void; }) {
       >
         {recentFiles.length > 0
           ? recentFiles.map((path) => {
-            return (
-              <StyledButton key={path} onClick={() => handleOpen(path)}>
-                <MenuItem text={path}></MenuItem>
-              </StyledButton>
-            );
-          })
+              return (
+                <ListItem
+                  as={"button"}
+                  key={path}
+                  onClick={() => handleOpen(path)}
+                >
+                  <MenuItem text={path}></MenuItem>
+                </ListItem>
+              );
+            })
           : null}
       </div>
     </ModalBody>
   );
 }
-const StyledButton = styled.button`
-  ${buttonCss}
-  max-width: none;
-`;

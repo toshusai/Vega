@@ -3,6 +3,8 @@ import styled from "styled-components";
 
 import {
   COLOR_BUTTON_BACKGROUND_NAME,
+  COLOR_FOCUS_NAME,
+  COLOR_HOVER_NAME,
   COLOR_INPUT_BACKGROUND_FOCUS_NAME,
 } from "../styled";
 
@@ -43,12 +45,12 @@ const TreeItemRoot = styled.li<{
   height: 12px;
   line-height: 12px;
   background-color: ${(props) =>
-    props.selected ? `var(${COLOR_BUTTON_BACKGROUND_NAME})` : "transparent"};
+    props.selected ? `var(${COLOR_FOCUS_NAME})` : "transparent"};
 
   :hover {
     background-color: ${(props) =>
       props.selected
-        ? `var(${COLOR_BUTTON_BACKGROUND_NAME})`
-        : `var(${COLOR_INPUT_BACKGROUND_FOCUS_NAME})`};
+        ? `var(${COLOR_FOCUS_NAME})`
+        : `var(${COLOR_HOVER_NAME})`};
   }
 `;

@@ -18,8 +18,16 @@ export const COLOR_TEXT_STRIP_BORDER_NAME = "--color-text-strip-border";
 export const COLOR_STRIP_HANDLE_NAME = "--color-strip-handle";
 export const COLOR_STRIP_SELECTED_NAME = "--color-strip-selected";
 
+export const COLOR_HOVER_NAME = "--color-hover";
+export const COLOR_FOCUS_NAME = "--color-focus";
+
+export const MONO_FONT_NAME = "--mono-font";
+
 export const GlobalStyle = createGlobalStyle`
 :root {
+  ${COLOR_HOVER_NAME}: #4d4d4d;
+  ${COLOR_FOCUS_NAME}: #5b5b5b;
+
   ${COLOR_BACKGROUND_2_NAME}: #222222;
   ${COLOR_BACKGROUND_NAME}: #3a3a3a;
   ${COLOR_PRIMARY_NAME}: #2c7be3;
@@ -38,7 +46,14 @@ export const GlobalStyle = createGlobalStyle`
   ${COLOR_TEXT_STRIP_BORDER_NAME}: #3e87e0;
   ${COLOR_STRIP_HANDLE_NAME}: #0000002e;
   ${COLOR_STRIP_SELECTED_NAME}: #fb8d33;
+
+  ${MONO_FONT_NAME}: "Ricty Diminished";
 }
+
+*:focus {
+    outline: 1px solid var(${COLOR_STRIP_SELECTED_NAME});
+    outline-offset: -1px;
+  }
 
 ::-webkit-scrollbar {
     width: 8px;
