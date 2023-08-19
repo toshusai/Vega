@@ -22,6 +22,17 @@ import {
 import { useSelector } from "@/hooks/useSelector";
 import { actions } from "@/store/scene";
 
+export function getNewStrip(layer: number, time: number): Strip {
+  const newStrip: Strip = {
+    id: uuid(),
+    effects: [],
+    layer: layer,
+    length: 1,
+    start: time,
+  };
+  return newStrip;
+}
+
 export const AddStripButton: FC = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { show, setShow, handleClick, onMouseLeave } = useClickOutside(ref);
@@ -60,17 +71,6 @@ export const AddStripButton: FC = () => {
       return null;
     }
     return layer;
-  };
-
-  const getNewStrip = (layer: number, time: number): Strip => {
-    const newStrip: Strip = {
-      id: uuid(),
-      effects: [],
-      layer: layer,
-      length: 1,
-      start: time,
-    };
-    return newStrip;
   };
 
   const addNewStripWithEffect = (effect: Effect) => {
@@ -158,9 +158,7 @@ export const AddStripButton: FC = () => {
     >
       <IconButton onClick={handleClick}>
         <Plus {...iconProps} />
-        <ToolTip>
-          Add Strip
-        </ToolTip>
+        <ToolTip>Add Strip</ToolTip>
       </IconButton>
       {show && (
         <DropdownMenu>
