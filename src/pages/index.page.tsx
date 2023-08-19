@@ -1,6 +1,5 @@
-import React from "react";
 import { Provider } from "react-redux";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 import { AssetDetailsPanel } from "@/components/asset_details_panel/AssetDetailsPanel";
 import { AssetPanel } from "@/components/assets_panel/AssetPanel";
@@ -12,11 +11,15 @@ import { SettingsMenuButton } from "@/components/SettingsMenuButton";
 import { SplashModal } from "@/components/SplashModal";
 import { StripPanel } from "@/components/strip_panel/StripPanel";
 import { Timeline } from "@/components/timeline_panel/Timeline";
+import { useFirstRender } from "@/hooks/useFirstRender";
 import { GlobalStyle, HPanel, VPanel } from "@/riapp-ui/src";
 import store from "@/store";
 import { initGlobalEvent } from "@/utils/initGlobalEvent";
 
 const IndexPage = () => {
+  const firstRender = useFirstRender();
+  if (firstRender) return null;
+
   initGlobalEvent();
   return (
     <>
@@ -24,26 +27,13 @@ const IndexPage = () => {
       <Provider store={store}>
         <RootDiv>
           <SplashModal />
-          <div
-            style={{
-              display: "flex",
-              height: "16px",
-            }}
-          >
+          <HeaderDiv>
             <MenuButton />
             <RecordMenuButton />
             <SettingsMenuButton />
-          </div>
+          </HeaderDiv>
 
-          <div
-            style={{
-              paddingTop: "0px",
-              // 20px header + 8px padding
-              height: "100%",
-              width: "100%",
-              overflow: "hidden",
-            }}
-          >
+          <BodyDiv>
             <VPanel
               top={
                 <HPanel
@@ -71,12 +61,8 @@ const IndexPage = () => {
                 />
               }
             />
-          </div>
-          <div
-            css={css`
-              height: 8px;
-            `}
-          ></div>
+          </BodyDiv>
+          <BottomSpaceDiv />
         </RootDiv>
       </Provider>
     </>
@@ -88,6 +74,21 @@ const RootDiv = styled.div`
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
+`;
+
+const HeaderDiv = styled.div`
+  display: flex;
+  height: 16px;
+`;
+
+const BodyDiv = styled.div`
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`;
+
+const BottomSpaceDiv = styled.div`
+  height: 8px;
 `;
 
 export default IndexPage;
