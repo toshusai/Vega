@@ -1,5 +1,7 @@
+import { isElectron } from "@/ipc/readFileUserDataDir";
+
 export function filePick(
-  cb: (str: string, path: string) => void,
+  cb: (str: string, path: string, name: string) => void,
   accept = ".json"
 ) {
   const fileInput = document.createElement("input");
@@ -17,7 +19,12 @@ export function filePick(
     const reader = new FileReader();
     reader.onload = () => {
       if (typeof reader.result === "string") {
-        cb(reader.result, file.path);
+        if (isElectron()) {
+          cb(reader.result, file.path, file.name);
+        } else {
+          const path = URL.createObjectURL(file);
+          cb(reader.result, path, file.name);
+        }
       }
     };
     reader.readAsText(file);

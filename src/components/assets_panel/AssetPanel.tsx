@@ -25,6 +25,7 @@ import {
   VideoAsset,
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
+import { isElectron } from "@/ipc/readFileUserDataDir";
 import { isAudioAsset, isImageAsset } from "@/rendering/updateTextEffect";
 import { actions } from "@/store/scene";
 import { filePick } from "@/utils/filePick";
@@ -68,43 +69,43 @@ export const AssetPanel: FC = () => {
       ...supportedFontExtensions,
       ...supportedImageExtensions,
     ].join(", ");
-    filePick((_, path) => {
-      if (isFont(path)) {
+    filePick((_, path, name) => {
+      if (isFont(name)) {
         const asset: FontAsset = {
           id: uuid(),
-          path: `file://${path}`,
+          path: path,
           type: "font",
-          name: path.split("/").join("_"),
+          name,
         };
         dispatch(actions.updateAssets(asset));
-      } else if (isVideo(path)) {
+      } else if (isVideo(name)) {
         const asset: VideoAsset = {
           id: uuid(),
-          path: `file://${path}`,
+          path: path,
           type: "video",
-          name: path.split("/").join("_"),
+          name,
         };
         dispatch(actions.updateAssets(asset));
-      } else if (isImage(path)) {
+      } else if (isImage(name)) {
         const asset: ImageAsset = {
           id: uuid(),
-          path: `file://${path}`,
+          path: path,
           type: "image",
-          name: path.split("/").join("_"),
+          name,
         };
         dispatch(actions.updateAssets(asset));
-      } else if (isAudio(path)) {
+      } else if (isAudio(name)) {
         const asset: AudioAsset = {
           id: uuid(),
-          path: `file://${path}`,
+          path: path,
           type: "audio",
-          name: path.split("/").join("_"),
+          name,
         };
         dispatch(actions.updateAssets(asset));
-      } else if (isScript(path)) {
+      } else if (isScript(name)) {
         const asset: ScriptAsset = {
           id: uuid(),
-          path: `file://${path.replace("/package.json", "")}`,
+          path: isElectron() ? path.replace("/package.json", "") : path,
           type: "script",
           name: path.split("/")[path.split("/").length - 2],
         };

@@ -11,8 +11,17 @@ import {
   iconProps,
   PanelBody,
 } from "@/app-ui/src";
-import { isScriptAsset } from "@/core/types";
+import {
+  Effect,
+  isAudioEffect,
+  isImageEffect,
+  isScriptAsset,
+  isScriptEffect,
+  isVideoEffect,
+  Strip,
+} from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
+import { unLinkImageElement } from "@/rendering/updateImageEffect";
 import {
   isAudioAsset,
   isImageAsset,
@@ -29,17 +38,54 @@ import { ScriptAssetDetailsPanel } from "./ScriptAssetDetailsPanel";
 import { TextAssetDetailsPanel } from "./TextAssetDetailsPanel";
 import { VideoAssetDetailsPanel } from "./VideoAssetDetailsPanel";
 
+export function getAllEffectReferencedByAssetId(strips: Strip[], id: string) {
+  const effects: Effect[] = [];
+  strips.forEach((strip) => {
+    strip.effects.forEach((effect) => {
+      if (isImageEffect(effect)) {
+        if (effect.imageAssetId === id) {
+          effects.push(effect);
+        }
+      } else if (isScriptEffect(effect)) {
+        if (effect.scriptAssetId === id) {
+          effects.push(effect);
+        }
+      } else if (isAudioEffect(effect)) {
+        if (effect.audioAssetId === id) {
+          effects.push(effect);
+        }
+      } else if (isVideoEffect(effect)) {
+        if (effect.videoAssetId === id) {
+          effects.push(effect);
+        }
+      }
+    });
+  });
+  return effects;
+}
+
 export const AssetDetailsPanel: FC = () => {
   const selectedAssetIds = useSelector((state) => state.scene.selectedAssetIds);
   const assets = useSelector((state) => state.scene.assets);
   const selectedAssets = assets.filter((asset) =>
     selectedAssetIds.includes(asset.id)
   );
+  const strips = useSelector((state) => state.scene.strips);
   const dispatch = useDispatch();
 
   const changeAssetPath = () => {
     filePick((_, path) => {
-      const newAsset = { ...selectedAssets[0], path: `file://` + path };
+      const effects = getAllEffectReferencedByAssetId(
+        strips,
+        selectedAssets[0].id
+      );
+      const newAsset = { ...selectedAssets[0], path: path };
+      effects.forEach((effect) => {
+        if (isImageEffect(effect)) {
+          unLinkImageElement(effect);
+        }
+      });
+
       dispatch(actions.updateAssets(newAsset));
     }, "*");
   };

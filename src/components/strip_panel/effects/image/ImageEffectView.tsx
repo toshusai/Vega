@@ -108,6 +108,7 @@ export const ImageEffectView: FC<{
             }}
             css={css`
               top: 8px;
+              right: 16px;
             `}
           >
             <Resize {...iconProps} />

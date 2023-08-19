@@ -3,10 +3,21 @@ import { calculateKeyFrameValue } from "@/core/types/utils/calculateKeyFrameValu
 import { SceneState } from "@/store/scene";
 import { PickProperties } from "@/types/PickProperties";
 
-const loadedImageElementMap = new Map<string, HTMLImageElement>();
+const loadedImageElementMap = new Map<
+  string,
+  {
+    el: HTMLImageElement;
+    isLoaded: boolean;
+  }
+>();
 
 export function getImageElement(effect: ImageEffect) {
-  return loadedImageElementMap.get(effect.id + effect.imageAssetId);
+  return loadedImageElementMap.get(effect.id + effect.imageAssetId)?.el;
+}
+export function unLinkImageElement(effect: ImageEffect) {
+  console.log("unLinkImageElement");
+  loadedImageElementMap.delete(effect.id + effect.imageAssetId);
+  console.log(loadedImageElementMap);
 }
 
 export function updateImageEffect(
@@ -30,12 +41,27 @@ export function updateImageEffect(
     return;
   }
   if (imageAsset) {
-    let imageElement = loadedImageElementMap.get(elementMapKey);
+    const status = loadedImageElementMap.get(elementMapKey);
+    if (status && !status.isLoaded) {
+      return;
+    }
+    let imageElement = status?.el;
     if (!imageElement) {
       imageElement = document.createElement("img");
-      loadedImageElementMap.set(elementMapKey, imageElement);
+      loadedImageElementMap.set(elementMapKey, {
+        el: imageElement,
+        isLoaded: false,
+      });
+      imageElement.onload = () => {
+        if (!imageElement) return;
+        loadedImageElementMap.set(elementMapKey, {
+          el: imageElement,
+          isLoaded: true,
+        });
+      };
       imageElement.src = imageAsset.path;
     }
+
 
     const animatedEffect: ImageEffect = {
       ...effect,

@@ -9,7 +9,7 @@ export const sceneSlice = createSlice({
   name: "app",
   initialState: {
     currentPath: "",
-    readedDataJsonString: "",
+    readedDataJsonString: "{}",
   } as AppState,
   reducers: {
     setCurrentPath: (state, action: { payload: string }) => {
