@@ -1,14 +1,8 @@
 # Vega
 
-Vega is a open source video editing software.
+Vega is a video editing software.
 
 ![Vega](src/public/screenshot.png)
-
-## Platfroms
-
-- :window: Windows
-- :penguin: Linux
-- :apple: Mac
 
 ## Features
 

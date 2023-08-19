@@ -1,21 +1,45 @@
-MIT License
+Vega Software License
 
-Copyright (c) 2021 toshusai
+Copyright (c) 2023 toshusai
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Version 1.0, Effective Date: 2023/08/19
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Scope: This license governs the rights and obligations regarding the use, reproduction, modification, and distribution of the Software (hereinafter referred to as the "Software"). By using, copying, modifying, or distributing the Software, users agree to the terms of this license.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Language Priority: In case of discrepancies between the Japanese and English versions of this license, the Japanese version shall prevail.
+
+Commercial Use Prohibition: Use of the Software or its derivatives for direct or indirect commercial purposes is strictly prohibited. However, this clause does not set any restrictions on the commercial use of content or creative works produced using the Software.
+
+Disclaimer: The copyright owner explicitly declares that they have no involvement, responsibility, or legal obligation concerning creative works produced using the Software.
+
+Source Code Public Obligation: If the Software is modified or if a derivative is created, the source code of the modifications or derivative must be made available to the public in an easily accessible manner.
+
+Copyright Notice: When distributing copies or significant parts of the Software, it is required to include both the original copyright notice and a notice or link to this license.
+
+Disclaimer: The Software is provided "AS IS", without any express or implied warranties. Users assume all risks associated with the use of the Software. The copyright owner and contributors are not liable for any consequences arising from the prohibition of commercial use.
+
+License Violation: If the terms of this license are violated, the user's rights under this license will automatically terminate. Use of the Software beyond the provisions of this license requires explicit written agreement with the copyright owner.
+
+----------------
+
+Vega ソフトウェア ライセンス
+
+Copyright (c) 2023 toshusai
+
+バージョン 1.0、効力発生日: 2023/08/19
+
+適用範囲: 本ライセンスは、以下の条件に従い、このソフトウェア（以下、「ソフトウェア」とします）の利用、複製、変更、及び配布に関する権利と義務を規定します。ソフトウェアを使用、複製、変更、または配布することで、ユーザーは本ライセンスの条件に同意したものとみなされます。
+
+言語の優先性: 本ライセンスの日本語版と英語版の間に解釈の相違が生じた場合、日本語版が優先されます。
+
+商業利用の禁止: ソフトウェアやその派生物を、直接的または間接的に収益を目的として使用することは禁止されます。ただし、ソフトウェアを利用して生成されるコンテンツや創作物の商業利用についての制限は本項では設けません。
+
+免責: 著作権所有者は、ソフトウェアを使用して生じた創作物に対して、一切の関与、責任、または法的義務を負わないことを明示的に表明します。
+
+ソースコードの公開義務: ソフトウェアを変更、または派生物を作成する場合、その変更または派生物のソースコードは公開されるべきであり、広くアクセス可能な方法で提供される必要があります。
+
+著作権表示: ソフトウェアのコピー、またはその一部を配布する際には、元の著作権表示及び本ライセンスへのリンクまたは通知を明示的に含める必要があります。
+
+免責事項: ソフトウェアは「現状有姿」で提供され、明示的または黙示的な保証は一切行われません。ユーザーは、ソフトウェアの使用に伴うリスクを自己負担とし、著作権所有者または貢献者は、商業利用の禁止に起因する一切の結果について、責任を負いません。
+
+ライセンス違反: 本ライセンスの条件に違反した場合、ユーザーのライセンスに基づく権利は自動的に終了します。本ライセンスの規定外での利用は、著作権所有者との明示的な書面による合意が必要です。
