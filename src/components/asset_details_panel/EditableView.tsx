@@ -7,7 +7,7 @@ import {
   Flex,
   IconButton,
   iconProps,
-} from "@/riapp-ui/src";
+} from "@/app-ui/src";
 
 export const EditableView = memo(function EditableView(props: {
   text: string;

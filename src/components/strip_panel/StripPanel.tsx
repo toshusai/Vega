@@ -2,9 +2,9 @@ import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { css } from "styled-components";
 
+import { Card } from "@/app-ui/src";
 import { Effect } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import { Card } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 
 import { AddEffectButton } from "./AddEffectButton";

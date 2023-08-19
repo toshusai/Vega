@@ -2,6 +2,12 @@ import { FC, useState } from "react";
 import { css } from "styled-components";
 import { Link, LinkOff, Resize } from "tabler-icons-react";
 
+import {
+  iconProps,
+  TransparentIconButton,
+  VNumberInput,
+  VSelect,
+} from "@/app-ui/src";
 import { PropertyName } from "@/components/PropertyName";
 import { Row } from "@/components/Row";
 import { KeyframeButton } from "@/components/strip_panel/KeyframeButton";
@@ -11,12 +17,6 @@ import { useAssetOptions } from "@/hooks/useAssetOptions";
 import { useStripTime } from "@/hooks/useStripTime";
 import { useUpdateEffect } from "@/hooks/useUpdateEffect";
 import { getImageElement } from "@/rendering/updateImageEffect";
-import {
-  iconProps,
-  TransparentIconButton,
-  VNumberInput,
-  VSelect,
-} from "@/riapp-ui/src";
 import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { hasKeyFrame } from "@/utils/hasKeyFrame";

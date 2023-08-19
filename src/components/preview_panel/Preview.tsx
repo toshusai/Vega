@@ -3,6 +3,14 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
 
+import {
+  BottomToolTip,
+  Card,
+  getDragHander,
+  IconButton,
+  iconProps,
+} from "@/app-ui/src";
+import { Key, KeyboardInput } from "@/app-ui/src/KeyboardInput";
 import { Gizmo } from "@/components/preview_panel/Gizmo";
 import {
   isAudioEffect,
@@ -12,20 +20,12 @@ import {
   isVideoEffect,
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import { Key, KeyboardInput } from "@/riapp-ui/src/KeyboardInput";
 import { Recorder } from "@/rendering/recorder";
 import { updateAudioEffect } from "@/rendering/updateAudioEffect";
 import { updateImageEffect } from "@/rendering/updateImageEffect";
 import { handler } from "@/rendering/updateScriptEffect";
 import { updateTextEffect } from "@/rendering/updateTextEffect";
 import { updateVideoEffect } from "@/rendering/updateVideoEffect";
-import {
-  BottomToolTip,
-  Card,
-  getDragHander,
-  IconButton,
-  iconProps,
-} from "@/riapp-ui/src";
 import store from "@/store";
 import { actions } from "@/store/scene";
 import { download } from "@/utils/download";

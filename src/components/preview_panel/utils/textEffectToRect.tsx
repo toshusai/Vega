@@ -1,3 +1,4 @@
+import { SelectRectProps } from "@/app-ui/src";
 import {
   Effect,
   ImageEffect,
@@ -9,7 +10,6 @@ import {
 } from "@/core/types";
 import { calculateKeyFrameValue } from "@/core/types/utils/calculateKeyFrameValue";
 import { measureMap } from "@/rendering/updateTextEffect";
-import { SelectRectProps } from "@/riapp-ui/src";
 
 export function effectToRect(
   effect: Effect,

@@ -3,6 +3,13 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import {
+  DropdownMenu,
+  IconButton,
+  iconProps,
+  StyledContextMenuButton,
+  ToolTip,
+} from "@/app-ui/src";
+import {
   allEase,
   easeInCubic,
   Effect,
@@ -10,13 +17,6 @@ import {
   Strip,
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import {
-  DropdownMenu,
-  IconButton,
-  iconProps,
-  StyledContextMenuButton,
-  ToolTip,
-} from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 

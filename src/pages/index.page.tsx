@@ -1,6 +1,7 @@
 import { Provider } from "react-redux";
 import styled from "styled-components";
 
+import { GlobalStyle, HPanel, VPanel } from "@/app-ui/src";
 import { AssetDetailsPanel } from "@/components/asset_details_panel/AssetDetailsPanel";
 import { AssetPanel } from "@/components/assets_panel/AssetPanel";
 import { KeyFramePanel } from "@/components/keyframes_panel/KeyFramePanel";
@@ -12,7 +13,6 @@ import { SplashModal } from "@/components/SplashModal";
 import { StripPanel } from "@/components/strip_panel/StripPanel";
 import { Timeline } from "@/components/timeline_panel/Timeline";
 import { useFirstRender } from "@/hooks/useFirstRender";
-import { GlobalStyle, HPanel, VPanel } from "@/riapp-ui/src";
 import store from "@/store";
 import { initGlobalEvent } from "@/utils/initGlobalEvent";
 

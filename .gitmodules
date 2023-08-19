@@ -1,0 +1,3 @@
+[submodule "src/app-ui"]
+	path = src/app-ui
+	url = git@github.com:toshusai/app-ui.git

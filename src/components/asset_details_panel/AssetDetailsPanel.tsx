@@ -3,6 +3,14 @@ import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
 import { Link } from "tabler-icons-react";
 
+import {
+  AutoHeightTextarea,
+  Card,
+  Flex,
+  IconButton,
+  iconProps,
+  PanelBody,
+} from "@/app-ui/src";
 import { isScriptAsset } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
 import {
@@ -11,14 +19,6 @@ import {
   isTextAsset,
   isVideoAsset,
 } from "@/rendering/updateTextEffect";
-import {
-  AutoHeightTextarea,
-  Card,
-  Flex,
-  IconButton,
-  iconProps,
-  PanelBody,
-} from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 import { filePick } from "@/utils/filePick";
 

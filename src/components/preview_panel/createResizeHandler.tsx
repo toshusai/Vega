@@ -1,3 +1,5 @@
+import { getDragHander } from "@/app-ui/src";
+import { Key, KeyboardInput } from "@/app-ui/src/KeyboardInput";
 import {
   Effect,
   ImageEffect,
@@ -5,8 +7,6 @@ import {
   TextEffect,
   VideoEffect,
 } from "@/core/types";
-import { getDragHander } from "@/riapp-ui/src";
-import { Key, KeyboardInput } from "@/riapp-ui/src/KeyboardInput";
 
 import { Horizontal, Vertical } from "./Gizmo";
 

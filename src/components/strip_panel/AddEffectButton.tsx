@@ -4,16 +4,16 @@ import { uuid } from "short-uuid";
 import { css } from "styled-components";
 import { Plus } from "tabler-icons-react";
 
-import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
-import { AudioEffect, Effect, ScriptEffect } from "@/core/types";
-import { EffectPlugin } from "@/interfaces/plugins/CustomEffect";
-import { userScriptMap } from "@/rendering/updateScriptEffect";
 import {
   Button,
   DropdownMenu,
   iconProps,
   StyledContextMenuButton,
-} from "@/riapp-ui/src";
+} from "@/app-ui/src";
+import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
+import { AudioEffect, Effect, ScriptEffect } from "@/core/types";
+import { EffectPlugin } from "@/interfaces/plugins/CustomEffect";
+import { userScriptMap } from "@/rendering/updateScriptEffect";
 
 export const AddEffectButton: FC<{
   onAddEffect: (effect: Effect) => void;

@@ -9,13 +9,6 @@ import {
   Trash,
 } from "tabler-icons-react";
 
-import { isAudioEffect, Strip } from "@/core/types";
-import { useSelector } from "@/hooks/useSelector";
-import { canMove, MAX_LAYER } from "@/interfaces/strips/canMove";
-import { checkOverlap } from "@/interfaces/strips/checkOverlap";
-import { moveStrip } from "@/interfaces/strips/moveStrip";
-import { Key, KeyboardInput } from "@/riapp-ui/src/KeyboardInput";
-import { releaseAudioAsset } from "@/rendering/updateAudioEffect";
 import {
   Card,
   getDragHander,
@@ -28,7 +21,14 @@ import {
   ToolTip,
   useSelectRect,
   useWidth,
-} from "@/riapp-ui/src";
+} from "@/app-ui/src";
+import { Key, KeyboardInput } from "@/app-ui/src/KeyboardInput";
+import { isAudioEffect, Strip } from "@/core/types";
+import { useSelector } from "@/hooks/useSelector";
+import { canMove, MAX_LAYER } from "@/interfaces/strips/canMove";
+import { checkOverlap } from "@/interfaces/strips/checkOverlap";
+import { moveStrip } from "@/interfaces/strips/moveStrip";
+import { releaseAudioAsset } from "@/rendering/updateAudioEffect";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 import { roundToFrame } from "@/utils/roundToFrame";

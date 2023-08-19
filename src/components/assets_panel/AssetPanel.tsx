@@ -12,6 +12,9 @@ import {
   Video,
 } from "tabler-icons-react";
 
+import { Card, IconButton, iconProps, ToolTip } from "@/app-ui/src";
+import { EditableTree } from "@/app-ui/src/TreeView/EditableTree";
+import { TreeViewItem } from "@/app-ui/src/TreeView/TreeItem";
 import {
   Asset,
   AudioAsset,
@@ -23,9 +26,6 @@ import {
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
 import { isAudioAsset, isImageAsset } from "@/rendering/updateTextEffect";
-import { Card, IconButton, iconProps, ToolTip } from "@/riapp-ui/src";
-import { EditableTree } from "@/riapp-ui/src/TreeView/EditableTree";
-import { TreeViewItem } from "@/riapp-ui/src/TreeView/TreeItem";
 import { actions } from "@/store/scene";
 import { filePick } from "@/utils/filePick";
 

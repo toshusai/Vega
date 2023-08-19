@@ -1,8 +1,8 @@
 import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 
+import { Modal , ModalBody , ToolbarButton,VNumberInput  } from "@/app-ui/src";
 import { useSelector } from "@/hooks/useSelector";
-import { Modal , ModalBody , ToolbarButton,VNumberInput  } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 
 import { PropertyName } from "./PropertyName";

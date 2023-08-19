@@ -29,7 +29,7 @@ jobs:
         working-directory: ./src/core
       - name: Install dependencies
         run: yarn
-        working-directory: ./src/riapp-ui
+        working-directory: ./src/app-ui
       - name: build
         run: yarn build
       - name: Create release

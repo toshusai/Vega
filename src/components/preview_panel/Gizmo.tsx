@@ -2,6 +2,7 @@ import { FC } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
+import { getDragHander, SelectRectProps } from "@/app-ui/src";
 import {
   ImageEffect,
   isImageEffect,
@@ -11,7 +12,6 @@ import {
   VideoEffect,
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import { getDragHander, SelectRectProps } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 

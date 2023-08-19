@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { css } from "styled-components";
 import { Trash } from "tabler-icons-react";
 
+import { iconProps, TransparentIconButton } from "@/app-ui/src";
 import {
   Effect,
   isAudioEffect,
@@ -12,7 +13,6 @@ import {
   isVideoEffect,
   Strip,
 } from "@/core/types";
-import { iconProps, TransparentIconButton } from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 
 import { AudioEffectView } from "./effects/audio/AudioEffectView";

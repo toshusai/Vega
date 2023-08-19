@@ -3,6 +3,13 @@ import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 import { Music, Photo, Plus, Tex, Video } from "tabler-icons-react";
 
+import {
+  DropdownMenu,
+  IconButton,
+  iconProps,
+  StyledContextMenuButton,
+  ToolTip,
+} from "@/app-ui/src";
 import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
 import {
   AudioEffect,
@@ -13,13 +20,6 @@ import {
   VideoEffect,
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import {
-  DropdownMenu,
-  IconButton,
-  iconProps,
-  StyledContextMenuButton,
-  ToolTip,
-} from "@/riapp-ui/src";
 import { actions } from "@/store/scene";
 
 export const AddStripButton: FC = () => {

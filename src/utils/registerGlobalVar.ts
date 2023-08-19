@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import * as RiAppUi from "@/app-ui/src";
 import * as Core from "@/core";
-import * as RiAppUi from "@/riapp-ui/src";
 
 export function registerGlobalVar() {
   if (typeof window !== "undefined") {

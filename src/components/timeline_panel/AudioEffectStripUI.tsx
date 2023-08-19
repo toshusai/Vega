@@ -1,8 +1,8 @@
 import { Music } from "tabler-icons-react";
 
+import { iconProps } from "@/app-ui/src";
 import { isAudioEffect, Strip } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
-import { iconProps } from "@/riapp-ui/src";
 
 export function AudioEffectStripUI(props: { strip: Strip }) {
   const assets = useSelector((state) => state.scene.assets);

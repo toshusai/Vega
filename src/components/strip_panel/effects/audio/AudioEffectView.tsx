@@ -1,5 +1,6 @@
 import { FC } from "react";
 
+import { VNumberInput , VSelect } from "@/app-ui/src";
 import { PropertyName } from "@/components/PropertyName";
 import { Row } from "@/components/Row";
 import { KeyframeButton } from "@/components/strip_panel/KeyframeButton";
@@ -7,7 +8,6 @@ import { AudioEffect, Strip } from "@/core/types";
 import { useAssetOptions } from "@/hooks/useAssetOptions";
 import { useStripTime } from "@/hooks/useStripTime";
 import { useUpdateEffect } from "@/hooks/useUpdateEffect";
-import { VNumberInput , VSelect } from "@/riapp-ui/src";
 import { UndoManager } from "@/UndoManager";
 import { exactKeyFrame } from "@/utils/exactKeyFrame";
 import { hasKeyFrame } from "@/utils/hasKeyFrame";

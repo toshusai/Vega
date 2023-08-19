@@ -3,14 +3,6 @@ import { useDispatch } from "react-redux";
 import { Trash } from "tabler-icons-react";
 
 import {
-  Effect,
-  getEasingFunction,
-  hasKeyFrameProperty,
-  KeyFrame,
-  Strip,
-} from "@/core/types";
-import { useSelector } from "@/hooks/useSelector";
-import {
   Card,
   getDragHander,
   IconButton,
@@ -22,8 +14,16 @@ import {
   ToolTip,
   useSelectRect,
   useWidth,
-} from "@/riapp-ui/src";
-import { Key, KeyboardInput } from "@/riapp-ui/src/KeyboardInput";
+} from "@/app-ui/src";
+import { Key, KeyboardInput } from "@/app-ui/src/KeyboardInput";
+import {
+  Effect,
+  getEasingFunction,
+  hasKeyFrameProperty,
+  KeyFrame,
+  Strip,
+} from "@/core/types";
+import { useSelector } from "@/hooks/useSelector";
 import { actions } from "@/store/scene";
 import { UndoManager } from "@/UndoManager";
 import { restrictStartEnd } from "@/utils/restrictStartEnd";

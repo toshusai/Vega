@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { css } from "styled-components";
 
-import { MenuItem, Modal, ModalBody } from "@/riapp-ui/src";
-import { ListItem } from "@/riapp-ui/src/ListItem";
+import { MenuItem, Modal, ModalBody } from "@/app-ui/src";
+import { ListItem } from "@/app-ui/src/ListItem";
 import { readRecentFiles } from "@/utils/readRecentFiles";
 
 import { openFile } from "./MenuButton";
