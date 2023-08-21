@@ -59,7 +59,7 @@ export const ImageEffectView: FC<{
   return (
     <>
       {imageEffectOptions.numberKeys.map((key) => {
-        if(key === "width" || key === "height") return null;
+        if (key === "width" || key === "height") return null;
         return (
           <Row key={key}>
             <PropertyName>{key}</PropertyName>
@@ -107,6 +107,7 @@ export const ImageEffectView: FC<{
               });
             }}
             css={css`
+              position: absolute;
               top: 8px;
               right: 16px;
             `}
@@ -140,8 +141,8 @@ export const ImageEffectView: FC<{
               setLockAspectRatio(!lockAspectRatio);
             }}
             css={css`
-              top: 8px;
               position: absolute;
+              top: 8px;
               right: 0px;
             `}
           >
