@@ -13,6 +13,7 @@ import {
 import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
 import {
   AudioEffect,
+  Ease,
   Effect,
   ImageEffect,
   Strip,
@@ -21,6 +22,54 @@ import {
 } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
 import { actions } from "@/store/scene";
+
+export function getDefaultTextEffect(): TextEffect {
+  return {
+    id: uuid(),
+    type: "text",
+    text: "New Text",
+    fontSize: 64,
+    fontAssetId: "",
+    keyframes: [
+      {
+        id: uuid(),
+        ease: Ease.Linear,
+        time: 0,
+        value: 0,
+        property: "x",
+      },
+      {
+        id: uuid(),
+        ease: Ease.Linear,
+        time: 1,
+        value: 100,
+        property: "x",
+      },
+    ],
+    color: "#000000",
+    fontStyle: "normal",
+    outlineColor: "#000000",
+    outlineWidth: 0,
+    shadowBlur: 0,
+    shadowColor: "#000000",
+    x: 0,
+    y: 64,
+  };
+}
+
+export function getDefaultImage(): ImageEffect {
+  return {
+    id: uuid(),
+    type: "image",
+    imageAssetId: "",
+    opacity: 1,
+    keyframes: [],
+    x: 0,
+    y: 0,
+    width: 1280,
+    height: 720,
+  };
+}
 
 export function getNewStrip(layer: number, time: number): Strip {
   const newStrip: Strip = {
@@ -86,38 +135,11 @@ export const AddStripButton: FC = () => {
   };
 
   const handleAddTextStrip = () => {
-    const effect: TextEffect = {
-      id: uuid(),
-      type: "text",
-      text: "New Text",
-      fontSize: 24,
-      fontAssetId: "",
-      keyframes: [],
-      color: "#ffffff",
-      fontStyle: "normal",
-      outlineColor: "#000000",
-      outlineWidth: 0,
-      shadowBlur: 0,
-      shadowColor: "#000000",
-      x: 0,
-      y: 0,
-    };
-    addNewStripWithEffect(effect);
+    addNewStripWithEffect(getDefaultTextEffect());
   };
 
   const handleAddImageStrip = () => {
-    const effect: ImageEffect = {
-      id: uuid(),
-      type: "image",
-      imageAssetId: "",
-      opacity: 1,
-      keyframes: [],
-      x: 0,
-      y: 0,
-      width: 1280,
-      height: 720,
-    };
-    addNewStripWithEffect(effect);
+    addNewStripWithEffect(getDefaultImage());
   };
 
   const handleAddVideoStrip = () => {
