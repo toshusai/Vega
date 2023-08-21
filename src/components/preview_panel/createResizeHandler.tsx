@@ -4,6 +4,7 @@ import {
   Effect,
   ImageEffect,
   isImageEffect,
+  isTextEffect,
   TextEffect,
   VideoEffect,
 } from "@/core/types";
@@ -58,6 +59,8 @@ export function createResizeHandler(
           height = effect.height + addY / scale;
         }
         emit({ x, y, width, height });
+      } else if (isTextEffect(effect)) {
+        // TODO: implement
       }
     });
     handler(e);

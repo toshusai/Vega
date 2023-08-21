@@ -52,9 +52,10 @@ export const Gizmo: FC<{
   if (textEffects.length !== 1) {
     return null;
   }
+  const effect = textEffects[0];
 
   const rect = effectToRect(
-    textEffects[0],
+    effect,
     props.scale,
     props.left,
     props.top,
@@ -66,7 +67,7 @@ export const Gizmo: FC<{
   const emit = (partial: Partial<TextEffect | ImageEffect | VideoEffect>) => {
     const newKFs = makeNewKeyframes(
       partial,
-      textEffects[0],
+      effect,
       currentTime,
       strip,
       fps
@@ -75,9 +76,9 @@ export const Gizmo: FC<{
     dispatch(
       actions.updateEffect({
         effect: {
-          ...textEffects[0],
+          ...effect,
           ...partial,
-          keyframes: newKFs ? newKFs : textEffects[0].keyframes,
+          keyframes: newKFs ? newKFs : effect.keyframes,
         } as TextEffect,
         stripId: strip.id,
       })
@@ -93,8 +94,8 @@ export const Gizmo: FC<{
   >(
     (ctx) => {
       emit({
-        x: Math.round(textEffects[0].x + ctx.diffX / props.scale),
-        y: Math.round(textEffects[0].y + ctx.diffY / props.scale),
+        x: Math.round(effect.x + ctx.diffX / props.scale),
+        y: Math.round(effect.y + ctx.diffY / props.scale),
       });
     },
     undefined,
@@ -105,19 +106,20 @@ export const Gizmo: FC<{
       UndoManager.main
         .add({
           undo: () => {
-            emit(textEffects[0]);
+            emit(effect);
           },
           redo: () =>
             emit({
-              x: Math.round(textEffects[0].x + ctx.diffX / props.scale),
-              y: Math.round(textEffects[0].y + ctx.diffY / props.scale),
+              x: Math.round(effect.x + ctx.diffX / props.scale),
+              y: Math.round(effect.y + ctx.diffY / props.scale),
             }),
         })
         .run();
     }
   );
 
-  const handleResize = createResizeHandler(textEffects[0], props.scale, emit);
+  const handleResize = createResizeHandler(effect, props.scale, emit);
+  const showControls = isImageEffect(effect);
 
   return (
     <StyledGizmo
@@ -130,18 +132,19 @@ export const Gizmo: FC<{
       }}
       onWheel={props.onWheel}
     >
-      {[Horizontal.Left, Horizontal.Right].map((horizontal) => {
-        return [Vertical.Top, Vertical.Bottom].map((vertical) => {
-          return (
-            <GizmoControl
-              key={`${horizontal}-${vertical}`}
-              horizontal={horizontal}
-              vertical={vertical}
-              onMouseDown={(e) => handleResize(e, { horizontal, vertical })}
-            />
-          );
-        });
-      })}
+      {showControls &&
+        [Horizontal.Left, Horizontal.Right].map((horizontal) => {
+          return [Vertical.Top, Vertical.Bottom].map((vertical) => {
+            return (
+              <GizmoControl
+                key={`${horizontal}-${vertical}`}
+                horizontal={horizontal}
+                vertical={vertical}
+                onMouseDown={(e) => handleResize(e, { horizontal, vertical })}
+              />
+            );
+          });
+        })}
     </StyledGizmo>
   );
 };
