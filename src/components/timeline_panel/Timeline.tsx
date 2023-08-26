@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 import {
@@ -11,6 +11,7 @@ import {
 
 import {
   Card,
+  createDragPointerHandler,
   getDragHander,
   IconButton,
   iconProps,
@@ -63,37 +64,41 @@ export const Timeline: FC = () => {
     setPxPerSec(width / ((end - start) * timelineLength));
   }, [width, start, end, timelineLength]);
 
-  const handleMouseDownTimeView = getDragHander<number, void>(
-    ({ diffX, pass }) => {
-      if (!pass) return;
-      const newCurrentTime = pass + diffX / pxPerSec;
-      if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
-        dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
-      }
-      if (KeyboardInput.isPressed(Key.Shift)) {
-        const snapPoints = [0, timelineLength]
-          .concat(strips.map((strip) => strip.start))
-          .concat(strips.map((strip) => strip.start + strip.length));
-        let min = Infinity;
-        let minPoint = 0;
-        for (const point of snapPoints) {
-          const distance = Math.abs(newCurrentTime - point);
-          if (distance < min) {
-            min = distance;
-            minPoint = point;
+  const handleMouseDownTimeView = useMemo(
+    () =>
+      createDragPointerHandler<number, void>({
+        onMove: ({ diffX, pass }) => {
+          if (!pass) return;
+          const newCurrentTime = pass + diffX / pxPerSec;
+          if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
+            dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
           }
-        }
-        dispatch(actions.setCurrentTime(roundToFrame(minPoint, fps)));
-      }
-    },
-    ({ startEvent: e }) => {
-      // TODO merge with KeyFramePanel
-      const newCurrentTime = e.clientX / pxPerSec + start * timelineLength;
-      if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
-        dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
-      }
-      return newCurrentTime;
-    }
+          if (KeyboardInput.isPressed(Key.Shift)) {
+            const snapPoints = [0, timelineLength]
+              .concat(strips.map((strip) => strip.start))
+              .concat(strips.map((strip) => strip.start + strip.length));
+            let min = Infinity;
+            let minPoint = 0;
+            for (const point of snapPoints) {
+              const distance = Math.abs(newCurrentTime - point);
+              if (distance < min) {
+                min = distance;
+                minPoint = point;
+              }
+            }
+            dispatch(actions.setCurrentTime(roundToFrame(minPoint, fps)));
+          }
+        },
+        onDown: ({ startEvent: e }) => {
+          // TODO merge with KeyFramePanel
+          const newCurrentTime = e.clientX / pxPerSec + start * timelineLength;
+          if (newCurrentTime >= 0 && newCurrentTime <= timelineLength) {
+            dispatch(actions.setCurrentTime(roundToFrame(newCurrentTime, fps)));
+          }
+          return newCurrentTime;
+        },
+      }),
+    [dispatch, fps, pxPerSec, start, strips, timelineLength]
   );
 
   const handleWheelTimeView = useCallback(
@@ -527,7 +532,7 @@ export const Timeline: FC = () => {
             pxPerSec={pxPerSec}
             fps={fps}
             frameMode={true}
-            onMouseDown={handleMouseDownTimeView}
+            onPointerDown={handleMouseDownTimeView}
           />
           <TimeCursor
             left={(-start * timelineLength + currentTime) * pxPerSec}
