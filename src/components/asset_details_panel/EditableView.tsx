@@ -1,13 +1,12 @@
 import { memo, useEffect, useRef, useState } from "react";
-import { css } from "styled-components";
+import styled, { css } from "styled-components";
 import { Pencil } from "tabler-icons-react";
 
-import {
-  AutoHeightTextarea,
-  Flex,
-  IconButton,
-  iconProps,
-} from "@/app-ui/src";
+import { AutoHeightTextarea, IconButton, iconProps } from "@/app-ui/src";
+
+const Flex = styled.div`
+  display: flex;
+`;
 
 export const EditableView = memo(function EditableView(props: {
   text: string;

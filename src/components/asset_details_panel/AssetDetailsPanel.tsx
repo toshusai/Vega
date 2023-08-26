@@ -6,7 +6,6 @@ import { Link } from "tabler-icons-react";
 import {
   AutoHeightTextarea,
   Card,
-  Flex,
   IconButton,
   iconProps,
   PanelBody,
@@ -164,6 +163,9 @@ export const AssetDetailsPanel: FC = () => {
     </Card>
   );
 };
+const Flex = styled.div`
+  display: flex;
+`;
 
 const SectionDiv = styled.div`
   display: flex;

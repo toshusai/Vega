@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { css } from "styled-components";
 
-import { MenuItem, Modal, ModalBody } from "@/app-ui/src";
+import { MenuItem, Modal } from "@/app-ui/src";
 import { ListItem } from "@/app-ui/src/ListItem";
 import { readRecentFiles } from "@/utils/readRecentFiles";
 
@@ -16,13 +16,6 @@ export function SplashModal() {
   useEffect(() => {
     setIsOpen(true);
   }, []);
-  return (
-    <Modal isOpen={isOpen} onClose={handleClose}>
-      <SplashModalBody onClose={handleClose}></SplashModalBody>
-    </Modal>
-  );
-}
-function SplashModalBody(props: { onClose?: () => void }) {
   const [recentFiles, setRecentFiles] = useState<string[]>([]);
   useEffect(() => {
     const recentFiles = readRecentFiles();
@@ -30,10 +23,10 @@ function SplashModalBody(props: { onClose?: () => void }) {
   }, []);
   function handleOpen(path: string) {
     openFile(path);
-    props.onClose?.();
+    handleClose();
   }
   return (
-    <ModalBody onClose={props.onClose} title="Open Project">
+    <Modal isOpen={isOpen} onClose={handleClose} title="Open Project">
       <div
         css={css`
           display: flex;
@@ -54,6 +47,6 @@ function SplashModalBody(props: { onClose?: () => void }) {
             })
           : null}
       </div>
-    </ModalBody>
+    </Modal>
   );
 }
