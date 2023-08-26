@@ -530,8 +530,6 @@ export const Timeline: FC = () => {
           <TimeView
             offsetSec={start * timelineLength}
             pxPerSec={pxPerSec}
-            fps={fps}
-            frameMode={true}
             onPointerDown={handleMouseDownTimeView}
           />
           <TimeCursor

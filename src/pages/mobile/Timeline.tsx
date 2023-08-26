@@ -46,8 +46,6 @@ export function Timeline() {
     >
       <Flex>
         <TimeView
-          fps={60}
-          frameMode={false}
           offsetSec={time - leftOffsetSec}
           pxPerSec={100}
           onTouchStart={handleMouseDown}
