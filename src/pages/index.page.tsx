@@ -1,5 +1,4 @@
 import { Provider } from "react-redux";
-import styled from "styled-components";
 
 import {
   BottomSpaceDiv,
