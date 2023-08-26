@@ -15,9 +15,7 @@ export function getImageElement(effect: ImageEffect) {
   return loadedImageElementMap.get(effect.id + effect.imageAssetId)?.el;
 }
 export function unLinkImageElement(effect: ImageEffect) {
-  console.log("unLinkImageElement");
   loadedImageElementMap.delete(effect.id + effect.imageAssetId);
-  console.log(loadedImageElementMap);
 }
 
 export function updateImageEffect(
