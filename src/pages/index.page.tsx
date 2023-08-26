@@ -1,7 +1,15 @@
 import { Provider } from "react-redux";
 import styled from "styled-components";
 
-import { GlobalStyle, HPanel, VPanel } from "@/app-ui/src";
+import {
+  BottomSpaceDiv,
+  GlobalStyle,
+  HeaderDiv,
+  HPanel,
+  MainDiv,
+  RootDiv,
+  VPanel,
+} from "@/app-ui/src";
 import { AssetDetailsPanel } from "@/components/asset_details_panel/AssetDetailsPanel";
 import { AssetPanel } from "@/components/assets_panel/AssetPanel";
 import { KeyFramePanel } from "@/components/keyframes_panel/KeyFramePanel";
@@ -33,7 +41,7 @@ const IndexPage = () => {
             <SettingsMenuButton />
           </HeaderDiv>
 
-          <BodyDiv>
+          <MainDiv>
             <VPanel
               top={
                 <HPanel
@@ -61,34 +69,12 @@ const IndexPage = () => {
                 />
               }
             />
-          </BodyDiv>
+          </MainDiv>
           <BottomSpaceDiv />
         </RootDiv>
       </Provider>
     </>
   );
 };
-
-const RootDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
-`;
-
-const HeaderDiv = styled.div`
-  display: flex;
-  height: 16px;
-`;
-
-const BodyDiv = styled.div`
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-`;
-
-const BottomSpaceDiv = styled.div`
-  height: 8px;
-`;
 
 export default IndexPage;
