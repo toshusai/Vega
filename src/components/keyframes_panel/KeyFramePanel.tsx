@@ -1,9 +1,8 @@
+import { IconTrash } from "@tabler/icons-react";
 import { FC, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Trash } from "tabler-icons-react";
 
 import {
-  Card,
   getDragHander,
   IconButton,
   iconProps,
@@ -16,6 +15,7 @@ import {
   useWidth,
 } from "@/app-ui/src";
 import { Key, KeyboardInput } from "@/app-ui/src/KeyboardInput";
+import { Card } from "@/components/Card";
 import {
   Effect,
   getEasingFunction,
@@ -145,7 +145,7 @@ export const KeyFramePanel: FC = () => {
     return null;
   }
   if (selectedStrips.length !== 1) {
-    return <Card width={100} height={100} />;
+    return <Card />;
   }
   const handleMouseDownKeyFrame = (keyframe: KeyFrame) =>
     getDragHander<
@@ -282,10 +282,10 @@ export const KeyFramePanel: FC = () => {
     UndoManager.main.add({ redo, undo }).run();
   };
 
-  if (!strip) return <Card width={100} height={100} />;
+  if (!strip) return <Card />;
 
   return (
-    <Card width={100} height={100}>
+    <Card>
       <div
         style={{
           display: "flex",
@@ -294,10 +294,11 @@ export const KeyFramePanel: FC = () => {
         }}
       >
         <ChangeEaseButton />
-        <IconButton onClick={handleDeleteKeyframe}>
-          <Trash {...iconProps} />
-          <ToolTip>Delete Keyframe</ToolTip>
-        </IconButton>
+        <ToolTip content="Delete Keyframe">
+          <IconButton onClick={handleDeleteKeyframe}>
+            <IconTrash {...iconProps} />
+          </IconButton>
+        </ToolTip>
       </div>
 
       <div
@@ -333,8 +334,6 @@ export const KeyFramePanel: FC = () => {
           <TimeView
             offsetSec={start * strip.length}
             pxPerSec={pxPerSec}
-            fps={fps}
-            frameMode={true}
             onMouseDown={handleMouseDownTimeView}
           />
           <TimeCursor

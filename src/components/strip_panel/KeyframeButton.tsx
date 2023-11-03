@@ -1,7 +1,7 @@
+import { IconKey } from "@tabler/icons-react";
 import { FC } from "react";
-import { Key } from "tabler-icons-react";
 
-import { iconProps, ToolTip, TransparentIconButton } from "@/app-ui/src";
+import { IconButton, iconProps, ToolTip } from "@/app-ui/src";
 
 export const KeyframeButton: FC<{
   onClick: () => void;
@@ -9,19 +9,20 @@ export const KeyframeButton: FC<{
   active: boolean;
 }> = (props) => {
   return (
-    <TransparentIconButton>
-      <Key
-        {...iconProps}
-        onClick={props.onClick}
-        color={
-          props.highlight
-            ? "var(--color-strip-selected)"
-            : props.active
-            ? "var(--color-primary)"
-            : "white"
-        }
-      />
-      <ToolTip>Add keyframe</ToolTip>
-    </TransparentIconButton>
+    <ToolTip content="Add keyFrame">
+      <IconButton>
+        <IconKey
+          {...iconProps}
+          onClick={props.onClick}
+          color={
+            props.highlight
+              ? "var(--color-strip-selected)"
+              : props.active
+              ? "var(--color-primary)"
+              : "white"
+          }
+        />
+      </IconButton>
+    </ToolTip>
   );
 };

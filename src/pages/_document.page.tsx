@@ -1,3 +1,4 @@
+'use client'
 import Document, { DocumentContext } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 

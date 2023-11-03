@@ -1,7 +1,9 @@
+import { IconDeviceFloppy } from "@tabler/icons-react";
 import { FC, useEffect, useState } from "react";
-import { Clock, DeviceFloppy, File } from "tabler-icons-react";
+import { Clock, File } from "tabler-icons-react";
 
 import {
+  iconProps,
   MenuItem,
   MenuWithClildren,
   StyledContextMenuButton,
@@ -86,7 +88,11 @@ export const MenuButton: FC = () => {
         setShowMenu={setShowMenu}
       >
         <StyledContextMenuButton onClick={handleFilePick}>
-          <MenuItem leftIcon={File} text="Open" shortcut="⌘ O"></MenuItem>
+          <MenuItem
+            leftIcon={<File {...iconProps} />}
+            text="Open"
+            shortcut="⌘ O"
+          ></MenuItem>
         </StyledContextMenuButton>
 
         <RecentFilesMenu
@@ -97,7 +103,7 @@ export const MenuButton: FC = () => {
 
         <StyledContextMenuButton onClick={handleSave}>
           <MenuItem
-            leftIcon={DeviceFloppy}
+            leftIcon={<IconDeviceFloppy {...iconProps} />}
             text="Save"
             shortcut="⌘ S"
           ></MenuItem>
@@ -137,7 +143,7 @@ function RecentFilesMenu(props: { onClose?: () => void }) {
   return (
     <MenuWithClildren
       title={"Open Recent"}
-      leftIcon={Clock}
+      leftIcon={<Clock {...iconProps} />}
       setShowMenu={setShowMenu}
       showMenu={showMenu}
     >

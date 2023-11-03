@@ -1,4 +1,5 @@
-import { Music } from "tabler-icons-react";
+
+import { IconMusic } from "@tabler/icons-react";
 
 import { iconProps } from "@/app-ui/src";
 import { isAudioEffect, Strip } from "@/core/types";
@@ -21,7 +22,7 @@ export function AudioEffectStripUI(props: { strip: Strip }) {
         display: "flex",
       }}
     >
-      <Music {...iconProps} size={24}></Music>
+      <IconMusic {...iconProps} size={24} />
     </div>
   );
 }

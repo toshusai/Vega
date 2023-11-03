@@ -1,16 +1,15 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  IconCut,
+  IconMagnet,
+  IconPlayerPause,
+  IconPlayerPlay,
+  IconTrash,
+} from "@tabler/icons-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
-import {
-  Cut,
-  Magnet,
-  PlayerPause,
-  PlayerPlay,
-  Trash,
-} from "tabler-icons-react";
 
 import {
-  Card,
   createDragPointerHandler,
   getDragHander,
   IconButton,
@@ -24,6 +23,7 @@ import {
   useWidth,
 } from "@/app-ui/src";
 import { Key, KeyboardInput } from "@/app-ui/src/KeyboardInput";
+import { Card } from "@/components/Card";
 import { isAudioEffect, Strip } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
 import { canMove, MAX_LAYER } from "@/interfaces/strips/canMove";
@@ -37,7 +37,7 @@ import { roundToFrame } from "@/utils/roundToFrame";
 import { AddStripButton } from "./AddStripButton";
 import { STRIP_GAP, STRIP_HEIGHT, StripUI } from "./StripUI";
 
-export const Timeline: FC = () => {
+export const Timeline = () => {
   const strips = useSelector((state) => state.scene.strips);
   const { start, end } = useSelector((state) => ({
     start: state.scene.viewStartRate,
@@ -461,12 +461,13 @@ export const Timeline: FC = () => {
   }
 
   return (
-    <Card width={100} height={100}>
+    <Card>
       <div
         ref={ref}
         style={{
           height: "100%",
           display: "flex",
+          width: "100%",
           flexDirection: "column",
         }}
         onDragStart={(e) => {
@@ -484,40 +485,44 @@ export const Timeline: FC = () => {
           }}
         >
           <AddStripButton />
-          <IconButton
-            onClick={() => {
-              dispatch(actions.toggleIsPlaying());
-            }}
-          >
-            {isPlaying ? (
-              <PlayerPause {...iconProps} />
-            ) : (
-              <PlayerPlay {...iconProps} />
-            )}
-            <ToolTip>Play / Pause (Space)</ToolTip>
-          </IconButton>
-          <IconButton
-            onClick={() => {
-              dispatch(actions.toggleIsSnap());
-            }}
-            style={{
-              backgroundColor: isSnap ? "var(--color-primary-bg)" : undefined,
-            }}
-          >
-            <Magnet
-              {...iconProps}
-              color={isSnap ? "var(--color-primary)" : "white"}
-            />
-            <ToolTip>Toggle Snap (current:{isSnap ? "ON" : "OFF"})</ToolTip>
-          </IconButton>
-          <IconButton onClick={handleCutStrip}>
-            <Cut {...iconProps} />
-            <ToolTip>Cut Strips</ToolTip>
-          </IconButton>
-          <IconButton onClick={deleteStrip}>
-            <Trash {...iconProps} />
-            <ToolTip>Delete Strips</ToolTip>
-          </IconButton>
+          <ToolTip content="Play / Pause (Space)">
+            <IconButton
+              onClick={() => {
+                dispatch(actions.toggleIsPlaying());
+              }}
+            >
+              {isPlaying ? (
+                <IconPlayerPause {...iconProps} />
+              ) : (
+                <IconPlayerPlay {...iconProps} />
+              )}
+            </IconButton>
+          </ToolTip>
+          <ToolTip content={`Toggle Snap (current:${isSnap ? "ON" : "OFF"})`}>
+            <IconButton
+              onClick={() => {
+                dispatch(actions.toggleIsSnap());
+              }}
+              style={{
+                backgroundColor: isSnap ? "var(--color-primary-bg)" : undefined,
+              }}
+            >
+              <IconMagnet
+                {...iconProps}
+                color={isSnap ? "var(--color-primary)" : "white"}
+              />
+            </IconButton>
+          </ToolTip>
+          <ToolTip content="Cut Strips (Ctrl + X)">
+            <IconButton onClick={handleCutStrip}>
+              <IconCut {...iconProps} />
+            </IconButton>
+          </ToolTip>
+          <ToolTip content="Delete Strips (Delete)">
+            <IconButton onClick={deleteStrip}>
+              <IconTrash {...iconProps} />
+            </IconButton>
+          </ToolTip>
         </div>
         <div
           style={{

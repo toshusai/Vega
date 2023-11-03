@@ -1,11 +1,12 @@
 import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { Item, Modal, ModalBody, ToolbarButton, VSelect } from "@/app-ui/src";
-import { Button } from "@/app-ui/src/styled/Button";
+import { Item, Modal, ToolBarButton, VSelect } from "@/app-ui/src";
+import { Button } from "@/app-ui/src/Button/Button";
 import { useSelector } from "@/hooks/useSelector";
 import { actions } from "@/store/scene";
 
+import { Flex } from "./Flex";
 import { PropertyName } from "./PropertyName";
 import { Row } from "./Row";
 
@@ -24,7 +25,7 @@ export const RecordMenuButton: FC = () => {
 
   return (
     <>
-      <ToolbarButton onClick={handleClick}>Record</ToolbarButton>
+      <ToolBarButton onClick={handleClick}>Record</ToolBarButton>
       <Modal isOpen={showMenu} onClose={handleClose}>
         <RenderPanel onClose={handleClose}></RenderPanel>
       </Modal>
@@ -34,7 +35,7 @@ export const RecordMenuButton: FC = () => {
 
 const RenderPanel: FC<{
   onClose?: () => void;
-}> = (props) => {
+}> = () => {
   const exportOptionItems: Item[] = [
     {
       label: "WebM",
@@ -56,7 +57,7 @@ const RenderPanel: FC<{
   };
   const recordingState = useSelector((state) => state.scene.recordingState);
   return (
-    <ModalBody title="Record" onClose={props.onClose}>
+    <Flex $dir="column">
       <Row>
         <PropertyName>Export</PropertyName>
         <VSelect
@@ -76,6 +77,6 @@ const RenderPanel: FC<{
           </Button>
         </Row>
       </div>
-    </ModalBody>
+    </Flex>
   );
 };

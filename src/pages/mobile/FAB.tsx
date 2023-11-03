@@ -1,7 +1,7 @@
+import { IconPlus } from "@tabler/icons-react";
 import { useCallback, useRef } from "react";
 import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
-import { Plus } from "tabler-icons-react";
 
 import { COLOR_PRIMARY_NAME } from "@/app-ui/src";
 import {
@@ -62,7 +62,7 @@ export function FAB() {
           <option value="video">Video</option>
           <option value="audio">Audio</option>
         </select>
-        <Plus
+        <IconPlus
           css={css`
             color: white;
           `}

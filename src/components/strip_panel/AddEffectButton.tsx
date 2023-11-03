@@ -1,13 +1,13 @@
+import { IconPlus } from "@tabler/icons-react";
 import React, { FC, RefObject, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { uuid } from "short-uuid";
 import { css } from "styled-components";
-import { Plus } from "tabler-icons-react";
 
 import {
   Button,
-  DropdownMenu,
   iconProps,
+  Popover,
   StyledContextMenuButton,
 } from "@/app-ui/src";
 import { useClickOutside } from "@/components/keyframes_panel/useClickOutside";
@@ -64,7 +64,7 @@ export const AddEffectButton: FC<{
           display: flex !important;
         `}
       >
-        <Plus {...iconProps}></Plus>
+        <IconPlus {...iconProps} />
         <div>add effects</div>
       </Button>
       {show &&
@@ -110,10 +110,10 @@ function DropdownMenu2(props: {
   if (!el) return null;
   const rect = el.getBoundingClientRect();
   return (
-    <DropdownMenu
+    <Popover
       style={{ position: "absolute", top: rect.bottom, left: rect.left }}
     >
       {props.children}
-    </DropdownMenu>
+    </Popover>
   );
 }

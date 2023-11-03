@@ -1,15 +1,10 @@
+import { IconLink } from "@tabler/icons-react";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
-import { Link } from "tabler-icons-react";
 
-import {
-  AutoHeightTextarea,
-  Card,
-  IconButton,
-  iconProps,
-  PanelBody,
-} from "@/app-ui/src";
+import { AutoHeightTextarea, IconButton, iconProps } from "@/app-ui/src";
+import { Card } from "@/components/Card";
 import {
   Effect,
   isAudioEffect,
@@ -90,12 +85,12 @@ export const AssetDetailsPanel: FC = () => {
   };
 
   if (selectedAssets.length !== 1) {
-    return <Card width={100} height={100} />;
+    return <Card />;
   }
   const selectedAsset = selectedAssets[0];
   return (
-    <Card width={100} height={100}>
-      <PanelBody
+    <Card>
+      <div
         style={{
           overflow: "hidden",
           height: "100%",
@@ -128,7 +123,7 @@ export const AssetDetailsPanel: FC = () => {
                   changeAssetPath();
                 }}
               >
-                <Link {...iconProps} />
+                <IconLink {...iconProps} />
               </IconButton>
               <AutoHeightTextarea
                 css={css`
@@ -159,7 +154,7 @@ export const AssetDetailsPanel: FC = () => {
             )}
           </SectionDiv>
         </div>
-      </PanelBody>
+      </div>
     </Card>
   );
 };

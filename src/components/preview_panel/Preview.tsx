@@ -1,16 +1,11 @@
+import { IconZoomIn, IconZoomOut, IconZoomReset } from "@tabler/icons-react";
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { ZoomIn, ZoomOut, ZoomReset } from "tabler-icons-react";
 
-import {
-  BottomToolTip,
-  Card,
-  getDragHander,
-  IconButton,
-  iconProps,
-} from "@/app-ui/src";
+import { getDragHander, IconButton, iconProps, ToolTip } from "@/app-ui/src";
 import { Key, KeyboardInput } from "@/app-ui/src/KeyboardInput";
+import { Card } from "@/components/Card";
 import { Gizmo } from "@/components/preview_panel/Gizmo";
 import {
   isAudioEffect,
@@ -259,7 +254,7 @@ export const Preview: FC = () => {
     update(0);
   }, [left, top, scale, initialized, dispatch, resetScale, fps]);
   return (
-    <Card width={100} height={100}>
+    <Card>
       <RootDiv
         ref={rootRef}
         id={PreviewRootID}
@@ -272,32 +267,35 @@ export const Preview: FC = () => {
         <BarDiv>
           <CurrentTime />
 
-          <IconButton
-            onClick={() => {
-              changeScale(scale * 0.9, true);
-            }}
-          >
-            <ZoomOut {...iconProps} />
-            <BottomToolTip>Zoom Out</BottomToolTip>
-          </IconButton>
+          <ToolTip content="Zoom Out">
+            <IconButton
+              onClick={() => {
+                changeScale(scale * 0.9, true);
+              }}
+            >
+              <IconZoomOut {...iconProps} />
+            </IconButton>
+          </ToolTip>
           <ScaleDiv>{(scale * 100).toFixed(0) + "%"}</ScaleDiv>
-          <IconButton
-            onClick={() => {
-              changeScale(scale * 1.1, true);
-            }}
-          >
-            <ZoomIn {...iconProps} />
-            <BottomToolTip>Zoom In</BottomToolTip>
-          </IconButton>
+          <ToolTip content="Zoom In">
+            <IconButton
+              onClick={() => {
+                changeScale(scale * 1.1, true);
+              }}
+            >
+              <IconZoomIn {...iconProps} />
+            </IconButton>
+          </ToolTip>
 
-          <IconButton
-            onClick={() => {
-              resetScale();
-            }}
-          >
-            <ZoomReset {...iconProps} />
-            <BottomToolTip>Reset Zoom</BottomToolTip>
-          </IconButton>
+          <ToolTip content="Reset Zoom">
+            <IconButton
+              onClick={() => {
+                resetScale();
+              }}
+            >
+              <IconZoomReset {...iconProps} />
+            </IconButton>
+          </ToolTip>
         </BarDiv>
         <Canvas
           style={{

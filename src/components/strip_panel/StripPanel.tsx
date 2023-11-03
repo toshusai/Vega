@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { css } from "styled-components";
 
-import { Card } from "@/app-ui/src";
+import { Card } from "@/components/Card";
 import { Effect } from "@/core/types";
 import { useSelector } from "@/hooks/useSelector";
 import { actions } from "@/store/scene";
@@ -29,13 +29,11 @@ export const StripPanel: FC = () => {
 
   const strip = selectedStrips[0];
   if (!strip) {
-    return <Card width={100} height={100}></Card>;
+    return <Card></Card>;
   }
 
   return (
     <Card
-      width={100}
-      height={100}
       style={{
         overflow: "auto",
         padding: "0 8px",
@@ -43,6 +41,7 @@ export const StripPanel: FC = () => {
     >
       <div
         css={css`
+          width: 100%;
           overflow-y: auto;
           display: flex;
           flex-direction: column;

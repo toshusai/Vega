@@ -1,5 +1,3 @@
-import { FC } from "react";
-
 import { Item, VInput, VNumberInput, VSelect, VTextarea } from "@/app-ui/src";
 import { PropertyName } from "@/components/PropertyName";
 import { Row } from "@/components/Row";
@@ -21,16 +19,16 @@ const alignItems: Item[] = [
   { label: "right", value: "right" },
 ];
 
-export const TextEffectView: FC<{ textEffect: TextEffect; strip: Strip }> = (
-  props
-) => {
-  const { textEffect } = props;
-  const time = useStripTime(props.strip);
-  const { emit, addKeyFrame } = useUpdateEffect<TextEffect>(
-    textEffect,
-    props.strip
-  );
-  const animation = useAnimationedValue<TextEffect>(textEffect, props.strip);
+export const TextEffectView = ({
+  textEffect,
+  strip,
+}: {
+  textEffect: TextEffect;
+  strip: Strip;
+}) => {
+  const time = useStripTime(strip);
+  const { emit, addKeyFrame } = useUpdateEffect<TextEffect>(textEffect, strip);
+  const animation = useAnimationedValue<TextEffect>(textEffect, strip);
   const fontAssetItems = useAssetOptions("font");
   return (
     <>

@@ -3,9 +3,9 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import {
-  DropdownMenu,
   IconButton,
   iconProps,
+  Popover,
   StyledContextMenuButton,
   ToolTip,
 } from "@/app-ui/src";
@@ -68,22 +68,23 @@ export const ChangeEaseButton: FC = () => {
 
   return (
     <Box ref={ref} onMouseLeave={onMouseLeave} style={{}}>
-      <IconButton onClick={handleClick}>
-        <MakeSVG
-          width={12}
-          height={12}
-          f={easeInCubic}
-          style={{
-            ...iconProps.style,
-          }}
-          lineColor="white"
-          circleColor="lightgray"
-          hideBorder
-        />
-        <ToolTip> Change Ease </ToolTip>
-      </IconButton>
+      <ToolTip content="Change Ease">
+        <IconButton onClick={handleClick}>
+          <MakeSVG
+            width={12}
+            height={12}
+            f={easeInCubic}
+            style={{
+              ...iconProps.style,
+            }}
+            lineColor="white"
+            circleColor="lightgray"
+            hideBorder
+          />
+        </IconButton>
+      </ToolTip>
       {show && (
-        <DropdownMenu>
+        <Popover>
           {allEase.map((ease, i) => {
             return (
               <StyledContextMenuButton
@@ -102,7 +103,7 @@ export const ChangeEaseButton: FC = () => {
               </StyledContextMenuButton>
             );
           })}
-        </DropdownMenu>
+        </Popover>
       )}
     </Box>
   );

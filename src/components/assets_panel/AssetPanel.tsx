@@ -1,20 +1,13 @@
+import { IconFilePlus, IconMusic, IconPhoto, IconScript, IconTex, IconTrash, IconVideo } from "@tabler/icons-react";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
 import styled, { css } from "styled-components";
-import {
-  FilePlus,
-  Music,
-  Photo,
-  Script,
-  Tex,
-  Trash,
-  Video,
-} from "tabler-icons-react";
 
-import { Card, IconButton, iconProps, ToolTip } from "@/app-ui/src";
+import { IconButton, iconProps, ToolTip } from "@/app-ui/src";
 import { EditableTree } from "@/app-ui/src/TreeView/EditableTree";
 import { TreeViewItem } from "@/app-ui/src/TreeView/TreeItem";
+import { Card } from "@/components/Card";
 import {
   Asset,
   AudioAsset,
@@ -131,49 +124,54 @@ export const AssetPanel: FC = () => {
   });
 
   return (
-    <Card height={100} width={100}>
-      <div
-        style={{
-          marginBottom: "8px",
-          display: "flex",
-          gap: "2px",
-        }}
-      >
-        <IconButton onClick={handleAddAsset}>
-          <FilePlus {...iconProps} />
-          <ToolTip>Add new asset</ToolTip>
-        </IconButton>
-        <IconButton onClick={handleDeleteAsset}>
-          <Trash {...iconProps} />
-          <ToolTip>Delete selected asset</ToolTip>
-        </IconButton>
-      </div>
-      <div
-        style={{
-          overflowY: "auto",
-          height: "calc(100% - 24px)",
-        }}
-      >
-        <EditableTree
-          renderItem={(item: TreeViewItem<Asset>) => {
-            return (
-              <AssetListItem
-                key={item.id}
-                asset={item.data}
-                selected={selectedAssetIds.includes(item.id)}
-                onClick={() => handleSelectAsset(item.data)}
-              />
-            );
+    <Card>
+      <div style={{ flexDirection: "column", width: "100%" }}>
+        <div
+          style={{
+            marginBottom: "8px",
+            display: "flex",
+            width: "100%",
+            gap: "2px",
           }}
-          items={items}
-          onChangeSelection={(items) => {
-            if (items.length == 1) {
-              handleSelectAsset(items[0].data);
-            } else {
-              dispatch(actions.setSelectedAssetIds([]));
-            }
+        >
+          <ToolTip content="Add new asset">
+            <IconButton onClick={handleAddAsset}>
+              <IconFilePlus {...iconProps} />
+            </IconButton>
+          </ToolTip>
+          <ToolTip content="Delete selected asset">
+            <IconButton onClick={handleDeleteAsset}>
+              <IconTrash {...iconProps} />
+            </IconButton>
+          </ToolTip>
+        </div>
+        <div
+          style={{
+            overflowY: "auto",
+            height: "calc(100% - 24px)",
           }}
-        />
+        >
+          <EditableTree
+            renderItem={(item: TreeViewItem<Asset>) => {
+              return (
+                <AssetListItem
+                  key={item.id}
+                  asset={item.data}
+                  selected={selectedAssetIds.includes(item.id)}
+                  onClick={() => handleSelectAsset(item.data)}
+                />
+              );
+            }}
+            items={items}
+            onChangeSelection={(items) => {
+              if (items.length == 1) {
+                handleSelectAsset(items[0].data);
+              } else {
+                dispatch(actions.setSelectedAssetIds([]));
+              }
+            }}
+          />
+        </div>
       </div>
     </Card>
   );
@@ -187,15 +185,15 @@ const AssetListItem: FC<{
   return (
     <Div tabIndex={0} onClick={props.onClick}>
       {props.asset.type === "video" ? (
-        <Video style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
+        <IconVideo style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
       ) : props.asset.type === "font" ? (
-        <Tex style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
+        <IconTex style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
       ) : isImageAsset(props.asset) ? (
-        <Photo style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
+        <IconPhoto style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
       ) : isAudioAsset(props.asset) ? (
-        <Music style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
+        <IconMusic style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
       ) : isScriptAsset(props.asset) ? (
-        <Script style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
+        <IconScript style={{ margin: "auto 2px", minWidth: "12px" }} size={12} />
       ) : null}
       <div
         css={css`

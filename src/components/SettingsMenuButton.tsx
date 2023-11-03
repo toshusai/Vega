@@ -1,10 +1,11 @@
 import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { Modal , ModalBody , ToolbarButton,VNumberInput  } from "@/app-ui/src";
+import { Modal, ToolBarButton, VNumberInput } from "@/app-ui/src";
 import { useSelector } from "@/hooks/useSelector";
 import { actions } from "@/store/scene";
 
+import { Flex } from "./Flex";
 import { PropertyName } from "./PropertyName";
 import { Row } from "./Row";
 
@@ -28,24 +29,22 @@ export const SettingsMenuButton: FC = () => {
         position: "relative",
       }}
     >
-      <ToolbarButton onClick={handleClick}>Settings</ToolbarButton>
+      <ToolBarButton onClick={handleClick}>Settings</ToolBarButton>
       <Modal isOpen={showMenu} onClose={handleClose}>
-        <SettingsModal onClose={handleClose} />
+        <SettingsModalBody />
       </Modal>
     </div>
   );
 };
 
-const SettingsModal: FC<{
-  onClose?: () => void;
-}> = (props) => {
+function SettingsModalBody() {
   const length = useSelector((state) => state.scene.length);
   const width = useSelector((state) => state.scene.canvasWidth);
   const height = useSelector((state) => state.scene.canvasHeight);
   const dispatch = useDispatch();
 
   return (
-    <ModalBody title="Settings" onClose={props.onClose}>
+    <Flex $dir="column">
       <Row>
         <PropertyName>Length(sec):</PropertyName>
         <VNumberInput
@@ -91,6 +90,6 @@ const SettingsModal: FC<{
           }}
         />
       </Row>
-    </ModalBody>
+    </Flex>
   );
-};
+}

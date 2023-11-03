@@ -1,12 +1,18 @@
+import {
+  IconMusic,
+  IconPhoto,
+  IconPlus,
+  IconTex,
+  IconVideo,
+} from "@tabler/icons-react";
 import { FC, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { uuid } from "short-uuid";
-import { Music, Photo, Plus, Tex, Video } from "tabler-icons-react";
 
 import {
-  DropdownMenu,
   IconButton,
   iconProps,
+  Popover,
   StyledContextMenuButton,
   ToolTip,
 } from "@/app-ui/src";
@@ -178,29 +184,30 @@ export const AddStripButton: FC = () => {
         boxSizing: "border-box",
       }}
     >
-      <IconButton onClick={handleClick}>
-        <Plus {...iconProps} />
-        <ToolTip>Add Strip</ToolTip>
-      </IconButton>
+      <ToolTip content="Add Strip">
+        <IconButton onClick={handleClick}>
+          <IconPlus {...iconProps} />
+        </IconButton>
+      </ToolTip>
       {show && (
-        <DropdownMenu>
+        <Popover>
           <StyledContextMenuButton onClick={handleAddTextStrip}>
-            <Tex {...newIconProps}></Tex>
+            <IconTex {...newIconProps} />
             <div style={{ marginLeft: "4px" }}>Add Text Strip</div>
           </StyledContextMenuButton>
           <StyledContextMenuButton onClick={handleAddVideoStrip}>
-            <Video {...newIconProps}></Video>
+            <IconVideo {...newIconProps} />
             <div style={{ marginLeft: "4px" }}>Add Video Strip</div>
           </StyledContextMenuButton>
           <StyledContextMenuButton onClick={handleAddImageStrip}>
-            <Photo {...newIconProps}></Photo>
+            <IconPhoto {...newIconProps} />
             <div style={{ marginLeft: "4px" }}>Add Image Strip</div>
           </StyledContextMenuButton>
           <StyledContextMenuButton onClick={handleAddAudioStrip}>
-            <Music {...newIconProps}></Music>
+            <IconMusic {...newIconProps} />
             <div style={{ marginLeft: "4px" }}>Add Audio Strip</div>
           </StyledContextMenuButton>
-        </DropdownMenu>
+        </Popover>
       )}
     </div>
   );

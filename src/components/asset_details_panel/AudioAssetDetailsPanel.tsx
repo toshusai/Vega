@@ -1,6 +1,6 @@
+import { IconAlertTriangle } from "@tabler/icons-react";
 import { useState } from "react";
 import { css } from "styled-components";
-import { AlertTriangle } from "tabler-icons-react";
 
 import { AudioAsset } from "@/core/types";
 
@@ -25,7 +25,7 @@ export function AudioAssetDetailsPanel(props: { asset: AudioAsset }) {
             color: #ff756b;
           `}
         >
-          <AlertTriangle size={16} />
+          <IconAlertTriangle size={16} />
           <div>not found asset</div>
         </div>
       )}

@@ -1,10 +1,10 @@
+import { IconLink, IconLinkOff, IconResize } from "@tabler/icons-react";
 import { FC, useState } from "react";
 import { css } from "styled-components";
-import { Link, LinkOff, Resize } from "tabler-icons-react";
 
 import {
+  IconButton,
   iconProps,
-  TransparentIconButton,
   VNumberInput,
   VSelect,
 } from "@/app-ui/src";
@@ -97,7 +97,7 @@ export const ImageEffectView: FC<{
             display: flex;
           `}
         >
-          <TransparentIconButton
+          <IconButton
             onClick={() => {
               const el = getImageElement(imageEffect);
               if (!el) return;
@@ -112,8 +112,8 @@ export const ImageEffectView: FC<{
               right: 16px;
             `}
           >
-            <Resize {...iconProps} />
-          </TransparentIconButton>
+            <IconResize {...iconProps} />
+          </IconButton>
           <div
             css={css`
               border-top: 1px solid var(--color-text);
@@ -136,7 +136,7 @@ export const ImageEffectView: FC<{
               right: 0px;
             `}
           ></div>
-          <TransparentIconButton
+          <IconButton
             onClick={() => {
               setLockAspectRatio(!lockAspectRatio);
             }}
@@ -147,11 +147,11 @@ export const ImageEffectView: FC<{
             `}
           >
             {lockAspectRatio ? (
-              <Link {...iconProps} />
+              <IconLink {...iconProps} />
             ) : (
-              <LinkOff {...iconProps} />
+              <IconLinkOff {...iconProps} />
             )}
-          </TransparentIconButton>
+          </IconButton>
         </div>
         <KeyframeButton
           onClick={() => addKeyFrame("width")}

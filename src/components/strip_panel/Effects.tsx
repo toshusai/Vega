@@ -1,9 +1,9 @@
+import { IconTrash } from "@tabler/icons-react";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { css } from "styled-components";
-import { Trash } from "tabler-icons-react";
 
-import { iconProps, TransparentIconButton } from "@/app-ui/src";
+import { IconButton, iconProps } from "@/app-ui/src";
 import {
   Effect,
   isAudioEffect,
@@ -54,13 +54,13 @@ export const Effects: FC<{ effects: Effect[]; strip: Strip }> = (props) => {
               </strong>
               {isScriptEffect(effect) && (
                 <div>
-                  <TransparentIconButton
+                  <IconButton
                     onClick={() => {
                       handleDeleteEffect(effect);
                     }}
                   >
-                    <Trash {...iconProps}></Trash>
-                  </TransparentIconButton>
+                    <IconTrash {...iconProps} />
+                  </IconButton>
                 </div>
               )}
             </div>
