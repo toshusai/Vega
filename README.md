@@ -1,4 +1,4 @@
-# vega5
+# Vega
 
 An Electron application with React and TypeScript
 
