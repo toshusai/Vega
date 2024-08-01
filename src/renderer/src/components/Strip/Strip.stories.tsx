@@ -19,7 +19,7 @@ export const Default: Story = {
   },
   render: function Render(args) {
     const [left, setLeft] = useState(args.left)
-    const [width, setWidth] = useState(args.width)
+    const [width, setWidth] = useState(args.left)
     const [selected, setSelected] = useState(false)
 
     return (
@@ -64,22 +64,7 @@ import { createDragHandler } from '../../interactions/createDragHandler'
 import { Ruler, SelectRect, useSelectRectHandler } from '@toshusai/cmpui'
 import { ScaleScrollBar } from '../ScaleScrollBar'
 import { Cursor } from '../Cursor'
-
-const state = proxy({
-  strips: [
-    { id: '1', layer: 0, left: 0, width: 1 },
-    { id: '2', layer: 1, left: 2, width: 1 },
-    { id: '3', layer: 0, left: 4, width: 1 },
-    { id: '4', layer: 2, left: 3, width: 1 },
-    { id: '5', layer: 3, left: 1, width: 1 }
-  ],
-  selectedIds: [] as string[]
-})
-
-const mainState = proxy({
-  strips: [] as typeof state.strips,
-  selectedIds: [] as string[]
-})
+import { TextEffect, VegaProject } from '@renderer/schemas'
 
 function checkCollision(
   rectA: { x: number; y: number; width: number; height: number },
@@ -93,29 +78,93 @@ function checkCollision(
   )
 }
 
-const scaleState = proxy({
-  start: 0,
-  end: 1
-})
-
-const timeState = proxy({
-  time: 0
-})
+const state = proxy({
+  assets: [],
+  currentTime: 0,
+  fps: 30,
+  initialized: false,
+  isPlaying: false,
+  isSnap: false,
+  length: 0,
+  selectedStripIds: [],
+  canvasHeight: 0,
+  canvasWidth: 0,
+  viewEndRate: 1,
+  viewStartRate: 0,
+  canvasLeft: 0,
+  canvasTop: 0,
+  selectedAssetIds: [],
+  selectedKeyframeIds: [],
+  canvasScale: 1,
+  recordingState: 'idle',
+  strips: [
+    {
+      effects: [
+        {
+          id: '1',
+          type: 'text',
+          fontAssetId: '',
+          fontSize: 0,
+          color: '',
+          text: '',
+          x: 0,
+          y: 0,
+          keyframes: []
+        } as TextEffect
+      ],
+      id: '1',
+      layer: 0,
+      start: 0,
+      length: 1
+    },
+    {
+      effects: [
+        {
+          id: '2',
+          type: 'text',
+          fontAssetId: '',
+          fontSize: 0,
+          color: '',
+          text: '',
+          x: 0,
+          y: 0,
+          keyframes: []
+        } as TextEffect
+      ],
+      id: '2',
+      layer: 1,
+      start: 0.8,
+      length: 1.3
+    },
+    {
+      effects: [
+        {
+          id: '3',
+          type: 'text',
+          fontAssetId: '',
+          fontSize: 0,
+          color: '',
+          text: '',
+          x: 0,
+          y: 0,
+          keyframes: []
+        } as TextEffect
+      ],
+      id: '3',
+      layer: 0,
+      start: 1.4,
+      length: 1.1
+    }
+  ]
+} as VegaProject)
 
 const LAYER_GAP = 4
 const LAYER_HEIGHT = 32
 
 export const Multiple: Story = {
   render: function Render() {
-    useEffect(() => {
-      mainState.strips = state.strips.map((strip) => ({ ...strip }))
-    }, [])
-
     const snap = useSnapshot(state)
-    const mainSnap = useSnapshot(mainState)
     const { rect, onPointerDown } = useSelectRectHandler()
-    const scaleStateSnap = useSnapshot(scaleState)
-    const timeSnap = useSnapshot(timeState)
 
     const refs = useRef([] as Array<HTMLDivElement | null>)
     const parent = useRef<HTMLDivElement | null>(null)
@@ -143,7 +192,7 @@ export const Multiple: Story = {
         })
         .filter((id) => id) as string[]
 
-      state.selectedIds = hitIds
+      state.selectedStripIds = hitIds
     }, [rect])
 
     const [rootWidth, setRootWidth] = useState(0)
@@ -159,8 +208,8 @@ export const Multiple: Story = {
       }
     }, [])
     const defaultPxPerSec = 100
-    const pxPerSec = (1 / (scaleState.end - scaleState.start)) * defaultPxPerSec
-    const startSec = (scaleState.start * rootWidth) / defaultPxPerSec
+    const pxPerSec = (1 / (state.viewEndRate - state.viewStartRate)) * defaultPxPerSec
+    const startSec = (state.viewStartRate * rootWidth) / defaultPxPerSec
 
     const maxLayer = state.strips.reduce((acc, strip) => Math.max(acc, strip.layer), 0) + 1
 
@@ -189,7 +238,7 @@ export const Multiple: Story = {
           onPointerDown={createDragHandler({
             onDown: (e) => {
               const newTime = e.nativeEvent.offsetX / pxPerSec + startSec
-              timeState.time = newTime
+              state.currentTime = newTime
               return {
                 time: newTime
               }
@@ -197,7 +246,7 @@ export const Multiple: Story = {
             onMove: (_, ctx, move) => {
               if (!ctx) return
               const newTime = ctx.time + move.diffX / pxPerSec
-              timeState.time = newTime
+              state.currentTime = newTime
             }
           })}
         />
@@ -219,7 +268,7 @@ export const Multiple: Story = {
             }}
             ref={parent}
             onPointerDown={(e) => {
-              state.selectedIds = []
+              state.selectedStripIds = []
               onPointerDown(e)
             }}
           >
@@ -247,7 +296,7 @@ export const Multiple: Story = {
             ))}
             {snap.strips.map((strip, i) => {
               function isInvalid(id: string) {
-                if (!state.selectedIds.includes(id)) return false
+                if (!state.selectedStripIds.includes(id)) return false
                 const currentStrip = state.strips.find((strip) => strip.id === id)
                 if (!currentStrip) return true
                 const sameLayerStrips = state.strips.filter(
@@ -255,25 +304,27 @@ export const Multiple: Story = {
                 )
                 if (sameLayerStrips.length === 1) return false
 
-                const sortedStrips = sameLayerStrips.sort((a, b) => a.left - b.left)
+                const sortedStrips = sameLayerStrips.sort((a, b) => a.start - b.start)
                 const index = sortedStrips.findIndex((strip) => strip.id === id)
                 if (index === 0)
-                  return currentStrip.left + currentStrip.width > sortedStrips[index + 1].left
+                  return currentStrip.start + currentStrip.length > sortedStrips[index + 1].start
                 if (index === sortedStrips.length - 1)
                   return (
-                    currentStrip.left < sortedStrips[index - 1].left + sortedStrips[index - 1].width
+                    currentStrip.start <
+                    sortedStrips[index - 1].start + sortedStrips[index - 1].length
                   )
 
                 return (
-                  currentStrip.left + currentStrip.width > sortedStrips[index + 1].left ||
-                  currentStrip.left < sortedStrips[index - 1].left + sortedStrips[index - 1].width
+                  currentStrip.start + currentStrip.length > sortedStrips[index + 1].start ||
+                  currentStrip.start <
+                    sortedStrips[index - 1].start + sortedStrips[index - 1].length
                 )
               }
 
               function getSnapPoints(ids: string[]): number[] {
                 const otherStrips = state.strips.filter((strip) => !ids.includes(strip.id))
                 return otherStrips
-                  .flatMap((strip) => [strip.left, strip.left + strip.width])
+                  .flatMap((strip) => [strip.start, strip.start + strip.length])
                   .sort((a, b) => a - b)
               }
 
@@ -290,16 +341,16 @@ export const Multiple: Story = {
                   key={i}
                   invalid={invalid}
                   top={strip.layer * LAYER_HEIGHT + 1 + LAYER_GAP * strip.layer}
-                  selected={snap.selectedIds.includes(strip.id)}
-                  left={strip.left * pxPerSec - startSec * pxPerSec}
-                  width={strip.width * pxPerSec}
+                  selected={snap.selectedStripIds.includes(strip.id)}
+                  left={strip.start * pxPerSec - startSec * pxPerSec}
+                  width={strip.length * pxPerSec}
                   onChange={(left, width) => {
                     left += startSec * pxPerSec
-                    const snapPoints = getSnapPoints(state.selectedIds).map(
+                    const snapPoints = getSnapPoints(state.selectedStripIds).map(
                       (point) => point * pxPerSec
                     )
-                    const isChangedRight = left === strip?.left * pxPerSec
-                    const isChangedLeft = width === strip?.width * pxPerSec
+                    const isChangedRight = left === strip?.start * pxPerSec
+                    const isChangedLeft = width === strip?.length * pxPerSec
 
                     const { value: snappedLeft, isSnapped } = checkSnap(left, snapPoints)
                     const snappedLeftDiff = snappedLeft - left
@@ -323,27 +374,27 @@ export const Multiple: Story = {
                       width = width + snappedRightDiff
                     }
 
-                    const diffLeft = left - state.strips[i].left * pxPerSec
-                    const diffWidth = width - state.strips[i].width * pxPerSec
+                    const diffLeft = left - state.strips[i].start * pxPerSec
+                    const diffWidth = width - state.strips[i].length * pxPerSec
 
                     state.strips.forEach((strip, j) => {
-                      if (state.selectedIds.includes(strip.id)) {
-                        state.strips[j].left += diffLeft / pxPerSec
-                        state.strips[j].width += diffWidth / pxPerSec
+                      if (state.selectedStripIds.includes(strip.id)) {
+                        state.strips[j].start += diffLeft / pxPerSec
+                        state.strips[j].length += diffWidth / pxPerSec
                       }
                     })
                   }}
                   onPointerDown={(e) => {
                     if (e.metaKey) {
-                      state.selectedIds.push(strip.id)
-                    } else if (!state.selectedIds.includes(strip.id)) {
-                      state.selectedIds = [strip.id]
+                      state.selectedStripIds.push(strip.id)
+                    } else if (!state.selectedStripIds.includes(strip.id)) {
+                      state.selectedStripIds = [strip.id]
                     }
 
-                    const prevSelectedIds = snap.selectedIds.length
+                    const prevSelectedIds = snap.selectedStripIds.length
                     onClickFromPointerDown(() => {
-                      if (prevSelectedIds == state.selectedIds.length) {
-                        state.selectedIds = [strip.id]
+                      if (prevSelectedIds == state.selectedStripIds.length) {
+                        state.selectedStripIds = [strip.id]
                       }
                     })
                     createDragHandler({
@@ -356,7 +407,7 @@ export const Multiple: Story = {
                       onMove: (_, ctx, move) => {
                         if (!ctx) return
                         const { offsetY, currentLayers } = ctx
-                        state.selectedIds.forEach((id) => {
+                        state.selectedStripIds.forEach((id) => {
                           const i = snap.strips.findIndex((strip) => strip.id === id)
                           const newLayer =
                             currentLayers[i] + Math.ceil((move.diffY + offsetY) / 32) - 1
@@ -366,14 +417,7 @@ export const Multiple: Story = {
                       }
                     })(e as React.PointerEvent<HTMLElement>)
                   }}
-                  onChangeEnd={() => {
-                    const invalid = isInvalid(strip.id)
-                    if (invalid) {
-                      state.strips = mainSnap.strips.map((strip) => ({ ...strip }))
-                    } else {
-                      mainState.strips = state.strips.map((strip) => ({ ...strip }))
-                    }
-                  }}
+                  onChangeEnd={() => {}}
                 >
                   <div
                     style={{
@@ -390,10 +434,10 @@ export const Multiple: Story = {
         </div>
         <Cursor
           style={{
-            left: timeSnap.time * pxPerSec - startSec * pxPerSec
+            left: snap.currentTime * pxPerSec - startSec * pxPerSec
           }}
         >
-          {timeSnap.time.toFixed(2)}
+          {snap.currentTime.toFixed(2)}
         </Cursor>
 
         <div
@@ -402,11 +446,11 @@ export const Multiple: Story = {
           }}
         >
           <ScaleScrollBar
-            end={scaleStateSnap.end}
-            start={scaleStateSnap.start}
+            end={snap.viewEndRate}
+            start={snap.viewStartRate}
             onChange={(start, end) => {
-              scaleState.start = start
-              scaleState.end = end
+              state.viewStartRate = start
+              state.viewEndRate = end
             }}
           />
         </div>
