@@ -8,6 +8,7 @@ import {
   TextEffect,
   VegaProject
 } from '@renderer/schemas'
+import { hsvToHex } from '@toshusai/cmpui'
 import { proxyMap } from 'valtio/utils'
 
 const loadedFontAssetMap = new Map<string, boolean>()
@@ -149,7 +150,7 @@ export function updateTextEffect(
     maxWidth = Math.max(maxWidth, width)
   }
 
-  ctx.fillStyle = animatedEffect.color ?? 'black'
+  ctx.fillStyle = hsvToHex(animatedEffect.color ?? { a: 1, h: 0, s: 0, v: 0 }) ?? 'black'
   top = y
   left = x
   lineIndex = 0

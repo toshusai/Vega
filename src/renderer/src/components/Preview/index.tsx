@@ -1,6 +1,13 @@
 import './index.css'
 
-import { CanvasView, createKeyDownUpHandler, RectGizmo, View, ViewMode } from '@toshusai/cmpui'
+import {
+  CanvasView,
+  createKeyDownUpHandler,
+  hsvToHex,
+  RectGizmo,
+  View,
+  ViewMode
+} from '@toshusai/cmpui'
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { state } from '../Timeline'
 import { isTextEffect, measureMapState, updateTextEffect } from './updateTextEffect'
@@ -121,7 +128,7 @@ export function Preview() {
       }
     }
 
-    window.addEventListener('keydown', handleTab)
+    // window.addEventListener('keydown', handleTab)
     return () => {
       window.removeEventListener('keydown', handleTab)
     }
@@ -190,6 +197,13 @@ export function Preview() {
             if (isTextEffect(effect)) {
               const width = (measureMap.get(strip.id)?.width ?? 0) * snap.canvasScale
               const height = (measureMap.get(strip.id)?.height ?? 0) * snap.canvasScale
+              const diffX =
+                effect.align === undefined || effect.align === 'left'
+                  ? width / 2
+                  : effect.align === 'right'
+                    ? -width / 2
+                    : 0
+              const x = effect.x * snap.canvasScale + snap.canvasLeft + diffX
               return (
                 <Fragment key={id}>
                   {!isTextEditMode && (
@@ -197,9 +211,8 @@ export function Preview() {
                       angle={0}
                       height={height}
                       width={width}
-                      isResizable
                       nobRadius={4}
-                      x={effect.x * snap.canvasScale + snap.canvasLeft + width / 2}
+                      x={x}
                       y={effect.y * snap.canvasScale + snap.canvasTop + height / 2}
                       onMove={(args) => {
                         const effect = state.strips
@@ -208,7 +221,7 @@ export function Preview() {
                         if (!effect) return
                         if (!isTextEffect(effect)) return
                         if (args.x && args.y) {
-                          effect.x = (args.x - snap.canvasLeft - width / 2) / snap.canvasScale
+                          effect.x = (args.x - snap.canvasLeft - diffX) / snap.canvasScale
                           effect.y = (args.y - snap.canvasTop - height / 2) / snap.canvasScale
                         }
                       }}
@@ -226,7 +239,7 @@ export function Preview() {
                         height: 9999,
                         fontSize: effect.fontSize * snap.canvasScale,
                         fontFamily: 'sans-serif',
-                        color: effect.color,
+                        color: hsvToHex(effect.color ?? { h: 0, s: 0, v: 0, a: 1 }),
                         padding: 0,
                         whiteSpace: 'pre-wrap',
                         lineHeight: '1em',
