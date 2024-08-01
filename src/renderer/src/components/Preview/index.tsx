@@ -178,6 +178,20 @@ export function Preview() {
             height: '100%',
             position: 'relative'
           }}
+          onPointerDown={(e) => {
+            const x = (e.nativeEvent.offsetX - snap.canvasLeft) / snap.canvasScale
+            const y = (e.nativeEvent.offsetY - snap.canvasTop) / snap.canvasScale
+            measureMapState.forEach((value, key) => {
+              if (
+                value.left < x &&
+                x < value.left + value.width &&
+                value.top < y &&
+                y < value.top + value.height
+              ) {
+                state.selectedStripIds = [key]
+              }
+            })
+          }}
         >
           <div
             style={{
@@ -195,25 +209,25 @@ export function Preview() {
           if (!strip) return null
           for (const effect of strip.effects as Effect[]) {
             if (isTextEffect(effect)) {
-              const width = (measureMap.get(strip.id)?.width ?? 0) * snap.canvasScale
-              const height = (measureMap.get(strip.id)?.height ?? 0) * snap.canvasScale
+              const width = measureMap.get(strip.id)?.width ?? 0
+              const height = measureMap.get(strip.id)?.height ?? 0
               const diffX =
                 effect.align === undefined || effect.align === 'left'
                   ? width / 2
                   : effect.align === 'right'
                     ? -width / 2
                     : 0
-              const x = effect.x * snap.canvasScale + snap.canvasLeft + diffX
+              const x = (effect.x + diffX) * snap.canvasScale + snap.canvasLeft
               return (
                 <Fragment key={id}>
                   {!isTextEditMode && (
                     <RectGizmo
                       angle={0}
-                      height={height}
-                      width={width}
+                      height={height * snap.canvasScale}
+                      width={width * snap.canvasScale}
                       nobRadius={4}
                       x={x}
-                      y={effect.y * snap.canvasScale + snap.canvasTop + height / 2}
+                      y={(effect.y + height / 2) * snap.canvasScale + snap.canvasTop}
                       onMove={(args) => {
                         const effect = state.strips
                           .find((strip) => strip.id === id)
@@ -221,8 +235,8 @@ export function Preview() {
                         if (!effect) return
                         if (!isTextEffect(effect)) return
                         if (args.x && args.y) {
-                          effect.x = (args.x - snap.canvasLeft - diffX) / snap.canvasScale
-                          effect.y = (args.y - snap.canvasTop - height / 2) / snap.canvasScale
+                          effect.x = (args.x - snap.canvasLeft) / snap.canvasScale - diffX
+                          effect.y = (args.y - snap.canvasTop) / snap.canvasScale - height / 2
                         }
                       }}
                     />
