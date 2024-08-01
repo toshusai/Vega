@@ -63,7 +63,7 @@ function useKeyHandler() {
   }
 }
 
-function updateCanvas(ctx: CanvasRenderingContext2D) {
+export function updateCanvas(ctx: CanvasRenderingContext2D) {
   state.strips.forEach((strip) => {
     strip.effects.forEach((effect) => {
       if (effect.type === 'text') {
@@ -96,12 +96,15 @@ export function Preview() {
       return
     }
 
-    const render = () => {
+    let prevT = 0
+    const render = (t: number) => {
+      const dt = t - prevT
       ctx.clearRect(0, 0, width, height)
       if (state.isPlaying) {
-        state.currentTime = state.currentTime + 1 / state.fps
+        state.currentTime = state.currentTime + dt / 1000
       }
       updateCanvas(ctx)
+      prevT = t
       requestAnimationFrame(render)
     }
 
