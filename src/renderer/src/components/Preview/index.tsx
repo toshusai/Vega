@@ -1,7 +1,9 @@
+import './index.css'
+
 import { CanvasView, createKeyDownUpHandler, RectGizmo, View, ViewMode } from '@toshusai/cmpui'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { state } from '../Timeline'
-import { isTextEffect, measureMap, updateTextEffect } from './updateTextEffect'
+import { isTextEffect, measureMapState, updateTextEffect } from './updateTextEffect'
 import { Effect, TextEffect } from '@renderer/schemas'
 import { useSnapshot } from 'valtio'
 
@@ -100,6 +102,31 @@ export function Preview() {
     }
   }, [height, width])
 
+  const measureMap = useSnapshot(measureMapState)
+  const [isTextEditMode, setIsTextEditMode] = useState(false)
+
+  useEffect(() => {
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        snap.selectedStripIds.forEach((id) => {
+          const strip = snap.strips.find((strip) => strip.id === id)
+          if (!strip) return
+          ;(strip.effects as Effect[]).forEach((effect) => {
+            if (isTextEffect(effect)) {
+              e.preventDefault()
+              setIsTextEditMode(true)
+            }
+          })
+        })
+      }
+    }
+
+    window.addEventListener('keydown', handleTab)
+    return () => {
+      window.removeEventListener('keydown', handleTab)
+    }
+  }, [snap.selectedStripIds, snap.strips])
+
   return (
     <>
       <CanvasView
@@ -164,27 +191,67 @@ export function Preview() {
               const width = (measureMap.get(strip.id)?.width ?? 0) * snap.canvasScale
               const height = (measureMap.get(strip.id)?.height ?? 0) * snap.canvasScale
               return (
-                <RectGizmo
-                  key={id}
-                  angle={0}
-                  height={height}
-                  width={width}
-                  isResizable
-                  nobRadius={4}
-                  x={effect.x * snap.canvasScale + snap.canvasLeft + width / 2}
-                  y={effect.y * snap.canvasScale + snap.canvasTop + height / 2}
-                  onMove={(args) => {
-                    const effect = state.strips
-                      .find((strip) => strip.id === id)
-                      ?.effects.find((effect) => effect.id === id)
-                    if (!effect) return
-                    if (!isTextEffect(effect)) return
-                    if (args.x && args.y) {
-                      effect.x = (args.x - snap.canvasLeft - width / 2) / snap.canvasScale
-                      effect.y = (args.y - snap.canvasTop - height / 2) / snap.canvasScale
-                    }
-                  }}
-                />
+                <Fragment key={id}>
+                  {!isTextEditMode && (
+                    <RectGizmo
+                      angle={0}
+                      height={height}
+                      width={width}
+                      isResizable
+                      nobRadius={4}
+                      x={effect.x * snap.canvasScale + snap.canvasLeft + width / 2}
+                      y={effect.y * snap.canvasScale + snap.canvasTop + height / 2}
+                      onMove={(args) => {
+                        const effect = state.strips
+                          .find((strip) => strip.id === id)
+                          ?.effects.find((effect) => effect.id === id)
+                        if (!effect) return
+                        if (!isTextEffect(effect)) return
+                        if (args.x && args.y) {
+                          effect.x = (args.x - snap.canvasLeft - width / 2) / snap.canvasScale
+                          effect.y = (args.y - snap.canvasTop - height / 2) / snap.canvasScale
+                        }
+                      }}
+                    />
+                  )}
+                  {isTextEditMode && (
+                    <textarea
+                      className="input-textarea"
+                      autoFocus
+                      style={{
+                        position: 'absolute',
+                        left: effect.x * snap.canvasScale + snap.canvasLeft,
+                        top: effect.y * snap.canvasScale + snap.canvasTop,
+                        width: 9999,
+                        height: 9999,
+                        fontSize: effect.fontSize * snap.canvasScale,
+                        fontFamily: 'sans-serif',
+                        color: effect.color,
+                        padding: 0,
+                        whiteSpace: 'pre-wrap',
+                        lineHeight: '1em',
+                        background: 'transparent',
+                        textAlign: effect.align
+                      }}
+                      onFocus={(e) => {
+                        e.target.select()
+                      }}
+                      onKeyDown={(e) => {
+                        e.stopPropagation()
+                      }}
+                      onBlur={(e) => {
+                        const effect = state.strips
+                          .find((strip) => strip.id === id)
+                          ?.effects.find((effect) => effect.id === id)
+                        if (!effect) return
+                        if (!isTextEffect(effect)) return
+                        effect.text = e.target.value
+                        setIsTextEditMode(false)
+                      }}
+                      defaultValue={effect.text}
+                    />
+                  )}
+                </Fragment>
               )
             }
           }

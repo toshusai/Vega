@@ -1,0 +1,6 @@
+.input-textarea {
+}
+.input-textarea:focus {
+  outline: none;
+  border: none;
+}
