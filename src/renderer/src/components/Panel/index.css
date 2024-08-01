@@ -1,7 +1,6 @@
 .panel--root {
   border: 1px solid var(--cmpui-border-color);
 
-  border-radius: 8px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -12,7 +11,7 @@
 
 .panel--content {
   display: flex;
-  height: calc(100% - 16px);
+  height: 100%;
   position: relative;
   width: 100%;
 }
