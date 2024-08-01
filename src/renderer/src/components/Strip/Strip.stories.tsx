@@ -122,6 +122,13 @@ export const Multiple: Story = {
             )
           }
 
+          function getSnapPoints(ids: string[]): number[] {
+            const otherStrips = state.strips.filter((strip) => !ids.includes(strip.id))
+            return otherStrips
+              .flatMap((strip) => [strip.left, strip.left + strip.width])
+              .sort((a, b) => a - b)
+          }
+
           const invalid = isInvalid(strip.id)
 
           return (
@@ -133,8 +140,35 @@ export const Multiple: Story = {
               left={strip.left}
               width={strip.width}
               onChange={(left, width) => {
+                const snapPoints = getSnapPoints(state.selectedIds)
+                const isChangedRight = left === strip?.left
+                const isChangedLeft = width === strip?.width
+
+                const { value: snappedLeft, isSnapped } = checkSnap(left, snapPoints)
+                const snappedLeftDiff = snappedLeft - left
+                if (isSnapped) {
+                  left = snappedLeft
+                  if (!isChangedLeft) {
+                    width -= snappedLeftDiff
+                  }
+                }
+
+                const { value: snappedRight, isSnapped: isWidthSnapped } = checkSnap(
+                  left + width,
+                  snapPoints
+                )
+                const snappedRightDiff = snappedRight - (left + width)
+                if (!isChangedRight) {
+                  if (!isSnapped && isWidthSnapped) {
+                    left = left + snappedRightDiff
+                  }
+                } else if (isWidthSnapped) {
+                  width = width + snappedRightDiff
+                }
+
                 const diffLeft = left - state.strips[i].left
                 const diffWidth = width - state.strips[i].width
+
                 state.strips.forEach((strip, j) => {
                   if (state.selectedIds.includes(strip.id)) {
                     state.strips[j].left += diffLeft
@@ -213,4 +247,15 @@ function onClickFromPointerDown(callback: () => void) {
 
   window.addEventListener('pointermove', handleMove)
   window.addEventListener('pointerup', handleUp)
+}
+
+function checkSnap(value: number, snapPoints: number[], threshold = 8) {
+  for (const snapPoint of snapPoints) {
+    if (Math.abs(value - snapPoint) < threshold)
+      return {
+        value: snapPoint,
+        isSnapped: true
+      }
+  }
+  return { value, isSnapped: false }
 }
