@@ -70,9 +70,18 @@ const state = proxy({
   selectedIds: [] as string[]
 })
 
+const mainState = proxy({
+  strips: [
+    { id: '1', layer: 0, left: 0, width: 100 },
+    { id: '2', layer: 1, left: 200, width: 100 }
+  ],
+  selectedIds: [] as string[]
+})
+
 export const Multiple: Story = {
   render: function Render() {
     const snap = useSnapshot(state)
+    const mainSnap = useSnapshot(mainState)
 
     return (
       <div
@@ -89,9 +98,36 @@ export const Multiple: Story = {
         }}
       >
         {snap.strips.map((strip, i) => {
+          function isInvalid(id: string) {
+            if (!state.selectedIds.includes(id)) return false
+            const currentStrip = state.strips.find((strip) => strip.id === id)
+            if (!currentStrip) return true
+            const sameLayerStrips = state.strips.filter(
+              (strip) => currentStrip.layer === strip.layer
+            )
+            if (sameLayerStrips.length === 1) return false
+
+            const sortedStrips = sameLayerStrips.sort((a, b) => a.left - b.left)
+            const index = sortedStrips.findIndex((strip) => strip.id === id)
+            if (index === 0)
+              return currentStrip.left + currentStrip.width > sortedStrips[index + 1].left
+            if (index === sortedStrips.length - 1)
+              return (
+                currentStrip.left < sortedStrips[index - 1].left + sortedStrips[index - 1].width
+              )
+
+            return (
+              currentStrip.left + currentStrip.width > sortedStrips[index + 1].left ||
+              currentStrip.left < sortedStrips[index - 1].left + sortedStrips[index - 1].width
+            )
+          }
+
+          const invalid = isInvalid(strip.id)
+
           return (
             <Strip
               key={i}
+              invalid={invalid}
               top={strip.layer * 32 + 1 + 2 * strip.layer}
               selected={snap.selectedIds.includes(strip.id)}
               left={strip.left}
@@ -138,7 +174,14 @@ export const Multiple: Story = {
                   }
                 })(e as React.PointerEvent<HTMLElement>)
               }}
-              onChangeEnd={() => {}}
+              onChangeEnd={() => {
+                const invalid = isInvalid(strip.id)
+                if (invalid) {
+                  state.strips = mainSnap.strips.map((strip) => ({ ...strip }))
+                } else {
+                  mainState.strips = snap.strips.map((strip) => ({ ...strip }))
+                }
+              }}
             >
               <div
                 style={{
