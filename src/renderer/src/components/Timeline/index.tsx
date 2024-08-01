@@ -20,7 +20,7 @@ function checkCollision(
   )
 }
 
-const state = proxy({
+export const state = proxy({
   assets: [],
   currentTime: 0,
   fps: 30,
@@ -45,12 +45,12 @@ const state = proxy({
         {
           id: '1',
           type: 'text',
-          fontAssetId: '',
-          fontSize: 0,
-          color: '',
-          text: '',
-          x: 0,
-          y: 0,
+          fontAssetId: 'Arial',
+          fontSize: 64,
+          color: 'black',
+          text: 'Hello',
+          x: 100,
+          y: 200,
           keyframes: []
         } as TextEffect
       ],
@@ -64,12 +64,12 @@ const state = proxy({
         {
           id: '2',
           type: 'text',
-          fontAssetId: '',
-          fontSize: 0,
-          color: '',
-          text: '',
-          x: 0,
-          y: 0,
+          fontAssetId: 'Arial',
+          fontSize: 64,
+          color: 'black',
+          text: 'World',
+          x: 100,
+          y: 300,
           keyframes: []
         } as TextEffect
       ],
@@ -83,12 +83,12 @@ const state = proxy({
         {
           id: '3',
           type: 'text',
-          fontAssetId: '',
-          fontSize: 0,
-          color: '',
-          text: '',
-          x: 0,
-          y: 0,
+          fontAssetId: 'Arial',
+          fontSize: 64,
+          color: 'black',
+          text: 'Text\nEffect',
+          x: 300,
+          y: 200,
           keyframes: []
         } as TextEffect
       ],

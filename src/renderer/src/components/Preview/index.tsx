@@ -1,5 +1,8 @@
 import { CanvasView, createKeyDownUpHandler, View, ViewMode } from '@toshusai/cmpui'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { state } from '../Timeline'
+import { updateTextEffect } from './updateTextEffect'
+import { TextEffect } from '@renderer/schemas'
 
 function useKeyHandler() {
   const [keyStack, setKeyStack] = useState<string[]>([])
@@ -50,6 +53,16 @@ function useKeyHandler() {
   }
 }
 
+function updateCanvas(ctx: CanvasRenderingContext2D) {
+  state.strips.forEach((strip) => {
+    strip.effects.forEach((effect) => {
+      if (effect.type === 'text') {
+        updateTextEffect(ctx, effect as TextEffect, strip, state)
+      }
+    })
+  })
+}
+
 export function Preview() {
   const [view, setView] = useState<View>({
     x: 128,
@@ -60,6 +73,30 @@ export function Preview() {
   const [width, height] = [1280, 720]
   const { handleKeyDown, mode, handlePointerEnter } = useKeyHandler()
   const ref = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const canvas = ref.current
+    if (!canvas) {
+      return
+    }
+    const ctx = canvas.getContext('2d')
+    if (!ctx) {
+      return
+    }
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height)
+      updateCanvas(ctx)
+      requestAnimationFrame(render)
+    }
+
+    const animationId = requestAnimationFrame(render)
+
+    return () => {
+      cancelAnimationFrame(animationId)
+    }
+  }, [height, width])
+
   return (
     <CanvasView
       onChangeView={setView}
@@ -67,8 +104,8 @@ export function Preview() {
       onKeyDown={handleKeyDown}
       mode={mode as ViewMode}
       onPointerEnter={handlePointerEnter}
-      minScale={0.01}
-      maxScale={16}
+      minScale={0.1}
+      maxScale={2}
       style={{
         background: '#ddd'
       }}
