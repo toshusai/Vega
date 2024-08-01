@@ -269,6 +269,7 @@ export function Timeline() {
         position: 'relative',
         width: '100%',
         display: 'flex',
+        height: '100%',
         flexDirection: 'column',
         overflow: 'hidden'
       }}
@@ -277,8 +278,8 @@ export function Timeline() {
       <div
         style={{
           width: '100%',
-          height: '254px',
-          display: 'f6ex',
+          display: 'flex',
+          height: '100%',
           position: 'relative',
           overflow: 'auto'
         }}
