@@ -28,6 +28,8 @@ export function loadFont(fontAsset: FontAsset) {
 export const measureMapState = proxyMap<
   string,
   {
+    left: number
+    top: number
     width: number
     height: number
   }
@@ -175,9 +177,13 @@ export function updateTextEffect(
     maxWidth = Math.max(maxWidth, width)
   }
 
+  const height = lineHeight * lineNum
+
   measureMapState.set(animatedEffect.id, {
+    left: x,
+    top: y,
     width: maxWidth,
-    height: lineHeight * lineNum
+    height
   })
 }
 
