@@ -67,16 +67,16 @@ import { ScaleScrollBar } from '../ScaleScrollBar'
 const state = proxy({
   strips: [
     { id: '1', layer: 0, left: 0, width: 1 },
-    { id: '2', layer: 1, left: 2, width: 1 }
+    { id: '2', layer: 1, left: 2, width: 1 },
+    { id: '3', layer: 0, left: 4, width: 1 },
+    { id: '4', layer: 2, left: 3, width: 1 },
+    { id: '5', layer: 3, left: 1, width: 1 }
   ],
   selectedIds: [] as string[]
 })
 
 const mainState = proxy({
-  strips: [
-    { id: '1', layer: 0, left: 0, width: 1 },
-    { id: '2', layer: 1, left: 2, width: 1 }
-  ],
+  strips: [] as typeof state.strips,
   selectedIds: [] as string[]
 })
 
@@ -99,6 +99,10 @@ const scaleState = proxy({
 
 export const Multiple: Story = {
   render: function Render() {
+    useEffect(() => {
+      mainState.strips = state.strips.map((strip) => ({ ...strip }))
+    }, [])
+
     const snap = useSnapshot(state)
     const mainSnap = useSnapshot(mainState)
     const { rect, onPointerDown } = useSelectRectHandler()
@@ -133,9 +137,21 @@ export const Multiple: Story = {
       state.selectedIds = hitIds
     }, [rect])
 
-    const pxPerSec = (1 / (scaleState.end - scaleState.start)) * 100
-    const length = 10
-    const startSec = scaleState.start * length
+    const [rootWidth, setRootWidth] = useState(0)
+    useEffect(() => {
+      const handleResize = () => {
+        if (!parent.current) return
+        setRootWidth(parent.current.clientWidth)
+      }
+      handleResize()
+      window.addEventListener('resize', handleResize)
+      return () => {
+        window.removeEventListener('resize', handleResize)
+      }
+    }, [])
+    const defaultPxPerSec = 100
+    const pxPerSec = (1 / (scaleState.end - scaleState.start)) * defaultPxPerSec
+    const startSec = (scaleState.start * rootWidth) / defaultPxPerSec
 
     return (
       <div
