@@ -1,0 +1,22 @@
+.cursor {
+  width: 1px;
+  height: 900px;
+  position: absolute;
+  top: 0;
+  left: 20px;
+  background-color: red;
+  cursor: pointer;
+  display: flex;
+  pointer-events: none;
+}
+
+.cursor-text {
+  position: absolute;
+  top: 0px;
+  background-color: red;
+  color: white;
+  padding: 2px 4px;
+  font-size: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
