@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useSnapshot } from 'valtio'
-import { state } from '.'
+import { state } from '../../state'
 import { useLayerLength } from './useLayerLength'
 
 export function useUpdateLayerRootHeight(parent: React.MutableRefObject<HTMLDivElement | null>) {

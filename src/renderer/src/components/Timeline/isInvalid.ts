@@ -1,4 +1,4 @@
-import { state } from '.'
+import { state } from '../../state'
 
 export function isInvalid(id: string) {
   if (!state.selectedStripIds.includes(id)) return false

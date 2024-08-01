@@ -1,5 +1,5 @@
 import { useSnapshot } from 'valtio'
-import { state } from '.'
+import { state } from '../../state'
 
 export function useTimelineSeconds(width: number) {
   const snap = useSnapshot(state)

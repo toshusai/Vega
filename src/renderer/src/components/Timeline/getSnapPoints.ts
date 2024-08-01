@@ -1,4 +1,4 @@
-import { state } from '.'
+import { state } from '../../state'
 
 export function getSnapPoints(ids: string[]): number[] {
   const otherStrips = state.strips.filter((strip) => !ids.includes(strip.id))

@@ -9,7 +9,7 @@ import {
   ViewMode
 } from '@toshusai/cmpui'
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { state } from '../Timeline'
+import { state } from '../../state'
 import { isTextEffect, measureMapState, updateTextEffect } from './updateTextEffect'
 import { Effect, TextEffect } from '@renderer/schemas'
 import { useSnapshot } from 'valtio'

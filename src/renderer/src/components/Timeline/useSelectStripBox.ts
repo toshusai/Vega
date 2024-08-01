@@ -1,7 +1,7 @@
 import { useSelectRectHandler } from '@toshusai/cmpui'
 import { useEffect, useRef } from 'react'
 import { checkCollision } from './checkCollision'
-import { state } from '.'
+import { state } from '../../state'
 
 export function useSelectStripBox() {
   const { rect, onPointerDown } = useSelectRectHandler()

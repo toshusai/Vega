@@ -1,5 +1,5 @@
 import { useSnapshot } from 'valtio'
-import { state } from '.'
+import { state } from '../../state'
 
 export function useLayerLength() {
   const snap = useSnapshot(state)

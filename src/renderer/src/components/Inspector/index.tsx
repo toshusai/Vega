@@ -1,6 +1,6 @@
 import { useSnapshot } from 'valtio'
 import { isTextEffect } from '../Preview/updateTextEffect'
-import { state } from '../Timeline'
+import { state } from '../../state'
 import {
   ColorInput,
   hexToHsv,
