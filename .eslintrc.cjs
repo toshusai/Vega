@@ -5,7 +5,8 @@ module.exports = {
     'plugin:react/jsx-runtime',
     '@electron-toolkit/eslint-config-ts/recommended',
     '@electron-toolkit/eslint-config-prettier',
-    'plugin:storybook/recommended'
+    'plugin:storybook/recommended',
+    'plugin:react-hooks/recommended'
   ],
   rules: {
     '@typescript-eslint/explicit-function-return-type': 'off'
