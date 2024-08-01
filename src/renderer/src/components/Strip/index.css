@@ -19,6 +19,11 @@
   outline: 1px solid #2196f3;
 }
 
+.strip[data-invalid='true'] {
+  outline: 1px solid #f44336;
+  z-index: 1;
+}
+
 .strip-container {
   padding: 0 4px;
 }

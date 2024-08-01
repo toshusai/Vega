@@ -13,6 +13,7 @@ export type StripProps = {
   onPointerDown?: (e: React.PointerEvent) => void
   onClick?: (e: React.MouseEvent) => void
   selected?: boolean
+  invalid?: boolean
 }
 
 const MIN_WIDTH = 8
@@ -26,7 +27,8 @@ export function Strip({
   onChangeEnd,
   selected,
   onClick,
-  onPointerDown
+  onPointerDown,
+  invalid
 }: StripProps) {
   const handleLeftHandle = createDragHandler({
     onDown: (e) => {
@@ -74,6 +76,10 @@ export function Strip({
       const { left, width } = ctx
       const newWidth = Math.max(width + move.diffX, MIN_WIDTH)
       onChange(left, newWidth)
+      return {
+        left,
+        width: newWidth
+      }
     },
     onUp: (_, __, moveCtx) => {
       if (!moveCtx) return
@@ -96,6 +102,10 @@ export function Strip({
       const { left, width } = ctx
       const newLeft = left + move.diffX
       onChange(newLeft, width)
+      return {
+        left: newLeft,
+        width
+      }
     },
     onUp: (_, __, moveCtx) => {
       if (!moveCtx) return
@@ -113,6 +123,7 @@ export function Strip({
         top
       }}
       data-selected={selected}
+      data-invalid={invalid}
       onPointerDown={handleMove}
       onClick={onClick}
     >
