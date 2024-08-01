@@ -8,6 +8,7 @@ import {
   TextEffect,
   VegaProject
 } from '@renderer/schemas'
+import { proxyMap } from 'valtio/utils'
 
 const loadedFontAssetMap = new Map<string, boolean>()
 
@@ -23,7 +24,7 @@ export function loadFont(fontAsset: FontAsset) {
   }
 }
 
-export const measureMap = new Map<
+export const measureMapState = proxyMap<
   string,
   {
     width: number
@@ -173,7 +174,7 @@ export function updateTextEffect(
     maxWidth = Math.max(maxWidth, width)
   }
 
-  measureMap.set(animatedEffect.id, {
+  measureMapState.set(animatedEffect.id, {
     width: maxWidth,
     height: lineHeight * lineNum
   })
