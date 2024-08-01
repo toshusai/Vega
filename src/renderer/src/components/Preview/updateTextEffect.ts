@@ -1,5 +1,6 @@
 import {
   Ease,
+  Effect,
   FontAsset,
   getEasingFunction,
   KeyFrame,
@@ -43,6 +44,10 @@ export function stripIsVisible(strip: Strip, currentTime: number, fps: number) {
 
 export type PickProperties<T, TFilter> = {
   [K in keyof T as T[K] extends TFilter ? K : never]: T[K]
+}
+
+export function isTextEffect(effect: Effect): effect is TextEffect {
+  return effect.type === 'text'
 }
 
 export function updateTextEffect(
@@ -98,6 +103,7 @@ export function updateTextEffect(
   let maxWidth = 0
   const lineHeight = animatedEffect.fontSize
   const characterSpacing = animatedEffect.characterSpacing ?? 0
+  ctx.textBaseline = 'top'
   ctx.shadowColor = animatedEffect.shadowColor ?? 'transparent'
   ctx.shadowBlur = animatedEffect.shadowBlur ?? 0
   ctx.lineJoin = 'round'
@@ -148,9 +154,11 @@ export function updateTextEffect(
   lineIndex = 0
   width = 0
   moveAlign()
+  let lineNum = 1
   for (let i = 0; i < animatedEffect.text.length; i++) {
     const char = animatedEffect.text[i]
     if (char === '\n') {
+      lineNum += 1
       top += lineHeight
       left = x
       lineIndex++
@@ -160,7 +168,6 @@ export function updateTextEffect(
     }
     const w = ctx.measureText(char).width
     ctx.fillText(char, left, top)
-    console.log('ctx.fillText', char, left, top)
     left += w + characterSpacing
     width += w + characterSpacing
     maxWidth = Math.max(maxWidth, width)
@@ -168,7 +175,7 @@ export function updateTextEffect(
 
   measureMap.set(animatedEffect.id, {
     width: maxWidth,
-    height: top - y + lineHeight
+    height: lineHeight * lineNum
   })
 }
 

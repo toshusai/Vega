@@ -29,15 +29,15 @@ export const state = proxy({
   isSnap: false,
   length: 0,
   selectedStripIds: [],
-  canvasHeight: 0,
-  canvasWidth: 0,
+  canvasHeight: 720,
+  canvasWidth: 1280,
   viewEndRate: 1,
   viewStartRate: 0,
-  canvasLeft: 0,
-  canvasTop: 0,
+  canvasLeft: 128,
+  canvasTop: 128,
   selectedAssetIds: [],
   selectedKeyframeIds: [],
-  canvasScale: 1,
+  canvasScale: 0.5,
   recordingState: 'idle',
   strips: [
     {
@@ -49,8 +49,8 @@ export const state = proxy({
           fontSize: 64,
           color: 'black',
           text: 'Hello',
-          x: 100,
-          y: 200,
+          x: 0,
+          y: 0,
           keyframes: []
         } as TextEffect
       ],
