@@ -161,6 +161,91 @@ const state = proxy({
 const LAYER_GAP = 4
 const LAYER_HEIGHT = 32
 
+function TimeView({ pxPerSec, startSec }: { pxPerSec: number; startSec: number }) {
+  return (
+    <Ruler
+      pxPerUnit={pxPerSec}
+      offset={startSec}
+      steps={[0.01, 0.05, 0.1, 0.5, 1, 5, 10, 30, 60, 120, 300, 600, 1200, 1800, 3600]}
+      onPointerDown={createDragHandler({
+        onDown: (e) => {
+          const newTime = e.nativeEvent.offsetX / pxPerSec + startSec
+          state.currentTime = newTime
+          return {
+            time: newTime
+          }
+        },
+        onMove: (_, ctx, move) => {
+          if (!ctx) return
+          const newTime = ctx.time + move.diffX / pxPerSec
+          state.currentTime = newTime
+        }
+      })}
+    />
+  )
+}
+
+function isInvalid(id: string) {
+  if (!state.selectedStripIds.includes(id)) return false
+  const currentStrip = state.strips.find((strip) => strip.id === id)
+  if (!currentStrip) return true
+  const sameLayerStrips = state.strips.filter((strip) => currentStrip.layer === strip.layer)
+  if (sameLayerStrips.length === 1) return false
+
+  const sortedStrips = sameLayerStrips.sort((a, b) => a.start - b.start)
+  const index = sortedStrips.findIndex((strip) => strip.id === id)
+  if (index === 0) return currentStrip.start + currentStrip.length > sortedStrips[index + 1].start
+  if (index === sortedStrips.length - 1)
+    return currentStrip.start < sortedStrips[index - 1].start + sortedStrips[index - 1].length
+
+  return (
+    currentStrip.start + currentStrip.length > sortedStrips[index + 1].start ||
+    currentStrip.start < sortedStrips[index - 1].start + sortedStrips[index - 1].length
+  )
+}
+
+function getSnapPoints(ids: string[]): number[] {
+  const otherStrips = state.strips.filter((strip) => !ids.includes(strip.id))
+  return otherStrips
+    .flatMap((strip) => [strip.start, strip.start + strip.length])
+    .sort((a, b) => a - b)
+}
+
+function useWidth() {
+  const ref = useRef<HTMLDivElement | null>(null)
+  const [width, setWidth] = useState(0)
+  useEffect(() => {
+    if (!ref.current) return
+    const observer = new ResizeObserver((entries) => {
+      setWidth(entries[0].contentRect.width)
+    })
+    observer.observe(ref.current)
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+  return { ref, width }
+}
+
+function mergeRefs<T>(...refs: Array<React.MutableRefObject<T | null> | ((instance: T) => void)>) {
+  const filteredRefs = refs.filter((ref) => ref)
+  if (!filteredRefs.length) {
+    return null
+  }
+  if (filteredRefs.length === 0) {
+    return filteredRefs[0]
+  }
+  return (value: T) => {
+    for (const ref of filteredRefs) {
+      if (typeof ref === 'function') {
+        ref(value)
+      } else {
+        ref.current = value
+      }
+    }
+  }
+}
+
 export const Multiple: Story = {
   render: function Render() {
     const snap = useSnapshot(state)
@@ -195,22 +280,11 @@ export const Multiple: Story = {
       state.selectedStripIds = hitIds
     }, [rect])
 
-    const [rootWidth, setRootWidth] = useState(0)
-    useEffect(() => {
-      const handleResize = () => {
-        if (!parent.current) return
-        setRootWidth(parent.current.clientWidth)
-      }
-      handleResize()
-      window.addEventListener('resize', handleResize)
-      return () => {
-        window.removeEventListener('resize', handleResize)
-      }
-    }, [])
+    const { ref: rootRef, width } = useWidth()
+
     const defaultPxPerSec = 100
     const pxPerSec = (1 / (state.viewEndRate - state.viewStartRate)) * defaultPxPerSec
-    const startSec = (state.viewStartRate * rootWidth) / defaultPxPerSec
-
+    const startSec = (state.viewStartRate * width) / defaultPxPerSec
     const maxLayer = state.strips.reduce((acc, strip) => Math.max(acc, strip.layer), 0) + 1
 
     useEffect(() => {
@@ -231,25 +305,7 @@ export const Multiple: Story = {
           overflow: 'hidden'
         }}
       >
-        <Ruler
-          pxPerUnit={pxPerSec}
-          offset={startSec}
-          steps={[0.01, 0.05, 0.1, 0.5, 1, 5, 10, 30, 60, 120, 300, 600, 1200, 1800, 3600]}
-          onPointerDown={createDragHandler({
-            onDown: (e) => {
-              const newTime = e.nativeEvent.offsetX / pxPerSec + startSec
-              state.currentTime = newTime
-              return {
-                time: newTime
-              }
-            },
-            onMove: (_, ctx, move) => {
-              if (!ctx) return
-              const newTime = ctx.time + move.diffX / pxPerSec
-              state.currentTime = newTime
-            }
-          })}
-        />
+        <TimeView pxPerSec={pxPerSec} startSec={startSec} />
         <div
           style={{
             width: '100%',
@@ -266,7 +322,7 @@ export const Multiple: Story = {
               position: 'relative',
               overflow: 'hidden'
             }}
-            ref={parent}
+            ref={mergeRefs(parent, rootRef)}
             onPointerDown={(e) => {
               state.selectedStripIds = []
               onPointerDown(e)
@@ -295,39 +351,6 @@ export const Multiple: Story = {
               ></div>
             ))}
             {snap.strips.map((strip, i) => {
-              function isInvalid(id: string) {
-                if (!state.selectedStripIds.includes(id)) return false
-                const currentStrip = state.strips.find((strip) => strip.id === id)
-                if (!currentStrip) return true
-                const sameLayerStrips = state.strips.filter(
-                  (strip) => currentStrip.layer === strip.layer
-                )
-                if (sameLayerStrips.length === 1) return false
-
-                const sortedStrips = sameLayerStrips.sort((a, b) => a.start - b.start)
-                const index = sortedStrips.findIndex((strip) => strip.id === id)
-                if (index === 0)
-                  return currentStrip.start + currentStrip.length > sortedStrips[index + 1].start
-                if (index === sortedStrips.length - 1)
-                  return (
-                    currentStrip.start <
-                    sortedStrips[index - 1].start + sortedStrips[index - 1].length
-                  )
-
-                return (
-                  currentStrip.start + currentStrip.length > sortedStrips[index + 1].start ||
-                  currentStrip.start <
-                    sortedStrips[index - 1].start + sortedStrips[index - 1].length
-                )
-              }
-
-              function getSnapPoints(ids: string[]): number[] {
-                const otherStrips = state.strips.filter((strip) => !ids.includes(strip.id))
-                return otherStrips
-                  .flatMap((strip) => [strip.start, strip.start + strip.length])
-                  .sort((a, b) => a - b)
-              }
-
               const invalid = isInvalid(strip.id)
 
               return (
