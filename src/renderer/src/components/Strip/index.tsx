@@ -3,7 +3,7 @@ import './index.css'
 import { createDragHandler } from '../../interactions/createDragHandler'
 import React from 'react'
 
-type StripProps = {
+export type StripProps = {
   children: React.ReactNode
   left: number
   width: number
@@ -11,6 +11,7 @@ type StripProps = {
   onChange: (left: number, width: number) => void
   onChangeEnd: (left: number, width: number) => void
   onPointerDown?: (e: React.PointerEvent) => void
+  onClick?: (e: React.MouseEvent) => void
   selected?: boolean
 }
 
@@ -24,6 +25,7 @@ export function Strip({
   onChange,
   onChangeEnd,
   selected,
+  onClick,
   onPointerDown
 }: StripProps) {
   const handleLeftHandle = createDragHandler({
@@ -112,6 +114,7 @@ export function Strip({
       }}
       data-selected={selected}
       onPointerDown={handleMove}
+      onClick={onClick}
     >
       <Handle onPointerDown={handleLeftHandle} style={{ left: 0 }} />
       <div className="strip-container">{children}</div>
