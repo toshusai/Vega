@@ -98,7 +98,7 @@ export function Strip({
     onUp: (_, __, moveCtx) => {
       if (!moveCtx) return
       const { left, width } = moveCtx
-      onChange(left, width)
+      onChangeEnd(left, width)
     }
   })
 
