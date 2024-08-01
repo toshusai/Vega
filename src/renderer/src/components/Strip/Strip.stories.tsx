@@ -60,6 +60,7 @@ export const Default: Story = {
   }
 }
 import { proxy, useSnapshot } from 'valtio'
+import { createDragHandler } from '../../interactions/createDragHandler'
 
 const state = proxy({
   strips: [
@@ -91,7 +92,7 @@ export const Multiple: Story = {
           return (
             <Strip
               key={i}
-              top={strip.layer * 32 + 1 + 2 * i}
+              top={strip.layer * 32 + 1 + 2 * strip.layer}
               selected={snap.selectedIds.includes(strip.id)}
               left={strip.left}
               width={strip.width}
@@ -118,12 +119,31 @@ export const Multiple: Story = {
                     state.selectedIds = [strip.id]
                   }
                 })
+                createDragHandler({
+                  onDown: (e) => {
+                    return {
+                      offsetY: e.nativeEvent.offsetY,
+                      currentLayers: snap.strips.map((strip) => strip.layer)
+                    }
+                  },
+                  onMove: (_, ctx, move) => {
+                    if (!ctx) return
+                    const { offsetY, currentLayers } = ctx
+                    state.selectedIds.forEach((id) => {
+                      const i = snap.strips.findIndex((strip) => strip.id === id)
+                      const newLayer = currentLayers[i] + Math.ceil((move.diffY + offsetY) / 32) - 1
+                      if (newLayer < 0) return
+                      state.strips[i].layer = newLayer
+                    })
+                  }
+                })(e as React.PointerEvent<HTMLElement>)
               }}
               onChangeEnd={() => {}}
             >
               <div
                 style={{
-                  padding: '0 4px'
+                  padding: '0 4px',
+                  userSelect: 'none'
                 }}
               >
                 Strip
