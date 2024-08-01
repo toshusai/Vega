@@ -97,6 +97,9 @@ const scaleState = proxy({
   end: 1
 })
 
+const LAYER_GAP = 4
+const LAYER_HEIGHT = 32
+
 export const Multiple: Story = {
   render: function Render() {
     useEffect(() => {
@@ -153,11 +156,14 @@ export const Multiple: Story = {
     const pxPerSec = (1 / (scaleState.end - scaleState.start)) * defaultPxPerSec
     const startSec = (scaleState.start * rootWidth) / defaultPxPerSec
 
+    const maxLayer = state.strips.reduce((acc, strip) => Math.max(acc, strip.layer), 0) + 1
+
     useEffect(() => {
       if (!parent.current) return
-      const maxLayer = state.strips.reduce((acc, strip) => Math.max(acc, strip.layer), 0) + 1
-      parent.current.style.height = `${(maxLayer + 1) * 32 + 1 + 2 * maxLayer}px`
-    }, [snap.strips])
+      const parentHight = parent.current.parentElement?.clientHeight ?? 0
+      const layerHeight = (maxLayer + 1) * 32 + 1 + 2 * maxLayer
+      parent.current.style.height = Math.max(parentHight, layerHeight) + 'px'
+    }, [maxLayer, snap.strips])
 
     return (
       <div
@@ -175,8 +181,8 @@ export const Multiple: Story = {
         <div
           style={{
             width: '100%',
-            height: '128px',
-            display: 'flex',
+            height: '254px',
+            display: 'f6ex',
             border: '1px solid black',
             position: 'relative',
             overflow: 'auto'
@@ -186,7 +192,6 @@ export const Multiple: Story = {
             style={{
               width: '100%',
               display: 'flex',
-              height: '800px',
               position: 'relative',
               overflow: 'hidden'
             }}
@@ -197,6 +202,27 @@ export const Multiple: Story = {
             }}
           >
             {rect && <SelectRect {...rect} />}
+            {Array.from({ length: maxLayer + 1 }).map((_, i) => (
+              <div
+                key={i}
+                style={{
+                  position: 'absolute',
+                  top: i * LAYER_HEIGHT + 1 + LAYER_GAP * i,
+                  left: 0,
+                  width: '100%',
+                  height: LAYER_HEIGHT + 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderBottom: '1px solid',
+                  backgroundColor: i === maxLayer ? 'transparent' : '#fafafa',
+                  borderColor: '#eee',
+                  boxSizing: 'border-box',
+                  userSelect: 'none',
+                  pointerEvents: 'none'
+                }}
+              ></div>
+            ))}
             {snap.strips.map((strip, i) => {
               function isInvalid(id: string) {
                 if (!state.selectedIds.includes(id)) return false
@@ -241,7 +267,7 @@ export const Multiple: Story = {
                   }}
                   key={i}
                   invalid={invalid}
-                  top={strip.layer * 32 + 1 + 2 * strip.layer}
+                  top={strip.layer * LAYER_HEIGHT + 1 + LAYER_GAP * strip.layer}
                   selected={snap.selectedIds.includes(strip.id)}
                   left={strip.left * pxPerSec - startSec * pxPerSec}
                   width={strip.width * pxPerSec}
