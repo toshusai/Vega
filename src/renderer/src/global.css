@@ -1,0 +1,14 @@
+html,
+body,
+#root {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  padding: 4px 4px 8px;
+}
