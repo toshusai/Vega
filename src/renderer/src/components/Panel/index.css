@@ -1,0 +1,39 @@
+.panel--root {
+  border: 1px solid var(--cmpui-border-color);
+
+  border-radius: 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+.panel--content {
+  display: flex;
+  height: calc(100% - 16px);
+  position: relative;
+  width: 100%;
+}
+
+.panel--header {
+  background-color: var(--cmpui-bg-color);
+
+  align-items: center;
+  border-bottom: 1px solid #f1f1f1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  height: 20px;
+  justify-content: flex-start;
+  min-height: 20px;
+}
+
+.panel--indicator {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: none;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
