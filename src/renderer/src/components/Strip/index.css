@@ -6,13 +6,17 @@
   height: 32px;
   background-color: #f5f5f5;
   border-bottom: 1px solid #e0e0e0;
-  position: relative;
+  position: absolute;
   box-sizing: border-box;
   overflow: hidden;
 }
 
 .strip:hover {
   outline: 1px solid #e0e0e0;
+}
+
+.strip[data-selected='true'] {
+  outline: 1px solid #2196f3;
 }
 
 .strip-container {
