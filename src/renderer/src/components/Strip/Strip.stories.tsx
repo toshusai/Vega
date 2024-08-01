@@ -246,53 +246,81 @@ function mergeRefs<T>(...refs: Array<React.MutableRefObject<T | null> | ((instan
   }
 }
 
+function useSelectStripBox() {
+  const { rect, onPointerDown } = useSelectRectHandler()
+  const parent = useRef<HTMLDivElement | null>(null)
+  const refs = useRef([] as Array<HTMLDivElement | null>)
+  useEffect(() => {
+    if (!rect) return
+    const hitIds = refs.current
+      .map((el) => {
+        if (!el) return null
+        const bbox = el.getBoundingClientRect()
+        const parentBB = parent.current?.getBoundingClientRect()
+        if (!parentBB) return null
+
+        const elRect = {
+          x: bbox.x - parentBB.x,
+          y: bbox.y - parentBB.y,
+          width: bbox.width,
+          height: bbox.height
+        }
+
+        if (checkCollision(rect, elRect)) {
+          return el.id
+        }
+        return null
+      })
+      .filter((id) => id) as string[]
+
+    state.selectedStripIds = hitIds
+  }, [rect])
+
+  return {
+    rect,
+    onPointerDown,
+    parent,
+    refs
+  }
+}
+
+function useLayerLength() {
+  const snap = useSnapshot(state)
+  return snap.strips.reduce((acc, strip) => Math.max(acc, strip.layer), 0) + 1
+}
+
+function useUpdateLayerRootHeight(parent: React.MutableRefObject<HTMLDivElement | null>) {
+  const snap = useSnapshot(state)
+  const maxLayer = useLayerLength()
+  useEffect(() => {
+    if (!parent.current) return
+    const parentHight = parent.current.parentElement?.clientHeight ?? 0
+    const layerHeight = (maxLayer + 1) * 32 + 1 + 2 * maxLayer
+    parent.current.style.height = Math.max(parentHight, layerHeight) + 'px'
+  }, [maxLayer, parent, snap.strips])
+}
+
+function useTimelineSeconds(width: number) {
+  const snap = useSnapshot(state)
+  const defaultPxPerSec = 100
+  const pxPerSec = (1 / (snap.viewEndRate - snap.viewStartRate)) * defaultPxPerSec
+  const startSec = (snap.viewStartRate * width) / defaultPxPerSec
+  return {
+    pxPerSec,
+    startSec
+  }
+}
+
 export const Multiple: Story = {
   render: function Render() {
     const snap = useSnapshot(state)
-    const { rect, onPointerDown } = useSelectRectHandler()
-
-    const refs = useRef([] as Array<HTMLDivElement | null>)
-    const parent = useRef<HTMLDivElement | null>(null)
-
-    useEffect(() => {
-      if (!rect) return
-      const hitIds = refs.current
-        .map((el) => {
-          if (!el) return null
-          const bbox = el.getBoundingClientRect()
-          const parentBB = parent.current?.getBoundingClientRect()
-          if (!parentBB) return null
-
-          const elRect = {
-            x: bbox.x - parentBB.x,
-            y: bbox.y - parentBB.y,
-            width: bbox.width,
-            height: bbox.height
-          }
-
-          if (checkCollision(rect, elRect)) {
-            return el.id
-          }
-          return null
-        })
-        .filter((id) => id) as string[]
-
-      state.selectedStripIds = hitIds
-    }, [rect])
-
+    const { rect, onPointerDown, parent, refs } = useSelectStripBox()
     const { ref: rootRef, width } = useWidth()
 
-    const defaultPxPerSec = 100
-    const pxPerSec = (1 / (state.viewEndRate - state.viewStartRate)) * defaultPxPerSec
-    const startSec = (state.viewStartRate * width) / defaultPxPerSec
-    const maxLayer = state.strips.reduce((acc, strip) => Math.max(acc, strip.layer), 0) + 1
+    const maxLayer = useLayerLength()
+    const { pxPerSec, startSec } = useTimelineSeconds(width)
 
-    useEffect(() => {
-      if (!parent.current) return
-      const parentHight = parent.current.parentElement?.clientHeight ?? 0
-      const layerHeight = (maxLayer + 1) * 32 + 1 + 2 * maxLayer
-      parent.current.style.height = Math.max(parentHight, layerHeight) + 'px'
-    }, [maxLayer, snap.strips])
+    useUpdateLayerRootHeight(parent)
 
     return (
       <div
