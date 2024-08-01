@@ -24,11 +24,11 @@ function checkCollision(
 export const state = proxy({
   assets: [],
   currentTime: 0,
-  fps: 30,
+  fps: 60,
   initialized: false,
   isPlaying: false,
   isSnap: false,
-  length: 0,
+  length: 3,
   selectedStripIds: [],
   canvasHeight: 720,
   canvasWidth: 1280,

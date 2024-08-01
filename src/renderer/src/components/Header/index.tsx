@@ -1,4 +1,5 @@
 import { MenuBar, MenuBarButton, MenuBarItem } from '@toshusai/cmpui'
+import { state } from '../Timeline'
 
 export function Header() {
   return (
@@ -6,7 +7,13 @@ export function Header() {
       <MenuBarButton
         content={
           <>
-            <MenuBarItem>Export</MenuBarItem>
+            <MenuBarItem
+              onClick={() => {
+                state.recordingState = 'recording'
+              }}
+            >
+              Export
+            </MenuBarItem>
           </>
         }
       >
