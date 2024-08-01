@@ -63,6 +63,7 @@ import { proxy, useSnapshot } from 'valtio'
 import { createDragHandler } from '../../interactions/createDragHandler'
 import { Ruler, SelectRect, useSelectRectHandler } from '@toshusai/cmpui'
 import { ScaleScrollBar } from '../ScaleScrollBar'
+import { Cursor } from '../Cursor'
 
 const state = proxy({
   strips: [
@@ -97,6 +98,10 @@ const scaleState = proxy({
   end: 1
 })
 
+const timeState = proxy({
+  time: 0
+})
+
 const LAYER_GAP = 4
 const LAYER_HEIGHT = 32
 
@@ -110,6 +115,7 @@ export const Multiple: Story = {
     const mainSnap = useSnapshot(mainState)
     const { rect, onPointerDown } = useSelectRectHandler()
     const scaleStateSnap = useSnapshot(scaleState)
+    const timeSnap = useSnapshot(timeState)
 
     const refs = useRef([] as Array<HTMLDivElement | null>)
     const parent = useRef<HTMLDivElement | null>(null)
@@ -170,20 +176,36 @@ export const Multiple: Story = {
         style={{
           position: 'relative',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          border: '1px solid #888',
+          boxSizing: 'border-box',
+          overflow: 'hidden'
         }}
       >
         <Ruler
           pxPerUnit={pxPerSec}
           offset={startSec}
           steps={[0.01, 0.05, 0.1, 0.5, 1, 5, 10, 30, 60, 120, 300, 600, 1200, 1800, 3600]}
+          onPointerDown={createDragHandler({
+            onDown: (e) => {
+              const newTime = e.nativeEvent.offsetX / pxPerSec + startSec
+              timeState.time = newTime
+              return {
+                time: newTime
+              }
+            },
+            onMove: (_, ctx, move) => {
+              if (!ctx) return
+              const newTime = ctx.time + move.diffX / pxPerSec
+              timeState.time = newTime
+            }
+          })}
         />
         <div
           style={{
             width: '100%',
             height: '254px',
             display: 'f6ex',
-            border: '1px solid black',
             position: 'relative',
             overflow: 'auto'
           }}
@@ -366,6 +388,14 @@ export const Multiple: Story = {
             })}
           </div>
         </div>
+        <Cursor
+          style={{
+            left: timeSnap.time * pxPerSec - startSec * pxPerSec
+          }}
+        >
+          {timeSnap.time.toFixed(2)}
+        </Cursor>
+
         <div
           style={{
             width: '100%'
