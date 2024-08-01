@@ -7,16 +7,29 @@ type StripProps = {
   children: React.ReactNode
   left: number
   width: number
+  top: number
   onChange: (left: number, width: number) => void
   onChangeEnd: (left: number, width: number) => void
+  onPointerDown?: (e: React.PointerEvent) => void
+  selected?: boolean
 }
 
 const MIN_WIDTH = 8
 
-export function Strip({ left, width, children, onChange, onChangeEnd }: StripProps) {
+export function Strip({
+  left,
+  width,
+  top,
+  children,
+  onChange,
+  onChangeEnd,
+  selected,
+  onPointerDown
+}: StripProps) {
   const handleLeftHandle = createDragHandler({
     onDown: (e) => {
       e.stopPropagation()
+      onPointerDown?.(e)
       return {
         left: left,
         width: width
@@ -48,6 +61,7 @@ export function Strip({ left, width, children, onChange, onChangeEnd }: StripPro
   const handleRightHandle = createDragHandler({
     onDown: (e) => {
       e.stopPropagation()
+      onPointerDown?.(e)
       return {
         left: left,
         width: width
@@ -67,7 +81,9 @@ export function Strip({ left, width, children, onChange, onChangeEnd }: StripPro
   })
 
   const handleMove = createDragHandler({
-    onDown: () => {
+    onDown: (e) => {
+      e.stopPropagation()
+      onPointerDown?.(e)
       return {
         left: left,
         width: width
@@ -90,9 +106,11 @@ export function Strip({ left, width, children, onChange, onChangeEnd }: StripPro
     <div
       className="strip"
       style={{
-        left: left,
-        width: width
+        left,
+        width,
+        top
       }}
+      data-selected={selected}
       onPointerDown={handleMove}
     >
       <Handle onPointerDown={handleLeftHandle} style={{ left: 0 }} />

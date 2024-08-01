@@ -20,26 +20,42 @@ export const Default: Story = {
   render: function Render(args) {
     const [left, setLeft] = useState(args.left)
     const [width, setWidth] = useState(args.width)
+    const [selected, setSelected] = useState(false)
 
     return (
-      <Strip
-        left={left}
-        width={width}
-        onChange={(left, width) => {
-          setLeft(left)
-          setWidth(width)
-          args.onChange(left, width)
+      <div
+        style={{
+          width: '100%',
+          height: '128px',
+          display: 'flex',
+          border: '1px solid black',
+          position: 'relative',
+          overflow: 'hidden'
         }}
-        onChangeEnd={args.onChange}
+        onPointerDown={() => setSelected(false)}
       >
-        <div
-          style={{
-            padding: '0 4px'
+        <Strip
+          top={4}
+          selected={selected}
+          left={left}
+          width={width}
+          onChange={(left, width) => {
+            setLeft(left)
+            setWidth(width)
+            args.onChange(left, width)
           }}
+          onPointerDown={() => setSelected(true)}
+          onChangeEnd={args.onChange}
         >
-          Strip
-        </div>
-      </Strip>
+          <div
+            style={{
+              padding: '0 4px'
+            }}
+          >
+            Strip
+          </div>
+        </Strip>
+      </div>
     )
   }
 }
