@@ -98,6 +98,9 @@ export function Preview() {
 
     const render = () => {
       ctx.clearRect(0, 0, width, height)
+      if (state.isPlaying) {
+        state.currentTime = state.currentTime + 1 / state.fps
+      }
       updateCanvas(ctx)
       requestAnimationFrame(render)
     }

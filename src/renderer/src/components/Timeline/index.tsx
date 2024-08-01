@@ -1,12 +1,13 @@
 import { proxy, useSnapshot } from 'valtio'
 import { createDragHandler } from '../../interactions/createDragHandler'
-import { Ruler, SelectRect, useSelectRectHandler } from '@toshusai/cmpui'
+import { IconButton, Ruler, SelectRect, useSelectRectHandler } from '@toshusai/cmpui'
 import { ScaleScrollBar } from '../ScaleScrollBar'
 import { Cursor } from '../Cursor'
 import { TextEffect, VegaProject } from '@renderer/schemas'
 
 import { useEffect, useRef, useState } from 'react'
 import { Strip } from '../Strip'
+import { IconPlayerPlay, IconPlayerPause } from '@tabler/icons-react'
 
 function checkCollision(
   rectA: { x: number; y: number; width: number; height: number },
@@ -271,6 +272,22 @@ export function Timeline() {
         overflow: 'hidden'
       }}
     >
+      <div
+        className="flex"
+        style={{
+          justifyContent: 'center',
+          padding: '4px 0'
+        }}
+      >
+        <IconButton
+          size="S"
+          onClick={() => {
+            state.isPlaying = !state.isPlaying
+          }}
+        >
+          {snap.isPlaying ? <IconPlayerPause size={16} /> : <IconPlayerPlay size={16} />}
+        </IconButton>
+      </div>
       <TimeView pxPerSec={pxPerSec} startSec={startSec} />
       <div
         style={{
@@ -423,7 +440,8 @@ export function Timeline() {
       </div>
       <Cursor
         style={{
-          left: snap.currentTime * pxPerSec - startSec * pxPerSec
+          left: snap.currentTime * pxPerSec - startSec * pxPerSec,
+          top: 32
         }}
       >
         {snap.currentTime.toFixed(2)}
