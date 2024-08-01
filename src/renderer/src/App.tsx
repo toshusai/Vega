@@ -6,22 +6,26 @@ import { Panel } from './components/Panel'
 import { Timeline } from './components/Timeline'
 import { Preview } from './components/Preview'
 import { Inspector } from './components/Inspector'
+import { Header } from './components/Header'
 
 function App() {
   return (
-    <SplitPane type="vertical" sizes={['60%', '40%']}>
-      <SplitPane type="horizontal" sizes={['30%', '70%']}>
+    <div className="flex flex-col w-full">
+      <Header />
+      <SplitPane type="vertical" sizes={['60%', '40%']}>
+        <SplitPane type="horizontal" sizes={['30%', '70%']}>
+          <Panel>
+            <Inspector />
+          </Panel>
+          <Panel>
+            <Preview />
+          </Panel>
+        </SplitPane>
         <Panel>
-          <Inspector />
-        </Panel>
-        <Panel>
-          <Preview />
+          <Timeline />
         </Panel>
       </SplitPane>
-      <Panel>
-        <Timeline />
-      </Panel>
-    </SplitPane>
+    </div>
   )
 }
 
