@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 import { Strip } from '.'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const meta: Meta<typeof Strip> = {
   component: Strip
@@ -61,6 +61,7 @@ export const Default: Story = {
 }
 import { proxy, useSnapshot } from 'valtio'
 import { createDragHandler } from '../../interactions/createDragHandler'
+import { SelectRect, useSelectRectHandler } from '@toshusai/cmpui'
 
 const state = proxy({
   strips: [
@@ -78,10 +79,52 @@ const mainState = proxy({
   selectedIds: [] as string[]
 })
 
+function checkCollision(
+  rectA: { x: number; y: number; width: number; height: number },
+  rectB: { x: number; y: number; width: number; height: number }
+) {
+  return (
+    rectA.x < rectB.x + rectB.width &&
+    rectA.x + rectA.width > rectB.x &&
+    rectA.y < rectB.y + rectB.height &&
+    rectA.y + rectA.height > rectB.y
+  )
+}
+
 export const Multiple: Story = {
   render: function Render() {
     const snap = useSnapshot(state)
     const mainSnap = useSnapshot(mainState)
+    const { rect, onPointerDown } = useSelectRectHandler()
+
+    const refs = useRef([] as Array<HTMLDivElement | null>)
+    const parent = useRef<HTMLDivElement | null>(null)
+
+    useEffect(() => {
+      if (!rect) return
+      const hitIds = refs.current
+        .map((el) => {
+          if (!el) return null
+          const bbox = el.getBoundingClientRect()
+          const parentBB = parent.current?.getBoundingClientRect()
+          if (!parentBB) return null
+
+          const elRect = {
+            x: bbox.x - parentBB.x,
+            y: bbox.y - parentBB.y,
+            width: bbox.width,
+            height: bbox.height
+          }
+
+          if (checkCollision(rect, elRect)) {
+            return el.id
+          }
+          return null
+        })
+        .filter((id) => id) as string[]
+
+      state.selectedIds = hitIds
+    }, [rect])
 
     return (
       <div
@@ -93,10 +136,13 @@ export const Multiple: Story = {
           position: 'relative',
           overflow: 'hidden'
         }}
-        onPointerDown={() => {
+        ref={parent}
+        onPointerDown={(e) => {
           state.selectedIds = []
+          onPointerDown(e)
         }}
       >
+        {rect && <SelectRect {...rect} />}
         {snap.strips.map((strip, i) => {
           function isInvalid(id: string) {
             if (!state.selectedIds.includes(id)) return false
@@ -133,6 +179,12 @@ export const Multiple: Story = {
 
           return (
             <Strip
+              ref={(el) => {
+                refs.current[i] = el
+                if (el) {
+                  el.id = strip.id
+                }
+              }}
               key={i}
               invalid={invalid}
               top={strip.layer * 32 + 1 + 2 * strip.layer}

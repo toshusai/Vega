@@ -1,7 +1,7 @@
 import './index.css'
 
 import { createDragHandler } from '../../interactions/createDragHandler'
-import React from 'react'
+import React, { forwardRef } from 'react'
 
 export type StripProps = {
   children: React.ReactNode
@@ -18,18 +18,10 @@ export type StripProps = {
 
 const MIN_WIDTH = 8
 
-export function Strip({
-  left,
-  width,
-  top,
-  children,
-  onChange,
-  onChangeEnd,
-  selected,
-  onClick,
-  onPointerDown,
-  invalid
-}: StripProps) {
+export const Strip = forwardRef<HTMLDivElement, StripProps>(function Strip(
+  { left, width, top, children, onChange, onChangeEnd, selected, onClick, onPointerDown, invalid },
+  ref
+) {
   const handleLeftHandle = createDragHandler({
     onDown: (e) => {
       e.stopPropagation()
@@ -116,6 +108,7 @@ export function Strip({
 
   return (
     <div
+      ref={ref}
       className="strip"
       style={{
         left,
@@ -132,7 +125,7 @@ export function Strip({
       <Handle onPointerDown={handleRightHandle} style={{ right: 0 }} />
     </div>
   )
-}
+})
 
 function Handle(props: React.ComponentProps<'div'>) {
   return (
