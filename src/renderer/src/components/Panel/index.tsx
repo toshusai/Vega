@@ -1,10 +1,9 @@
 import './index.css'
 
-export function Panel() {
+export function Panel({ children }: { children?: React.ReactNode }) {
   return (
     <div className="panel--root">
-      <div className="panel--header"></div>
-      <div className="panel--content"></div>
+      <div className="panel--content">{children}</div>
     </div>
   )
 }
