@@ -1,5 +1,5 @@
 import { MenuBar, MenuBarButton, MenuBarItem } from '@toshusai/cmpui'
-import { state } from '../Timeline'
+import { state } from '../../state'
 
 export function Header() {
   return (

@@ -1,7 +1,7 @@
 import { createDragHandler } from '../../interactions/createDragHandler'
 import { Ruler } from '@toshusai/cmpui'
 
-import { state } from '.'
+import { state } from '../../state'
 
 export function TimeView({ pxPerSec, startSec }: { pxPerSec: number; startSec: number }) {
   return (
