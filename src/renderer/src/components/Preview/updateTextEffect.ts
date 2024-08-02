@@ -161,7 +161,8 @@ export function updateTextEffect(
   const align = animatedEffect.align
   ctx.save()
   ctx.translate(x, y)
-  ctx.rotate(Math.PI / 3)
+  // TODO: rotation
+  ctx.rotate(0)
   ctx.translate(-x, -y)
 
   if (align === 'right') {
