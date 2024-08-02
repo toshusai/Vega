@@ -7,7 +7,7 @@ import {
   Strip,
   TextEffect,
   VegaProject
-} from '@renderer/schemas'
+} from '../../schemas'
 import { hsvToHex } from '@toshusai/cmpui'
 import { proxyMap } from 'valtio/utils'
 
@@ -134,6 +134,7 @@ export function updateTextEffect(
   }
 
   moveAlign()
+  const maxHeight = lineHeight * lines.length
   for (let i = 0; i < animatedEffect.text.length; i++) {
     const char = animatedEffect.text[i]
     if (char === '\n') {
@@ -152,18 +153,27 @@ export function updateTextEffect(
   }
 
   ctx.fillStyle = hsvToHex(animatedEffect.color ?? { a: 1, h: 0, s: 0, v: 0 }) ?? 'black'
-  top = y
-  left = x
+  top = y - maxHeight / 2
+  left = x - maxWidth / 2
   lineIndex = 0
   width = 0
   moveAlign()
-  let lineNum = 1
+  const align = animatedEffect.align
+  ctx.save()
+  ctx.translate(x, y)
+  ctx.rotate(Math.PI / 3)
+  ctx.translate(-x, -y)
+
+  if (align === 'right') {
+    ctx.translate(maxWidth, 0)
+  } else if (align === 'center') {
+    ctx.translate(maxWidth / 2, 0)
+  }
   for (let i = 0; i < animatedEffect.text.length; i++) {
     const char = animatedEffect.text[i]
     if (char === '\n') {
-      lineNum += 1
       top += lineHeight
-      left = x
+      left = x - maxWidth / 2
       lineIndex++
       width = 0
       moveAlign()
@@ -175,14 +185,18 @@ export function updateTextEffect(
     width += w + characterSpacing
     maxWidth = Math.max(maxWidth, width)
   }
-
-  const height = lineHeight * lineNum
+  if (align === 'right') {
+    ctx.translate(-maxWidth, 0)
+  } else if (align === 'center') {
+    ctx.translate(-maxWidth / 2, 0)
+  }
+  ctx.restore()
 
   measureMapState.set(animatedEffect.id, {
-    left: x,
-    top: y,
+    left: x - maxWidth / 2,
+    top: y - maxHeight / 2,
     width: maxWidth,
-    height
+    height: maxHeight
   })
 }
 

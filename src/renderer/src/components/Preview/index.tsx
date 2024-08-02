@@ -217,13 +217,8 @@ export function Preview() {
             if (isTextEffect(effect)) {
               const width = measureMap.get(strip.id)?.width ?? 0
               const height = measureMap.get(strip.id)?.height ?? 0
-              const diffX =
-                effect.align === undefined || effect.align === 'left'
-                  ? width / 2
-                  : effect.align === 'right'
-                    ? -width / 2
-                    : 0
-              const x = (effect.x + diffX) * snap.canvasScale + snap.canvasLeft
+
+              const x = effect.x * snap.canvasScale + snap.canvasLeft
               return (
                 <Fragment key={id}>
                   {!isTextEditMode && (
@@ -233,7 +228,7 @@ export function Preview() {
                       width={width * snap.canvasScale}
                       nobRadius={4}
                       x={x}
-                      y={(effect.y + height / 2) * snap.canvasScale + snap.canvasTop}
+                      y={effect.y * snap.canvasScale + snap.canvasTop}
                       onEnd={() => {
                         snapState.points = []
                       }}
@@ -245,14 +240,10 @@ export function Preview() {
                         if (!isTextEffect(effect)) return
                         snapState.points = []
                         if (args.x && args.y) {
-                          const newX = Math.round(
-                            (args.x - snap.canvasLeft) / snap.canvasScale - diffX
-                          )
-                          const newY = Math.round(
-                            (args.y - snap.canvasTop) / snap.canvasScale - height / 2
-                          )
-                          const selfHPoints = [newX, newX + width / 2, newX + width]
-                          const selfVPoints = [newY, newY + height / 2, newY + height]
+                          const newX = Math.round((args.x - snap.canvasLeft) / snap.canvasScale)
+                          const newY = Math.round((args.y - snap.canvasTop) / snap.canvasScale)
+                          const selfHPoints = [newX, newX + width / 2, newX - width / 2]
+                          const selfVPoints = [newY, newY + height / 2, newY - height / 2]
 
                           const targetHPoints: number[] = []
                           const targetVPoints: number[] = []
