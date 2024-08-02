@@ -5,6 +5,8 @@ import {
   createKeyDownUpHandler,
   hsvToHex,
   RectGizmo,
+  SelectRect,
+  useSelectRectHandler,
   View,
   ViewMode
 } from '@toshusai/cmpui'
@@ -14,6 +16,7 @@ import { isTextEffect, measureMapState, stripIsVisible, updateTextEffect } from 
 import { Effect, Strip, TextEffect } from '@renderer/schemas'
 import { proxy, useSnapshot } from 'valtio'
 import { createDragHandler } from '@renderer/interactions/createDragHandler'
+import { checkCollision } from '../Timeline/checkCollision'
 
 function useKeyHandler() {
   const [keyStack, setKeyStack] = useState<string[]>([])
@@ -141,6 +144,37 @@ export function Preview() {
     }
   }, [snap.selectedStripIds, snap.strips])
 
+  const { rect, onPointerDown } = useSelectRectHandler()
+
+  useEffect(() => {
+    if (!rect) return
+    state.selectedStripIds = []
+    measureMapState.forEach((value, key) => {
+      const strip = getStripByEffectId(key)
+      if (strip && !stripIsVisible(strip, state.currentTime, state.fps)) {
+        return
+      }
+      if (!rect) return
+      const isHit = checkCollision(
+        {
+          x: (rect.x - snap.canvasLeft) / snap.canvasScale,
+          y: (rect.y - snap.canvasTop) / snap.canvasScale,
+          width: rect.width / snap.canvasScale,
+          height: rect.height / snap.canvasScale
+        },
+        {
+          x: value.left,
+          y: value.top,
+          width: value.width,
+          height: value.height
+        }
+      )
+      if (isHit) {
+        state.selectedStripIds.push(key)
+      }
+    })
+  }, [rect, snap.canvasLeft, snap.canvasScale, snap.canvasTop])
+
   return (
     <>
       <CanvasView
@@ -187,6 +221,7 @@ export function Preview() {
           }}
           onPointerDown={(e) => {
             if (mode !== 'default') return
+            onPointerDown(e)
             const x = (e.nativeEvent.offsetX - snap.canvasLeft) / snap.canvasScale
             const y = (e.nativeEvent.offsetY - snap.canvasTop) / snap.canvasScale
             let id = ''
@@ -333,6 +368,7 @@ export function Preview() {
           }
           return null
         })}
+        {rect && <SelectRect {...rect} />}
         <SnapHints />
       </CanvasView>
     </>
