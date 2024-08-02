@@ -1,8 +1,29 @@
 import { TextEffect, VegaProject } from '@renderer/schemas'
 import { proxy } from 'valtio'
 
+const fontList = [
+  'Roboto',
+  'Sixtyfour',
+  'Wavefont',
+  'Gabarito',
+  'Agbalumo',
+  'Honk',
+  'Slackside One',
+  'Smooch',
+  'Chokokutai',
+  'Monomaniac One',
+  'Palette Mosaic'
+].sort()
+
 export const state = proxy({
-  assets: [],
+  assets: [
+    ...fontList.map((name) => ({
+      id: name,
+      type: 'font',
+      name,
+      path: `https://fonts.googleapis.com/css2?family=${name}&display=swap`
+    }))
+  ],
   currentTime: 0,
   fps: 60,
   initialized: false,
@@ -26,7 +47,7 @@ export const state = proxy({
         {
           id: '1',
           type: 'text',
-          fontAssetId: 'Arial',
+          fontAssetId: 'Honk',
           fontSize: 64,
           text: 'Hello',
           x: 0,

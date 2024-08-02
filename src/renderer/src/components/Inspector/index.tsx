@@ -120,6 +120,23 @@ function TextEffectInspector() {
         <SelectItem value="center">Center</SelectItem>
         <SelectItem value="right">Right</SelectItem>
       </Select>
+
+      <Select
+        onChange={(value) => {
+          selectedTextEffects().forEach((effect) => {
+            effect.fontAssetId = value
+          })
+        }}
+        value={effects[0].fontAssetId}
+      >
+        {snap.assets
+          .filter((asset) => asset.type === 'font')
+          .map((asset) => (
+            <SelectItem key={asset.id} value={asset.id}>
+              {asset.name}
+            </SelectItem>
+          ))}
+      </Select>
     </div>
   )
 }
