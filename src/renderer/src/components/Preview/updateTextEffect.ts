@@ -15,13 +15,12 @@ const loadedFontAssetMap = new Map<string, boolean>()
 
 export function loadFont(fontAsset: FontAsset) {
   if (!loadedFontAssetMap.has(fontAsset.id) && fontAsset) {
-    const style = document.createElement('style')
-    style.innerHTML = `@font-face {
-        font-family: _${fontAsset.id};
-        src: url(${fontAsset.path});
-      }`
-    document.head.appendChild(style)
     loadedFontAssetMap.set(fontAsset.id, true)
+
+    const link = document.createElement('link')
+    link.href = fontAsset.path
+    link.rel = 'stylesheet'
+    document.head.appendChild(link)
   }
 }
 
@@ -97,7 +96,7 @@ export function updateTextEffect(
     ' ' +
     animatedEffect.fontSize +
     'px ' +
-    (fontAsset !== undefined ? '_' + fontAsset.id : 'sans-serif')
+    (fontAsset !== undefined ? '' + fontAsset.id : 'sans-serif')
 
   const x = animatedEffect.x
   const y = animatedEffect.y
