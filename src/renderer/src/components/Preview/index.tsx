@@ -186,6 +186,7 @@ export function Preview() {
             position: 'relative'
           }}
           onPointerDown={(e) => {
+            if (mode !== 'default') return
             const x = (e.nativeEvent.offsetX - snap.canvasLeft) / snap.canvasScale
             const y = (e.nativeEvent.offsetY - snap.canvasTop) / snap.canvasScale
             let id = ''
@@ -263,7 +264,7 @@ export function Preview() {
               const x = effect.x * snap.canvasScale + snap.canvasLeft
               return (
                 <Fragment key={id}>
-                  {!isTextEditMode && (
+                  {!isTextEditMode && mode === 'default' && (
                     <RectGizmo
                       angle={0}
                       height={height * snap.canvasScale}
