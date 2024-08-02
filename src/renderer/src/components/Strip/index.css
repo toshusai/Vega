@@ -9,18 +9,19 @@
   position: absolute;
   box-sizing: border-box;
   overflow: hidden;
+  border: 1px solid transparent;
 }
 
 .strip:hover {
-  outline: 1px solid #e0e0e0;
+  border: 1px solid #e0e0e0;
 }
 
 .strip[data-selected='true'] {
-  outline: 1px solid #2196f3;
+  border: 1px solid var(--cmpui-primary-color);
 }
 
 .strip[data-invalid='true'] {
-  outline: 1px solid #f44336;
+  border: 1px solid #f44336;
   z-index: 1;
 }
 
