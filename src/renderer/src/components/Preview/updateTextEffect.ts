@@ -59,7 +59,7 @@ export function isTextEffect(effect: Effect): effect is TextEffect {
   return effect.type === 'text'
 }
 
-export function updateTextEffect(
+export async function updateTextEffect(
   ctx: CanvasRenderingContext2D,
   effect: TextEffect,
   strip: Strip,
@@ -72,7 +72,7 @@ export function updateTextEffect(
   const fontAsset = scene.assets.find((asset) => asset.id === effect.fontAssetId)
 
   if (fontAsset) {
-    loadFont(fontAsset as FontAsset)
+    await loadFont(fontAsset as FontAsset)
   }
 
   const animatedEffect: TextEffect = {
