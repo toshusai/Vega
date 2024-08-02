@@ -11,8 +11,9 @@ import {
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { state } from '../../state'
 import { isTextEffect, measureMapState, stripIsVisible, updateTextEffect } from './updateTextEffect'
-import { Effect, TextEffect } from '@renderer/schemas'
+import { Effect, Strip, TextEffect } from '@renderer/schemas'
 import { proxy, useSnapshot } from 'valtio'
+import { createDragHandler } from '@renderer/interactions/createDragHandler'
 
 function useKeyHandler() {
   const [keyStack, setKeyStack] = useState<string[]>([])
@@ -187,16 +188,51 @@ export function Preview() {
           onPointerDown={(e) => {
             const x = (e.nativeEvent.offsetX - snap.canvasLeft) / snap.canvasScale
             const y = (e.nativeEvent.offsetY - snap.canvasTop) / snap.canvasScale
+            let id = ''
             measureMapState.forEach((value, key) => {
+              const strip = getStripByEffectId(key)
+              if (strip && !stripIsVisible(strip, state.currentTime, state.fps)) {
+                return
+              }
               if (
                 value.left < x &&
                 x < value.left + value.width &&
                 value.top < y &&
                 y < value.top + value.height
               ) {
-                state.selectedStripIds = [key]
+                if (e.metaKey) {
+                  state.selectedStripIds = [...state.selectedStripIds, key]
+                } else {
+                  state.selectedStripIds = [key]
+                }
+                id = key
               }
             })
+            if (!id) {
+              state.selectedStripIds = []
+            }
+
+            const effect = getTextEffect(id)
+
+            createDragHandler({
+              onDown: () => {
+                return {
+                  x: effect.x,
+                  y: effect.y
+                }
+              },
+              onMove: (_, ctx, move) => {
+                if (!ctx) return
+                const newX = Math.round(ctx.x + move.diffX / snap.canvasScale)
+                const newY = Math.round(ctx.y + move.diffY / snap.canvasScale)
+                effect.x = newX
+                effect.y = newY
+                const width = measureMap.get(effect.id)?.width ?? 0
+                const height = measureMap.get(effect.id)?.height ?? 0
+
+                snapEffect(newX, newY, width, height, effect.id, effect, 4 / snap.canvasScale)
+              }
+            })(e)
           }}
         >
           <div
@@ -213,6 +249,8 @@ export function Preview() {
         {snap.selectedStripIds.map((id) => {
           const strip = snap.strips.find((strip) => strip.id === id)
           if (!strip) return null
+          if (!stripIsVisible(strip as Strip, snap.currentTime, snap.fps)) return null
+
           for (const effect of strip.effects as Effect[]) {
             if (isTextEffect(effect)) {
               const width = measureMap.get(strip.id)?.width ?? 0
@@ -238,69 +276,12 @@ export function Preview() {
                           ?.effects.find((effect) => effect.id === id)
                         if (!effect) return
                         if (!isTextEffect(effect)) return
-                        snapState.points = []
-                        if (args.x && args.y) {
-                          const newX = Math.round((args.x - snap.canvasLeft) / snap.canvasScale)
-                          const newY = Math.round((args.y - snap.canvasTop) / snap.canvasScale)
-                          const selfHPoints = [newX, newX + width / 2, newX - width / 2]
-                          const selfVPoints = [newY, newY + height / 2, newY - height / 2]
 
-                          const targetHPoints: number[] = []
-                          const targetVPoints: number[] = []
-                          measureMap.forEach((value, key) => {
-                            if (key == id) {
-                              return
-                            }
-                            const sp = state.strips.find((strip) => strip.id === key)
-                            if (sp && !stripIsVisible(sp, state.currentTime, state.fps)) {
-                              return
-                            }
-                            targetHPoints.push(
-                              value.left,
-                              value.left + value.width / 2,
-                              value.left + value.width
-                            )
-                            targetVPoints.push(
-                              value.top,
-                              value.top + value.height / 2,
-                              value.top + value.height
-                            )
-                          })
+                        if (!args.x || !args.y) return
+                        const newX = Math.round((args.x - snap.canvasLeft) / snap.canvasScale)
+                        const newY = Math.round((args.y - snap.canvasTop) / snap.canvasScale)
 
-                          {
-                            const { targetP, snapDiff } = getNearestPoints(
-                              selfHPoints,
-                              targetHPoints,
-                              8 / snap.canvasScale
-                            )
-                            if (targetP) {
-                              snapState.points.push({
-                                direction: 'vertical',
-                                value: targetP
-                              })
-                              effect.x = newX + snapDiff
-                            } else {
-                              effect.x = newX
-                            }
-                          }
-
-                          {
-                            const { targetP, snapDiff } = getNearestPoints(
-                              selfVPoints,
-                              targetVPoints,
-                              8 / snap.canvasScale
-                            )
-                            if (targetP) {
-                              snapState.points.push({
-                                direction: 'horizontal',
-                                value: targetP
-                              })
-                              effect.y = newY + snapDiff
-                            } else {
-                              effect.y = newY
-                            }
-                          }
-                        }
+                        snapEffect(newX, newY, width, height, id, effect, 4 / snap.canvasScale)
                       }}
                     />
                   )}
@@ -393,6 +374,19 @@ function SnapHints() {
   )
 }
 
+function getStripByEffectId(id: string) {
+  return state.strips.find((strip) => strip.effects.some((effect) => effect.id === id))
+}
+
+function getTextEffect(id: string) {
+  const effect = state.strips
+    .find((strip) => strip.id === id)
+    ?.effects.find((effect) => effect.id === id)
+  if (!effect) throw new Error('effect not found')
+  if (!isTextEffect(effect)) throw new Error('effect is not text')
+  return effect
+}
+
 const snapState = proxy({
   points: [] as SnapPoint[]
 })
@@ -423,5 +417,71 @@ function getNearestPoints(selfPoints: number[], targetPoints: number[], threshol
   return {
     targetP,
     snapDiff
+  }
+}
+
+function getAllSnapTargetPoints(id: string) {
+  const targetHPoints: number[] = []
+  const targetVPoints: number[] = []
+  measureMapState.forEach((value, key) => {
+    if (key == id) {
+      return
+    }
+    const sp = state.strips.find((strip) => strip.id === key)
+    if (sp && !stripIsVisible(sp, state.currentTime, state.fps)) {
+      return
+    }
+    targetHPoints.push(value.left, value.left + value.width / 2, value.left + value.width)
+    targetVPoints.push(value.top, value.top + value.height / 2, value.top + value.height)
+  })
+
+  return {
+    targetHPoints,
+    targetVPoints
+  }
+}
+
+function snapEffect(
+  newX: number,
+  newY: number,
+  width: number,
+  height: number,
+  id: string,
+  /**
+   * mutable
+   */
+  $effect: TextEffect,
+  threshold: number
+) {
+  const selfHPoints = [newX, newX + width / 2, newX - width / 2]
+  const selfVPoints = [newY, newY + height / 2, newY - height / 2]
+
+  const { targetHPoints, targetVPoints } = getAllSnapTargetPoints(id)
+
+  snapState.points = []
+  {
+    const { targetP, snapDiff } = getNearestPoints(selfHPoints, targetHPoints, threshold)
+    if (targetP) {
+      snapState.points.push({
+        direction: 'vertical',
+        value: targetP
+      })
+      $effect.x = newX + snapDiff
+    } else {
+      $effect.x = newX
+    }
+  }
+
+  {
+    const { targetP, snapDiff } = getNearestPoints(selfVPoints, targetVPoints, threshold)
+    if (targetP) {
+      snapState.points.push({
+        direction: 'horizontal',
+        value: targetP
+      })
+      $effect.y = newY + snapDiff
+    } else {
+      $effect.y = newY
+    }
   }
 }
