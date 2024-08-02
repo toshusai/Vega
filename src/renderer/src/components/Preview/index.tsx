@@ -12,8 +12,7 @@ import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'rea
 import { state } from '../../state'
 import { isTextEffect, measureMapState, stripIsVisible, updateTextEffect } from './updateTextEffect'
 import { Effect, TextEffect } from '@renderer/schemas'
-import { useSnapshot } from 'valtio'
-import { checkSnap } from '../Timeline/checkSnap'
+import { proxy, useSnapshot } from 'valtio'
 
 function useKeyHandler() {
   const [keyStack, setKeyStack] = useState<string[]>([])
@@ -235,15 +234,28 @@ export function Preview() {
                       nobRadius={4}
                       x={x}
                       y={(effect.y + height / 2) * snap.canvasScale + snap.canvasTop}
+                      onEnd={() => {
+                        snapState.points = []
+                      }}
                       onMove={(args) => {
                         const effect = state.strips
                           .find((strip) => strip.id === id)
                           ?.effects.find((effect) => effect.id === id)
                         if (!effect) return
                         if (!isTextEffect(effect)) return
+                        snapState.points = []
                         if (args.x && args.y) {
-                          const horizontalSnapPoints: number[] = []
-                          const verticalSnapPoints: number[] = []
+                          const newX = Math.round(
+                            (args.x - snap.canvasLeft) / snap.canvasScale - diffX
+                          )
+                          const newY = Math.round(
+                            (args.y - snap.canvasTop) / snap.canvasScale - height / 2
+                          )
+                          const selfHPoints = [newX, newX + width / 2, newX + width]
+                          const selfVPoints = [newY, newY + height / 2, newY + height]
+
+                          const targetHPoints: number[] = []
+                          const targetVPoints: number[] = []
                           measureMap.forEach((value, key) => {
                             if (key == id) {
                               return
@@ -252,36 +264,50 @@ export function Preview() {
                             if (sp && !stripIsVisible(sp, state.currentTime, state.fps)) {
                               return
                             }
-                            horizontalSnapPoints.push(
+                            targetHPoints.push(
                               value.left,
-                              value.left + value.width,
-                              value.left + value.width / 2
+                              value.left + value.width / 2,
+                              value.left + value.width
                             )
-                            verticalSnapPoints.push(
+                            targetVPoints.push(
                               value.top,
-                              value.top + value.height,
-                              value.top + value.height / 2
+                              value.top + value.height / 2,
+                              value.top + value.height
                             )
                           })
 
-                          const newX = Math.round(
-                            (args.x - snap.canvasLeft) / snap.canvasScale - diffX
-                          )
-                          const hSnap = checkSnap(newX, horizontalSnapPoints)
-                          if (hSnap.isSnapped) {
-                            effect.x = hSnap.value
-                          } else {
-                            effect.x = newX
+                          {
+                            const { targetP, snapDiff } = getNearestPoints(
+                              selfHPoints,
+                              targetHPoints,
+                              8 / snap.canvasScale
+                            )
+                            if (targetP) {
+                              snapState.points.push({
+                                direction: 'vertical',
+                                value: targetP
+                              })
+                              effect.x = newX + snapDiff
+                            } else {
+                              effect.x = newX
+                            }
                           }
 
-                          const newY = Math.round(
-                            (args.y - snap.canvasTop) / snap.canvasScale - height / 2
-                          )
-                          const vSnap = checkSnap(newY, verticalSnapPoints, 16)
-                          if (vSnap.isSnapped) {
-                            effect.y = vSnap.value
-                          } else {
-                            effect.y = newY
+                          {
+                            const { targetP, snapDiff } = getNearestPoints(
+                              selfVPoints,
+                              targetVPoints,
+                              8 / snap.canvasScale
+                            )
+                            if (targetP) {
+                              snapState.points.push({
+                                direction: 'horizontal',
+                                value: targetP
+                              })
+                              effect.y = newY + snapDiff
+                            } else {
+                              effect.y = newY
+                            }
                           }
                         }
                       }}
@@ -330,6 +356,7 @@ export function Preview() {
           }
           return null
         })}
+        <SnapHints />
       </CanvasView>
     </>
   )
@@ -341,4 +368,69 @@ function usePointerEnterFocus() {
       preventScroll: true
     })
   }, [])
+}
+
+function SnapHints() {
+  const snap = useSnapshot(snapState)
+  const rootSnap = useSnapshot(state)
+
+  return (
+    <div>
+      {snap.points.map((point) => {
+        let value = point.value * rootSnap.canvasScale
+        if (point.direction === 'vertical') {
+          value += rootSnap.canvasLeft
+        }
+        if (point.direction === 'horizontal') {
+          value += rootSnap.canvasTop
+        }
+        return (
+          <div
+            key={point.direction + point.value}
+            style={{
+              position: 'absolute',
+              left: point.direction === 'vertical' ? value : 0,
+              top: point.direction === 'horizontal' ? value : 0,
+              width: point.direction === 'vertical' ? 1 : '100%',
+              height: point.direction === 'horizontal' ? 1 : '100%',
+              background: 'red'
+            }}
+          ></div>
+        )
+      })}
+    </div>
+  )
+}
+
+const snapState = proxy({
+  points: [] as SnapPoint[]
+})
+
+type SnapPoint = {
+  direction: 'horizontal' | 'vertical'
+  value: number
+}
+
+function getNearestPoints(selfPoints: number[], targetPoints: number[], threshold: number) {
+  let minPoint = Infinity
+  let targetP: number | null = null
+  let snapDiff = 0
+  for (const selfPoint of selfPoints) {
+    for (const targetPoint of targetPoints) {
+      const diff = Math.abs(selfPoint - targetPoint)
+      if (diff < threshold) {
+        if (minPoint > diff) {
+          targetP = targetPoint
+          minPoint = Math.min(minPoint, Math.abs(selfPoint - targetPoint))
+          snapDiff = targetPoint - selfPoint
+        }
+        break
+      }
+    }
+  }
+
+  return {
+    targetP,
+    snapDiff
+  }
 }
