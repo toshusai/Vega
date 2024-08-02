@@ -1,4 +1,3 @@
-import './tailwind.css'
 import '@toshusai/cmpui/dist/index.css'
 
 import { Button, SplitPane } from '@toshusai/cmpui'
