@@ -64,14 +64,14 @@ function useKeyHandler() {
   }
 }
 
-export function updateCanvas(ctx: CanvasRenderingContext2D) {
-  state.strips.forEach((strip) => {
-    strip.effects.forEach((effect) => {
+export async function updateCanvas(ctx: CanvasRenderingContext2D) {
+  for (const strip of state.strips) {
+    for (const effect of strip.effects) {
       if (effect.type === 'text') {
-        updateTextEffect(ctx, effect as TextEffect, strip, state)
+        await updateTextEffect(ctx, effect as TextEffect, strip, state)
       }
-    })
-  })
+    }
+  }
 }
 
 export function Preview() {
@@ -98,13 +98,13 @@ export function Preview() {
     }
 
     let prevT = 0
-    const render = (t: number) => {
+    const render = async (t: number) => {
       const dt = t - prevT
       ctx.clearRect(0, 0, width, height)
       if (state.isPlaying) {
         state.currentTime = state.currentTime + dt / 1000
       }
-      updateCanvas(ctx)
+      await updateCanvas(ctx)
       prevT = t
       requestAnimationFrame(render)
     }
