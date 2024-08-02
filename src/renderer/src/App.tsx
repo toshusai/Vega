@@ -16,7 +16,7 @@ function App() {
     return <Recorder />
   }
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full gap-4">
       <Header />
       <SplitPane type="vertical" sizes={['60%', '40%']}>
         <SplitPane type="horizontal" sizes={['30%', '70%']}>
