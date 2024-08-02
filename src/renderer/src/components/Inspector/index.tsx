@@ -1,5 +1,5 @@
 import { useSnapshot } from 'valtio'
-import { isTextEffect } from '../Preview/updateTextEffect'
+import { isTextEffect, loadFont } from '../Preview/updateTextEffect'
 import { state } from '../../state'
 import {
   ColorInput,
@@ -11,8 +11,9 @@ import {
   SliderNumberField,
   TextArea
 } from '@toshusai/cmpui'
-import { Effect, TextAlign, TextEffect } from '@renderer/schemas'
+import { Effect, FontAsset, TextAlign, TextEffect } from '@renderer/schemas'
 import { IconAlignCenter, IconAlignLeft, IconAlignRight } from '@tabler/icons-react'
+import { useEffect } from 'react'
 
 export function Inspector() {
   return (
@@ -38,6 +39,15 @@ function TextEffectInspector() {
       return strip.effects
     })
     .filter((v) => isTextEffect(v as Effect)) as TextEffect[]
+
+  useEffect(() => {
+    snap.assets.forEach((asset) => {
+      if (asset.type === 'font') {
+        loadFont(asset as FontAsset)
+      }
+    })
+  }, [snap.assets])
+
   if (effects.length === 0) {
     return null
   }
@@ -152,7 +162,13 @@ function TextEffectInspector() {
           .filter((asset) => asset.type === 'font')
           .map((asset) => (
             <SelectItem key={asset.id} value={asset.id}>
-              {asset.name}
+              <div
+                style={{
+                  fontFamily: asset.name
+                }}
+              >
+                {asset.name}
+              </div>
             </SelectItem>
           ))}
       </Select>
