@@ -213,6 +213,7 @@ export function Preview() {
             }
 
             const effect = getTextEffect(id)
+            if (!effect) return
 
             createDragHandler({
               onDown: () => {
@@ -385,8 +386,8 @@ function getTextEffect(id: string) {
   const effect = state.strips
     .find((strip) => strip.id === id)
     ?.effects.find((effect) => effect.id === id)
-  if (!effect) throw new Error('effect not found')
-  if (!isTextEffect(effect)) throw new Error('effect is not text')
+  if (!effect) return null
+  if (!isTextEffect(effect)) return null
   return effect
 }
 
