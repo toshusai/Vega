@@ -231,6 +231,9 @@ export function Preview() {
                 const height = measureMap.get(effect.id)?.height ?? 0
 
                 snapEffect(newX, newY, width, height, effect.id, effect, 4 / snap.canvasScale)
+              },
+              onUp: () => {
+                snapState.points = []
               }
             })(e)
           }}
