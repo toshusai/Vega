@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react/*'
 import { useEffect, useRef } from 'react'
-import { updateTextEffect } from './components/Preview/updateTextEffect'
-import { Strip, TextEffect } from './schemas'
+import { loadFont, updateTextEffect } from './components/Preview/updateTextEffect'
+import { FontAsset, Strip, TextEffect, VegaProject } from './schemas'
 
 function TextRender(props: { effect: TextEffect }) {
   const ref = useRef<HTMLCanvasElement>(null)
@@ -19,9 +19,15 @@ function TextRender(props: { effect: TextEffect }) {
       start: 0,
       length: 1
     }
-
-    updateTextEffect(ctx, strip.effects[0] as TextEffect, strip, {
-      assets: [],
+    const state: VegaProject = {
+      assets: [
+        {
+          id: 'Honk',
+          type: 'font',
+          path: `https://fonts.googleapis.com/css2?family=Honk&display=swap`,
+          name: 'Honk'
+        }
+      ],
       strips: [],
       currentTime: 0,
       fps: 60,
@@ -40,6 +46,9 @@ function TextRender(props: { effect: TextEffect }) {
       selectedKeyframeIds: [],
       canvasScale: 0.5,
       recordingState: 'idle'
+    }
+    loadFont(state.assets[0] as FontAsset).then(() => {
+      updateTextEffect(ctx, strip.effects[0] as TextEffect, strip, state)
     })
   }, [props.effect])
 
@@ -68,6 +77,21 @@ export const Default: Story = {
     effect: {
       id: '1',
       type: 'text',
+      fontAssetId: '',
+      fontSize: 64,
+      text: 'Text',
+      x: 256,
+      y: 256,
+      keyframes: []
+    } as TextEffect
+  }
+}
+
+export const Font: Story = {
+  args: {
+    effect: {
+      id: '1',
+      type: 'text',
       fontAssetId: 'Honk',
       fontSize: 64,
       text: 'Text',
@@ -83,7 +107,7 @@ export const Multiline: Story = {
     effect: {
       id: '1',
       type: 'text',
-      fontAssetId: 'Honk',
+      fontAssetId: '',
       fontSize: 64,
       text: 'Hello\nWorld\nMultiline',
       x: 256,
@@ -98,7 +122,7 @@ export const AlignCenter: Story = {
     effect: {
       id: '1',
       type: 'text',
-      fontAssetId: 'Honk',
+      fontAssetId: '',
       fontSize: 64,
       text: 'Hello\nWorld',
       align: 'center',
@@ -114,7 +138,7 @@ export const AlignRight: Story = {
     effect: {
       id: '1',
       type: 'text',
-      fontAssetId: 'Honk',
+      fontAssetId: '',
       fontSize: 64,
       text: 'Hello\nWorld',
       align: 'right',

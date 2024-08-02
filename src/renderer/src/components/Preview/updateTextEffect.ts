@@ -13,7 +13,7 @@ import { proxyMap } from 'valtio/utils'
 
 const loadedFontAssetMap = new Map<string, boolean>()
 
-export function loadFont(fontAsset: FontAsset) {
+export async function loadFont(fontAsset: FontAsset) {
   if (!loadedFontAssetMap.has(fontAsset.id) && fontAsset) {
     loadedFontAssetMap.set(fontAsset.id, true)
 
@@ -21,7 +21,13 @@ export function loadFont(fontAsset: FontAsset) {
     link.href = fontAsset.path
     link.rel = 'stylesheet'
     document.head.appendChild(link)
+    return new Promise<void>((resolve) => {
+      link.onload = () => {
+        resolve()
+      }
+    })
   }
+  return Promise.resolve()
 }
 
 export const measureMapState = proxyMap<
