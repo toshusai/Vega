@@ -10,9 +10,10 @@ import {
 } from '@toshusai/cmpui'
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { state } from '../../state'
-import { isTextEffect, measureMapState, updateTextEffect } from './updateTextEffect'
+import { isTextEffect, measureMapState, stripIsVisible, updateTextEffect } from './updateTextEffect'
 import { Effect, TextEffect } from '@renderer/schemas'
 import { useSnapshot } from 'valtio'
+import { checkSnap } from '../Timeline/checkSnap'
 
 function useKeyHandler() {
   const [keyStack, setKeyStack] = useState<string[]>([])
@@ -241,8 +242,47 @@ export function Preview() {
                         if (!effect) return
                         if (!isTextEffect(effect)) return
                         if (args.x && args.y) {
-                          effect.x = (args.x - snap.canvasLeft) / snap.canvasScale - diffX
-                          effect.y = (args.y - snap.canvasTop) / snap.canvasScale - height / 2
+                          const horizontalSnapPoints: number[] = []
+                          const verticalSnapPoints: number[] = []
+                          measureMap.forEach((value, key) => {
+                            if (key == id) {
+                              return
+                            }
+                            const sp = state.strips.find((strip) => strip.id === key)
+                            if (sp && !stripIsVisible(sp, state.currentTime, state.fps)) {
+                              return
+                            }
+                            horizontalSnapPoints.push(
+                              value.left,
+                              value.left + value.width,
+                              value.left + value.width / 2
+                            )
+                            verticalSnapPoints.push(
+                              value.top,
+                              value.top + value.height,
+                              value.top + value.height / 2
+                            )
+                          })
+
+                          const newX = Math.round(
+                            (args.x - snap.canvasLeft) / snap.canvasScale - diffX
+                          )
+                          const hSnap = checkSnap(newX, horizontalSnapPoints)
+                          if (hSnap.isSnapped) {
+                            effect.x = hSnap.value
+                          } else {
+                            effect.x = newX
+                          }
+
+                          const newY = Math.round(
+                            (args.y - snap.canvasTop) / snap.canvasScale - height / 2
+                          )
+                          const vSnap = checkSnap(newY, verticalSnapPoints, 16)
+                          if (vSnap.isSnapped) {
+                            effect.y = vSnap.value
+                          } else {
+                            effect.y = newY
+                          }
                         }
                       }}
                     />
