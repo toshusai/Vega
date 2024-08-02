@@ -159,6 +159,8 @@ export async function updateTextEffect(
   }
 
   ctx.fillStyle = hsvToHex(animatedEffect.color ?? { a: 1, h: 0, s: 0, v: 0 }) ?? 'black'
+  ctx.globalAlpha =
+    animatedEffect.color === undefined ? 1 : Math.min(Math.max(animatedEffect.color.a, 0), 1)
   top = y - maxHeight / 2
   left = x - maxWidth / 2
   lineIndex = 0
