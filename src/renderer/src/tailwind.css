@@ -2,6 +2,10 @@
   width: 100%;
 }
 
+.w-fit {
+  width: fit-content;
+}
+
 .h-full {
   height: 100%;
 }
