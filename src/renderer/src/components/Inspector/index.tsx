@@ -4,12 +4,15 @@ import { state } from '../../state'
 import {
   ColorInput,
   hexToHsv,
+  IconButton,
+  IconButtonGroup,
   Select,
   SelectItem,
   SliderNumberField,
   TextArea
 } from '@toshusai/cmpui'
 import { Effect, TextAlign, TextEffect } from '@renderer/schemas'
+import { IconAlignCenter, IconAlignLeft, IconAlignRight } from '@tabler/icons-react'
 
 export function Inspector() {
   return (
@@ -107,19 +110,35 @@ function TextEffectInspector() {
         }}
       />
 
-      <Select
-        label="Align"
-        value={effects[0].align ?? 'left'}
-        onChange={(value) => {
-          selectedTextEffects().forEach((effect) => {
-            effect.align = value as TextAlign
-          })
-        }}
-      >
-        <SelectItem value="left">Left</SelectItem>
-        <SelectItem value="center">Center</SelectItem>
-        <SelectItem value="right">Right</SelectItem>
-      </Select>
+      <IconButtonGroup className="w-fit">
+        {/* TODO: more smart way */}
+        {[
+          {
+            align: 'left',
+            icon: <IconAlignLeft size={16} />
+          },
+          {
+            align: 'center',
+            icon: <IconAlignCenter size={16} />
+          },
+          {
+            align: 'right',
+            icon: <IconAlignRight size={16} />
+          }
+        ].map(({ align, icon }) => (
+          <IconButton
+            key={align}
+            selected={(effects[0].align ?? 'left') === align}
+            onClick={() => {
+              selectedTextEffects().forEach((effect) => {
+                effect.align = align as TextAlign
+              })
+            }}
+          >
+            {icon}
+          </IconButton>
+        ))}
+      </IconButtonGroup>
 
       <Select
         onChange={(value) => {
