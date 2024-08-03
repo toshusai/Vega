@@ -296,7 +296,12 @@ export function Preview() {
               const width = measureMap.get(strip.id)?.width ?? 0
               const height = measureMap.get(strip.id)?.height ?? 0
 
-              const x = effect.x * snap.canvasScale + snap.canvasLeft
+              const x =
+                ((measureMap.get(strip.id)?.left ?? 0) + width / 2) * snap.canvasScale +
+                snap.canvasLeft
+              const y =
+                ((measureMap.get(strip.id)?.top ?? 0) + height / 2) * snap.canvasScale +
+                snap.canvasTop
               return (
                 <Fragment key={id}>
                   {!isTextEditMode && mode === 'default' && (
@@ -306,7 +311,7 @@ export function Preview() {
                       width={width * snap.canvasScale}
                       nobRadius={4}
                       x={x}
-                      y={effect.y * snap.canvasScale + snap.canvasTop}
+                      y={y}
                       onEnd={() => {
                         snapState.points = []
                       }}

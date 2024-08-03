@@ -9,6 +9,7 @@ import { Inspector } from './components/Inspector'
 import { Header } from './components/Header'
 import { useSnapshot } from 'valtio'
 import { useEffect, useRef } from 'react'
+import { KeyframeEditor } from './components/KeyframeEditor'
 
 function App() {
   const snap = useSnapshot(state)
@@ -20,9 +21,14 @@ function App() {
       <Header />
       <SplitPane type="vertical" sizes={['60%', '40%']}>
         <SplitPane type="horizontal" sizes={['30%', '70%']}>
-          <Panel>
-            <Inspector />
-          </Panel>
+          <SplitPane type="vertical" sizes={['60%', '40%']}>
+            <Panel>
+              <Inspector />
+            </Panel>
+            <Panel>
+              <KeyframeEditor />
+            </Panel>
+          </SplitPane>
           <Panel>
             <Preview />
           </Panel>
