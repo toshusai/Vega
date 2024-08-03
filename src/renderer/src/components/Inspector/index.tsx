@@ -14,6 +14,7 @@ import {
 import { Ease, Effect, FontAsset, TextAlign, TextEffect } from '@renderer/schemas'
 import { IconAlignCenter, IconAlignLeft, IconAlignRight, IconClock } from '@tabler/icons-react'
 import { useEffect } from 'react'
+import { setKeyFrame } from '../KeyframeEditor'
 
 export function Inspector() {
   return (
@@ -110,14 +111,14 @@ function TextEffectInspector() {
               strip.effects
                 .filter((effect) => isTextEffect(effect))
                 .forEach((effect) => {
-                  effect.keyframes.push({
+                  setKeyFrame(effect, {
                     property: 'x',
                     time: snap.currentTime - strip.start,
                     ease: Ease.Linear,
                     id: randomId(),
                     value: effect.x
                   })
-                  effect.keyframes.push({
+                  setKeyFrame(effect, {
                     property: 'y',
                     time: snap.currentTime - strip.start,
                     ease: Ease.Linear,
