@@ -125,8 +125,9 @@ export function Timeline() {
                   const snapPoints = getSnapPoints(state.selectedStripIds).map(
                     (point) => point * pxPerSec
                   )
-                  const isChangedRight = left === strip?.start * pxPerSec
-                  const isChangedLeft = width === strip?.length * pxPerSec
+                  // HOTFIX: this method is not working correctly
+                  const isChangedRight = Math.abs(left - strip?.start * pxPerSec) < 0.01
+                  const isChangedLeft = Math.abs(width - strip?.length * pxPerSec) < 0.01
 
                   const { value: snappedLeft, isSnapped } = checkSnap(left, snapPoints)
                   const snappedLeftDiff = snappedLeft - left
