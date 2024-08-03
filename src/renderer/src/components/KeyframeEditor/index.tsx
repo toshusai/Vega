@@ -1,4 +1,4 @@
-import { KeyFrame } from '@renderer/schemas'
+import { Effect, KeyFrame } from '@renderer/schemas'
 import { selectedTextEffects, useSelectedStrips, useSelectedTextEffects } from '../Inspector'
 import { IconSquare, IconSquareFilled } from '@tabler/icons-react'
 import { ContextMenu, ContextMenuItem, Ruler } from '@toshusai/cmpui'
@@ -120,4 +120,18 @@ function keyFrameToMap(keyframes: KeyFrame[]): Record<string, KeyFrame[]> {
     map[keyframe.property].push(keyframe)
   })
   return map
+}
+
+export function setKeyFrame(effect: Effect, keyframe: KeyFrame) {
+  const threshold = 1 / state.fps
+
+  const nearest = effect.keyframes
+    .filter((k) => k.property === keyframe.property)
+    .find((k) => Math.abs(k.time - keyframe.time) < threshold)
+
+  if (nearest) {
+    nearest.value = keyframe.value
+  } else {
+    effect.keyframes.push(keyframe)
+  }
 }
