@@ -36,13 +36,15 @@ export function KeyframeEditor() {
           <TimeView pxPerSec={100} startSec={0} />
         </div>
         <KeyframeLine />
-        <Cursor
-          style={{
-            left: 64 + snap.currentTime * pxPerSec - strip.start * pxPerSec
-          }}
-        >
-          {(snap.currentTime - strip.start).toFixed(2)}
-        </Cursor>
+        {snap.currentTime - strip.start >= 0 && (
+          <Cursor
+            style={{
+              left: 64 + snap.currentTime * pxPerSec - strip.start * pxPerSec
+            }}
+          >
+            {(snap.currentTime - strip.start).toFixed(2)}
+          </Cursor>
+        )}
       </div>
     </ContextMenu>
   )
