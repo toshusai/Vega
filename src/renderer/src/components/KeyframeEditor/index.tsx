@@ -4,9 +4,12 @@ import { IconSquare, IconSquareFilled } from '@tabler/icons-react'
 import { ContextMenu, ContextMenuItem, Ruler } from '@toshusai/cmpui'
 import { state } from '@renderer/state'
 import { useSnapshot } from 'valtio'
+import { Cursor } from '../Cursor'
 
 export function KeyframeEditor() {
   const strips = useSelectedStrips()
+  const snap = useSnapshot(state)
+  const pxPerSec = 100
   if (strips.length === 0) {
     return null
   }
@@ -30,9 +33,16 @@ export function KeyframeEditor() {
     >
       <div className="w-full">
         <div className="pl-[64px]">
-          <TimeView pxPerSec={100} startSec={strip.start} />
+          <TimeView pxPerSec={100} startSec={0} />
         </div>
         <KeyframeLine />
+        <Cursor
+          style={{
+            left: 64 + snap.currentTime * pxPerSec - strip.start * pxPerSec
+          }}
+        >
+          {snap.currentTime.toFixed(2)}
+        </Cursor>
       </div>
     </ContextMenu>
   )
