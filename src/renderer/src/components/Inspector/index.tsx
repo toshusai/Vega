@@ -11,19 +11,35 @@ import {
   SliderNumberField,
   TextArea
 } from '@toshusai/cmpui'
-import { Effect, FontAsset, TextAlign, TextEffect } from '@renderer/schemas'
-import { IconAlignCenter, IconAlignLeft, IconAlignRight } from '@tabler/icons-react'
+import { Ease, Effect, FontAsset, TextAlign, TextEffect } from '@renderer/schemas'
+import { IconAlignCenter, IconAlignLeft, IconAlignRight, IconClock } from '@tabler/icons-react'
 import { useEffect } from 'react'
 
 export function Inspector() {
   return (
-    <div className="flex m-8 w-full">
+    <div className="flex p-8 w-full overflow-y-auto">
       <TextEffectInspector />
     </div>
   )
 }
 
-function selectedTextEffects() {
+export function useSelectedStrips() {
+  const snap = useSnapshot(state)
+  return snap.strips.filter((strip) => snap.selectedStripIds.includes(strip.id))
+}
+
+export function selectedStrips() {
+  return state.strips.filter((strip) => state.selectedStripIds.includes(strip.id))
+}
+export function useSelectedTextEffects() {
+  const snap = useSnapshot(state)
+  return snap.selectedStripIds.flatMap((id) => {
+    const strip = snap.strips.find((strip) => strip.id === id)
+    return strip?.effects.filter((effect) => isTextEffect(effect as Effect)) ?? []
+  })
+}
+
+export function selectedTextEffects() {
   return state.selectedStripIds.flatMap((id) => {
     const strip = state.strips.find((strip) => strip.id === id)
     return strip?.effects.filter((effect) => isTextEffect(effect)) ?? []
@@ -55,7 +71,7 @@ function TextEffectInspector() {
   const mixed = effects.some((effect) => effect.text !== effects[0].text)
 
   return (
-    <div className="flex flex-col gap-8 m-8 w-full">
+    <div className="flex flex-col gap-8 m-8 w-full h-[512px]">
       <TextArea
         label="Text"
         className="w-full"
@@ -88,6 +104,32 @@ function TextEffectInspector() {
             })
           }}
         />
+        <IconButton
+          onClick={() => {
+            selectedStrips().forEach((strip) => {
+              strip.effects
+                .filter((effect) => isTextEffect(effect))
+                .forEach((effect) => {
+                  effect.keyframes.push({
+                    property: 'x',
+                    time: snap.currentTime - strip.start,
+                    ease: Ease.Linear,
+                    id: Date.now().toString(),
+                    value: effect.x
+                  })
+                  effect.keyframes.push({
+                    property: 'y',
+                    time: snap.currentTime - strip.start,
+                    ease: Ease.Linear,
+                    id: Date.now().toString(),
+                    value: effect.y
+                  })
+                })
+            })
+          }}
+        >
+          <IconClock size={16} />
+        </IconButton>
       </div>
 
       <SliderNumberField
