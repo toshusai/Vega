@@ -2,6 +2,8 @@ import { createDragHandler } from '../../interactions/createDragHandler'
 import { Ruler } from '@toshusai/cmpui'
 
 import { state } from '../../state'
+import { getSnapPoints } from './getSnapPoints'
+import { checkSnap } from './checkSnap'
 
 export function TimeView({ pxPerSec, startSec }: { pxPerSec: number; startSec: number }) {
   return (
@@ -21,6 +23,13 @@ export function TimeView({ pxPerSec, startSec }: { pxPerSec: number; startSec: n
           if (!ctx) return
           const newTime = ctx.time + move.diffX / pxPerSec
           state.currentTime = newTime
+
+          const snapPoints = getSnapPoints([]).map((point) => point * pxPerSec)
+
+          const snap = checkSnap(newTime * pxPerSec, snapPoints)
+          if (snap.isSnapped) {
+            state.currentTime = snap.value / pxPerSec
+          }
         }
       })}
     />
