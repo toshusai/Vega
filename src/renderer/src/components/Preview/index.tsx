@@ -221,7 +221,6 @@ export function Preview() {
           }}
           onPointerDown={(e) => {
             if (mode !== 'default') return
-            onPointerDown(e)
             const x = (e.nativeEvent.offsetX - snap.canvasLeft) / snap.canvasScale
             const y = (e.nativeEvent.offsetY - snap.canvasTop) / snap.canvasScale
             let id = ''
@@ -246,6 +245,7 @@ export function Preview() {
             })
             if (!id) {
               state.selectedStripIds = []
+              onPointerDown(e)
             }
 
             const effect = getTextEffect(id)
