@@ -41,7 +41,7 @@ export function KeyframeEditor() {
             left: 64 + snap.currentTime * pxPerSec - strip.start * pxPerSec
           }}
         >
-          {snap.currentTime.toFixed(2)}
+          {(snap.currentTime - strip.start).toFixed(2)}
         </Cursor>
       </div>
     </ContextMenu>
