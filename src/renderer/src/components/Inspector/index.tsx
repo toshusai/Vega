@@ -113,14 +113,14 @@ function TextEffectInspector() {
                 .forEach((effect) => {
                   setKeyFrame(effect, {
                     property: 'x',
-                    time: snap.currentTime - strip.start,
+                    time: state.currentTime - strip.start,
                     ease: Ease.Linear,
                     id: randomId(),
                     value: effect.x
                   })
                   setKeyFrame(effect, {
                     property: 'y',
-                    time: snap.currentTime - strip.start,
+                    time: state.currentTime - strip.start,
                     ease: Ease.Linear,
                     id: randomId(),
                     value: effect.y
