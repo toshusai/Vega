@@ -114,14 +114,14 @@ function TextEffectInspector() {
                     property: 'x',
                     time: snap.currentTime - strip.start,
                     ease: Ease.Linear,
-                    id: Date.now().toString(),
+                    id: randomId(),
                     value: effect.x
                   })
                   effect.keyframes.push({
                     property: 'y',
                     time: snap.currentTime - strip.start,
                     ease: Ease.Linear,
-                    id: Date.now().toString(),
+                    id: randomId(),
                     value: effect.y
                   })
                 })
@@ -216,4 +216,8 @@ function TextEffectInspector() {
       </Select>
     </div>
   )
+}
+
+function randomId(): string {
+  return Math.random().toString(36).slice(-8)
 }
