@@ -1,7 +1,9 @@
 import { KeyFrame } from '@renderer/schemas'
-import { useSelectedStrips, useSelectedTextEffects } from '../Inspector'
-import { IconSquare } from '@tabler/icons-react'
-import { Ruler } from '@toshusai/cmpui'
+import { selectedTextEffects, useSelectedStrips, useSelectedTextEffects } from '../Inspector'
+import { IconSquare, IconSquareFilled } from '@tabler/icons-react'
+import { ContextMenu, ContextMenuItem, Ruler } from '@toshusai/cmpui'
+import { state } from '@renderer/state'
+import { useSnapshot } from 'valtio'
 
 export function KeyframeEditor() {
   const strips = useSelectedStrips()
@@ -11,12 +13,28 @@ export function KeyframeEditor() {
   const strip = strips[0]
 
   return (
-    <div className="w-full">
-      <div className="pl-[64px]">
-        <TimeView pxPerSec={100} startSec={strip.start} />
+    <ContextMenu
+      content={
+        <ContextMenuItem
+          onClick={() => {
+            selectedTextEffects().forEach((effect) => {
+              effect.keyframes = effect.keyframes.filter(
+                (keyframe) => !state.selectedKeyframeIds.includes(keyframe.id)
+              )
+            })
+          }}
+        >
+          Delete
+        </ContextMenuItem>
+      }
+    >
+      <div className="w-full">
+        <div className="pl-[64px]">
+          <TimeView pxPerSec={100} startSec={strip.start} />
+        </div>
+        <KeyframeLine />
       </div>
-      <KeyframeLine />
-    </div>
+    </ContextMenu>
   )
 }
 
@@ -33,6 +51,7 @@ function TimeView({ pxPerSec, startSec }: { pxPerSec: number; startSec: number }
 export function KeyframeLine() {
   const effects = useSelectedTextEffects()
 
+  const snap = useSnapshot(state)
   if (effects.length === 0) {
     return null
   }
@@ -51,6 +70,7 @@ export function KeyframeLine() {
             <div className="w-[64px]">{propName}</div>
             <div className="relative w-full">
               {map[propName].map((keyframe, i) => {
+                const selected = snap.selectedKeyframeIds.includes(keyframe.id)
                 return (
                   <div
                     key={i}
@@ -59,7 +79,27 @@ export function KeyframeLine() {
                       left: `${keyframe.time * 100}px`
                     }}
                   >
-                    <IconSquare size={12} className="rotate-45" />
+                    {selected ? (
+                      <IconSquareFilled
+                        size={12}
+                        className="rotate-45"
+                        onClick={(e) => {
+                          if (e.metaKey) {
+                            state.selectedKeyframeIds = state.selectedKeyframeIds.filter(
+                              (id) => id !== keyframe.id
+                            )
+                          }
+                        }}
+                      />
+                    ) : (
+                      <IconSquare
+                        size={12}
+                        className="rotate-45"
+                        onClick={() => {
+                          state.selectedKeyframeIds = [keyframe.id]
+                        }}
+                      />
+                    )}
                   </div>
                 )
               })}
