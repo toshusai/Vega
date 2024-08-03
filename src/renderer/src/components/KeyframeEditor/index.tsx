@@ -1,10 +1,12 @@
 import { Effect, KeyFrame } from '@renderer/schemas'
 import { selectedTextEffects, useSelectedStrips, useSelectedTextEffects } from '../Inspector'
 import { IconSquare, IconSquareFilled } from '@tabler/icons-react'
-import { ContextMenu, ContextMenuItem, Ruler } from '@toshusai/cmpui'
+import { ContextMenu, ContextMenuItem, Ruler, SelectRect } from '@toshusai/cmpui'
 import { state } from '@renderer/state'
 import { useSnapshot } from 'valtio'
 import { Cursor } from '../Cursor'
+import { useSelectStripBox } from '../Timeline/useSelectStripBox'
+import { useCallback } from 'react'
 
 export function KeyframeEditor() {
   const strips = useSelectedStrips()
@@ -64,6 +66,14 @@ export function KeyframeLine() {
   const effects = useSelectedTextEffects()
 
   const snap = useSnapshot(state)
+
+  const { rect, onPointerDown, refs, parent } = useSelectStripBox(
+    useCallback((ids) => {
+      state.selectedKeyframeIds = ids
+      console.log(ids)
+    }, [])
+  )
+
   if (effects.length === 0) {
     return null
   }
@@ -74,51 +84,70 @@ export function KeyframeLine() {
 
   const map = keyFrameToMap(keyframes as KeyFrame[])
 
+  const isSelected = (id: string) => snap.selectedKeyframeIds.includes(id)
   return (
-    <div className="h-1 w-full">
-      {Object.keys(map).map((propName, i) => {
-        return (
-          <div key={i} className="flex">
-            <div className="w-[64px]">{propName}</div>
-            <div className="relative w-full">
-              {map[propName].map((keyframe, i) => {
-                const selected = snap.selectedKeyframeIds.includes(keyframe.id)
-                return (
-                  <div
-                    key={i}
-                    className="h-24 w-24 absolute flex items-center justify-center"
-                    style={{
-                      left: `${keyframe.time * 100}px`
-                    }}
-                  >
-                    {selected ? (
-                      <IconSquareFilled
-                        size={12}
-                        className="rotate-45"
-                        onClick={(e) => {
-                          if (e.metaKey) {
-                            state.selectedKeyframeIds = state.selectedKeyframeIds.filter(
-                              (id) => id !== keyframe.id
-                            )
-                          }
-                        }}
-                      />
-                    ) : (
-                      <IconSquare
-                        size={12}
-                        className="rotate-45"
-                        onClick={() => {
-                          state.selectedKeyframeIds = [keyframe.id]
-                        }}
-                      />
-                    )}
-                  </div>
-                )
-              })}
+    <div className="w-full h-full flex">
+      <div className="min-w-[64px]">
+        {Object.keys(map).map((propName, i) => {
+          return (
+            <div key={i} className="flex">
+              {propName}
             </div>
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
+
+      <div className="w-full h-full relative" onPointerDown={onPointerDown} ref={parent}>
+        {rect && <SelectRect {...rect} />}
+        {Object.keys(map).map((propName, i) => {
+          return (
+            <div key={i} className="flex">
+              <div className="relative w-full">
+                {map[propName].map((keyframe, i) => {
+                  const selected = isSelected(keyframe.id)
+                  return (
+                    <div
+                      key={i}
+                      className="h-8 w-8 absolute flex items-center justify-center translate-x-[9px] translate-y-[8px]"
+                      style={{
+                        left: `${keyframe.time * 100}px`
+                      }}
+                      ref={(el) => {
+                        refs.current[i] = el
+                        if (el) {
+                          el.id = keyframe.id
+                        }
+                      }}
+                    >
+                      {selected ? (
+                        <IconSquareFilled
+                          size={8}
+                          className="rotate-45"
+                          onClick={(e) => {
+                            if (e.metaKey) {
+                              state.selectedKeyframeIds = state.selectedKeyframeIds.filter(
+                                (id) => id !== keyframe.id
+                              )
+                            }
+                          }}
+                        />
+                      ) : (
+                        <IconSquare
+                          size={8}
+                          className="rotate-45"
+                          onClick={() => {
+                            state.selectedKeyframeIds = [keyframe.id]
+                          }}
+                        />
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }

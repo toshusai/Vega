@@ -1,9 +1,8 @@
 import { useSelectRectHandler } from '@toshusai/cmpui'
 import { useEffect, useRef } from 'react'
 import { checkCollision } from './checkCollision'
-import { state } from '../../state'
 
-export function useSelectStripBox() {
+export function useSelectStripBox(onSelect: (ids: string[]) => void) {
   const { rect, onPointerDown } = useSelectRectHandler()
   const parent = useRef<HTMLDivElement | null>(null)
   const refs = useRef([] as Array<HTMLDivElement | null>)
@@ -30,8 +29,8 @@ export function useSelectStripBox() {
       })
       .filter((id) => id) as string[]
 
-    state.selectedStripIds = hitIds
-  }, [rect])
+    onSelect(hitIds)
+  }, [onSelect, rect])
 
   return {
     rect,

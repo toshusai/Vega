@@ -17,13 +17,18 @@ import { isInvalid } from './isInvalid'
 import { TimeView } from './TimeView'
 import { useSelectStripBox } from './useSelectStripBox'
 import { state } from '../../state'
+import { useCallback } from 'react'
 
 const LAYER_GAP = 4
 const LAYER_HEIGHT = 32
 
 export function Timeline() {
   const snap = useSnapshot(state)
-  const { rect, onPointerDown, parent, refs } = useSelectStripBox()
+  const { rect, onPointerDown, parent, refs } = useSelectStripBox(
+    useCallback((ids) => {
+      state.selectedStripIds = ids
+    }, [])
+  )
   const { ref: rootRef, width } = useWidth()
 
   const maxLayer = useLayerLength()
