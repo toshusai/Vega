@@ -13,10 +13,12 @@ import {
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { state } from '../../state'
 import { isTextEffect, measureMapState, stripIsVisible, updateTextEffect } from './updateTextEffect'
-import { Effect, Strip, TextEffect } from '@renderer/schemas'
+import { Ease, Effect, Strip, TextEffect } from '@renderer/schemas'
 import { proxy, useSnapshot } from 'valtio'
 import { createDragHandler } from '@renderer/interactions/createDragHandler'
 import { checkCollision } from '../Timeline/checkCollision'
+import { setKeyFrame } from '../KeyframeEditor'
+import { randomId } from '../Inspector'
 
 function useKeyHandler() {
   const [keyStack, setKeyStack] = useState<string[]>([])
@@ -529,5 +531,17 @@ function snapEffect(
     } else {
       $effect.y = newY
     }
+  }
+
+  const hasKeyframe = $effect.keyframes.length > 0
+  if (hasKeyframe) {
+    const strip = getStripByEffectId(id)
+    if (!strip) return
+    const keyframe = {
+      time: state.currentTime - strip.start,
+      ease: Ease.Linear
+    }
+    setKeyFrame($effect, { ...keyframe, property: 'x', value: $effect.x, id: randomId() })
+    setKeyFrame($effect, { ...keyframe, property: 'y', value: $effect.y, id: randomId() })
   }
 }
