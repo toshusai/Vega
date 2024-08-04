@@ -9,11 +9,13 @@ import { useSelectStripBox } from '../Timeline/useSelectStripBox'
 import { useCallback } from 'react'
 import { createDragHandler } from '@renderer/interactions/createDragHandler'
 import { checkSnap } from '../Timeline/checkSnap'
+import { onClickFromPointerDown } from '../Timeline/onClickFromPointerDown'
 
 export function KeyframeEditor() {
   const strips = useSelectedStrips()
   const snap = useSnapshot(state)
   const pxPerSec = 100
+  const selectedTextEffectsSnapshot = useSelectedTextEffects()
   if (strips.length === 0) {
     return null
   }
@@ -41,7 +43,7 @@ export function KeyframeEditor() {
             pxPerSec={100}
             startSec={0}
             stripStartSec={strip.start}
-            snapPoints={selectedTextEffects().flatMap((effect) =>
+            snapPoints={selectedTextEffectsSnapshot.flatMap((effect) =>
               effect.keyframes.map((keyframe) => keyframe.time)
             )}
           />
@@ -141,7 +143,16 @@ export function KeyframeLine() {
         })}
       </div>
 
-      <div className="w-full h-full relative" onPointerDown={onPointerDown} ref={parent}>
+      <div
+        className="w-full h-full relative"
+        onPointerDown={(e) => {
+          onPointerDown(e)
+          onClickFromPointerDown(() => {
+            state.selectedKeyframeIds = []
+          })
+        }}
+        ref={parent}
+      >
         {rect && <SelectRect {...rect} />}
         {Object.keys(map).map((propName, i) => {
           return (
@@ -163,6 +174,57 @@ export function KeyframeLine() {
                           el.id = keyframe.id
                         }
                       }}
+                      onPointerDown={createDragHandler({
+                        onDown: (e) => {
+                          e.stopPropagation()
+
+                          let added = false
+                          if (e.metaKey) {
+                            if (!state.selectedKeyframeIds.includes(keyframe.id)) {
+                              state.selectedKeyframeIds.push(keyframe.id)
+                              added = true
+                            }
+                          } else if (!state.selectedKeyframeIds.includes(keyframe.id)) {
+                            state.selectedKeyframeIds = [keyframe.id]
+                          }
+
+                          const prevSelectedIds = state.selectedKeyframeIds.length
+                          onClickFromPointerDown(() => {
+                            if (!added) {
+                              if (e.metaKey) {
+                                state.selectedKeyframeIds = state.selectedKeyframeIds.filter(
+                                  (id) => id !== keyframe.id
+                                )
+                              } else {
+                                if (prevSelectedIds === state.selectedKeyframeIds.length) {
+                                  state.selectedKeyframeIds = [keyframe.id]
+                                }
+                              }
+                            }
+                          })
+
+                          const effect = selectedTextEffects()[0]
+                          const currentKeyframes = effect.keyframes.filter((k) =>
+                            state.selectedKeyframeIds.includes(k.id)
+                          )
+                          if (currentKeyframes.length === 0) return
+                          return {
+                            time: keyframe.time,
+                            effect,
+                            keyframes: currentKeyframes,
+                            startKeyframes: currentKeyframes.map((k) => ({ ...k }))
+                          }
+                        },
+                        onMove: (_, ctx, move) => {
+                          if (!ctx) return
+                          ctx.keyframes.forEach((keyframe, i) => {
+                            const prev = ctx.startKeyframes[i]
+                            if (prev) {
+                              keyframe.time = prev.time + move.diffX / 100
+                            }
+                          })
+                        }
+                      })}
                     >
                       {selected ? (
                         <IconSquareFilled
