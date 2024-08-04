@@ -7,6 +7,8 @@ import { useSnapshot } from 'valtio'
 import { Cursor } from '../Cursor'
 import { useSelectStripBox } from '../Timeline/useSelectStripBox'
 import { useCallback } from 'react'
+import { createDragHandler } from '@renderer/interactions/createDragHandler'
+import { checkSnap } from '../Timeline/checkSnap'
 
 export function KeyframeEditor() {
   const strips = useSelectedStrips()
@@ -35,7 +37,14 @@ export function KeyframeEditor() {
     >
       <div className="w-full">
         <div className="pl-[64px]">
-          <TimeView pxPerSec={100} startSec={0} />
+          <TimeView
+            pxPerSec={100}
+            startSec={0}
+            stripStartSec={strip.start}
+            snapPoints={selectedTextEffects().flatMap((effect) =>
+              effect.keyframes.map((keyframe) => keyframe.time)
+            )}
+          />
         </div>
         <KeyframeLine />
         {snap.currentTime - strip.start >= 0 && (
@@ -52,12 +61,48 @@ export function KeyframeEditor() {
   )
 }
 
-function TimeView({ pxPerSec, startSec }: { pxPerSec: number; startSec: number }) {
+function TimeView({
+  pxPerSec,
+  startSec,
+  stripStartSec,
+  snapPoints
+}: {
+  pxPerSec: number
+  startSec: number
+  stripStartSec: number
+  snapPoints: number[]
+}) {
   return (
     <Ruler
       pxPerUnit={pxPerSec}
       offset={startSec}
       steps={[0.01, 0.05, 0.1, 0.5, 1, 5, 10, 30, 60, 120, 300, 600, 1200, 1800, 3600]}
+      onPointerDown={createDragHandler({
+        onDown: (e) => {
+          const sec = e.nativeEvent.offsetX / pxPerSec + stripStartSec
+
+          state.currentTime = sec
+
+          return {
+            time: sec
+          }
+        },
+        onMove: (_, ctx, move) => {
+          if (!ctx) return
+          const sec = ctx.time + move.diffX / pxPerSec
+
+          const snap = checkSnap(
+            sec,
+            snapPoints.map((point) => point + stripStartSec),
+            8 / pxPerSec
+          )
+          if (snap.isSnapped) {
+            state.currentTime = snap.value
+          } else {
+            state.currentTime = sec
+          }
+        }
+      })}
     />
   )
 }
@@ -70,7 +115,6 @@ export function KeyframeLine() {
   const { rect, onPointerDown, refs, parent } = useSelectStripBox(
     useCallback((ids) => {
       state.selectedKeyframeIds = ids
-      console.log(ids)
     }, [])
   )
 
@@ -103,17 +147,18 @@ export function KeyframeLine() {
           return (
             <div key={i} className="flex">
               <div className="relative w-full">
-                {map[propName].map((keyframe, i) => {
+                {map[propName].map((keyframe, j) => {
                   const selected = isSelected(keyframe.id)
                   return (
                     <div
-                      key={i}
-                      className="h-8 w-8 absolute flex items-center justify-center translate-x-[9px] translate-y-[8px]"
+                      key={j}
+                      className="h-8 w-8 absolute flex items-center justify-center translate-x-[-3.5px] translate-y-[8px]"
                       style={{
-                        left: `${keyframe.time * 100}px`
+                        left: `${keyframe.time * 100}px`,
+                        top: `${i * 16}px`
                       }}
                       ref={(el) => {
-                        refs.current[i] = el
+                        refs.current[i * map[propName].length + j] = el
                         if (el) {
                           el.id = keyframe.id
                         }
