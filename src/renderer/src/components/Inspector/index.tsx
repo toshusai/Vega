@@ -15,6 +15,7 @@ import { Ease, Effect, FontAsset, TextAlign, TextEffect } from '@renderer/schema
 import { IconAlignCenter, IconAlignLeft, IconAlignRight, IconClock } from '@tabler/icons-react'
 import { useEffect } from 'react'
 import { setKeyFrame } from '../KeyframeEditor'
+import { getStripByEffectId } from '../Preview'
 
 export function Inspector() {
   return (
@@ -143,15 +144,55 @@ function TextEffectInspector() {
         }}
       />
 
-      <ColorInput
-        label="Color"
-        value={effects[0].color ?? hexToHsv('#000000')}
-        onChange={(value) => {
-          selectedTextEffects().forEach((effect) => {
-            effect.color = value
-          })
-        }}
-      />
+      <div className="flex gap-4">
+        <ColorInput
+          label="Color"
+          value={effects[0].color ?? hexToHsv('#000000')}
+          onChange={(value) => {
+            value.a = Math.max(0, Math.min(1, value.a))
+            selectedTextEffects().forEach((effect) => {
+              if (effect.keyframes.length === 0) {
+                effect.color = value
+              } else {
+                effect.color = value
+                const strip = getStripByEffectId(effect.id)
+                if (!strip) return
+                ;['h', 's', 'v', 'a'].forEach((key) => {
+                  setKeyFrame(effect, {
+                    property: `color.${key}`,
+                    time: state.currentTime - strip.start,
+                    ease: Ease.Linear,
+                    id: randomId(),
+                    value: value[key]
+                  })
+                })
+              }
+            })
+          }}
+        />
+        <IconButton
+          onClick={() => {
+            selectedStrips().forEach((strip) => {
+              strip.effects
+                .filter((effect) => isTextEffect(effect))
+                .forEach((effect) => {
+                  ;['h', 's', 'v', 'a'].forEach((key) => {
+                    console.log('set', key, effect.color?.[key])
+                    setKeyFrame(effect, {
+                      property: `color.${key}`,
+                      time: state.currentTime - strip.start,
+                      ease: Ease.Linear,
+                      id: randomId(),
+                      value: effect.color?.[key] ?? 0
+                    })
+                  })
+                })
+            })
+          }}
+        >
+          <IconClock size={16} />
+        </IconButton>
+      </div>
 
       <SliderNumberField
         label="characterSpacing"
