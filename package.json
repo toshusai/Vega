@@ -23,7 +23,7 @@
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
     "@tabler/icons-react": "^3.11.0",
-    "@toshusai/cmpui": "1.0.0-alpha.6",
+    "@toshusai/cmpui": "1.0.0-alpha.7",
     "electron-updater": "^6.1.7",
     "valtio": "^1.13.2"
   },
