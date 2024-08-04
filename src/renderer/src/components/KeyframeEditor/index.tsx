@@ -146,6 +146,7 @@ export function KeyframeLine() {
       <div
         className="w-full h-full relative overflow-hidden"
         onPointerDown={(e) => {
+          if (e.button !== 0) return
           onPointerDown(e)
           onClickFromPointerDown(() => {
             state.selectedKeyframeIds = []
