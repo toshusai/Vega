@@ -167,16 +167,27 @@ export function Timeline() {
                   })
                 }}
                 onPointerDown={(e) => {
+                  let added = false
                   if (e.metaKey) {
-                    state.selectedStripIds.push(strip.id)
+                    if (!state.selectedStripIds.includes(strip.id)) {
+                      state.selectedStripIds.push(strip.id)
+                      added = true
+                    }
                   } else if (!state.selectedStripIds.includes(strip.id)) {
                     state.selectedStripIds = [strip.id]
                   }
 
                   const prevSelectedIds = snap.selectedStripIds.length
                   onClickFromPointerDown(() => {
-                    if (prevSelectedIds == state.selectedStripIds.length) {
-                      state.selectedStripIds = [strip.id]
+                    if (added) return
+                    if (e.metaKey) {
+                      state.selectedStripIds = state.selectedStripIds.filter(
+                        (id) => id !== strip.id
+                      )
+                    } else {
+                      if (prevSelectedIds == state.selectedStripIds.length) {
+                        state.selectedStripIds = [strip.id]
+                      }
                     }
                   })
                   createDragHandler({
