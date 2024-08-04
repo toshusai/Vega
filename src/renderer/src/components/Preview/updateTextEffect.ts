@@ -10,6 +10,9 @@ import {
 } from '../../schemas'
 import { hsvToHex } from '@toshusai/cmpui'
 import { proxyMap } from 'valtio/utils'
+import { getDeepProperties } from './getDeepProperties'
+import { assignDeepProperty } from './assignDeepProperty'
+import { getDeepProperty } from './getDeepProperty'
 
 const loadedFontAssetMap = new Map<string, boolean>()
 
@@ -75,25 +78,26 @@ export async function updateTextEffect(
     await loadFont(fontAsset as FontAsset)
   }
 
-  const animatedEffect: TextEffect = {
-    ...effect
-  }
-  Object.keys(effect).forEach((key) => {
-    const k = key as keyof PickProperties<TextEffect, number>
-    const value = effect[k]
+  const animatedEffect: TextEffect = JSON.parse(JSON.stringify(effect))
+
+  const allKeys = getDeepProperties(effect)
+  allKeys.forEach((key) => {
+    const value = getDeepProperty(effect, key)
     if (typeof value !== 'number') {
       return
     }
     if (effect.keyframes.length === 0) {
       return
     }
-    animatedEffect[k] = calculateKeyFrameValue(
+    const newValue = calculateKeyFrameValue(
       effect.keyframes,
       scene.currentTime - strip.start,
       key,
       value,
       scene.fps
     )
+
+    assignDeepProperty(animatedEffect, key, newValue)
   })
 
   ctx.fillStyle = 'black'
@@ -212,7 +216,7 @@ export async function updateTextEffect(
 export function calculateKeyFrameValue(
   keyframes: KeyFrame[],
   currentTime: number,
-  property: string | number | symbol,
+  property: string,
   defaultValue: number,
   fps: number
 ) {
