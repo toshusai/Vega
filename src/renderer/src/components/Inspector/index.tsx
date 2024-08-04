@@ -15,7 +15,6 @@ import { Ease, Effect, FontAsset, TextAlign, TextEffect } from '@renderer/schema
 import { IconAlignCenter, IconAlignLeft, IconAlignRight, IconClock } from '@tabler/icons-react'
 import { useEffect } from 'react'
 import { setKeyFrame } from '../KeyframeEditor'
-import { getStripByEffectId } from '../Preview'
 
 export function Inspector() {
   return (
@@ -72,6 +71,24 @@ function TextEffectInspector() {
 
   const mixed = effects.some((effect) => effect.text !== effects[0].text)
 
+  const setKeyFrameValue = (keyValue: Record<string, number>) => {
+    selectedStrips().forEach((strip) => {
+      strip.effects
+        .filter((effect) => isTextEffect(effect))
+        .forEach((effect) => {
+          Object.entries(keyValue).forEach(([key, value]) => {
+            setKeyFrame(effect, {
+              property: key,
+              time: state.currentTime - strip.start,
+              ease: Ease.Linear,
+              id: randomId(),
+              value: value
+            })
+          })
+        })
+    })
+  }
+
   return (
     <div className="flex flex-col gap-8 m-8 w-full h-[512px]">
       <TextArea
@@ -94,6 +111,9 @@ function TextEffectInspector() {
             selectedTextEffects().forEach((effect, i) => {
               effect.x = value[i]
             })
+            setKeyFrameValue({
+              x: value[0]
+            })
           }}
         />
 
@@ -104,29 +124,16 @@ function TextEffectInspector() {
             selectedTextEffects().forEach((effect, i) => {
               effect.y = value[i]
             })
+            setKeyFrameValue({
+              y: value[0]
+            })
           }}
         />
         <IconButton
           onClick={() => {
-            selectedStrips().forEach((strip) => {
-              strip.effects
-                .filter((effect) => isTextEffect(effect))
-                .forEach((effect) => {
-                  setKeyFrame(effect, {
-                    property: 'x',
-                    time: state.currentTime - strip.start,
-                    ease: Ease.Linear,
-                    id: randomId(),
-                    value: effect.x
-                  })
-                  setKeyFrame(effect, {
-                    property: 'y',
-                    time: state.currentTime - strip.start,
-                    ease: Ease.Linear,
-                    id: randomId(),
-                    value: effect.y
-                  })
-                })
+            setKeyFrameValue({
+              x: effects[0].x,
+              y: effects[0].y
             })
           }}
         >
@@ -134,15 +141,30 @@ function TextEffectInspector() {
         </IconButton>
       </div>
 
-      <SliderNumberField
-        label="Font Size"
-        value={effects.map((effect) => effect.fontSize)}
-        onChangeValue={(value) => {
-          selectedTextEffects().forEach((effect, i) => {
-            effect.fontSize = value[i]
-          })
-        }}
-      />
+      <div className="flex gap-4">
+        <SliderNumberField
+          className="w-full"
+          label="Font Size"
+          value={effects.map((effect) => effect.fontSize)}
+          onChangeValue={(value) => {
+            selectedTextEffects().forEach((effect, i) => {
+              effect.fontSize = value[i]
+            })
+            setKeyFrameValue({
+              fontSize: value[0]
+            })
+          }}
+        />
+        <IconButton
+          onClick={() => {
+            setKeyFrameValue({
+              fontSize: effects[0].fontSize
+            })
+          }}
+        >
+          <IconClock size={16} />
+        </IconButton>
+      </div>
 
       <div className="flex gap-4">
         <ColorInput
@@ -153,40 +175,24 @@ function TextEffectInspector() {
             selectedTextEffects().forEach((effect) => {
               if (effect.keyframes.length === 0) {
                 effect.color = value
-              } else {
-                effect.color = value
-                const strip = getStripByEffectId(effect.id)
-                if (!strip) return
-                ;['h', 's', 'v', 'a'].forEach((key) => {
-                  setKeyFrame(effect, {
-                    property: `color.${key}`,
-                    time: state.currentTime - strip.start,
-                    ease: Ease.Linear,
-                    id: randomId(),
-                    value: value[key]
-                  })
-                })
               }
+            })
+            setKeyFrameValue({
+              'color.h': value.h,
+              'color.s': value.s,
+              'color.v': value.v,
+              'color.a': value.a
             })
           }}
         />
         <IconButton
           onClick={() => {
-            selectedStrips().forEach((strip) => {
-              strip.effects
-                .filter((effect) => isTextEffect(effect))
-                .forEach((effect) => {
-                  ;['h', 's', 'v', 'a'].forEach((key) => {
-                    console.log('set', key, effect.color?.[key])
-                    setKeyFrame(effect, {
-                      property: `color.${key}`,
-                      time: state.currentTime - strip.start,
-                      ease: Ease.Linear,
-                      id: randomId(),
-                      value: effect.color?.[key] ?? 0
-                    })
-                  })
-                })
+            const value = effects[0].color ?? hexToHsv('#000000')
+            setKeyFrameValue({
+              'color.h': value.h,
+              'color.s': value.s,
+              'color.v': value.v,
+              'color.a': value.a
             })
           }}
         >
@@ -194,15 +200,30 @@ function TextEffectInspector() {
         </IconButton>
       </div>
 
-      <SliderNumberField
-        label="characterSpacing"
-        value={effects.map((effect) => effect.characterSpacing ?? 0)}
-        onChangeValue={(value) => {
-          selectedTextEffects().forEach((effect, i) => {
-            effect.characterSpacing = value[i]
-          })
-        }}
-      />
+      <div className="flex gap-4">
+        <SliderNumberField
+          className="w-full"
+          label="characterSpacing"
+          value={effects.map((effect) => effect.characterSpacing ?? 0)}
+          onChangeValue={(value) => {
+            selectedTextEffects().forEach((effect, i) => {
+              effect.characterSpacing = value[i]
+            })
+            setKeyFrameValue({
+              characterSpacing: effects[0].characterSpacing ?? 0
+            })
+          }}
+        />
+        <IconButton
+          onClick={() => {
+            setKeyFrameValue({
+              characterSpacing: effects[0].characterSpacing ?? 0
+            })
+          }}
+        >
+          <IconClock size={16} />
+        </IconButton>
+      </div>
 
       <IconButtonGroup className="w-fit">
         {/* TODO: more smart way */}
