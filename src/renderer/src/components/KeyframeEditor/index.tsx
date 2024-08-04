@@ -1,7 +1,7 @@
 import { Effect, KeyFrame } from '@renderer/schemas'
 import { selectedTextEffects, useSelectedStrips, useSelectedTextEffects } from '../Inspector'
 import { IconSquareFilled } from '@tabler/icons-react'
-import { ContextMenu, ContextMenuItem, Ruler, SelectRect } from '@toshusai/cmpui'
+import { ContextMenu, ContextMenuItem, Ruler, SelectRect, Tooltip } from '@toshusai/cmpui'
 import { state } from '@renderer/state'
 import { useSnapshot } from 'valtio'
 import { Cursor } from '../Cursor'
@@ -133,12 +133,14 @@ export function KeyframeLine() {
   const isSelected = (id: string) => snap.selectedKeyframeIds.includes(id)
   return (
     <div className="w-full h-full flex">
-      <div className="min-w-[64px] border-r border-gray-300">
+      <div className="min-w-[64px] max-w-[64px] border-r border-gray-300">
         {Object.keys(map).map((propName, i) => {
           return (
-            <div key={i} className="flex pl-4 h-16 text-[12px]">
-              {propName}
-            </div>
+            <Tooltip key={i} content={propName}>
+              <div key={i} className="block pl-4 h-16 text-[12px] truncate">
+                {propName}
+              </div>
+            </Tooltip>
           )
         })}
       </div>

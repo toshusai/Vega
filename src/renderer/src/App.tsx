@@ -1,6 +1,6 @@
 import '@toshusai/cmpui/dist/index.css'
 
-import { Button, SplitPane } from '@toshusai/cmpui'
+import { Button, SplitPane, TooltipProvider } from '@toshusai/cmpui'
 import { Panel } from './components/Panel'
 import { Timeline } from './components/Timeline'
 import { state } from './state'
@@ -17,27 +17,29 @@ function App() {
     return <Recorder />
   }
   return (
-    <div className="flex flex-col w-full gap-4">
-      <Header />
-      <SplitPane type="vertical" sizes={['60%', '40%']}>
-        <SplitPane type="horizontal" sizes={['30%', '70%']}>
-          <SplitPane type="vertical" sizes={['60%', '40%']}>
+    <TooltipProvider>
+      <div className="flex flex-col w-full gap-4">
+        <Header />
+        <SplitPane type="vertical" sizes={['60%', '40%']}>
+          <SplitPane type="horizontal" sizes={['30%', '70%']}>
+            <SplitPane type="vertical" sizes={['60%', '40%']}>
+              <Panel>
+                <Inspector />
+              </Panel>
+              <Panel>
+                <KeyframeEditor />
+              </Panel>
+            </SplitPane>
             <Panel>
-              <Inspector />
-            </Panel>
-            <Panel>
-              <KeyframeEditor />
+              <Preview />
             </Panel>
           </SplitPane>
           <Panel>
-            <Preview />
+            <Timeline />
           </Panel>
         </SplitPane>
-        <Panel>
-          <Timeline />
-        </Panel>
-      </SplitPane>
-    </div>
+      </div>
+    </TooltipProvider>
   )
 }
 
