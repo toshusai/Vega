@@ -17,7 +17,8 @@
     "build:mac": "electron-vite build && electron-builder --mac",
     "build:linux": "electron-vite build && electron-builder --linux",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "vitest"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
@@ -60,6 +61,7 @@
     "storybook": "^8.2.6",
     "tailwindcss": "^3.4.7",
     "typescript": "^5.5.2",
-    "vite": "^5.3.1"
+    "vite": "^5.3.1",
+    "vitest": "^2.0.5"
   }
 }
