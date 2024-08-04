@@ -1,6 +1,6 @@
 import { Effect, KeyFrame } from '@renderer/schemas'
 import { selectedTextEffects, useSelectedStrips, useSelectedTextEffects } from '../Inspector'
-import { IconSquare, IconSquareFilled } from '@tabler/icons-react'
+import { IconSquareFilled } from '@tabler/icons-react'
 import { ContextMenu, ContextMenuItem, Ruler, SelectRect } from '@toshusai/cmpui'
 import { state } from '@renderer/state'
 import { useSnapshot } from 'valtio'
@@ -38,7 +38,7 @@ export function KeyframeEditor() {
       }
     >
       <div className="w-full">
-        <div className="pl-[64px]">
+        <div className="pl-[64px] border-b border-gray-300">
           <TimeView
             pxPerSec={100}
             startSec={0}
@@ -133,10 +133,10 @@ export function KeyframeLine() {
   const isSelected = (id: string) => snap.selectedKeyframeIds.includes(id)
   return (
     <div className="w-full h-full flex">
-      <div className="min-w-[64px]">
+      <div className="min-w-[64px] border-r border-gray-300">
         {Object.keys(map).map((propName, i) => {
           return (
-            <div key={i} className="flex">
+            <div key={i} className="flex pl-4 h-16 text-[12px]">
               {propName}
             </div>
           )
@@ -144,7 +144,7 @@ export function KeyframeLine() {
       </div>
 
       <div
-        className="w-full h-full relative"
+        className="w-full h-full relative overflow-hidden"
         onPointerDown={(e) => {
           onPointerDown(e)
           onClickFromPointerDown(() => {
@@ -157,16 +157,15 @@ export function KeyframeLine() {
         {Object.keys(map).map((propName, i) => {
           return (
             <div key={i} className="flex">
-              <div className="relative w-full">
+              <div className="relative w-full h-[16px] border-b border-gray-200">
                 {map[propName].map((keyframe, j) => {
                   const selected = isSelected(keyframe.id)
                   return (
                     <div
                       key={j}
-                      className="h-8 w-8 absolute flex items-center justify-center translate-x-[-3.5px] translate-y-[8px]"
+                      className="h-8 w-8 absolute flex items-center justify-center translate-x-[-3.5px] translate-y-[3.5px]"
                       style={{
-                        left: `${keyframe.time * 100}px`,
-                        top: `${i * 16}px`
+                        left: `${keyframe.time * 100}px`
                       }}
                       ref={(el) => {
                         refs.current[i * map[propName].length + j] = el
@@ -226,27 +225,27 @@ export function KeyframeLine() {
                         }
                       })}
                     >
-                      {selected ? (
-                        <IconSquareFilled
-                          size={8}
-                          className="rotate-45"
-                          onClick={(e) => {
+                      <IconSquareFilled
+                        size={8}
+                        // TODO: use classNames
+                        className={
+                          selected
+                            ? 'rotate-45 border border-[var(--cmpui-primary-color)] text-gray-500'
+                            : 'rotate-45 text-gray-500'
+                        }
+                        fill="currentColor"
+                        onClick={(e) => {
+                          if (selected) {
                             if (e.metaKey) {
                               state.selectedKeyframeIds = state.selectedKeyframeIds.filter(
                                 (id) => id !== keyframe.id
                               )
                             }
-                          }}
-                        />
-                      ) : (
-                        <IconSquare
-                          size={8}
-                          className="rotate-45"
-                          onClick={() => {
+                          } else {
                             state.selectedKeyframeIds = [keyframe.id]
-                          }}
-                        />
-                      )}
+                          }
+                        }}
+                      />
                     </div>
                   )
                 })}
