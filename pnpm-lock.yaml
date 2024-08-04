@@ -15,8 +15,8 @@ dependencies:
     specifier: ^3.11.0
     version: 3.11.0(react@18.3.1)
   '@toshusai/cmpui':
-    specifier: 1.0.0-alpha.6
-    version: 1.0.0-alpha.6(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
+    specifier: 1.0.0-alpha.7
+    version: 1.0.0-alpha.7(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
   electron-updater:
     specifier: ^6.1.7
     version: 6.2.1
@@ -3480,8 +3480,8 @@ packages:
     engines: {node: '>= 10'}
     dev: true
 
-  /@toshusai/cmpui@1.0.0-alpha.6(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-CFM8nXajM1gnK0ZK44QctO4vxpI8YvgFQcAWyZTJ2NIkK9ZQAzONDSGvCtTQ3LTIyqj4UFDwK4d21bHE240Igg==}
+  /@toshusai/cmpui@1.0.0-alpha.7(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-flxXMeeoUDsb4cmXKd2QOXOXdZrz64MVs2rDXs+8tDSg++prj+SzQLyT0yku46Kh9bjnTlkHXKJwxRaTr7j2Tw==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
