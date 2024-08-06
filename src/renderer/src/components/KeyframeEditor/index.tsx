@@ -10,6 +10,7 @@ import { useCallback } from 'react'
 import { createDragHandler } from '@renderer/interactions/createDragHandler'
 import { checkSnap } from '../Timeline/checkSnap'
 import { onClickFromPointerDown } from '../Timeline/onClickFromPointerDown'
+import { assignDeepProperty } from '../Preview/assignDeepProperty'
 
 export function KeyframeEditor() {
   const strips = useSelectedStrips()
@@ -282,6 +283,10 @@ export function setKeyFrame(effect: Effect, keyframe: KeyFrame) {
   if (nearest) {
     nearest.value = keyframe.value
   } else {
-    effect.keyframes.push(keyframe)
+    if (effect.keyframes.filter((k) => k.property === keyframe.property).length === 0) {
+      assignDeepProperty(effect, keyframe.property, keyframe.value)
+    } else {
+      effect.keyframes.push(keyframe)
+    }
   }
 }
