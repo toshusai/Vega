@@ -1,6 +1,6 @@
 import { useSnapshot } from 'valtio'
 import { createDragHandler } from '../../interactions/createDragHandler'
-import { IconButton, SelectRect } from '@toshusai/cmpui'
+import { hsvToHex, IconButton, SelectRect } from '@toshusai/cmpui'
 import { ScaleScrollBar } from '../ScaleScrollBar'
 import { Cursor } from '../Cursor'
 import { Strip } from '../Strip'
@@ -18,6 +18,8 @@ import { TimeView } from './TimeView'
 import { useSelectStripBox } from './useSelectStripBox'
 import { state } from '../../state'
 import { useCallback } from 'react'
+import { isTextEffect } from '../Preview/updateTextEffect'
+import { TextEffect } from '@renderer/schemas'
 
 const LAYER_GAP = 4
 const LAYER_HEIGHT = 32
@@ -110,6 +112,10 @@ export function Timeline() {
           ))}
           {snap.strips.map((strip, i) => {
             const invalid = isInvalid(strip.id)
+
+            const effect = strip.effects[0]
+            if (!effect) return null
+            if (!isTextEffect(effect)) return null
 
             return (
               <Strip
@@ -215,10 +221,13 @@ export function Timeline() {
                 <div
                   style={{
                     padding: '0 4px',
-                    userSelect: 'none'
+                    userSelect: 'none',
+                    fontFamily: getFontFamily(effect),
+                    color: hsvToHex(effect.color ?? { a: 1, h: 0, s: 0, v: 0 }) ?? 'black',
+                    whiteSpace: 'nowrap'
                   }}
                 >
-                  Strip
+                  {effect.text}
                 </div>
               </Strip>
             )
@@ -250,4 +259,8 @@ export function Timeline() {
       </div>
     </div>
   )
+}
+
+function getFontFamily(effect: TextEffect) {
+  return state.assets.find((asset) => asset.id === effect.fontAssetId)?.name
 }
