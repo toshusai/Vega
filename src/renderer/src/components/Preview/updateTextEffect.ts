@@ -58,7 +58,11 @@ export type PickProperties<T, TFilter> = {
   [K in keyof T as T[K] extends TFilter ? K : never]: T[K]
 }
 
-export function isTextEffect(effect: Effect): effect is TextEffect {
+type DeepReadOnly<T> = {
+  readonly [K in keyof T]: DeepReadOnly<T[K]>
+}
+
+export function isTextEffect(effect: Effect | DeepReadOnly<Effect>): effect is TextEffect {
   return effect.type === 'text'
 }
 
