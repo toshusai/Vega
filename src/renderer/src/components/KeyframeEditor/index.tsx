@@ -209,7 +209,7 @@ export function KeyframeLine() {
                           const currentKeyframes = effect.keyframes.filter((k) =>
                             state.selectedKeyframeIds.includes(k.id)
                           )
-                          if (currentKeyframes.length === 0) return
+                          if (currentKeyframes.length === 0) return null
                           return {
                             time: keyframe.time,
                             effect,
