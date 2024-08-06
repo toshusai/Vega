@@ -7,7 +7,7 @@ import { state } from './state'
 import { Preview, updateCanvas } from './components/Preview'
 import { Inspector } from './components/Inspector'
 import { Header } from './components/Header'
-import { useSnapshot } from 'valtio'
+import { proxy, useSnapshot } from 'valtio'
 import { useEffect, useRef } from 'react'
 import { KeyframeEditor } from './components/KeyframeEditor'
 
@@ -43,48 +43,70 @@ function App() {
   )
 }
 
-let once = false
+function waitAnimationFrame() {
+  return new Promise<void>((resolve) => {
+    requestAnimationFrame(() => {
+      resolve()
+    })
+  })
+}
+
+const run = async (canvas: HTMLCanvasElement) => {
+  if (progressState.started) {
+    return
+  }
+  progressState.started = true
+  const ctx = canvas.getContext('2d')
+  if (!ctx) {
+    return
+  }
+  const capture = new CCapture({
+    format: 'webm',
+    framerate: state.fps,
+    quality: 1
+  })
+  progressState.progress = 0
+  progressState.url = ''
+  capture.start()
+  for (let index = 0; index < state.length * state.fps; index++) {
+    if (state.recordingState === 'idle') {
+      break
+    }
+    ctx.fillStyle = 'white'
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    state.currentTime = index / state.fps
+    await updateCanvas(ctx)
+    capture.capture(ctx.canvas)
+    progressState.progress = index / (state.length * state.fps)
+    if (!document.hidden) {
+      await waitAnimationFrame()
+    }
+  }
+  progressState.progress = 1
+  capture.stop()
+  capture.save((blob) => {
+    if (state.recordingState === 'idle') {
+      return
+    }
+    const url = URL.createObjectURL(blob)
+    progressState.url = url
+  })
+}
+
+const progressState = proxy({
+  progress: 0,
+  started: false,
+  url: ''
+})
+
 export function Recorder() {
   const snap = useSnapshot(state)
   const ref = useRef<HTMLCanvasElement>(null)
-  const run = async () => {
-    if (once) {
-      return
-    }
-    const ctx = ref.current?.getContext('2d')
-    if (!ctx) {
-      return
-    }
-    once = true
-    const capture = new CCapture({
-      format: 'webm',
-      framerate: snap.fps,
-      quality: 1
-    })
-    capture.start()
-    for (let index = 0; index < snap.length * snap.fps; index++) {
-      ctx.fillStyle = 'white'
-      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-      state.currentTime = index / snap.fps
-      updateCanvas(ctx)
-      capture.capture(ctx.canvas)
-    }
-    capture.stop()
-    capture.save((blob) => {
-      const url = URL.createObjectURL(blob)
-
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'recording.webm'
-      a.click()
-    })
-  }
 
   useEffect(() => {
-    setTimeout(() => {
-      run()
-    }, 100)
+    run(ref.current!)
   }, [])
+  const progress = useSnapshot(progressState)
   return (
     <div
       style={{
@@ -92,28 +114,63 @@ export function Recorder() {
         display: 'flex'
       }}
     >
-      <canvas
-        style={{
-          position: 'absolute',
-          display: 'none'
-        }}
-        ref={ref}
-        id="canvas"
-        width={snap.canvasWidth}
-        height={snap.canvasHeight}
-      ></canvas>
       <div
         style={{
-          margin: 'auto'
+          margin: 'auto',
+          width: 360,
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
-        <Button
-          onClick={() => {
-            state.recordingState = 'idle'
-          }}
-        >
-          Stop Recording
-        </Button>
+        <div className="border border-solid border-black">
+          <canvas
+            style={{
+              width: '100%'
+            }}
+            ref={ref}
+            id="canvas"
+            width={snap.canvasWidth}
+            height={snap.canvasHeight}
+          ></canvas>
+          <div
+            style={{
+              width: `${progress.progress * 100}%`,
+              height: 4,
+              backgroundColor: 'black'
+            }}
+          ></div>
+        </div>
+        <div className="flex justify-between flex-col gap-4 mt-16">
+          {progress.progress === 1 ? (
+            <>
+              <Button as="a" href={progress.url} download="output.webm">
+                Download
+              </Button>
+              <Button
+                onClick={() => {
+                  state.recordingState = 'idle'
+                  progressState.started = false
+                }}
+                variant="secondary"
+              >
+                Cancel
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button disabled>Recording...</Button>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  state.recordingState = 'idle'
+                  progressState.started = false
+                }}
+              >
+                Cancel
+              </Button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   )
