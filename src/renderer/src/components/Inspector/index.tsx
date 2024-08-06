@@ -1,5 +1,5 @@
 import { useSnapshot } from 'valtio'
-import { isTextEffect, loadFont } from '../Preview/updateTextEffect'
+import { calculateKeyFrameValue, isTextEffect, loadFont } from '../Preview/updateTextEffect'
 import { state } from '../../state'
 import {
   ColorInput,
@@ -11,10 +11,14 @@ import {
   SliderNumberField,
   TextArea
 } from '@toshusai/cmpui'
-import { Ease, Effect, FontAsset, TextAlign, TextEffect } from '@renderer/schemas'
+import { Ease, Effect, FontAsset, KeyFrame, TextAlign, TextEffect } from '@renderer/schemas'
 import { IconAlignCenter, IconAlignLeft, IconAlignRight, IconClock } from '@tabler/icons-react'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { setKeyFrame } from '../KeyframeEditor'
+import { getDeepProperties } from '../Preview/getDeepProperties'
+import { getDeepProperty } from '../Preview/getDeepProperty'
+import { getStripByEffectId } from '../Preview'
+import { assignDeepProperty } from '../Preview/assignDeepProperty'
 
 export function Inspector() {
   return (
@@ -47,15 +51,43 @@ export function selectedTextEffects() {
   }) as TextEffect[]
 }
 
+function useAnimatedEffects() {
+  const effects = useSelectedTextEffects()
+  const snap = useSnapshot(state)
+  return useMemo(() => {
+    return effects
+      .map((effect) => {
+        const strip = getStripByEffectId(effect.id)
+        if (!strip) return null
+        const animatedEffect: TextEffect = JSON.parse(JSON.stringify(effect))
+
+        const allKeys = getDeepProperties(effect)
+        allKeys.forEach((key) => {
+          const value = getDeepProperty(effect, key)
+          if (typeof value !== 'number') {
+            return
+          }
+          if (effect.keyframes.length === 0) {
+            return
+          }
+          const newValue = calculateKeyFrameValue(
+            effect.keyframes as KeyFrame[],
+            snap.currentTime - strip.start,
+            key,
+            value,
+            snap.fps
+          )
+
+          assignDeepProperty(animatedEffect, key, newValue)
+        })
+        return animatedEffect
+      })
+      .filter((effect) => effect !== null) as TextEffect[]
+  }, [effects, snap.currentTime, snap.fps])
+}
+
 function TextEffectInspector() {
   const snap = useSnapshot(state)
-  const effects = snap.selectedStripIds
-    .flatMap((id) => {
-      const strip = snap.strips.find((strip) => strip.id === id)
-      if (!strip) return []
-      return strip.effects
-    })
-    .filter((v) => isTextEffect(v as Effect)) as TextEffect[]
 
   useEffect(() => {
     snap.assets.forEach((asset) => {
@@ -65,27 +97,25 @@ function TextEffectInspector() {
     })
   }, [snap.assets])
 
+  const effects = useAnimatedEffects()
+
   if (effects.length === 0) {
     return null
   }
 
-  const mixed = effects.some((effect) => effect.text !== effects[0].text)
-
-  const setKeyFrameValue = (keyValue: Record<string, number>) => {
-    selectedStrips().forEach((strip) => {
-      strip.effects
-        .filter((effect) => isTextEffect(effect))
-        .forEach((effect) => {
-          Object.entries(keyValue).forEach(([key, value]) => {
-            setKeyFrame(effect, {
-              property: key,
-              time: state.currentTime - strip.start,
-              ease: Ease.Linear,
-              id: randomId(),
-              value: value
-            })
-          })
+  const setKeyFrameValue = (keyValue: Record<string, number[]>) => {
+    Object.entries(keyValue).forEach(([key, value]) => {
+      selectedTextEffects().forEach((effect, i) => {
+        const strip = getStripByEffectId(effect.id)
+        if (!strip) return
+        setKeyFrame(effect, {
+          property: key,
+          time: state.currentTime - strip.start,
+          ease: Ease.Linear,
+          id: randomId(),
+          value: value[i]
         })
+      })
     })
   }
 
@@ -94,7 +124,9 @@ function TextEffectInspector() {
       <TextArea
         label="Text"
         className="w-full"
-        value={mixed ? '' : effects[0].text}
+        value={
+          effects.every((effect) => effect.text === effects[0].text) ? effects[0].text : 'mixed'
+        }
         onChange={(e) => {
           const text = e.target.value
           selectedTextEffects().forEach((effect) => {
@@ -112,7 +144,7 @@ function TextEffectInspector() {
               effect.x = value[i]
             })
             setKeyFrameValue({
-              x: value[0]
+              x: value
             })
           }}
         />
@@ -125,15 +157,15 @@ function TextEffectInspector() {
               effect.y = value[i]
             })
             setKeyFrameValue({
-              y: value[0]
+              y: value
             })
           }}
         />
         <IconButton
           onClick={() => {
             setKeyFrameValue({
-              x: effects[0].x,
-              y: effects[0].y
+              x: effects.map((effect) => effect.x),
+              y: effects.map((effect) => effect.y)
             })
           }}
         >
@@ -147,18 +179,15 @@ function TextEffectInspector() {
           label="Font Size"
           value={effects.map((effect) => effect.fontSize)}
           onChangeValue={(value) => {
-            selectedTextEffects().forEach((effect, i) => {
-              effect.fontSize = value[i]
-            })
             setKeyFrameValue({
-              fontSize: value[0]
+              fontSize: value
             })
           }}
         />
         <IconButton
           onClick={() => {
             setKeyFrameValue({
-              fontSize: effects[0].fontSize
+              fontSize: effects.map((effect) => effect.fontSize)
             })
           }}
         >
@@ -169,7 +198,17 @@ function TextEffectInspector() {
       <div className="flex gap-4">
         <ColorInput
           label="Color"
-          value={effects[0].color ?? hexToHsv('#000000')}
+          value={
+            // TODO: support mixed color
+            effects[0].color
+              ? {
+                  h: effects[0].color.h,
+                  s: effects[0].color.s,
+                  v: effects[0].color.v,
+                  a: effects[0].color.a
+                }
+              : hexToHsv('#000000')
+          }
           onChange={(value) => {
             value.a = Math.max(0, Math.min(1, value.a))
             selectedTextEffects().forEach((effect) => {
@@ -177,23 +216,55 @@ function TextEffectInspector() {
                 effect.color = value
               }
             })
-            setKeyFrameValue({
-              'color.h': value.h,
-              'color.s': value.s,
-              'color.v': value.v,
-              'color.a': value.a
-            })
+            setKeyFrameValue(
+              effects.reduce(
+                (acc) => {
+                  acc['color.h'].push(value.h)
+                  acc['color.s'].push(value.s)
+                  acc['color.v'].push(value.v)
+                  acc['color.a'].push(value.a)
+                  return acc
+                },
+                {
+                  'color.h': [],
+                  'color.s': [],
+                  'color.v': [],
+                  'color.a': []
+                } as {
+                  'color.h': number[]
+                  'color.s': number[]
+                  'color.v': number[]
+                  'color.a': number[]
+                }
+              )
+            )
           }}
         />
         <IconButton
           onClick={() => {
             const value = effects[0].color ?? hexToHsv('#000000')
-            setKeyFrameValue({
-              'color.h': value.h,
-              'color.s': value.s,
-              'color.v': value.v,
-              'color.a': value.a
-            })
+            setKeyFrameValue(
+              effects.reduce(
+                (acc) => {
+                  acc['color.h'].push(value.h)
+                  acc['color.s'].push(value.s)
+                  acc['color.v'].push(value.v)
+                  acc['color.a'].push(value.a)
+                  return acc
+                },
+                {
+                  'color.h': [],
+                  'color.s': [],
+                  'color.v': [],
+                  'color.a': []
+                } as {
+                  'color.h': number[]
+                  'color.s': number[]
+                  'color.v': number[]
+                  'color.a': number[]
+                }
+              )
+            )
           }}
         >
           <IconClock size={16} />
@@ -210,14 +281,14 @@ function TextEffectInspector() {
               effect.characterSpacing = value[i]
             })
             setKeyFrameValue({
-              characterSpacing: effects[0].characterSpacing ?? 0
+              characterSpacing: effects.map((effect) => effect.characterSpacing ?? 0)
             })
           }}
         />
         <IconButton
           onClick={() => {
             setKeyFrameValue({
-              characterSpacing: effects[0].characterSpacing ?? 0
+              characterSpacing: effects.map((effect) => effect.characterSpacing ?? 0)
             })
           }}
         >
@@ -243,7 +314,10 @@ function TextEffectInspector() {
         ].map(({ align, icon }) => (
           <IconButton
             key={align}
-            selected={(effects[0].align ?? 'left') === align}
+            selected={
+              effects.every((effect) => (effect.align ?? 'left') === (align as TextAlign)) &&
+              effects.length > 0
+            }
             onClick={() => {
               selectedTextEffects().forEach((effect) => {
                 effect.align = align as TextAlign
@@ -261,9 +335,20 @@ function TextEffectInspector() {
             effect.fontAssetId = value
           })
         }}
-        value={effects[0].fontAssetId}
+        value={
+          effects.every((effect) => effect.fontAssetId === effects[0].fontAssetId)
+            ? effects[0].fontAssetId
+            : '_mixed'
+        }
       >
-        {snap.assets
+        {[
+          ...snap.assets,
+          {
+            id: '_mixed',
+            name: 'mixed',
+            type: 'font'
+          }
+        ]
           .filter((asset) => asset.type === 'font')
           .map((asset) => (
             <SelectItem key={asset.id} value={asset.id}>
