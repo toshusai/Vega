@@ -43,7 +43,7 @@ function App() {
   )
 }
 
-function waitAnimationFrame() {
+export function waitAnimationFrame() {
   return new Promise<void>((resolve) => {
     requestAnimationFrame(() => {
       resolve()
@@ -51,7 +51,10 @@ function waitAnimationFrame() {
   })
 }
 
-const run = async (canvas: HTMLCanvasElement) => {
+import * as THREE from 'three'
+import { globalGl, glSetup } from './components/Preview/glSetup'
+
+const run = async (canvas: HTMLCanvasElement, glCanvas: HTMLCanvasElement) => {
   if (progressState.started) {
     return
   }
@@ -68,6 +71,12 @@ const run = async (canvas: HTMLCanvasElement) => {
   progressState.progress = 0
   progressState.url = ''
   capture.start()
+  const renderer = new THREE.WebGLRenderer({
+    canvas: glCanvas
+  })
+
+  glSetup(canvas)
+
   for (let index = 0; index < state.length * state.fps; index++) {
     if (state.recordingState === 'idle') {
       break
@@ -76,6 +85,13 @@ const run = async (canvas: HTMLCanvasElement) => {
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     state.currentTime = index / state.fps
     await updateCanvas(ctx)
+    if (!globalGl) return
+    globalGl.tex.needsUpdate = true
+    globalGl.mat.uniforms.uTime.value = state.currentTime / 1000
+    renderer.render(globalGl.scene, globalGl.camera)
+    await waitAnimationFrame()
+    ctx.drawImage(renderer.domElement, 0, 0)
+
     capture.capture(ctx.canvas)
     progressState.progress = index / (state.length * state.fps)
     if (!document.hidden) {
@@ -102,9 +118,10 @@ const progressState = proxy({
 export function Recorder() {
   const snap = useSnapshot(state)
   const ref = useRef<HTMLCanvasElement>(null)
+  const glCanvas = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-    run(ref.current!)
+    run(ref.current!, glCanvas.current!)
   }, [])
   const progress = useSnapshot(progressState)
   return (
@@ -125,13 +142,22 @@ export function Recorder() {
         <div className="border border-solid border-black">
           <canvas
             style={{
-              width: '100%'
+              width: '100%',
+              display: 'none'
             }}
             ref={ref}
             id="canvas"
             width={snap.canvasWidth}
             height={snap.canvasHeight}
           ></canvas>
+          <canvas
+            ref={glCanvas}
+            width={snap.canvasWidth}
+            height={snap.canvasHeight}
+            style={{
+              width: '100%'
+            }}
+          />
           <div
             style={{
               width: `${progress.progress * 100}%`,
