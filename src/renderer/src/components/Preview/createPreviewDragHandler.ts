@@ -1,13 +1,17 @@
 import { createDragHandler } from '@renderer/interactions/createDragHandler'
 import { state } from '@renderer/state'
 import { setPropertyWithKeyFrame, snapEffect, snapState } from '.'
-import { selectedTextEffects } from '../Inspector'
+import { getSelectedAnimatedTextEffects, selectedTextEffects } from '../Inspector'
 import { measureMapState } from './updateTextEffect'
 
 export function createPreviewDragHandler(stripId: string) {
   return createDragHandler({
     onDown: () => {
-      const effects = selectedTextEffects()
+      const effects = getSelectedAnimatedTextEffects(
+        selectedTextEffects(),
+        state.currentTime,
+        state.fps
+      )
       const mainEffectIndex = effects.findIndex((effect) => effect.id === stripId)
 
       const effectArray = [
@@ -26,7 +30,9 @@ export function createPreviewDragHandler(stripId: string) {
       let snapDiffX = 0
       let snapDiffY = 0
 
-      effects.forEach((effect, i) => {
+      effects.forEach((animatedEffect, i) => {
+        const effect = selectedTextEffects().find((effect) => effect.id === animatedEffect.id)
+        if (!effect) return
         const newX = ctx.x[i] + move.diffX / state.canvasScale
         const newY = ctx.y[i] + move.diffY / state.canvasScale
         effect.x = newX
