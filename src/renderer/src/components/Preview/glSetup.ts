@@ -1,3 +1,4 @@
+import { materialMap } from '@renderer/schemas'
 import * as THREE from 'three'
 
 export let globalGl: {
@@ -5,13 +6,19 @@ export let globalGl: {
   scene: THREE.Scene
   tex: THREE.Texture
   mat: THREE.ShaderMaterial
+  mesh: THREE.Mesh
+  renderer: THREE.WebGLRenderer
 } | null = null
 
-export function glSetup(canvas: HTMLCanvasElement) {
+export function glSetup(canvas: HTMLCanvasElement, glCanvas: HTMLCanvasElement) {
   if (globalGl) {
     globalGl.tex.image = canvas
+    globalGl.renderer.dispose()
+    globalGl.renderer = new THREE.WebGLRenderer({ canvas: glCanvas, alpha: true })
     return
   }
+  const renderer = new THREE.WebGLRenderer({ canvas: glCanvas, alpha: true })
+
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10)
   camera.position.z = 1
   const scene = new THREE.Scene()
@@ -23,46 +30,40 @@ export function glSetup(canvas: HTMLCanvasElement) {
     uniforms: {
       uTexture: { value: tex },
       uTime: { value: 0 },
-      uResolution: { value: new THREE.Vector2(1280, 720) },
-      uShiftAmount: { value: new THREE.Vector2(4, 0) }
+      uResolution: { value: new THREE.Vector2(1280, 720) }
     },
     vertexShader: `
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  `,
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`,
     fragmentShader: `
-  uniform sampler2D uTexture;
-  uniform vec2 uResolution;
-  uniform vec2 uShiftAmount;
-  varying vec2 vUv;
+uniform sampler2D uTexture;
+uniform vec2 uResolution;
+uniform vec2 uShiftAmount;
+varying vec2 vUv;
 
-  void main() {
-      vec2 shift = uShiftAmount / uResolution;
-      vec4 color;
-      color.r = texture2D(uTexture, vUv + shift).r;
-      color.g = texture2D(uTexture, vUv).g;
-      color.b = texture2D(uTexture, vUv - shift).b;
-      color.a = 1.0;
-
-      vec2 uv = vUv - vec2(0.5, 0.5);
-      float len = length(uv);
-      float vignette = smoothstep(0.5, 0.8, len);
-      color.rgb *= 1.0 - vignette;
-      gl_FragColor = color;
-  }
-  `
+void main() {
+  gl_FragColor = texture2D(uTexture, vUv);
+}
+`
   })
+
+  console.log(mat.uuid)
+
+  materialMap.set('x', mat)
 
   const mesh = new THREE.Mesh(geo, mat)
   scene.add(mesh)
 
   globalGl = {
+    renderer,
     camera,
     scene,
     tex,
-    mat
+    mat,
+    mesh
   }
 }

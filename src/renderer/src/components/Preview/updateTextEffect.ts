@@ -4,6 +4,7 @@ import {
   FontAsset,
   getEasingFunction,
   KeyFrame,
+  PostProcessEffect,
   Strip,
   TextEffect,
   VegaProject
@@ -70,6 +71,12 @@ export type DeepReadOnly<T> = {
 
 export function isTextEffect(effect: Effect | DeepReadOnly<Effect>): effect is TextEffect {
   return effect.type === 'text'
+}
+
+export function isPostProcessEffect(
+  effect: Effect | DeepReadOnly<Effect>
+): effect is PostProcessEffect {
+  return effect.type === 'postProcess'
 }
 
 export async function updateTextEffect(

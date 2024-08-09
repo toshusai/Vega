@@ -19,7 +19,14 @@ import {
   stripIsVisible,
   updateTextEffect
 } from './updateTextEffect'
-import { Ease, Effect, Strip, TextEffect } from '@renderer/schemas'
+import {
+  Ease,
+  Effect,
+  PostProcessEffect,
+  Strip,
+  TextEffect,
+  updatePostProcessEffect
+} from '@renderer/schemas'
 import { proxy, useSnapshot } from 'valtio'
 import { checkCollision } from '../Timeline/checkCollision'
 import { setKeyFrame } from '../KeyframeEditor'
@@ -78,17 +85,23 @@ function useKeyHandler() {
 export async function updateCanvas(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = '#fff'
   ctx.fillRect(0, 0, 1280, 720)
-  for (const strip of state.strips) {
+
+  const sortedStrips = state.strips
+    .map((strip) => JSON.parse(JSON.stringify(strip)))
+    .filter((strip) => stripIsVisible(strip, state.currentTime, state.fps))
+    .sort((a, b) => a.layer - b.layer)
+
+  for (const strip of sortedStrips) {
     for (const effect of strip.effects) {
       if (effect.type === 'text') {
         await updateTextEffect(ctx, effect as TextEffect, strip, state)
+      } else if (effect.type === 'postProcess') {
+        await updatePostProcessEffect(ctx, effect as PostProcessEffect, strip, state)
       }
     }
   }
 }
 
-import * as THREE from 'three'
-import { waitAnimationFrame } from '@renderer/App'
 import { globalGl, glSetup } from './glSetup'
 
 export function Preview() {
@@ -116,26 +129,24 @@ export function Preview() {
       return
     }
 
-    glSetup(canvas)
-
-    const renderer = new THREE.WebGLRenderer({
-      canvas: glCanvas.current!
-    })
+    glSetup(canvas, glCanvas.current!)
 
     let prevT = 0
     const render = async (t: number) => {
+      if (!globalGl) return
       const dt = t - prevT
       ctx.clearRect(0, 0, width, height)
       if (state.isPlaying) {
         state.currentTime = state.currentTime + dt / 1000
       }
+      globalGl.mesh.material = globalGl.mat
+      globalGl.mesh.material.needsUpdate = true
       await updateCanvas(ctx)
-      if (!globalGl) return
+      globalGl.mesh.material = globalGl.mat
+      globalGl.mesh.material.needsUpdate = true
       globalGl.tex.needsUpdate = true
-      globalGl.mat.uniforms.uTime.value = state.currentTime / 1000
-      renderer.render(globalGl.scene, globalGl.camera)
-      await waitAnimationFrame()
-      ctx.drawImage(renderer.domElement, 0, 0)
+      globalGl.renderer.render(globalGl.scene, globalGl.camera)
+      ctx.drawImage(globalGl.renderer.domElement, 0, 0)
 
       prevT = t
       requestAnimationFrame(render)

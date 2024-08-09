@@ -19,7 +19,7 @@ import { useSelectStripBox } from './useSelectStripBox'
 import { state } from '../../state'
 import { useCallback } from 'react'
 import { isTextEffect } from '../Preview/updateTextEffect'
-import { TextEffect } from '@renderer/schemas'
+import { PostProcessEffect, TextEffect } from '@renderer/schemas'
 import { Strip as StripType } from '@renderer/schemas'
 
 const LAYER_GAP = 4
@@ -99,6 +99,42 @@ export function Timeline() {
             </ContextMenuItem>
             <ContextMenuItem
               onClick={() => {
+                const id = Math.random().toString()
+                const newStrip: StripType = {
+                  id,
+                  start: state.currentTime,
+                  length: 1,
+                  layer: 0,
+                  effects: [
+                    {
+                      id,
+                      fragmentShader: `
+uniform sampler2D uTexture;
+varying vec2 vUv;
+
+void main() {
+  vec2 shift = vec2(0.003, 0);
+  vec4 color = texture2D(uTexture, vUv);
+  color.r = texture2D(uTexture, vUv + shift).r;
+  color.g = texture2D(uTexture, vUv).g;
+  color.b = texture2D(uTexture, vUv - shift).b;
+  color.a = 1.0;
+  gl_FragColor = color;
+}
+`,
+                      keyframes: [],
+                      type: 'postProcess'
+                    } as PostProcessEffect
+                  ]
+                }
+                state.strips.push(newStrip)
+                state.selectedStripIds = [id]
+              }}
+            >
+              Create PostProcess
+            </ContextMenuItem>
+            <ContextMenuItem
+              onClick={() => {
                 state.strips = state.strips.filter(
                   (strip) => !state.selectedStripIds.includes(strip.id)
                 )
@@ -163,7 +199,6 @@ export function Timeline() {
 
                 const effect = strip.effects[0]
                 if (!effect) return null
-                if (!isTextEffect(effect)) return null
 
                 return (
                   <Strip
@@ -269,17 +304,19 @@ export function Timeline() {
                     }}
                     onChangeEnd={() => {}}
                   >
-                    <div
-                      style={{
-                        padding: '0 4px',
-                        userSelect: 'none',
-                        fontFamily: getFontFamily(effect),
-                        color: hsvToHex(effect.color ?? { a: 1, h: 0, s: 0, v: 0 }) ?? 'black',
-                        whiteSpace: 'nowrap'
-                      }}
-                    >
-                      {effect.text}
-                    </div>
+                    {isTextEffect(effect) && (
+                      <div
+                        style={{
+                          padding: '0 4px',
+                          userSelect: 'none',
+                          fontFamily: getFontFamily(effect),
+                          color: hsvToHex(effect.color ?? { a: 1, h: 0, s: 0, v: 0 }) ?? 'black',
+                          whiteSpace: 'nowrap'
+                        }}
+                      >
+                        {effect.text}
+                      </div>
+                    )}
                   </Strip>
                 )
               })}
