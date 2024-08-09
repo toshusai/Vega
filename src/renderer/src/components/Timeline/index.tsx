@@ -147,7 +147,12 @@ void main() {
           </>
         }
       >
-        <div className="flex flex-col h-full">
+        <div
+          className="flex flex-col h-full"
+          style={{
+            height: 'calc(100% - 40px)'
+          }}
+        >
           <TimeView pxPerSec={pxPerSec} startSec={startSec} />
           <div
             style={{

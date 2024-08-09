@@ -10,6 +10,6 @@ export function useUpdateLayerRootHeight(parent: React.MutableRefObject<HTMLDivE
     if (!parent.current) return
     const parentHight = parent.current.parentElement?.clientHeight ?? 0
     const layerHeight = (maxLayer + 1) * 32 + 1 + 2 * maxLayer
-    parent.current.style.height = Math.max(parentHight, layerHeight) + 'px'
+    parent.current.style.height = Math.max(parentHight, layerHeight) + 34 + 34 + 'px'
   }, [maxLayer, parent, snap.strips])
 }
