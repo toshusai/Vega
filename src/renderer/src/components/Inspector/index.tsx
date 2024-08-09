@@ -2,11 +2,13 @@ import { useSnapshot } from 'valtio'
 import {
   calculateKeyFrameValue,
   DeepReadOnly,
+  isPostProcessEffect,
   isTextEffect,
   loadFont
 } from '../Preview/updateTextEffect'
 import { state } from '../../state'
 import {
+  Button,
   ColorInput,
   hexToHsv,
   IconButton,
@@ -16,9 +18,18 @@ import {
   SliderNumberField,
   TextArea
 } from '@toshusai/cmpui'
-import { Ease, Effect, FontAsset, KeyFrame, TextAlign, TextEffect } from '@renderer/schemas'
+import {
+  Ease,
+  Effect,
+  FontAsset,
+  KeyFrame,
+  materialMap,
+  PostProcessEffect,
+  TextAlign,
+  TextEffect
+} from '@renderer/schemas'
 import { IconAlignCenter, IconAlignLeft, IconAlignRight, IconClock } from '@tabler/icons-react'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { setKeyFrame } from '../KeyframeEditor'
 import { getDeepProperties } from '../Preview/getDeepProperties'
 import { getDeepProperty } from '../Preview/getDeepProperty'
@@ -29,6 +40,7 @@ export function Inspector() {
   return (
     <div className="flex p-8 w-full overflow-y-auto">
       <TextEffectInspector />
+      <PostProcessEffectInspector />
     </div>
   )
 }
@@ -97,6 +109,75 @@ function useAnimatedEffects() {
   return useMemo(() => {
     return getSelectedAnimatedTextEffects(effects, snap.currentTime, snap.fps)
   }, [effects, snap.currentTime, snap.fps])
+}
+
+function PostProcessEffectInspector() {
+  const snap = useSnapshot(state)
+
+  const effects = snap.selectedStripIds.flatMap((id) => {
+    const strip = snap.strips.find((strip) => strip.id === id)
+    return strip?.effects.filter(isPostProcessEffect) ?? []
+  }) as DeepReadOnly<PostProcessEffect[]>
+
+  const [value, setValue] = useState(
+    effects.every((effect) => effect.fragmentShader === effects[0].fragmentShader) &&
+      effects.length > 0
+      ? effects[0].fragmentShader
+      : 'mixed'
+  )
+
+  useEffect(() => {
+    setValue(
+      effects.every((effect) => effect.fragmentShader === effects[0].fragmentShader) &&
+        effects.length > 0
+        ? effects[0].fragmentShader
+        : 'mixed'
+    )
+    // fragmentShaderの更新で状態の更新を行いたくないため
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [snap.selectedStripIds])
+
+  if (effects.length === 0) {
+    return null
+  }
+
+  return (
+    <div className="flex flex-col gap-8 m-8 w-full h-[512px]">
+      <TextArea
+        label="Text"
+        className="w-full h-[256px] [&>textarea]:font-mono [&>textarea]:whitespace-nowrap"
+        value={value}
+        onChange={(e) => {
+          const text = e.target.value
+          setValue(text)
+          const selectedEffects = selectedStrips().flatMap((strip) => {
+            return strip.effects.filter(isPostProcessEffect)
+          })
+
+          selectedEffects.forEach((effect) => {
+            effect.fragmentShader = text
+          })
+        }}
+      />
+      <Button
+        onClick={() => {
+          const selectedEffects = selectedStrips().flatMap((strip) => {
+            return strip.effects.filter(isPostProcessEffect)
+          })
+
+          selectedEffects.forEach((effect) => {
+            const mat = materialMap.get(effect.id)
+            if (mat) {
+              mat.fragmentShader = effect.fragmentShader
+              mat.needsUpdate = true
+            }
+          })
+        }}
+      >
+        Compile
+      </Button>
+    </div>
+  )
 }
 
 function TextEffectInspector() {

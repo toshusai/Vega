@@ -51,7 +51,6 @@ export function waitAnimationFrame() {
   })
 }
 
-import * as THREE from 'three'
 import { globalGl, glSetup } from './components/Preview/glSetup'
 
 const run = async (canvas: HTMLCanvasElement, glCanvas: HTMLCanvasElement) => {
@@ -71,11 +70,8 @@ const run = async (canvas: HTMLCanvasElement, glCanvas: HTMLCanvasElement) => {
   progressState.progress = 0
   progressState.url = ''
   capture.start()
-  const renderer = new THREE.WebGLRenderer({
-    canvas: glCanvas
-  })
 
-  glSetup(canvas)
+  glSetup(canvas, glCanvas)
 
   for (let index = 0; index < state.length * state.fps; index++) {
     if (state.recordingState === 'idle') {
@@ -87,11 +83,7 @@ const run = async (canvas: HTMLCanvasElement, glCanvas: HTMLCanvasElement) => {
     await updateCanvas(ctx)
     if (!globalGl) return
     globalGl.tex.needsUpdate = true
-    globalGl.mat.uniforms.uTime.value = state.currentTime / 1000
-    renderer.render(globalGl.scene, globalGl.camera)
-    await waitAnimationFrame()
-    ctx.drawImage(renderer.domElement, 0, 0)
-
+    globalGl.renderer.render(globalGl.scene, globalGl.camera)
     capture.capture(ctx.canvas)
     progressState.progress = index / (state.length * state.fps)
     if (!document.hidden) {
