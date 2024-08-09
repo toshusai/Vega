@@ -1,6 +1,6 @@
 import { useSnapshot } from 'valtio'
 import { createDragHandler } from '../../interactions/createDragHandler'
-import { hsvToHex, IconButton, SelectRect } from '@toshusai/cmpui'
+import { ContextMenu, ContextMenuItem, hsvToHex, IconButton, SelectRect } from '@toshusai/cmpui'
 import { ScaleScrollBar } from '../ScaleScrollBar'
 import { Cursor } from '../Cursor'
 import { Strip } from '../Strip'
@@ -75,164 +75,186 @@ export function Timeline() {
           overflow: 'auto'
         }}
       >
-        <div
-          style={{
-            width: '100%',
-            display: 'flex',
-            position: 'relative',
-            overflow: 'hidden'
-          }}
-          ref={mergeRefs(parent, rootRef)}
-          onPointerDown={(e) => {
-            state.selectedStripIds = []
-            onPointerDown(e)
-          }}
-        >
-          {rect && <SelectRect {...rect} />}
-          {Array.from({ length: maxLayer + 1 }).map((_, i) => (
-            <div
-              key={i}
-              style={{
-                position: 'absolute',
-                top: i * LAYER_HEIGHT + 1 + LAYER_GAP * i,
-                left: 0,
-                width: '100%',
-                height: LAYER_HEIGHT + 2,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderBottom: '1px solid',
-                backgroundColor: i === maxLayer ? 'transparent' : '#fafafa',
-                borderColor: '#eee',
-                boxSizing: 'border-box',
-                userSelect: 'none',
-                pointerEvents: 'none'
-              }}
-            ></div>
-          ))}
-          {snap.strips.map((strip, i) => {
-            const invalid = isInvalid(strip.id)
-
-            const effect = strip.effects[0]
-            if (!effect) return null
-            if (!isTextEffect(effect)) return null
-
-            return (
-              <Strip
-                ref={(el) => {
-                  refs.current[i] = el
-                  if (el) {
-                    el.id = strip.id
-                  }
-                }}
-                key={i}
-                invalid={invalid}
-                top={strip.layer * LAYER_HEIGHT + 1 + LAYER_GAP * strip.layer}
-                selected={snap.selectedStripIds.includes(strip.id)}
-                left={strip.start * pxPerSec - startSec * pxPerSec}
-                width={strip.length * pxPerSec}
-                onChange={(left, width) => {
-                  left += startSec * pxPerSec
-                  const snapPoints = getSnapPoints(state.selectedStripIds).map(
-                    (point) => point * pxPerSec
+        <ContextMenu
+          content={
+            <>
+              <ContextMenuItem
+                onClick={() => {
+                  state.strips = state.strips.filter(
+                    (strip) => !state.selectedStripIds.includes(strip.id)
                   )
-                  // HOTFIX: this method is not working correctly
-                  const isChangedRight = Math.abs(left - strip?.start * pxPerSec) < 0.01
-                  const isChangedLeft = Math.abs(width - strip?.length * pxPerSec) < 0.01
-
-                  const { value: snappedLeft, isSnapped } = checkSnap(left, snapPoints)
-                  const snappedLeftDiff = snappedLeft - left
-                  if (isSnapped) {
-                    left = snappedLeft
-                    if (!isChangedLeft) {
-                      width -= snappedLeftDiff
-                    }
-                  }
-
-                  const { value: snappedRight, isSnapped: isWidthSnapped } = checkSnap(
-                    left + width,
-                    snapPoints
-                  )
-                  const snappedRightDiff = snappedRight - (left + width)
-                  if (!isChangedRight) {
-                    if (!isSnapped && isWidthSnapped) {
-                      left = left + snappedRightDiff
-                    }
-                  } else if (isWidthSnapped) {
-                    width = width + snappedRightDiff
-                  }
-
-                  const diffLeft = left - state.strips[i].start * pxPerSec
-                  const diffWidth = width - state.strips[i].length * pxPerSec
-
-                  state.strips.forEach((strip, j) => {
-                    if (state.selectedStripIds.includes(strip.id)) {
-                      state.strips[j].start += diffLeft / pxPerSec
-                      state.strips[j].length += diffWidth / pxPerSec
-                    }
-                  })
+                  state.selectedStripIds = []
                 }}
-                onPointerDown={(e) => {
-                  let added = false
-                  if (e.metaKey) {
-                    if (!state.selectedStripIds.includes(strip.id)) {
-                      state.selectedStripIds.push(strip.id)
-                      added = true
-                    }
-                  } else if (!state.selectedStripIds.includes(strip.id)) {
-                    state.selectedStripIds = [strip.id]
-                  }
-
-                  const prevSelectedIds = snap.selectedStripIds.length
-                  onClickFromPointerDown(() => {
-                    if (added) return
-                    if (e.metaKey) {
-                      state.selectedStripIds = state.selectedStripIds.filter(
-                        (id) => id !== strip.id
-                      )
-                    } else {
-                      if (prevSelectedIds == state.selectedStripIds.length) {
-                        state.selectedStripIds = [strip.id]
-                      }
-                    }
-                  })
-                  createDragHandler({
-                    onDown: (e) => {
-                      return {
-                        offsetY: e.nativeEvent.offsetY,
-                        currentLayers: snap.strips.map((strip) => strip.layer)
-                      }
-                    },
-                    onMove: (_, ctx, move) => {
-                      if (!ctx) return
-                      const { offsetY, currentLayers } = ctx
-                      state.selectedStripIds.forEach((id) => {
-                        const i = snap.strips.findIndex((strip) => strip.id === id)
-                        const newLayer =
-                          currentLayers[i] + Math.ceil((move.diffY + offsetY) / 32) - 1
-                        if (newLayer < 0) return
-                        state.strips[i].layer = newLayer
-                      })
-                    }
-                  })(e as React.PointerEvent<HTMLElement>)
-                }}
-                onChangeEnd={() => {}}
+                disabled={snap.selectedStripIds.length === 0}
               >
-                <div
-                  style={{
-                    padding: '0 4px',
-                    userSelect: 'none',
-                    fontFamily: getFontFamily(effect),
-                    color: hsvToHex(effect.color ?? { a: 1, h: 0, s: 0, v: 0 }) ?? 'black',
-                    whiteSpace: 'nowrap'
+                Delete
+              </ContextMenuItem>
+            </>
+          }
+        >
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+            ref={mergeRefs(parent, rootRef)}
+            onPointerDown={(e) => {
+              if (e.button !== 0) return
+              state.selectedStripIds = []
+              onPointerDown(e)
+            }}
+          >
+            {rect && <SelectRect {...rect} />}
+            {Array.from({ length: maxLayer + 1 }).map((_, i) => (
+              <div
+                key={i}
+                style={{
+                  position: 'absolute',
+                  top: i * LAYER_HEIGHT + 1 + LAYER_GAP * i,
+                  left: 0,
+                  width: '100%',
+                  height: LAYER_HEIGHT + 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderBottom: '1px solid',
+                  backgroundColor: i === maxLayer ? 'transparent' : '#fafafa',
+                  borderColor: '#eee',
+                  boxSizing: 'border-box',
+                  userSelect: 'none',
+                  pointerEvents: 'none'
+                }}
+              ></div>
+            ))}
+            {snap.strips.map((strip, i) => {
+              const invalid = isInvalid(strip.id)
+
+              const effect = strip.effects[0]
+              if (!effect) return null
+              if (!isTextEffect(effect)) return null
+
+              return (
+                <Strip
+                  ref={(el) => {
+                    refs.current[i] = el
+                    if (el) {
+                      el.id = strip.id
+                    }
                   }}
+                  key={i}
+                  invalid={invalid}
+                  top={strip.layer * LAYER_HEIGHT + 1 + LAYER_GAP * strip.layer}
+                  selected={snap.selectedStripIds.includes(strip.id)}
+                  left={strip.start * pxPerSec - startSec * pxPerSec}
+                  width={strip.length * pxPerSec}
+                  onChange={(left, width) => {
+                    left += startSec * pxPerSec
+                    const snapPoints = getSnapPoints(state.selectedStripIds).map(
+                      (point) => point * pxPerSec
+                    )
+                    // HOTFIX: this method is not working correctly
+                    const isChangedRight = Math.abs(left - strip?.start * pxPerSec) < 0.01
+                    const isChangedLeft = Math.abs(width - strip?.length * pxPerSec) < 0.01
+
+                    const { value: snappedLeft, isSnapped } = checkSnap(left, snapPoints)
+                    const snappedLeftDiff = snappedLeft - left
+                    if (isSnapped) {
+                      left = snappedLeft
+                      if (!isChangedLeft) {
+                        width -= snappedLeftDiff
+                      }
+                    }
+
+                    const { value: snappedRight, isSnapped: isWidthSnapped } = checkSnap(
+                      left + width,
+                      snapPoints
+                    )
+                    const snappedRightDiff = snappedRight - (left + width)
+                    if (!isChangedRight) {
+                      if (!isSnapped && isWidthSnapped) {
+                        left = left + snappedRightDiff
+                      }
+                    } else if (isWidthSnapped) {
+                      width = width + snappedRightDiff
+                    }
+
+                    const diffLeft = left - state.strips[i].start * pxPerSec
+                    const diffWidth = width - state.strips[i].length * pxPerSec
+
+                    state.strips.forEach((strip, j) => {
+                      if (state.selectedStripIds.includes(strip.id)) {
+                        state.strips[j].start += diffLeft / pxPerSec
+                        state.strips[j].length += diffWidth / pxPerSec
+                      }
+                    })
+                  }}
+                  onPointerDown={(e) => {
+                    if (e.button !== 0) {
+                      return
+                    }
+                    let added = false
+                    if (e.metaKey) {
+                      if (!state.selectedStripIds.includes(strip.id)) {
+                        state.selectedStripIds.push(strip.id)
+                        added = true
+                      }
+                    } else if (!state.selectedStripIds.includes(strip.id)) {
+                      state.selectedStripIds = [strip.id]
+                    }
+
+                    const prevSelectedIds = snap.selectedStripIds.length
+                    onClickFromPointerDown(() => {
+                      if (added) return
+                      if (e.metaKey) {
+                        state.selectedStripIds = state.selectedStripIds.filter(
+                          (id) => id !== strip.id
+                        )
+                      } else {
+                        if (prevSelectedIds == state.selectedStripIds.length) {
+                          state.selectedStripIds = [strip.id]
+                        }
+                      }
+                    })
+                    createDragHandler({
+                      onDown: (e) => {
+                        return {
+                          offsetY: e.nativeEvent.offsetY,
+                          currentLayers: snap.strips.map((strip) => strip.layer)
+                        }
+                      },
+                      onMove: (_, ctx, move) => {
+                        if (!ctx) return
+                        const { offsetY, currentLayers } = ctx
+                        state.selectedStripIds.forEach((id) => {
+                          const i = snap.strips.findIndex((strip) => strip.id === id)
+                          const newLayer =
+                            currentLayers[i] + Math.ceil((move.diffY + offsetY) / 32) - 1
+                          if (newLayer < 0) return
+                          state.strips[i].layer = newLayer
+                        })
+                      }
+                    })(e as React.PointerEvent<HTMLElement>)
+                  }}
+                  onChangeEnd={() => {}}
                 >
-                  {effect.text}
-                </div>
-              </Strip>
-            )
-          })}
-        </div>
+                  <div
+                    style={{
+                      padding: '0 4px',
+                      userSelect: 'none',
+                      fontFamily: getFontFamily(effect),
+                      color: hsvToHex(effect.color ?? { a: 1, h: 0, s: 0, v: 0 }) ?? 'black',
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
+                    {effect.text}
+                  </div>
+                </Strip>
+              )
+            })}
+          </div>
+        </ContextMenu>
       </div>
       <Cursor
         style={{
