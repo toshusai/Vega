@@ -18,7 +18,8 @@
     "build:linux": "electron-vite build && electron-builder --linux",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest"
+    "test": "vitest",
+    "license-check": "license-checker --summary"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
@@ -56,6 +57,7 @@
     "eslint-plugin-react": "^7.34.3",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-storybook": "^0.8.0",
+    "license-checker": "^25.0.1",
     "postcss": "^8.4.40",
     "prettier": "^3.3.2",
     "react": "^18.3.1",
