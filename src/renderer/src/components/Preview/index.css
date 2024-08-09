@@ -2,3 +2,7 @@
   outline: none;
   border: none;
 }
+
+.gizmo-origin-override > div > div {
+  box-sizing: content-box;
+}
