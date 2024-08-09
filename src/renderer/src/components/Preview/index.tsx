@@ -15,10 +15,10 @@ import { state } from '../../state'
 import { isTextEffect, measureMapState, stripIsVisible, updateTextEffect } from './updateTextEffect'
 import { Ease, Effect, Strip, TextEffect } from '@renderer/schemas'
 import { proxy, useSnapshot } from 'valtio'
-import { createDragHandler } from '@renderer/interactions/createDragHandler'
 import { checkCollision } from '../Timeline/checkCollision'
 import { setKeyFrame } from '../KeyframeEditor'
-import { randomId } from '../Inspector'
+import { randomId, useSelectedStrips } from '../Inspector'
+import { createPreviewDragHandler } from './createPreviewDragHandler'
 
 function useKeyHandler() {
   const [keyStack, setKeyStack] = useState<string[]>([])
@@ -177,6 +177,8 @@ export function Preview() {
     })
   }, [rect, snap.canvasLeft, snap.canvasScale, snap.canvasTop])
 
+  const strips = useSelectedStrips()
+
   return (
     <>
       <CanvasView
@@ -248,33 +250,13 @@ export function Preview() {
             if (!id) {
               state.selectedStripIds = []
               onPointerDown(e)
+              return
             }
-
-            const effect = getTextEffect(id)
-            if (!effect) return
-
-            createDragHandler({
-              onDown: () => {
-                return {
-                  x: effect.x,
-                  y: effect.y
-                }
-              },
-              onMove: (_, ctx, move) => {
-                if (!ctx) return
-                const newX = Math.round(ctx.x + move.diffX / snap.canvasScale)
-                const newY = Math.round(ctx.y + move.diffY / snap.canvasScale)
-                effect.x = newX
-                effect.y = newY
-                const width = measureMap.get(effect.id)?.width ?? 0
-                const height = measureMap.get(effect.id)?.height ?? 0
-
-                snapEffect(newX, newY, width, height, effect.id, effect, 4 / snap.canvasScale)
-              },
-              onUp: () => {
-                snapState.points = []
-              }
-            })(e)
+            const strip = getStripByEffectId(
+              state.selectedStripIds[state.selectedStripIds.length - 1]
+            )
+            if (!strip) return
+            createPreviewDragHandler(strip.id)(e)
           }}
         >
           <div
@@ -288,9 +270,7 @@ export function Preview() {
             }}
           ></div>
         </div>
-        {snap.selectedStripIds.map((id) => {
-          const strip = snap.strips.find((strip) => strip.id === id)
-          if (!strip) return null
+        {strips.map((strip) => {
           if (!stripIsVisible(strip as Strip, snap.currentTime, snap.fps)) return null
 
           for (const effect of strip.effects as Effect[]) {
@@ -304,31 +284,21 @@ export function Preview() {
               const y =
                 ((measureMap.get(strip.id)?.top ?? 0) + height / 2) * snap.canvasScale +
                 snap.canvasTop
+
               return (
-                <Fragment key={id}>
+                <Fragment key={strip.id}>
                   {!isTextEditMode && mode === 'default' && (
                     <RectGizmo
                       angle={0}
-                      height={height * snap.canvasScale}
-                      width={width * snap.canvasScale}
-                      nobRadius={4}
-                      x={x}
-                      y={y}
-                      onEnd={() => {
-                        snapState.points = []
-                      }}
-                      onMove={(args) => {
-                        const effect = state.strips
-                          .find((strip) => strip.id === id)
-                          ?.effects.find((effect) => effect.id === id)
-                        if (!effect) return
-                        if (!isTextEffect(effect)) return
-
-                        if (!args.x || !args.y) return
-                        const newX = Math.round((args.x - snap.canvasLeft) / snap.canvasScale)
-                        const newY = Math.round((args.y - snap.canvasTop) / snap.canvasScale)
-
-                        snapEffect(newX, newY, width, height, id, effect, 4 / snap.canvasScale)
+                      height={1}
+                      width={1}
+                      scaleX={width * snap.canvasScale}
+                      scaleY={height * snap.canvasScale}
+                      origin={{ x: 0.5, y: 0.5 }}
+                      position={{ x, y }}
+                      rootProps={{
+                        className: 'gizmo-origin-override',
+                        onPointerDown: createPreviewDragHandler(strip.id)
                       }}
                     />
                   )}
@@ -359,8 +329,8 @@ export function Preview() {
                       }}
                       onBlur={(e) => {
                         const effect = state.strips
-                          .find((strip) => strip.id === id)
-                          ?.effects.find((effect) => effect.id === id)
+                          .find((_strip) => _strip.id === strip.id)
+                          ?.effects.find((effect) => effect.id === strip.id)
                         if (!effect) return
                         if (!isTextEffect(effect)) return
                         effect.text = e.target.value
@@ -426,16 +396,7 @@ export function getStripByEffectId(id: string) {
   return state.strips.find((strip) => strip.effects.some((effect) => effect.id === id))
 }
 
-function getTextEffect(id: string) {
-  const effect = state.strips
-    .find((strip) => strip.id === id)
-    ?.effects.find((effect) => effect.id === id)
-  if (!effect) return null
-  if (!isTextEffect(effect)) return null
-  return effect
-}
-
-const snapState = proxy({
+export const snapState = proxy({
   points: [] as SnapPoint[]
 })
 
@@ -468,11 +429,11 @@ function getNearestPoints(selfPoints: number[], targetPoints: number[], threshol
   }
 }
 
-function getAllSnapTargetPoints(id: string) {
+function getAllSnapTargetPoints(ids: string[]) {
   const targetHPoints: number[] = []
   const targetVPoints: number[] = []
   measureMapState.forEach((value, key) => {
-    if (key == id) {
+    if (ids.includes(key)) {
       return
     }
     const sp = state.strips.find((strip) => strip.id === key)
@@ -489,12 +450,12 @@ function getAllSnapTargetPoints(id: string) {
   }
 }
 
-function snapEffect(
+export function snapEffect(
   newX: number,
   newY: number,
   width: number,
   height: number,
-  id: string,
+  ids: string[],
   /**
    * mutable
    */
@@ -504,38 +465,34 @@ function snapEffect(
   const selfHPoints = [newX, newX + width / 2, newX - width / 2]
   const selfVPoints = [newY, newY + height / 2, newY - height / 2]
 
-  const { targetHPoints, targetVPoints } = getAllSnapTargetPoints(id)
+  const { targetHPoints, targetVPoints } = getAllSnapTargetPoints(ids)
 
   snapState.points = []
-  {
-    const { targetP, snapDiff } = getNearestPoints(selfHPoints, targetHPoints, threshold)
-    if (targetP) {
-      snapState.points.push({
-        direction: 'vertical',
-        value: targetP
-      })
-      $effect.x = newX + snapDiff
-    } else {
-      $effect.x = newX
-    }
+  const { targetP: ph, snapDiff: diffX } = getNearestPoints(selfHPoints, targetHPoints, threshold)
+  if (ph) {
+    snapState.points.push({
+      direction: 'vertical',
+      value: ph
+    })
+    $effect.x = newX + diffX
+  } else {
+    $effect.x = newX
   }
 
-  {
-    const { targetP, snapDiff } = getNearestPoints(selfVPoints, targetVPoints, threshold)
-    if (targetP) {
-      snapState.points.push({
-        direction: 'horizontal',
-        value: targetP
-      })
-      $effect.y = newY + snapDiff
-    } else {
-      $effect.y = newY
-    }
+  const { targetP: pv, snapDiff: diffY } = getNearestPoints(selfVPoints, targetVPoints, threshold)
+  if (pv) {
+    snapState.points.push({
+      direction: 'horizontal',
+      value: pv
+    })
+    $effect.y = newY + diffY
+  } else {
+    $effect.y = newY
   }
 
   const hasKeyframe = $effect.keyframes.length > 0
   if (hasKeyframe) {
-    const strip = getStripByEffectId(id)
+    const strip = getStripByEffectId($effect.id)
     if (!strip) return
     const keyframe = {
       time: state.currentTime - strip.start,
@@ -544,4 +501,21 @@ function snapEffect(
     setKeyFrame($effect, { ...keyframe, property: 'x', value: $effect.x, id: randomId() })
     setKeyFrame($effect, { ...keyframe, property: 'y', value: $effect.y, id: randomId() })
   }
+
+  return {
+    diffX,
+    diffY
+  }
+}
+
+export function setPropertyWithKeyFrame(effect: Effect, property: string, value: number) {
+  const strip = getStripByEffectId(effect.id)
+  if (!strip) return
+  setKeyFrame(effect, {
+    property,
+    value,
+    time: state.currentTime - strip.start,
+    ease: Ease.Linear,
+    id: randomId()
+  })
 }
