@@ -1,5 +1,10 @@
 import { useSnapshot } from 'valtio'
-import { calculateKeyFrameValue, isTextEffect, loadFont } from '../Preview/updateTextEffect'
+import {
+  calculateKeyFrameValue,
+  DeepReadOnly,
+  isTextEffect,
+  loadFont
+} from '../Preview/updateTextEffect'
 import { state } from '../../state'
 import {
   ColorInput,
@@ -51,38 +56,46 @@ export function selectedTextEffects() {
   }) as TextEffect[]
 }
 
+export function getSelectedAnimatedTextEffects(
+  effects: DeepReadOnly<Effect[]>,
+  currentTime: number,
+  fps: number
+) {
+  return effects
+    .map((effect) => {
+      const strip = getStripByEffectId(effect.id)
+      if (!strip) return null
+      const animatedEffect: TextEffect = JSON.parse(JSON.stringify(effect))
+
+      const allKeys = getDeepProperties(effect)
+      allKeys.forEach((key) => {
+        const value = getDeepProperty(effect, key)
+        if (typeof value !== 'number') {
+          return
+        }
+        if (effect.keyframes.length === 0) {
+          return
+        }
+        const newValue = calculateKeyFrameValue(
+          effect.keyframes as KeyFrame[],
+          currentTime - strip.start,
+          key,
+          value,
+          fps
+        )
+
+        assignDeepProperty(animatedEffect, key, newValue)
+      })
+      return animatedEffect
+    })
+    .filter((effect) => effect !== null) as DeepReadOnly<TextEffect[]>
+}
+
 function useAnimatedEffects() {
   const effects = useSelectedTextEffects()
   const snap = useSnapshot(state)
   return useMemo(() => {
-    return effects
-      .map((effect) => {
-        const strip = getStripByEffectId(effect.id)
-        if (!strip) return null
-        const animatedEffect: TextEffect = JSON.parse(JSON.stringify(effect))
-
-        const allKeys = getDeepProperties(effect)
-        allKeys.forEach((key) => {
-          const value = getDeepProperty(effect, key)
-          if (typeof value !== 'number') {
-            return
-          }
-          if (effect.keyframes.length === 0) {
-            return
-          }
-          const newValue = calculateKeyFrameValue(
-            effect.keyframes as KeyFrame[],
-            snap.currentTime - strip.start,
-            key,
-            value,
-            snap.fps
-          )
-
-          assignDeepProperty(animatedEffect, key, newValue)
-        })
-        return animatedEffect
-      })
-      .filter((effect) => effect !== null) as TextEffect[]
+    return getSelectedAnimatedTextEffects(effects, snap.currentTime, snap.fps)
   }, [effects, snap.currentTime, snap.fps])
 }
 

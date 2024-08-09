@@ -273,20 +273,20 @@ function keyFrameToMap(keyframes: KeyFrame[]): Record<string, KeyFrame[]> {
   return map
 }
 
-export function setKeyFrame(effect: Effect, keyframe: KeyFrame) {
+export function setKeyFrame($effect: Effect, keyframe: KeyFrame) {
   const threshold = 1 / state.fps
 
-  const nearest = effect.keyframes
+  const nearest = $effect.keyframes
     .filter((k) => k.property === keyframe.property)
     .find((k) => Math.abs(k.time - keyframe.time) < threshold)
 
   if (nearest) {
     nearest.value = keyframe.value
   } else {
-    if (effect.keyframes.filter((k) => k.property === keyframe.property).length === 0) {
-      assignDeepProperty(effect, keyframe.property, keyframe.value)
+    if ($effect.keyframes.filter((k) => k.property === keyframe.property).length === 0) {
+      assignDeepProperty($effect, keyframe.property, keyframe.value)
     } else {
-      effect.keyframes.push(keyframe)
+      $effect.keyframes.push(keyframe)
     }
   }
 }

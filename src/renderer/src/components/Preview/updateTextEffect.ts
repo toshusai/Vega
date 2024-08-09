@@ -58,7 +58,7 @@ export type PickProperties<T, TFilter> = {
   [K in keyof T as T[K] extends TFilter ? K : never]: T[K]
 }
 
-type DeepReadOnly<T> = {
+export type DeepReadOnly<T> = {
   readonly [K in keyof T]: DeepReadOnly<T[K]>
 }
 

@@ -508,10 +508,10 @@ export function snapEffect(
   }
 }
 
-export function setPropertyWithKeyFrame(effect: Effect, property: string, value: number) {
-  const strip = getStripByEffectId(effect.id)
+export function setPropertyWithKeyFrame($effect: Effect, property: string, value: number) {
+  const strip = getStripByEffectId($effect.id)
   if (!strip) return
-  setKeyFrame(effect, {
+  setKeyFrame($effect, {
     property,
     value,
     time: state.currentTime - strip.start,
