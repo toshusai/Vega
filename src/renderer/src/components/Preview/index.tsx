@@ -12,12 +12,18 @@ import {
 } from '@toshusai/cmpui'
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { state } from '../../state'
-import { isTextEffect, measureMapState, stripIsVisible, updateTextEffect } from './updateTextEffect'
+import {
+  isTextEffect,
+  measureMapState,
+  pointerInRect,
+  stripIsVisible,
+  updateTextEffect
+} from './updateTextEffect'
 import { Ease, Effect, Strip, TextEffect } from '@renderer/schemas'
 import { proxy, useSnapshot } from 'valtio'
 import { checkCollision } from '../Timeline/checkCollision'
 import { setKeyFrame } from '../KeyframeEditor'
-import { randomId, useSelectedStrips } from '../Inspector'
+import { randomId, selectedTextEffects, useSelectedStrips } from '../Inspector'
 import { createPreviewDragHandler } from './createPreviewDragHandler'
 
 function useKeyHandler() {
@@ -165,10 +171,10 @@ export function Preview() {
           height: rect.height / snap.canvasScale
         },
         {
-          x: value.left,
-          y: value.top,
-          width: value.width,
-          height: value.height
+          x: value.scaledRect.left,
+          y: value.scaledRect.top,
+          width: value.scaledRect.width,
+          height: value.scaledRect.height
         }
       )
       if (isHit) {
@@ -233,12 +239,7 @@ export function Preview() {
               if (strip && !stripIsVisible(strip, state.currentTime, state.fps)) {
                 return
               }
-              if (
-                value.left < x &&
-                x < value.left + value.width &&
-                value.top < y &&
-                y < value.top + value.height
-              ) {
+              if (pointerInRect(x, y, value.scaledRect)) {
                 if (e.metaKey) {
                   state.selectedStripIds = [...state.selectedStripIds, key]
                 } else {
@@ -290,16 +291,45 @@ export function Preview() {
                   {!isTextEditMode && mode === 'default' && (
                     <RectGizmo
                       angle={0}
-                      height={1}
-                      width={1}
-                      scaleX={width * snap.canvasScale}
-                      scaleY={height * snap.canvasScale}
-                      origin={{ x: 0.5, y: 0.5 }}
+                      height={height}
+                      width={width}
+                      scaleX={(effect.scale?.x ?? 1) * snap.canvasScale}
+                      scaleY={(effect.scale?.y ?? 1) * snap.canvasScale}
+                      origin={{
+                        x: width / 2,
+                        y: height / 2
+                      }}
                       position={{ x, y }}
                       rootProps={{
                         className: 'gizmo-origin-override',
-                        onPointerDown: createPreviewDragHandler(strip.id)
+                        onPointerDown: (e) => {
+                          const el = e.target as HTMLElement
+                          if (el.parentElement?.firstChild === el) {
+                            createPreviewDragHandler(strip.id)(e)
+                          }
+                        }
                       }}
+                      setScaleX={(scaleX) => {
+                        if (!isTextEffect(effect)) return
+                        const $effect = selectedTextEffects().find((e) => e.id === effect.id)
+                        if (!$effect) return
+                        if (!$effect.scale) {
+                          $effect.scale = { x: scaleX / snap.canvasScale, y: 1 }
+                        } else {
+                          $effect.scale.x = scaleX / snap.canvasScale
+                        }
+                      }}
+                      setScaleY={(scaleY) => {
+                        if (!isTextEffect(effect)) return
+                        const $effect = selectedTextEffects().find((e) => e.id === effect.id)
+                        if (!$effect) return
+                        if (!$effect.scale) {
+                          $effect.scale = { x: 1, y: scaleY / snap.canvasScale }
+                        } else {
+                          $effect.scale.y = scaleY / snap.canvasScale
+                        }
+                      }}
+                      canResize
                     />
                   )}
                   {isTextEditMode && (

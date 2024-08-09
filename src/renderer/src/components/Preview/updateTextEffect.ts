@@ -40,6 +40,12 @@ export const measureMapState = proxyMap<
     top: number
     width: number
     height: number
+    scaledRect: {
+      left: number
+      top: number
+      width: number
+      height: number
+    }
   }
 >()
 
@@ -178,6 +184,7 @@ export async function updateTextEffect(
   ctx.save()
   ctx.translate(x, y)
   // TODO: rotation
+  ctx.scale(animatedEffect.scale?.x ?? 1, animatedEffect.scale?.y ?? 1)
   ctx.rotate(0)
   ctx.translate(-x, -y)
 
@@ -213,8 +220,24 @@ export async function updateTextEffect(
     left: x - maxWidth / 2,
     top: y - maxHeight / 2,
     width: maxWidth,
-    height: maxHeight
+    height: maxHeight,
+    scaledRect: {
+      left: x - (maxWidth / 2) * (animatedEffect.scale?.x ?? 1),
+      top: y - (maxHeight / 2) * (animatedEffect.scale?.y ?? 1),
+      width: maxWidth * (animatedEffect.scale?.x ?? 1),
+      height: maxHeight * (animatedEffect.scale?.y ?? 1)
+    }
   })
+}
+
+export function pointerInRect(
+  x: number,
+  y: number,
+  rect: { left: number; top: number; width: number; height: number }
+) {
+  return (
+    x >= rect.left && x <= rect.left + rect.width && y >= rect.top && y <= rect.top + rect.height
+  )
 }
 
 export function calculateKeyFrameValue(
