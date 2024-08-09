@@ -6,7 +6,7 @@ import { updatePostProcessEffect } from '@renderer/rendering/updatePostProcessEf
 
 export async function updateCanvas(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = '#fff'
-  ctx.fillRect(0, 0, 1280, 720)
+  ctx.clearRect(0, 0, 1280, 720)
 
   const sortedStrips = state.strips
     .map((strip) => JSON.parse(JSON.stringify(strip)))

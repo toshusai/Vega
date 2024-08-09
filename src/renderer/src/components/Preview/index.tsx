@@ -183,7 +183,7 @@ export function Preview() {
               style={{
                 transformOrigin: 'top left',
                 imageRendering: 'pixelated',
-                background: '#fff'
+                background: 'transparent'
               }}
             />
           </div>

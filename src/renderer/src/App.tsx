@@ -81,10 +81,16 @@ const run = async (canvas: HTMLCanvasElement, glCanvas: HTMLCanvasElement) => {
     ctx.fillStyle = 'white'
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     state.currentTime = index / state.fps
-    await updateCanvas(ctx)
     if (!globalGl) return
+    globalGl.mesh.material = globalGl.mat
+    globalGl.mesh.material.needsUpdate = true
+    await updateCanvas(ctx)
+    globalGl.mesh.material = globalGl.mat
+    globalGl.mesh.material.needsUpdate = true
     globalGl.tex.needsUpdate = true
     globalGl.renderer.render(globalGl.scene, globalGl.camera)
+    ctx.drawImage(globalGl.renderer.domElement, 0, 0)
+
     capture.capture(ctx.canvas)
     progressState.progress = index / (state.length * state.fps)
     if (!document.hidden) {

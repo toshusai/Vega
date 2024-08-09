@@ -98,6 +98,7 @@ export type PostProcessEffect = {
   id: string
   type: 'postProcess'
   fragmentShader: string
+  uniforms?: Record<string, number>
   keyframes: KeyFrame[]
 }
 
