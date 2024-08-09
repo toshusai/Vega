@@ -4,7 +4,8 @@ import { Button, SplitPane, TooltipProvider } from '@toshusai/cmpui'
 import { Panel } from './components/Panel'
 import { Timeline } from './components/Timeline'
 import { state } from './state'
-import { Preview, updateCanvas } from './components/Preview'
+import { Preview } from './components/Preview'
+import { updateCanvas } from './rendering/updateCanvas'
 import { Inspector } from './components/Inspector'
 import { Header } from './components/Header'
 import { proxy, useSnapshot } from 'valtio'
@@ -51,7 +52,7 @@ export function waitAnimationFrame() {
   })
 }
 
-import { globalGl, glSetup } from './components/Preview/glSetup'
+import { globalGl, glSetup } from './rendering/glSetup'
 
 const run = async (canvas: HTMLCanvasElement, glCanvas: HTMLCanvasElement) => {
   if (progressState.started) {

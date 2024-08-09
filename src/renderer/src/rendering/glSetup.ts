@@ -1,4 +1,3 @@
-import { materialMap } from '@renderer/schemas'
 import * as THREE from 'three'
 
 export let globalGl: {
@@ -50,10 +49,6 @@ void main() {
 }
 `
   })
-
-  console.log(mat.uuid)
-
-  materialMap.set('x', mat)
 
   const mesh = new THREE.Mesh(geo, mat)
   scene.add(mesh)

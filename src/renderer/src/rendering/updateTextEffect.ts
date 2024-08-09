@@ -1,19 +1,11 @@
-import {
-  Ease,
-  Effect,
-  FontAsset,
-  getEasingFunction,
-  KeyFrame,
-  PostProcessEffect,
-  Strip,
-  TextEffect,
-  VegaProject
-} from '../../schemas'
+import { FontAsset, Strip, TextEffect, VegaProject } from '../schemas'
 import { hsvToHex } from '@toshusai/cmpui'
 import { proxyMap } from 'valtio/utils'
-import { getDeepProperties } from './getDeepProperties'
-import { assignDeepProperty } from './assignDeepProperty'
-import { getDeepProperty } from './getDeepProperty'
+import { getDeepProperties } from '../utils/getDeepProperties'
+import { assignDeepProperty } from '../utils/assignDeepProperty'
+import { getDeepProperty } from '../utils/getDeepProperty'
+import { calculateKeyFrameValue } from './calculateKeyFrameValue'
+import { stripIsVisible } from './stripIsVisible'
 
 const loadedFontAssetMap = new Map<string, boolean>()
 
@@ -49,35 +41,6 @@ export const measureMapState = proxyMap<
     }
   }
 >()
-
-export function floorFrame(time: number, fps: number) {
-  return Math.round(time * fps)
-}
-
-export function stripIsVisible(strip: Strip, currentTime: number, fps: number) {
-  const currentFrame = floorFrame(currentTime, fps)
-  const startFrame = floorFrame(strip.start, fps)
-  const endFrame = floorFrame(strip.start + strip.length, fps)
-  return currentFrame >= startFrame && currentFrame < endFrame
-}
-
-export type PickProperties<T, TFilter> = {
-  [K in keyof T as T[K] extends TFilter ? K : never]: T[K]
-}
-
-export type DeepReadOnly<T> = {
-  readonly [K in keyof T]: DeepReadOnly<T[K]>
-}
-
-export function isTextEffect(effect: Effect | DeepReadOnly<Effect>): effect is TextEffect {
-  return effect.type === 'text'
-}
-
-export function isPostProcessEffect(
-  effect: Effect | DeepReadOnly<Effect>
-): effect is PostProcessEffect {
-  return effect.type === 'postProcess'
-}
 
 export async function updateTextEffect(
   ctx: CanvasRenderingContext2D,
@@ -235,45 +198,4 @@ export async function updateTextEffect(
       height: maxHeight * (animatedEffect.scale?.y ?? 1)
     }
   })
-}
-
-export function pointerInRect(
-  x: number,
-  y: number,
-  rect: { left: number; top: number; width: number; height: number }
-) {
-  return (
-    x >= rect.left && x <= rect.left + rect.width && y >= rect.top && y <= rect.top + rect.height
-  )
-}
-
-export function calculateKeyFrameValue(
-  keyframes: KeyFrame[],
-  currentTime: number,
-  property: string,
-  defaultValue: number,
-  fps: number
-) {
-  const prevKeyframe = keyframes
-    .filter((k) => k.property === property && k.time < currentTime + 1 / fps)
-    .sort((a, b) => b.time - a.time)[0]
-  const nextKeyframe = keyframes
-    .filter((k) => k.property === property && k.time > currentTime - 1 / fps)
-    .sort((a, b) => a.time - b.time)[0]
-
-  if (!prevKeyframe && nextKeyframe) {
-    return nextKeyframe.value
-  }
-  if (prevKeyframe && !nextKeyframe) {
-    return prevKeyframe.value
-  }
-  if (prevKeyframe && nextKeyframe) {
-    let ratio = (currentTime - prevKeyframe.time) / (nextKeyframe.time - prevKeyframe.time)
-    const ease = getEasingFunction(prevKeyframe.ease || Ease.Linear)
-    if (isNaN(ratio) || ratio === Infinity || ratio === -Infinity) {
-      ratio = 0
-    }
-    return prevKeyframe.value + (nextKeyframe.value - prevKeyframe.value) * ease(ratio)
-  }
-  return defaultValue
 }

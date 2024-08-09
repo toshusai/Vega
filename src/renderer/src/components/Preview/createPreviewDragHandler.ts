@@ -1,8 +1,11 @@
 import { createDragHandler } from '@renderer/interactions/createDragHandler'
 import { state } from '@renderer/state'
-import { setPropertyWithKeyFrame, snapEffect, snapState } from '.'
-import { getSelectedAnimatedTextEffects, selectedTextEffects } from '../Inspector'
-import { measureMapState } from './updateTextEffect'
+import { snapState } from '.'
+import { setPropertyWithKeyFrame } from './setPropertyWithKeyFrame'
+import { snapEffect } from './snapEffect'
+import { getSelectedAnimatedTextEffects } from '../../state/getSelectedAnimatedTextEffects'
+import { selectedTextEffects } from '../../state/selectedTextEffects'
+import { measureMapState } from '../../rendering/updateTextEffect'
 
 export function createPreviewDragHandler(stripId: string) {
   return createDragHandler({
