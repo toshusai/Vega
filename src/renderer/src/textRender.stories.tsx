@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react/*'
 import { useEffect, useRef } from 'react'
-import { loadFont, updateTextEffect } from './components/Preview/updateTextEffect'
+import { loadFont, updateTextEffect } from './rendering/updateTextEffect'
 import { FontAsset, Strip, TextEffect, VegaProject } from './schemas'
 
 function TextRender(props: { effect: TextEffect }) {

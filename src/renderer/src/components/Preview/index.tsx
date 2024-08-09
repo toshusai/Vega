@@ -2,7 +2,6 @@ import './index.css'
 
 import {
   CanvasView,
-  createKeyDownUpHandler,
   hsvToHex,
   RectGizmo,
   SelectRect,
@@ -10,99 +9,23 @@ import {
   View,
   ViewMode
 } from '@toshusai/cmpui'
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { state } from '../../state'
-import {
-  isTextEffect,
-  measureMapState,
-  pointerInRect,
-  stripIsVisible,
-  updateTextEffect
-} from './updateTextEffect'
-import {
-  Ease,
-  Effect,
-  PostProcessEffect,
-  Strip,
-  TextEffect,
-  updatePostProcessEffect
-} from '@renderer/schemas'
+import { measureMapState } from '../../rendering/updateTextEffect'
+import { isTextEffect } from '../../rendering/isTextEffect'
+import { stripIsVisible } from '../../rendering/stripIsVisible'
+import { pointerInRect } from '../../utils/pointerInRect'
+import { Effect, Strip } from '@renderer/schemas'
 import { proxy, useSnapshot } from 'valtio'
-import { checkCollision } from '../Timeline/checkCollision'
-import { setKeyFrame } from '../KeyframeEditor'
-import { randomId, selectedTextEffects, useSelectedStrips } from '../Inspector'
+import { checkCollision } from '../../utils/checkCollision'
+import { selectedTextEffects } from '../../state/selectedTextEffects'
+import { useSelectedStrips } from '../../state/useSelectedStrips'
 import { createPreviewDragHandler } from './createPreviewDragHandler'
 
-function useKeyHandler() {
-  const [keyStack, setKeyStack] = useState<string[]>([])
-  const handleKeyDowns = useMemo(
-    () =>
-      [' ', 'Alt', 'Shift'].map((key) =>
-        createKeyDownUpHandler(key, {
-          onDown: (e) => {
-            e.preventDefault()
-            setKeyStack((keyStack) => {
-              if (keyStack.includes(key)) {
-                return keyStack
-              }
-              return [...keyStack, key]
-            })
-          },
-          onUp: () => {
-            setKeyStack((keyStack) => keyStack.filter((k) => k !== key))
-          }
-        })
-      ),
-    []
-  )
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    handleKeyDowns.map((handler) => handler(e))
-  }
-
-  const mode = useMemo(() => {
-    if (keyStack.includes(' ')) {
-      return 'pan'
-    }
-    if (keyStack.includes('Alt') && keyStack.includes('Shift')) {
-      return 'zoom-out'
-    }
-    if (keyStack.includes('Alt')) {
-      return 'zoom-in'
-    }
-    return 'default'
-  }, [keyStack])
-
-  const handlePointerEnter = usePointerEnterFocus()
-
-  return {
-    handleKeyDown,
-    mode,
-    handlePointerEnter
-  }
-}
-
-export async function updateCanvas(ctx: CanvasRenderingContext2D) {
-  ctx.fillStyle = '#fff'
-  ctx.fillRect(0, 0, 1280, 720)
-
-  const sortedStrips = state.strips
-    .map((strip) => JSON.parse(JSON.stringify(strip)))
-    .filter((strip) => stripIsVisible(strip, state.currentTime, state.fps))
-    .sort((a, b) => a.layer - b.layer)
-
-  for (const strip of sortedStrips) {
-    for (const effect of strip.effects) {
-      if (effect.type === 'text') {
-        await updateTextEffect(ctx, effect as TextEffect, strip, state)
-      } else if (effect.type === 'postProcess') {
-        await updatePostProcessEffect(ctx, effect as PostProcessEffect, strip, state)
-      }
-    }
-  }
-}
-
-import { globalGl, glSetup } from './glSetup'
+import { globalGl, glSetup } from '../../rendering/glSetup'
+import { updateCanvas } from '../../rendering/updateCanvas'
+import { useKeyHandler } from './useKeyHandler'
+import { getStripByEffectId } from './getStripByEffectId'
 
 export function Preview() {
   const snap = useSnapshot(state)
@@ -425,7 +348,7 @@ export function Preview() {
   )
 }
 
-function usePointerEnterFocus() {
+export function usePointerEnterFocus() {
   return useCallback((e: React.PointerEvent<HTMLElement>) => {
     e.currentTarget.focus({
       preventScroll: true
@@ -465,10 +388,6 @@ function SnapHints() {
   )
 }
 
-export function getStripByEffectId(id: string) {
-  return state.strips.find((strip) => strip.effects.some((effect) => effect.id === id))
-}
-
 export const snapState = proxy({
   points: [] as SnapPoint[]
 })
@@ -476,119 +395,4 @@ export const snapState = proxy({
 type SnapPoint = {
   direction: 'horizontal' | 'vertical'
   value: number
-}
-
-function getNearestPoints(selfPoints: number[], targetPoints: number[], threshold: number) {
-  let minPoint = Infinity
-  let targetP: number | null = null
-  let snapDiff = 0
-  for (const selfPoint of selfPoints) {
-    for (const targetPoint of targetPoints) {
-      const diff = Math.abs(selfPoint - targetPoint)
-      if (diff < threshold) {
-        if (minPoint > diff) {
-          targetP = targetPoint
-          minPoint = Math.min(minPoint, Math.abs(selfPoint - targetPoint))
-          snapDiff = targetPoint - selfPoint
-        }
-        break
-      }
-    }
-  }
-
-  return {
-    targetP,
-    snapDiff
-  }
-}
-
-function getAllSnapTargetPoints(ids: string[]) {
-  const targetHPoints: number[] = []
-  const targetVPoints: number[] = []
-  measureMapState.forEach((value, key) => {
-    if (ids.includes(key)) {
-      return
-    }
-    const sp = state.strips.find((strip) => strip.id === key)
-    if (sp && !stripIsVisible(sp, state.currentTime, state.fps)) {
-      return
-    }
-    targetHPoints.push(value.left, value.left + value.width / 2, value.left + value.width)
-    targetVPoints.push(value.top, value.top + value.height / 2, value.top + value.height)
-  })
-
-  return {
-    targetHPoints,
-    targetVPoints
-  }
-}
-
-export function snapEffect(
-  newX: number,
-  newY: number,
-  width: number,
-  height: number,
-  ids: string[],
-  /**
-   * mutable
-   */
-  $effect: TextEffect,
-  threshold: number
-) {
-  const selfHPoints = [newX, newX + width / 2, newX - width / 2]
-  const selfVPoints = [newY, newY + height / 2, newY - height / 2]
-
-  const { targetHPoints, targetVPoints } = getAllSnapTargetPoints(ids)
-
-  snapState.points = []
-  const { targetP: ph, snapDiff: diffX } = getNearestPoints(selfHPoints, targetHPoints, threshold)
-  if (ph) {
-    snapState.points.push({
-      direction: 'vertical',
-      value: ph
-    })
-    $effect.x = newX + diffX
-  } else {
-    $effect.x = newX
-  }
-
-  const { targetP: pv, snapDiff: diffY } = getNearestPoints(selfVPoints, targetVPoints, threshold)
-  if (pv) {
-    snapState.points.push({
-      direction: 'horizontal',
-      value: pv
-    })
-    $effect.y = newY + diffY
-  } else {
-    $effect.y = newY
-  }
-
-  const hasKeyframe = $effect.keyframes.length > 0
-  if (hasKeyframe) {
-    const strip = getStripByEffectId($effect.id)
-    if (!strip) return
-    const keyframe = {
-      time: state.currentTime - strip.start,
-      ease: Ease.Linear
-    }
-    setKeyFrame($effect, { ...keyframe, property: 'x', value: $effect.x, id: randomId() })
-    setKeyFrame($effect, { ...keyframe, property: 'y', value: $effect.y, id: randomId() })
-  }
-
-  return {
-    diffX,
-    diffY
-  }
-}
-
-export function setPropertyWithKeyFrame($effect: Effect, property: string, value: number) {
-  const strip = getStripByEffectId($effect.id)
-  if (!strip) return
-  setKeyFrame($effect, {
-    property,
-    value,
-    time: state.currentTime - strip.start,
-    ease: Ease.Linear,
-    id: randomId()
-  })
 }
