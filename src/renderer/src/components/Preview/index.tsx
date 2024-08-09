@@ -76,6 +76,8 @@ function useKeyHandler() {
 }
 
 export async function updateCanvas(ctx: CanvasRenderingContext2D) {
+  ctx.fillStyle = '#fff'
+  ctx.fillRect(0, 0, 1280, 720)
   for (const strip of state.strips) {
     for (const effect of strip.effects) {
       if (effect.type === 'text') {
@@ -84,6 +86,10 @@ export async function updateCanvas(ctx: CanvasRenderingContext2D) {
     }
   }
 }
+
+import * as THREE from 'three'
+import { waitAnimationFrame } from '@renderer/App'
+import { globalGl, glSetup } from './glSetup'
 
 export function Preview() {
   const snap = useSnapshot(state)
@@ -98,6 +104,8 @@ export function Preview() {
   const { handleKeyDown, mode, handlePointerEnter } = useKeyHandler()
   const ref = useRef<HTMLCanvasElement>(null)
 
+  const glCanvas = useRef<HTMLCanvasElement>(null)
+
   useEffect(() => {
     const canvas = ref.current
     if (!canvas) {
@@ -108,6 +116,12 @@ export function Preview() {
       return
     }
 
+    glSetup(canvas)
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: glCanvas.current!
+    })
+
     let prevT = 0
     const render = async (t: number) => {
       const dt = t - prevT
@@ -116,6 +130,13 @@ export function Preview() {
         state.currentTime = state.currentTime + dt / 1000
       }
       await updateCanvas(ctx)
+      if (!globalGl) return
+      globalGl.tex.needsUpdate = true
+      globalGl.mat.uniforms.uTime.value = state.currentTime / 1000
+      renderer.render(globalGl.scene, globalGl.camera)
+      await waitAnimationFrame()
+      ctx.drawImage(renderer.domElement, 0, 0)
+
       prevT = t
       requestAnimationFrame(render)
     }
@@ -212,6 +233,17 @@ export function Preview() {
           >
             <canvas
               ref={ref}
+              width={width}
+              height={height}
+              style={{
+                transformOrigin: 'top left',
+                imageRendering: 'pixelated',
+                background: '#fff',
+                display: 'none'
+              }}
+            />
+            <canvas
+              ref={glCanvas}
               width={width}
               height={height}
               style={{
