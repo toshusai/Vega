@@ -1,4 +1,4 @@
-import { HSVA } from '@toshusai/cmpui'
+import { HSVA, Vector2 } from '@toshusai/cmpui'
 
 export type Strip = {
   id: string
@@ -102,6 +102,7 @@ export type TextEffect = {
   y: number
   fontAssetId: string
   fontSize: number
+  scale?: Vector2
   fontStyle?: string
   color?: HSVA
   shadowColor?: string
