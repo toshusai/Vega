@@ -290,11 +290,8 @@ function TextEffectInspector() {
           label="characterSpacing"
           value={effects.map((effect) => effect.characterSpacing ?? 0)}
           onChangeValue={(value) => {
-            selectedTextEffects().forEach((effect, i) => {
-              effect.characterSpacing = value[i]
-            })
             setKeyFrameValue({
-              characterSpacing: effects.map((effect) => effect.characterSpacing ?? 0)
+              characterSpacing: value
             })
           }}
         />
