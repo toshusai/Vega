@@ -3,6 +3,7 @@ import { ShaderMaterial } from 'three'
 import * as THREE from 'three'
 import { PostProcessEffect, Strip, VegaProject } from '../schemas'
 import { globalGl } from './glSetup'
+import { calculateKeyFrameValue } from './calculateKeyFrameValue'
 
 export const materialMap = new Map<string, ShaderMaterial>()
 
@@ -37,16 +38,41 @@ export async function updatePostProcessEffect(
         uResolution: { value: new THREE.Vector2(1280, 720) }
       },
       vertexShader,
-      fragmentShader: effect.fragmentShader
+      fragmentShader: effect.fragmentShader,
+      transparent: true
     })
     material.needsUpdate = true
+    material.blending = THREE.CustomBlending
+    material.blendSrc = THREE.OneFactor
+    material.blendDst = THREE.OneMinusSrcAlphaFactor
+    material.blendEquation = THREE.AddEquation
+    material.depthWrite = false
     materialMap.set(effect.id, material)
   }
   globalGl.mesh.material = material
+
+  const animatedUniforms = effect.uniforms ?? {}
+  Object.keys(animatedUniforms).forEach((key) => {
+    const value = animatedUniforms[key]
+    const newValue = calculateKeyFrameValue(
+      effect.keyframes,
+      scene.currentTime - strip.start,
+      key,
+      value,
+      scene.fps
+    )
+    if (!material.uniforms[key]) {
+      material.uniforms[key] = { value: newValue }
+    }
+    material.uniforms[key].value = newValue
+  })
+
   material.uniforms.uTime.value = scene.currentTime
   material.uniforms.uResolution.value = new THREE.Vector2(ctx.canvas.width, ctx.canvas.height)
+
   globalGl.mesh.material.needsUpdate = true
   globalGl.tex.needsUpdate = true
   globalGl.renderer.render(globalGl.scene, globalGl.camera)
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
   ctx.drawImage(globalGl.renderer.domElement, 0, 0)
 }
