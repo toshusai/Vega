@@ -24,6 +24,7 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
+    "@radix-ui/react-context-menu": "^2.2.1",
     "@tabler/icons-react": "^3.11.0",
     "@toshusai/cmpui": "link:../complux",
     "electron-updater": "^6.1.7",
