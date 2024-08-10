@@ -8,7 +8,7 @@ export function Header() {
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('vega') ?? 'null') as VegaProject | null
     if (!data) return
-    state.assets = data.assets
+    // state.assets = data.assets
     state.currentTime = data.currentTime
     state.fps = data.fps
     state.initialized = data.initialized
