@@ -14,9 +14,13 @@ import { KeyframeEditor } from './components/KeyframeEditor'
 
 function App() {
   const snap = useSnapshot(state)
+
+  useUndoKeyboardShortcuts()
+
   if (snap.recordingState === 'recording') {
     return <Recorder />
   }
+
   return (
     <TooltipProvider>
       <div className="flex flex-col w-full gap-4">
@@ -55,6 +59,7 @@ export function waitAnimationFrame() {
 import { globalGl, glSetup } from './rendering/glSetup'
 import { WebMMuxerConverter } from './encoding/WebMMuxerConverter'
 import { CCaptureConverter } from './encoding/CCaptureConverter'
+import { useUndoKeyboardShortcuts } from './useUndoKeyboardShortcuts'
 
 type ConverterBackend = 'webm-muxer' | 'ccapture'
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { VegaProject } from '@renderer/schemas'
 import { IconDeviceFloppy } from '@tabler/icons-react'
 import { isTextEffect } from '@renderer/rendering/isTextEffect'
+import { commit, undo } from '@renderer/state/UndoManager'
 
 export function Header() {
   useEffect(() => {
@@ -37,6 +38,11 @@ export function Header() {
           }
         }
       }
+    }
+
+    commit()
+    return () => {
+      undo()
     }
   }, [])
   const [open, setOpen] = useState(false)
