@@ -1,5 +1,4 @@
 import { selectedTextEffects } from '../../state/selectedTextEffects'
-import { useSelectedTextEffects } from '../../state/useSelectedTextEffects'
 import { useSelectedStrips } from '../../state/useSelectedStrips'
 import { ContextMenu, ContextMenuItem } from '@toshusai/cmpui'
 import { state } from '@renderer/state'
@@ -12,7 +11,9 @@ export function KeyframeEditor() {
   const strips = useSelectedStrips()
   const snap = useSnapshot(state)
   const pxPerSec = 100
-  const selectedTextEffectsSnapshot = useSelectedTextEffects()
+  const selectedTextEffectsSnapshot = useSelectedStrips().flatMap((strip) => {
+    return strip.effects
+  })
   if (strips.length === 0) {
     return null
   }

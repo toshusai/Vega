@@ -1,6 +1,4 @@
 import { KeyFrame } from '@renderer/schemas'
-import { selectedTextEffects } from '../../state/selectedTextEffects'
-import { useSelectedTextEffects } from '../../state/useSelectedTextEffects'
 import { IconSquareFilled } from '@tabler/icons-react'
 import { SelectRect, Tooltip } from '@toshusai/cmpui'
 import { state } from '@renderer/state'
@@ -10,9 +8,23 @@ import { useCallback } from 'react'
 import { createDragHandler } from '@renderer/interactions/createDragHandler'
 import { onClickFromPointerDown } from '../../interactions/onClickFromPointerDown'
 import { keyFrameToMap } from './keyFrameToMap'
+import { useSelectedStrips } from '@renderer/state/useSelectedStrips'
+import { selectedStrips } from '@renderer/state/selectedStrips'
+
+export function useSelectedEffects() {
+  return useSelectedStrips().flatMap((strip) => {
+    return strip.effects
+  })
+}
+
+export function getSelectedEffects() {
+  return selectedStrips().flatMap((strip) => {
+    return strip.effects
+  })
+}
 
 export function KeyframeLine() {
-  const effects = useSelectedTextEffects()
+  const effects = useSelectedEffects()
 
   const snap = useSnapshot(state)
 
@@ -107,7 +119,7 @@ export function KeyframeLine() {
                             }
                           })
 
-                          const effect = selectedTextEffects()[0]
+                          const effect = getSelectedEffects()[0]
                           const currentKeyframes = effect.keyframes.filter((k) =>
                             state.selectedKeyframeIds.includes(k.id)
                           )
