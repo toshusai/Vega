@@ -53,6 +53,12 @@ export function waitAnimationFrame() {
 }
 
 import { globalGl, glSetup } from './rendering/glSetup'
+import { WebMMuxerConverter } from './encoding/WebMMuxerConverter'
+import { CCaptureConverter } from './encoding/CCaptureConverter'
+
+type ConverterBackend = 'webm-muxer' | 'ccapture'
+
+const CONVERTER_BACKEND: ConverterBackend = 'webm-muxer'
 
 const run = async (canvas: HTMLCanvasElement, glCanvas: HTMLCanvasElement) => {
   if (progressState.started) {
@@ -63,16 +69,23 @@ const run = async (canvas: HTMLCanvasElement, glCanvas: HTMLCanvasElement) => {
   if (!ctx) {
     return
   }
-  const capture = new CCapture({
-    format: 'webm',
-    framerate: state.fps,
-    quality: 1
-  })
+
   progressState.progress = 0
   progressState.url = ''
-  capture.start()
 
   glSetup(canvas, glCanvas)
+
+  const converter =
+    CONVERTER_BACKEND === 'webm-muxer'
+      ? new WebMMuxerConverter()
+      : CONVERTER_BACKEND === 'ccapture'
+        ? new CCaptureConverter()
+        : null
+  if (!converter) {
+    throw new Error('Invalid converter backend')
+  }
+
+  converter.start()
 
   for (let index = 0; index < state.length * state.fps; index++) {
     if (state.recordingState === 'idle') {
@@ -91,19 +104,14 @@ const run = async (canvas: HTMLCanvasElement, glCanvas: HTMLCanvasElement) => {
     globalGl.renderer.render(globalGl.scene, globalGl.camera)
     ctx.drawImage(globalGl.renderer.domElement, 0, 0)
 
-    capture.capture(ctx.canvas)
+    converter.capture(canvas)
     progressState.progress = index / (state.length * state.fps)
     if (!document.hidden) {
       await waitAnimationFrame()
     }
   }
   progressState.progress = 1
-  capture.stop()
-  capture.save((blob) => {
-    if (state.recordingState === 'idle') {
-      return
-    }
-    const url = URL.createObjectURL(blob)
+  converter.stop().then((url) => {
     progressState.url = url
   })
 }
@@ -168,7 +176,11 @@ export function Recorder() {
         <div className="flex justify-between flex-col gap-4 mt-16">
           {progress.progress === 1 ? (
             <>
-              <Button as="a" href={progress.url} download="output.webm">
+              <Button
+                as="a"
+                href={progress.url}
+                download={`${new Date().toISOString().replace(/:/g, '-')}.webm`}
+              >
                 Download
               </Button>
               <Button
