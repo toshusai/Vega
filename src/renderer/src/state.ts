@@ -12,7 +12,17 @@ const fontList = [
   'Smooch',
   'Chokokutai',
   'Monomaniac One',
-  'Palette Mosaic'
+  'Palette Mosaic',
+  'Dela Gothic One',
+  'Noto Color Emoji',
+  'Nabla',
+  'RocknRoll One',
+  'Mochiy Pop One',
+  'Cherry Bomb One',
+  'Potta One',
+  'Rampart One',
+  'Reggage One',
+  'Yuji Mai'
 ].sort()
 
 export const state = proxy({
@@ -21,7 +31,7 @@ export const state = proxy({
       id: name,
       type: 'font',
       name,
-      path: `https://fonts.googleapis.com/css2?family=${name}&display=swap`
+      path: `https://fonts.googleapis.com/css2?family=${name.split(' ').join('+')}&display=swap`
     }))
   ],
   currentTime: 0,

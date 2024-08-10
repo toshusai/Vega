@@ -58,10 +58,10 @@ export function TextEffectInspector() {
       <TextArea
         label="Text"
         className="w-full"
-        value={
+        defaultValue={
           effects.every((effect) => effect.text === effects[0].text) ? effects[0].text : 'mixed'
         }
-        onChange={(e) => {
+        onBlur={(e) => {
           const text = e.target.value
           selectedTextEffects().forEach((effect) => {
             effect.text = text
@@ -287,8 +287,12 @@ export function TextEffectInspector() {
                 style={{
                   fontFamily: asset.name
                 }}
+                className='whitespace-nowrap'
               >
-                {asset.name}
+                {effects.every((effect) => effect.text === effects[0].text)
+                  ? effects[0].text
+                  : 'mixed'}
+                /{asset.name}
               </div>
             </SelectItem>
           ))}
