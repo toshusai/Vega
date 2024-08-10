@@ -26,6 +26,7 @@ import { globalGl, glSetup } from '../../rendering/glSetup'
 import { updateCanvas } from '../../rendering/updateCanvas'
 import { useKeyHandler } from './useKeyHandler'
 import { getStripByEffectId } from './getStripByEffectId'
+import { degToRad, radToDeg } from 'three/src/math/MathUtils'
 
 export function Preview() {
   const snap = useSnapshot(state)
@@ -244,6 +245,7 @@ export function Preview() {
             if (isTextEffect(effect)) {
               const width = measureMap.get(strip.id)?.width ?? 0
               const height = measureMap.get(strip.id)?.height ?? 0
+              const angle = measureMap.get(strip.id)?.angle ?? 0
 
               const x =
                 ((measureMap.get(strip.id)?.left ?? 0) + width / 2) * snap.canvasScale +
@@ -256,7 +258,6 @@ export function Preview() {
                 <Fragment key={strip.id}>
                   {!isTextEditMode && mode === 'default' && (
                     <RectGizmo
-                      angle={0}
                       height={height}
                       width={width}
                       scaleX={(effect.scale?.x ?? 1) * snap.canvasScale}
@@ -296,6 +297,14 @@ export function Preview() {
                         }
                       }}
                       canResize
+                      canRotate
+                      angle={degToRad(angle)}
+                      onChangeAngle={(angle) => {
+                        if (!isTextEffect(effect)) return
+                        const $effect = selectedTextEffects().find((e) => e.id === effect.id)
+                        if (!$effect) return
+                        $effect.angle = radToDeg(angle)
+                      }}
                     />
                   )}
                   {isTextEditMode && (

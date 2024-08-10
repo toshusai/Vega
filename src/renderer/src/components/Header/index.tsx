@@ -3,6 +3,7 @@ import { state } from '../../state'
 import { useEffect, useState } from 'react'
 import { VegaProject } from '@renderer/schemas'
 import { IconDeviceFloppy } from '@tabler/icons-react'
+import { isTextEffect } from '@renderer/rendering/isTextEffect'
 
 export function Header() {
   useEffect(() => {
@@ -27,6 +28,16 @@ export function Header() {
     state.canvasScale = data.canvasScale
     state.recordingState = data.recordingState
     state.strips = data.strips
+
+    for (const strip of state.strips) {
+      for (const effect of strip.effects) {
+        if (isTextEffect(effect)) {
+          if (!effect.characterSpacing) {
+            effect.characterSpacing = 0
+          }
+        }
+      }
+    }
   }, [])
   const [open, setOpen] = useState(false)
   return (

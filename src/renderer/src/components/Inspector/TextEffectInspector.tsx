@@ -42,13 +42,17 @@ export function TextEffectInspector() {
       selectedTextEffects().forEach((effect, i) => {
         const strip = getStripByEffectId(effect.id)
         if (!strip) return
-        setKeyFrame(effect, {
-          property: key,
-          time: state.currentTime - strip.start,
-          ease: Ease.Linear,
-          id: randomId(),
-          value: value[i]
-        })
+        setKeyFrame(
+          effect,
+          {
+            property: key,
+            time: state.currentTime - strip.start,
+            ease: Ease.Linear,
+            id: randomId(),
+            value: value[i]
+          },
+          true
+        )
       })
     })
   }
@@ -100,6 +104,28 @@ export function TextEffectInspector() {
             setKeyFrameValue({
               x: effects.map((effect) => effect.x),
               y: effects.map((effect) => effect.y)
+            })
+          }}
+        >
+          <IconClock size={16} />
+        </IconButton>
+      </div>
+
+      <div className="flex gap-4">
+        <SliderNumberField
+          className="w-full"
+          label="Angle"
+          value={effects.map((effect) => effect.angle ?? 0)}
+          onChangeValue={(value) => {
+            setKeyFrameValue({
+              angle: value
+            })
+          }}
+        />
+        <IconButton
+          onClick={() => {
+            setKeyFrameValue({
+              angle: effects.map((effect) => effect.angle ?? 0)
             })
           }}
         >
@@ -287,7 +313,7 @@ export function TextEffectInspector() {
                 style={{
                   fontFamily: asset.name
                 }}
-                className='whitespace-nowrap'
+                className="whitespace-nowrap"
               >
                 {effects.every((effect) => effect.text === effects[0].text)
                   ? effects[0].text
