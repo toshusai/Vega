@@ -51,13 +51,16 @@ export async function updatePostProcessEffect(
   }
   globalGl.mesh.material = material
 
-  const animatedUniforms = effect.uniforms ?? {}
+  const animatedUniforms = JSON.parse(JSON.stringify(effect.uniforms ?? {})) as Record<
+    string,
+    number
+  >
   Object.keys(animatedUniforms).forEach((key) => {
     const value = animatedUniforms[key]
     const newValue = calculateKeyFrameValue(
       effect.keyframes,
       scene.currentTime - strip.start,
-      key,
+      `uniforms.${key}`,
       value,
       scene.fps
     )

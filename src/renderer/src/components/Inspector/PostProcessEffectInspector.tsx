@@ -2,11 +2,21 @@ import { useSnapshot } from 'valtio'
 import { isPostProcessEffect } from '../../rendering/isPostProcessEffect'
 import { DeepReadOnly } from '../../utils/DeepReadOnly'
 import { state } from '../../state'
-import { Button, SliderNumberField, TextArea, TextInput } from '@toshusai/cmpui'
-import { PostProcessEffect } from '@renderer/schemas'
+import { Button, IconButton, SliderNumberField, TextArea, TextInput } from '@toshusai/cmpui'
+import { Ease, PostProcessEffect } from '@renderer/schemas'
 import { useEffect, useState } from 'react'
 import { materialMap } from '../../rendering/updatePostProcessEffect'
 import { selectedStrips } from '../../state/selectedStrips'
+import { IconClock, IconPlus } from '@tabler/icons-react'
+import { getStripByEffectId } from '../Preview/getStripByEffectId'
+import { setKeyFrame } from '@renderer/state/setKeyFrame'
+import { randomId } from '@renderer/utils/randomId'
+
+function selectedPostEffects() {
+  return selectedStrips().flatMap((strip) => {
+    return strip.effects.filter(isPostProcessEffect)
+  })
+}
 
 export function PostProcessEffectInspector() {
   const snap = useSnapshot(state)
@@ -44,74 +54,31 @@ export function PostProcessEffectInspector() {
 
   const effect = effects[0]
 
-  return (
-    <div className="flex flex-col gap-8 m-8 w-full h-[512px]">
-      <TextArea
-        label="Text"
-        className="w-full h-[256px] [&>textarea]:font-mono [&>textarea]:whitespace-nowrap"
-        value={value}
-        onChange={(e) => {
-          const text = e.target.value
-          setValue(text)
-          const selectedEffects = selectedStrips().flatMap((strip) => {
-            return strip.effects.filter(isPostProcessEffect)
-          })
-
-          selectedEffects.forEach((effect) => {
-            effect.fragmentShader = text
-          })
-        }}
-      />
-
-      {Object.entries(effect.uniforms ?? {}).map(([key, value]) => {
-        return (
-          <SliderNumberField
-            key={key}
-            label={key}
-            value={[value]}
-            onChangeValue={(value) => {
-              selectedStrips().forEach((strip) => {
-                strip.effects.forEach((effect) => {
-                  if (isPostProcessEffect(effect)) {
-                    if (!effect.uniforms) {
-                      effect.uniforms = {}
-                    }
-                    effect.uniforms[key] = value[0]
-                  }
-                })
-              })
-            }}
-          />
+  const setKeyFrameValue = (keyValue: Record<string, number[]>) => {
+    Object.entries(keyValue).forEach(([key, value]) => {
+      selectedPostEffects().forEach((effect, i) => {
+        const strip = getStripByEffectId(effect.id)
+        if (!strip) return
+        setKeyFrame(
+          effect,
+          {
+            property: key,
+            time: state.currentTime - strip.start,
+            ease: Ease.Linear,
+            id: randomId(),
+            value: value[i]
+          },
+          true
         )
-      })}
+      })
+    })
+  }
 
-      <div className="flex">
-        <TextInput
-          label="Uniform Name"
-          value={newUniformName}
-          onChange={(e) => {
-            setNewUniformName(e.target.value)
-          }}
-        />
-        <Button
-          onClick={() => {
-            selectedStrips().forEach((strip) => {
-              strip.effects.forEach((effect) => {
-                if (isPostProcessEffect(effect)) {
-                  if (!effect.uniforms) {
-                    effect.uniforms = {}
-                  }
-                  effect.uniforms[newUniformName] = 0
-                }
-              })
-            })
-          }}
-        >
-          add uniforms
-        </Button>
-      </div>
-
+  return (
+    <div className="flex flex-col gap-16 m-8 w-full h-[512px]">
       <Button
+        size="S"
+        variant="secondary"
         onClick={() => {
           const selectedEffects = selectedStrips().flatMap((strip) => {
             return strip.effects.filter(isPostProcessEffect)
@@ -128,6 +95,81 @@ export function PostProcessEffectInspector() {
       >
         Compile
       </Button>
+      <TextArea
+        label="Text"
+        className="w-full h-[128px] [&>textarea]:font-mono [&>textarea]:whitespace-nowrap [&>textarea]:text-[10px]"
+        value={value}
+        onChange={(e) => {
+          const text = e.target.value
+          setValue(text)
+          const selectedEffects = selectedStrips().flatMap((strip) => {
+            return strip.effects.filter(isPostProcessEffect)
+          })
+
+          selectedEffects.forEach((effect) => {
+            effect.fragmentShader = text
+          })
+        }}
+      />
+
+      {Object.entries(effect.uniforms ?? {}).map(([key, value]) => {
+        return (
+          <div className="flex gap-4" key={key}>
+            <SliderNumberField
+              label={key}
+              value={[value]}
+              onChangeValue={(value) => {
+                selectedStrips().forEach((strip) => {
+                  strip.effects.forEach((effect) => {
+                    if (isPostProcessEffect(effect)) {
+                      if (!effect.uniforms) {
+                        effect.uniforms = {}
+                      }
+                      effect.uniforms[key] = value[0]
+                    }
+                  })
+                })
+              }}
+            />
+            <IconButton
+              onClick={() => {
+                setKeyFrameValue({
+                  ['uniforms.' + key]: [value]
+                })
+              }}
+            >
+              <IconClock size={16} />
+            </IconButton>
+          </div>
+        )
+      })}
+
+      <div className="flex gap-4">
+        <TextInput
+          label="Uniform Name"
+          className="w-full"
+          value={newUniformName}
+          onChange={(e) => {
+            setNewUniformName(e.target.value)
+          }}
+        />
+        <IconButton
+          onClick={() => {
+            selectedStrips().forEach((strip) => {
+              strip.effects.forEach((effect) => {
+                if (isPostProcessEffect(effect)) {
+                  if (!effect.uniforms) {
+                    effect.uniforms = {}
+                  }
+                  effect.uniforms[newUniformName] = 0
+                }
+              })
+            })
+          }}
+        >
+          <IconPlus size={16} />
+        </IconButton>
+      </div>
     </div>
   )
 }
