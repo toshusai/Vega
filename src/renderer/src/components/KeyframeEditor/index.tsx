@@ -1,11 +1,14 @@
 import { selectedTextEffects } from '../../state/selectedTextEffects'
 import { useSelectedStrips } from '../../state/useSelectedStrips'
-import { ContextMenu, ContextMenuItem } from '@toshusai/cmpui'
+import { ContextMenu, ContextMenuItem, FloatBox, ListItem } from '@toshusai/cmpui'
 import { state } from '@renderer/state'
 import { useSnapshot } from 'valtio'
 import { Cursor } from '../Cursor'
 import { KeyframeLine } from './KeyframeLine'
 import { TimeView } from './TimeView'
+import * as RadixContextMenu from '@radix-ui/react-context-menu'
+import { IconArrowRight } from '@tabler/icons-react'
+import { allEase } from '@renderer/schemas'
 
 export function KeyframeEditor() {
   const strips = useSelectedStrips()
@@ -22,17 +25,53 @@ export function KeyframeEditor() {
   return (
     <ContextMenu
       content={
-        <ContextMenuItem
-          onClick={() => {
-            selectedTextEffects().forEach((effect) => {
-              effect.keyframes = effect.keyframes.filter(
-                (keyframe) => !state.selectedKeyframeIds.includes(keyframe.id)
-              )
-            })
-          }}
-        >
-          Delete
-        </ContextMenuItem>
+        <>
+          <ContextMenuItem
+            onClick={() => {
+              selectedTextEffects().forEach((effect) => {
+                effect.keyframes = effect.keyframes.filter(
+                  (keyframe) => !state.selectedKeyframeIds.includes(keyframe.id)
+                )
+              })
+            }}
+          >
+            Delete
+          </ContextMenuItem>
+          <RadixContextMenu.Sub>
+            <RadixContextMenu.SubTrigger asChild>
+              <ListItem rounded size="S">
+                More Tools
+                <div className="RightSlot">
+                  <IconArrowRight />
+                </div>
+              </ListItem>
+            </RadixContextMenu.SubTrigger>
+            <RadixContextMenu.Portal>
+              <RadixContextMenu.SubContent sideOffset={2} alignOffset={-5}>
+                <FloatBox>
+                  {allEase.map((ease) => {
+                    return (
+                      <ContextMenuItem
+                        key={ease}
+                        onClick={() => {
+                          selectedTextEffects().forEach((effect) => {
+                            effect.keyframes.forEach((keyframe) => {
+                              if (state.selectedKeyframeIds.includes(keyframe.id)) {
+                                keyframe.ease = ease
+                              }
+                            })
+                          })
+                        }}
+                      >
+                        <div>{ease}</div>
+                      </ContextMenuItem>
+                    )
+                  })}
+                </FloatBox>
+              </RadixContextMenu.SubContent>
+            </RadixContextMenu.Portal>
+          </RadixContextMenu.Sub>
+        </>
       }
     >
       <div className="w-full">
