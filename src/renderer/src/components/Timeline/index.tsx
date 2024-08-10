@@ -21,6 +21,7 @@ import { useCallback } from 'react'
 import { isTextEffect } from '../../rendering/isTextEffect'
 import { PostProcessEffect, TextEffect } from '@renderer/schemas'
 import { Strip as StripType } from '@renderer/schemas'
+import { commit } from '@renderer/state/UndoManager'
 
 const LAYER_GAP = 4
 const LAYER_HEIGHT = 32
@@ -307,7 +308,9 @@ void main() {
                         }
                       })(e as React.PointerEvent<HTMLElement>)
                     }}
-                    onChangeEnd={() => {}}
+                    onChangeEnd={() => {
+                      commit()
+                    }}
                   >
                     {isTextEffect(effect) && (
                       <div
