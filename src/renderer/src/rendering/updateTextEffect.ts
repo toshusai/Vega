@@ -6,6 +6,7 @@ import { assignDeepProperty } from '../utils/assignDeepProperty'
 import { getDeepProperty } from '../utils/getDeepProperty'
 import { calculateKeyFrameValue } from './calculateKeyFrameValue'
 import { stripIsVisible } from './stripIsVisible'
+import { degToRad } from 'three/src/math/MathUtils'
 
 const loadedFontAssetMap = new Map<string, boolean>()
 
@@ -33,6 +34,7 @@ export const measureMapState = proxyMap<
     top: number
     width: number
     height: number
+    angle: number
     scaledRect: {
       left: number
       top: number
@@ -153,9 +155,8 @@ export async function updateTextEffect(
   const align = animatedEffect.align
   ctx.save()
   ctx.translate(x, y)
-  // TODO: rotation
+  ctx.rotate(degToRad(animatedEffect.angle ?? 0))
   ctx.scale(animatedEffect.scale?.x ?? 1, animatedEffect.scale?.y ?? 1)
-  ctx.rotate(0)
   ctx.translate(-x, -y)
 
   if (align === 'right') {
@@ -191,6 +192,7 @@ export async function updateTextEffect(
     top: y - maxHeight / 2,
     width: maxWidth,
     height: maxHeight,
+    angle: animatedEffect.angle ?? 0,
     scaledRect: {
       left: x - (maxWidth / 2) * (animatedEffect.scale?.x ?? 1),
       top: y - (maxHeight / 2) * (animatedEffect.scale?.y ?? 1),

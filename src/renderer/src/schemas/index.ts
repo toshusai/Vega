@@ -108,6 +108,7 @@ export type TextEffect = {
   text: string
   x: number
   y: number
+  angle?: number
   fontAssetId: string
   fontSize: number
   scale?: Vector2
@@ -155,7 +156,8 @@ export enum Ease {
   EaseInExpo = 'easeInExpo',
   EaseInOutQuad = 'easeInOutQuad',
   EaseOutBack = 'easeOutBack',
-  EaseInCubic = 'easeInCubic'
+  EaseInCubic = 'easeInCubic',
+  EaseInOutCubic = 'easeInOutCubic'
 }
 
 export const allEase = Object.values(Ease).map((ease) => ease)
@@ -178,6 +180,8 @@ export function getEasingFunction(ease: Ease) {
       return easeOutBack
     case Ease.EaseInCubic:
       return easeInCubic
+    case Ease.EaseInOutCubic:
+      return easeInOutCubic
     default:
       return linear
   }
@@ -216,6 +220,10 @@ export function easeOutBack(x: number): number {
 
 export function easeInCubic(x: number): number {
   return x * x * x
+}
+
+export function easeInOutCubic(x: number): number {
+  return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2
 }
 
 export type VegaProject = {
