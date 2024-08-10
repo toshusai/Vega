@@ -28,7 +28,8 @@
     "@toshusai/cmpui": "1.0.0-alpha.8",
     "electron-updater": "^6.1.7",
     "three": "^0.167.1",
-    "valtio": "^1.13.2"
+    "valtio": "^1.13.2",
+    "webm-muxer": "^4.0.1"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
