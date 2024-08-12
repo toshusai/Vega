@@ -1,3 +1,5 @@
+[v5.0.0 is coming soon?](https://x.com/shu_web_dev/status/1822388927820632070)
+
 # Vega
 
 Vega is a video editing software.
