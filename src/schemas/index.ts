@@ -246,4 +246,10 @@ export type VegaProject = {
   canvasLeft: number
   canvasTop: number
   canvasScale: number
+  timelineSettings: {
+    snapToStrip: boolean
+  }
+  keyframeSettings: {
+    snapToKeyframe: boolean
+  }
 }

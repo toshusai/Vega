@@ -24,7 +24,10 @@ export function TimeView({ pxPerSec, startSec }: { pxPerSec: number; startSec: n
           const newTime = ctx.time + move.diffX / pxPerSec
           state.currentTime = newTime
 
-          const snapPoints = getSnapPoints([]).map((point) => point * pxPerSec)
+          const isTimelineSnap = state.timelineSettings.snapToStrip
+          const snapPoints = isTimelineSnap
+            ? getSnapPoints([]).map((point) => point * pxPerSec)
+            : []
 
           const snap = checkSnap(newTime * pxPerSec, snapPoints)
           if (snap.isSnapped) {

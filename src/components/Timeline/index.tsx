@@ -22,6 +22,7 @@ import { isTextEffect } from '../../rendering/isTextEffect'
 import { PostProcessEffect, TextEffect } from '@/schemas'
 import { Strip as StripType } from '@/schemas'
 import { commit } from '@/state/UndoManager'
+import { ChangeSnapToggle } from './ChangeSnapToggle'
 
 const LAYER_GAP = 4
 const LAYER_HEIGHT = 32
@@ -51,21 +52,21 @@ export function Timeline() {
         overflow: 'hidden',
       }}
     >
-      <div
-        className="flex"
-        style={{
-          justifyContent: 'center',
-          padding: '4px 0',
-        }}
-      >
-        <IconButton
-          size="S"
-          onClick={() => {
-            state.isPlaying = !state.isPlaying
-          }}
-        >
-          {snap.isPlaying ? <IconPlayerPause size={16} /> : <IconPlayerPlay size={16} />}
-        </IconButton>
+      <div className="grid grid-cols-3 p-4">
+        <div></div>
+        <div className="flex justify-center">
+          <IconButton
+            size="S"
+            onClick={() => {
+              state.isPlaying = !state.isPlaying
+            }}
+          >
+            {snap.isPlaying ? <IconPlayerPause size={16} /> : <IconPlayerPlay size={16} />}
+          </IconButton>
+        </div>
+        <div className="flex justify-end">
+          <ChangeSnapToggle />
+        </div>
       </div>
       <ContextMenu
         content={
@@ -222,9 +223,10 @@ void main() {
                     width={strip.length * pxPerSec}
                     onChange={(left, width) => {
                       left += startSec * pxPerSec
-                      const snapPoints = getSnapPoints(state.selectedStripIds).map(
-                        (point) => point * pxPerSec,
-                      )
+                      const isTimelineSnap = state.timelineSettings.snapToStrip
+                      const snapPoints = isTimelineSnap
+                        ? getSnapPoints(state.selectedStripIds).map((point) => point * pxPerSec)
+                        : []
                       // HOTFIX: this method is not working correctly
                       const isChangedRight = Math.abs(left - strip?.start * pxPerSec) < 0.01
                       const isChangedLeft = Math.abs(width - strip?.length * pxPerSec) < 0.01
