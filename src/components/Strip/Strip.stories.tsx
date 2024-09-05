@@ -93,7 +93,7 @@ const state = proxy({
   viewStartRate: 0,
   canvasLeft: 0,
   canvasTop: 0,
-  selectedAssetIds: [],
+  selectedAssetIds: {},
   selectedKeyframeIds: [],
   canvasScale: 1,
   recordingState: 'idle',

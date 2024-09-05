@@ -238,7 +238,7 @@ export type VegaProject = {
   assets: Asset[]
   isPlaying: boolean
   selectedStripIds: string[]
-  selectedAssetIds: string[]
+  selectedAssetIds: Record<string, true>
   canvasWidth: number
   canvasHeight: number
   selectedKeyframeIds: string[]
