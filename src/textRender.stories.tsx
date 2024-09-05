@@ -42,7 +42,7 @@ function TextRender(props: { effect: TextEffect }) {
       viewStartRate: 0,
       canvasLeft: 128,
       canvasTop: 128,
-      selectedAssetIds: [],
+      selectedAssetIds: {},
       selectedKeyframeIds: [],
       canvasScale: 0.5,
       recordingState: 'idle',
