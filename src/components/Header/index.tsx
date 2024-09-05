@@ -1,10 +1,10 @@
 import { IconButton, MenuBar, MenuBarButton, MenuBarItem, Toast } from '@toshusai/cmpui'
+import { state } from '../../state'
 import { useEffect, useState } from 'react'
 import { VegaProject } from '@/schemas'
 import { IconDeviceFloppy } from '@tabler/icons-react'
 import { isTextEffect } from '@/rendering/isTextEffect'
 import { commit, undo } from '@/state/UndoManager'
-import { state } from '@/state'
 
 export function Header() {
   useEffect(() => {
