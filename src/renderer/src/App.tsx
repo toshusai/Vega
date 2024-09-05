@@ -1,4 +1,5 @@
 import '@toshusai/cmpui/dist/index.css'
+import '@toshusai/cmpui-css/dist/index.css'
 
 import { Button, SplitPane, TooltipProvider } from '@toshusai/cmpui'
 import { Panel } from './components/Panel'
@@ -39,9 +40,12 @@ function App() {
               <Preview />
             </Panel>
           </SplitPane>
-          <Panel>
-            <Timeline />
-          </Panel>
+          <SplitPane type="horizontal" sizes={['70%', '30%']}>
+            <Panel>
+              <Timeline />
+            </Panel>
+            <AssetView />
+          </SplitPane>
         </SplitPane>
       </div>
     </TooltipProvider>
@@ -60,6 +64,7 @@ import { globalGl, glSetup } from './rendering/glSetup'
 import { WebMMuxerConverter } from './encoding/WebMMuxerConverter'
 import { CCaptureConverter } from './encoding/CCaptureConverter'
 import { useUndoKeyboardShortcuts } from './useUndoKeyboardShortcuts'
+import { AssetView } from './components/AssetView'
 
 type ConverterBackend = 'webm-muxer' | 'ccapture'
 
