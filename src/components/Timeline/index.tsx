@@ -211,7 +211,7 @@ void main() {
                     ref={(el) => {
                       refs.current[i] = el
                       if (el) {
-                        el.id = strip.id
+                        el.id = `strip-${strip.id}`
                       }
                     }}
                     key={i}

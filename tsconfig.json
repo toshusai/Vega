@@ -22,7 +22,10 @@
     "typeRoots": ["node_modules/@types", ".storybook/@types"],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": [
+      "@vitest/browser/providers/playwright",
+    ]
   },
   "include": ["src"]
 }
