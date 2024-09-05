@@ -9,7 +9,7 @@ import {
   Select,
   SelectItem,
   SliderNumberField,
-  TextArea
+  TextArea,
 } from '@toshusai/cmpui'
 import { Ease, FontAsset, TextAlign } from '@/schemas'
 import { IconAlignCenter, IconAlignLeft, IconAlignRight, IconClock } from '@tabler/icons-react'
@@ -49,9 +49,9 @@ export function TextEffectInspector() {
             time: state.currentTime - strip.start,
             ease: Ease.Linear,
             id: randomId(),
-            value: value[i]
+            value: value[i],
           },
-          true
+          true,
         )
       })
     })
@@ -82,7 +82,7 @@ export function TextEffectInspector() {
               effect.x = value[i]
             })
             setKeyFrameValue({
-              x: value
+              x: value,
             })
           }}
         />
@@ -95,7 +95,7 @@ export function TextEffectInspector() {
               effect.y = value[i]
             })
             setKeyFrameValue({
-              y: value
+              y: value,
             })
           }}
         />
@@ -103,7 +103,7 @@ export function TextEffectInspector() {
           onClick={() => {
             setKeyFrameValue({
               x: effects.map((effect) => effect.x),
-              y: effects.map((effect) => effect.y)
+              y: effects.map((effect) => effect.y),
             })
           }}
         >
@@ -118,14 +118,14 @@ export function TextEffectInspector() {
           value={effects.map((effect) => effect.angle ?? 0)}
           onChangeValue={(value) => {
             setKeyFrameValue({
-              angle: value
+              angle: value,
             })
           }}
         />
         <IconButton
           onClick={() => {
             setKeyFrameValue({
-              angle: effects.map((effect) => effect.angle ?? 0)
+              angle: effects.map((effect) => effect.angle ?? 0),
             })
           }}
         >
@@ -140,14 +140,14 @@ export function TextEffectInspector() {
           value={effects.map((effect) => effect.fontSize)}
           onChangeValue={(value) => {
             setKeyFrameValue({
-              fontSize: value
+              fontSize: value,
             })
           }}
         />
         <IconButton
           onClick={() => {
             setKeyFrameValue({
-              fontSize: effects.map((effect) => effect.fontSize)
+              fontSize: effects.map((effect) => effect.fontSize),
             })
           }}
         >
@@ -165,7 +165,7 @@ export function TextEffectInspector() {
                   h: effects[0].color.h,
                   s: effects[0].color.s,
                   v: effects[0].color.v,
-                  a: effects[0].color.a
+                  a: effects[0].color.a,
                 }
               : hexToHsv('#000000')
           }
@@ -189,14 +189,14 @@ export function TextEffectInspector() {
                   'color.h': [],
                   'color.s': [],
                   'color.v': [],
-                  'color.a': []
+                  'color.a': [],
                 } as {
                   'color.h': number[]
                   'color.s': number[]
                   'color.v': number[]
                   'color.a': number[]
-                }
-              )
+                },
+              ),
             )
           }}
         />
@@ -216,14 +216,14 @@ export function TextEffectInspector() {
                   'color.h': [],
                   'color.s': [],
                   'color.v': [],
-                  'color.a': []
+                  'color.a': [],
                 } as {
                   'color.h': number[]
                   'color.s': number[]
                   'color.v': number[]
                   'color.a': number[]
-                }
-              )
+                },
+              ),
             )
           }}
         >
@@ -238,14 +238,14 @@ export function TextEffectInspector() {
           value={effects.map((effect) => effect.characterSpacing ?? 0)}
           onChangeValue={(value) => {
             setKeyFrameValue({
-              characterSpacing: value
+              characterSpacing: value,
             })
           }}
         />
         <IconButton
           onClick={() => {
             setKeyFrameValue({
-              characterSpacing: effects.map((effect) => effect.characterSpacing ?? 0)
+              characterSpacing: effects.map((effect) => effect.characterSpacing ?? 0),
             })
           }}
         >
@@ -258,16 +258,16 @@ export function TextEffectInspector() {
         {[
           {
             align: 'left',
-            icon: <IconAlignLeft size={16} />
+            icon: <IconAlignLeft size={16} />,
           },
           {
             align: 'center',
-            icon: <IconAlignCenter size={16} />
+            icon: <IconAlignCenter size={16} />,
           },
           {
             align: 'right',
-            icon: <IconAlignRight size={16} />
-          }
+            icon: <IconAlignRight size={16} />,
+          },
         ].map(({ align, icon }) => (
           <IconButton
             key={align}
@@ -303,15 +303,15 @@ export function TextEffectInspector() {
           {
             id: '_mixed',
             name: 'mixed',
-            type: 'font'
-          }
+            type: 'font',
+          },
         ]
           .filter((asset) => asset.type === 'font')
           .map((asset) => (
             <SelectItem key={asset.id} value={asset.id}>
               <div
                 style={{
-                  fontFamily: asset.name
+                  fontFamily: asset.name,
                 }}
                 className="whitespace-nowrap"
               >

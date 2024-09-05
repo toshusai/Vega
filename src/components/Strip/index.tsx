@@ -20,7 +20,7 @@ const MIN_WIDTH = 8
 
 export const Strip = forwardRef<HTMLDivElement, StripProps>(function Strip(
   { left, width, top, children, onChange, onChangeEnd, selected, onClick, onPointerDown, invalid },
-  ref
+  ref,
 ) {
   const handleLeftHandle = createDragHandler({
     onDown: (e) => {
@@ -28,7 +28,7 @@ export const Strip = forwardRef<HTMLDivElement, StripProps>(function Strip(
       onPointerDown?.(e)
       return {
         left: left,
-        width: width
+        width: width,
       }
     },
     onMove: (_, ctx, move) => {
@@ -44,14 +44,14 @@ export const Strip = forwardRef<HTMLDivElement, StripProps>(function Strip(
       onChange(newLeft, newWidth)
       return {
         left: newLeft,
-        width: newWidth
+        width: newWidth,
       }
     },
     onUp: (_, __, moveCtx) => {
       if (!moveCtx) return
       const { left, width } = moveCtx
       onChangeEnd(left, width)
-    }
+    },
   })
 
   const handleRightHandle = createDragHandler({
@@ -60,7 +60,7 @@ export const Strip = forwardRef<HTMLDivElement, StripProps>(function Strip(
       onPointerDown?.(e)
       return {
         left: left,
-        width: width
+        width: width,
       }
     },
     onMove: (_, ctx, move) => {
@@ -70,14 +70,14 @@ export const Strip = forwardRef<HTMLDivElement, StripProps>(function Strip(
       onChange(left, newWidth)
       return {
         left,
-        width: newWidth
+        width: newWidth,
       }
     },
     onUp: (_, __, moveCtx) => {
       if (!moveCtx) return
       const { left, width } = moveCtx
       onChangeEnd(left, width)
-    }
+    },
   })
 
   const handleMove = createDragHandler({
@@ -86,7 +86,7 @@ export const Strip = forwardRef<HTMLDivElement, StripProps>(function Strip(
       onPointerDown?.(e)
       return {
         left: left,
-        width: width
+        width: width,
       }
     },
     onMove: (_, ctx, move) => {
@@ -96,14 +96,14 @@ export const Strip = forwardRef<HTMLDivElement, StripProps>(function Strip(
       onChange(newLeft, width)
       return {
         left: newLeft,
-        width
+        width,
       }
     },
     onUp: (_, __, moveCtx) => {
       if (!moveCtx) return
       const { left, width } = moveCtx
       onChangeEnd(left, width)
-    }
+    },
   })
 
   return (
@@ -113,7 +113,7 @@ export const Strip = forwardRef<HTMLDivElement, StripProps>(function Strip(
       style={{
         left,
         width,
-        top
+        top,
       }}
       data-selected={selected}
       data-invalid={invalid}

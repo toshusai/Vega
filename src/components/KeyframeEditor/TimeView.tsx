@@ -7,7 +7,7 @@ export function TimeView({
   pxPerSec,
   startSec,
   stripStartSec,
-  snapPoints
+  snapPoints,
 }: {
   pxPerSec: number
   startSec: number
@@ -26,7 +26,7 @@ export function TimeView({
           state.currentTime = sec
 
           return {
-            time: sec
+            time: sec,
           }
         },
         onMove: (_, ctx, move) => {
@@ -36,14 +36,14 @@ export function TimeView({
           const snap = checkSnap(
             sec,
             snapPoints.map((point) => point + stripStartSec),
-            8 / pxPerSec
+            8 / pxPerSec,
           )
           if (snap.isSnapped) {
             state.currentTime = snap.value
           } else {
             state.currentTime = sec
           }
-        }
+        },
       })}
     />
   )

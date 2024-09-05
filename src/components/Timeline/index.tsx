@@ -31,7 +31,7 @@ export function Timeline() {
   const { rect, onPointerDown, parent, refs } = useSelectStripBox(
     useCallback((ids) => {
       state.selectedStripIds = ids
-    }, [])
+    }, []),
   )
   const { ref: rootRef, width } = useWidth()
 
@@ -48,14 +48,14 @@ export function Timeline() {
         display: 'flex',
         height: '100%',
         flexDirection: 'column',
-        overflow: 'hidden'
+        overflow: 'hidden',
       }}
     >
       <div
         className="flex"
         style={{
           justifyContent: 'center',
-          padding: '4px 0'
+          padding: '4px 0',
         }}
       >
         <IconButton
@@ -88,9 +88,9 @@ export function Timeline() {
                       fontSize: 64,
                       keyframes: [],
                       x: state.canvasWidth / 2,
-                      y: state.canvasHeight / 2
-                    } as TextEffect
-                  ]
+                      y: state.canvasHeight / 2,
+                    } as TextEffect,
+                  ],
                 }
                 state.strips.push(newStrip)
                 state.selectedStripIds = [id]
@@ -124,9 +124,9 @@ void main() {
 }
 `,
                       keyframes: [],
-                      type: 'postProcess'
-                    } as PostProcessEffect
-                  ]
+                      type: 'postProcess',
+                    } as PostProcessEffect,
+                  ],
                 }
                 state.strips.push(newStrip)
                 state.selectedStripIds = [id]
@@ -137,7 +137,7 @@ void main() {
             <ContextMenuItem
               onClick={() => {
                 state.strips = state.strips.filter(
-                  (strip) => !state.selectedStripIds.includes(strip.id)
+                  (strip) => !state.selectedStripIds.includes(strip.id),
                 )
                 state.selectedStripIds = []
               }}
@@ -151,7 +151,7 @@ void main() {
         <div
           className="flex flex-col h-full"
           style={{
-            height: 'calc(100% - 40px)'
+            height: 'calc(100% - 40px)',
           }}
         >
           <TimeView pxPerSec={pxPerSec} startSec={startSec} />
@@ -161,7 +161,7 @@ void main() {
               display: 'flex',
               height: '100%',
               position: 'relative',
-              overflow: 'auto'
+              overflow: 'auto',
             }}
           >
             <div
@@ -169,7 +169,7 @@ void main() {
                 width: '100%',
                 display: 'flex',
                 position: 'relative',
-                overflow: 'hidden'
+                overflow: 'hidden',
               }}
               ref={mergeRefs(parent, rootRef)}
               onPointerDown={(e) => {
@@ -196,7 +196,7 @@ void main() {
                     borderColor: '#eee',
                     boxSizing: 'border-box',
                     userSelect: 'none',
-                    pointerEvents: 'none'
+                    pointerEvents: 'none',
                   }}
                 ></div>
               ))}
@@ -223,7 +223,7 @@ void main() {
                     onChange={(left, width) => {
                       left += startSec * pxPerSec
                       const snapPoints = getSnapPoints(state.selectedStripIds).map(
-                        (point) => point * pxPerSec
+                        (point) => point * pxPerSec,
                       )
                       // HOTFIX: this method is not working correctly
                       const isChangedRight = Math.abs(left - strip?.start * pxPerSec) < 0.01
@@ -240,7 +240,7 @@ void main() {
 
                       const { value: snappedRight, isSnapped: isWidthSnapped } = checkSnap(
                         left + width,
-                        snapPoints
+                        snapPoints,
                       )
                       const snappedRightDiff = snappedRight - (left + width)
                       if (!isChangedRight) {
@@ -280,7 +280,7 @@ void main() {
                         if (added) return
                         if (e.metaKey) {
                           state.selectedStripIds = state.selectedStripIds.filter(
-                            (id) => id !== strip.id
+                            (id) => id !== strip.id,
                           )
                         } else {
                           if (prevSelectedIds == state.selectedStripIds.length) {
@@ -292,7 +292,7 @@ void main() {
                         onDown: (e) => {
                           return {
                             offsetY: e.nativeEvent.offsetY,
-                            currentLayers: snap.strips.map((strip) => strip.layer)
+                            currentLayers: snap.strips.map((strip) => strip.layer),
                           }
                         },
                         onMove: (_, ctx, move) => {
@@ -305,7 +305,7 @@ void main() {
                             if (newLayer < 0) return
                             state.strips[i].layer = newLayer
                           })
-                        }
+                        },
                       })(e as React.PointerEvent<HTMLElement>)
                     }}
                     onChangeEnd={() => {
@@ -319,7 +319,7 @@ void main() {
                           userSelect: 'none',
                           fontFamily: getFontFamily(effect),
                           color: hsvToHex(effect.color ?? { a: 1, h: 0, s: 0, v: 0 }) ?? 'black',
-                          whiteSpace: 'nowrap'
+                          whiteSpace: 'nowrap',
                         }}
                       >
                         {effect.text}
@@ -335,7 +335,7 @@ void main() {
       <Cursor
         style={{
           left: snap.currentTime * pxPerSec - startSec * pxPerSec,
-          top: 32
+          top: 32,
         }}
       >
         {snap.currentTime.toFixed(2)}
@@ -343,7 +343,7 @@ void main() {
 
       <div
         style={{
-          width: '100%'
+          width: '100%',
         }}
       >
         <ScaleScrollBar

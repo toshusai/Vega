@@ -8,14 +8,14 @@ export type OnMoveHandler<T = undefined, U = undefined> = (
     diffY: number
     deltaX: number
     deltaY: number
-  }
+  },
 ) => U
 
 export function createDragHandler<T, U>({
   onDown,
   onMove,
   onUp,
-  options
+  options,
 }: {
   /**
    * if returns false, the drag will be canceled
@@ -42,7 +42,7 @@ export function createDragHandler<T, U>({
         diffX: e.clientX - downEvent.clientX,
         diffY: e.clientY - downEvent.clientY,
         deltaX: e.clientX - (prevEvent?.clientX ?? downEvent.clientX),
-        deltaY: e.clientY - (prevEvent?.clientY ?? downEvent.clientY)
+        deltaY: e.clientY - (prevEvent?.clientY ?? downEvent.clientY),
       })
 
       prevEvent = e
@@ -65,7 +65,7 @@ export function createDragHandler<T, U>({
       el.setPointerCapture(downEvent.pointerId)
     }
     el.addEventListener('pointermove', handlePointerMove, {
-      passive: false
+      passive: false,
     })
     window.addEventListener('pointerup', handlePointerUp)
   }
@@ -77,7 +77,7 @@ export function useCreateDragHandler<T, U>({
   onDown,
   onMove,
   onUp,
-  options
+  options,
 }: {
   onDown?: (e: React.PointerEvent<HTMLElement | SVGElement>) => T | false
   onMove?: OnMoveHandler<T, U>
@@ -88,6 +88,6 @@ export function useCreateDragHandler<T, U>({
 }) {
   return useMemo(
     () => createDragHandler({ onDown, onMove, onUp, options }),
-    [onDown, onMove, onUp, options]
+    [onDown, onMove, onUp, options],
   )
 }

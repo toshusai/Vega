@@ -129,7 +129,7 @@ const run = async (canvas: HTMLCanvasElement, glCanvas: HTMLCanvasElement) => {
 const progressState = proxy({
   progress: 0,
   started: false,
-  url: ''
+  url: '',
 })
 
 export function Recorder() {
@@ -145,7 +145,7 @@ export function Recorder() {
     <div
       style={{
         width: '100vw',
-        display: 'flex'
+        display: 'flex',
       }}
     >
       <div
@@ -153,14 +153,14 @@ export function Recorder() {
           margin: 'auto',
           width: 360,
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
         }}
       >
         <div className="border border-solid border-black">
           <canvas
             style={{
               width: '100%',
-              display: 'none'
+              display: 'none',
             }}
             ref={ref}
             id="canvas"
@@ -172,14 +172,14 @@ export function Recorder() {
             width={snap.canvasWidth}
             height={snap.canvasHeight}
             style={{
-              width: '100%'
+              width: '100%',
             }}
           />
           <div
             style={{
               width: `${progress.progress * 100}%`,
               height: 4,
-              backgroundColor: 'black'
+              backgroundColor: 'black',
             }}
           ></div>
         </div>

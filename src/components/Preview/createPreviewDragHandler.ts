@@ -13,18 +13,18 @@ export function createPreviewDragHandler(stripId: string) {
       const effects = getSelectedAnimatedTextEffects(
         selectedTextEffects(),
         state.currentTime,
-        state.fps
+        state.fps,
       )
       const mainEffectIndex = effects.findIndex((effect) => effect.id === stripId)
 
       const effectArray = [
         effects[mainEffectIndex],
-        ...effects.filter((effect) => effect.id !== stripId)
+        ...effects.filter((effect) => effect.id !== stripId),
       ]
       return {
         x: effectArray.map((effect) => effect.x),
         y: effectArray.map((effect) => effect.y),
-        effects: effectArray
+        effects: effectArray,
       }
     },
     onMove: (_, ctx, move) => {
@@ -54,7 +54,7 @@ export function createPreviewDragHandler(stripId: string) {
             height,
             effects.map((effect) => effect.id),
             effect,
-            4 / state.canvasScale
+            4 / state.canvasScale,
           )
           if (p) {
             snapDiffX = p.diffX
@@ -68,6 +68,6 @@ export function createPreviewDragHandler(stripId: string) {
     },
     onUp: () => {
       snapState.points = []
-    }
+    },
   })
 }

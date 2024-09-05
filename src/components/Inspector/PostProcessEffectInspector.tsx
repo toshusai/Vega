@@ -30,7 +30,7 @@ export function PostProcessEffectInspector() {
     effects.every((effect) => effect.fragmentShader === effects[0].fragmentShader) &&
       effects.length > 0
       ? effects[0].fragmentShader
-      : 'mixed'
+      : 'mixed',
   )
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export function PostProcessEffectInspector() {
       effects.every((effect) => effect.fragmentShader === effects[0].fragmentShader) &&
         effects.length > 0
         ? effects[0].fragmentShader
-        : 'mixed'
+        : 'mixed',
     )
     // fragmentShaderの更新で状態の更新を行いたくないため
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,9 +66,9 @@ export function PostProcessEffectInspector() {
             time: state.currentTime - strip.start,
             ease: Ease.Linear,
             id: randomId(),
-            value: value[i]
+            value: value[i],
           },
-          true
+          true,
         )
       })
     })
@@ -134,7 +134,7 @@ export function PostProcessEffectInspector() {
             <IconButton
               onClick={() => {
                 setKeyFrameValue({
-                  ['uniforms.' + key]: [value]
+                  ['uniforms.' + key]: [value],
                 })
               }}
             >

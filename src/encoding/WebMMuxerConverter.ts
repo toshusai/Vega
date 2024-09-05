@@ -23,28 +23,28 @@ export class WebMMuxerConverter implements IVegaConverter {
         codec: 'V_VP9',
         width: 1280,
         height: 720,
-        frameRate: 60
+        frameRate: 60,
       },
       audio: {
         codec: 'A_OPUS',
         sampleRate: 44100,
-        numberOfChannels: 1
+        numberOfChannels: 1,
       },
-      firstTimestampBehavior: 'offset'
+      firstTimestampBehavior: 'offset',
     })
 
     this.videoEncoder = new VideoEncoder({
       output: (chunk, meta) => {
         this.muxer.addVideoChunk(chunk, meta)
       },
-      error: console.error
+      error: console.error,
     })
 
     this.videoEncoder.configure({
       codec: 'vp09.00.10.08',
       width: 1280,
       height: 720,
-      bitrate: 1000000
+      bitrate: 1000000,
     })
   }
 
@@ -55,7 +55,7 @@ export class WebMMuxerConverter implements IVegaConverter {
   capture(canvas: HTMLCanvasElement) {
     const elapsedTime = state.currentTime * 1000
     const frame = new VideoFrame(canvas, {
-      timestamp: elapsedTime * 1000
+      timestamp: elapsedTime * 1000,
     })
 
     const needsKeyFrame = elapsedTime - this.lastKeyFrame >= 10000

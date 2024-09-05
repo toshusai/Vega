@@ -22,7 +22,7 @@ const fontList = [
   'Potta One',
   'Rampart One',
   'Reggage One',
-  'Yuji Mai'
+  'Yuji Mai',
 ].sort()
 
 export const state = proxy({
@@ -31,8 +31,8 @@ export const state = proxy({
       id: name,
       type: 'font',
       name,
-      path: `https://fonts.googleapis.com/css2?family=${name.split(' ').join('+')}&display=swap`
-    }))
+      path: `https://fonts.googleapis.com/css2?family=${name.split(' ').join('+')}&display=swap`,
+    })),
   ],
   currentTime: 0,
   fps: 60,
@@ -62,13 +62,13 @@ export const state = proxy({
           text: 'Hello',
           x: 0,
           y: 0,
-          keyframes: []
-        } as TextEffect
+          keyframes: [],
+        } as TextEffect,
       ],
       id: '1',
       layer: 0,
       start: 0,
-      length: 1
+      length: 1,
     },
     {
       effects: [
@@ -80,13 +80,13 @@ export const state = proxy({
           text: 'World',
           x: 100,
           y: 300,
-          keyframes: []
-        } as TextEffect
+          keyframes: [],
+        } as TextEffect,
       ],
       id: '2',
       layer: 1,
       start: 0.8,
-      length: 1.3
+      length: 1.3,
     },
     {
       effects: [
@@ -98,13 +98,13 @@ export const state = proxy({
           text: 'Text\nEffect',
           x: 300,
           y: 200,
-          keyframes: []
-        } as TextEffect
+          keyframes: [],
+        } as TextEffect,
       ],
       id: '3',
       layer: 0,
       start: 1.4,
-      length: 1.1
-    }
-  ]
+      length: 1.1,
+    },
+  ],
 } as VegaProject)

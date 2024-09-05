@@ -5,7 +5,7 @@ export function calculateKeyFrameValue(
   currentTime: number,
   property: string,
   defaultValue: number,
-  fps: number
+  fps: number,
 ) {
   const prevKeyframe = keyframes
     .filter((k) => k.property === property && k.time < currentTime + 1 / fps)

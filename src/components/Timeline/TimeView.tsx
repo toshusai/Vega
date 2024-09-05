@@ -16,7 +16,7 @@ export function TimeView({ pxPerSec, startSec }: { pxPerSec: number; startSec: n
           const newTime = e.nativeEvent.offsetX / pxPerSec + startSec
           state.currentTime = newTime
           return {
-            time: newTime
+            time: newTime,
           }
         },
         onMove: (_, ctx, move) => {
@@ -30,7 +30,7 @@ export function TimeView({ pxPerSec, startSec }: { pxPerSec: number; startSec: n
           if (snap.isSnapped) {
             state.currentTime = snap.value / pxPerSec
           }
-        }
+        },
       })}
     />
   )

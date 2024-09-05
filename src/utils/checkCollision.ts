@@ -1,6 +1,6 @@
 export function checkCollision(
   rectA: { x: number; y: number; width: number; height: number },
-  rectB: { x: number; y: number; width: number; height: number }
+  rectB: { x: number; y: number; width: number; height: number },
 ) {
   return (
     rectA.x < rectB.x + rectB.width &&

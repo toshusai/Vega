@@ -9,7 +9,7 @@ import { assignDeepProperty } from '../utils/assignDeepProperty'
 export function getSelectedAnimatedTextEffects(
   effects: DeepReadOnly<Effect[]>,
   currentTime: number,
-  fps: number
+  fps: number,
 ) {
   return effects
     .map((effect) => {
@@ -31,7 +31,7 @@ export function getSelectedAnimatedTextEffects(
           currentTime - strip.start,
           key,
           value,
-          fps
+          fps,
         )
 
         assignDeepProperty(animatedEffect, key, newValue)

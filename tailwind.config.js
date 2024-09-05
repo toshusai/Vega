@@ -11,9 +11,9 @@ module.exports = {
         20: '20px',
         24: '24px',
         28: '28px',
-        32: '32px'
-      }
-    }
+        32: '32px',
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 }

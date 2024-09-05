@@ -16,7 +16,7 @@ test('getDeepProperties returns all deep properties of an object', () => {
       h: 0,
       s: 0,
       v: 0,
-      a: 1
+      a: 1,
     },
     shadowColor: 'transparent',
     shadowBlur: 0,
@@ -24,7 +24,7 @@ test('getDeepProperties returns all deep properties of an object', () => {
     outlineWidth: 0,
     fontAssetId: '1',
     fontStyle: '',
-    keyframes: []
+    keyframes: [],
   }
 
   const properties = getDeepProperties(textEffect)
@@ -48,6 +48,6 @@ test('getDeepProperties returns all deep properties of an object', () => {
     'outlineWidth',
     'fontAssetId',
     'fontStyle',
-    'keyframes'
+    'keyframes',
   ])
 })
