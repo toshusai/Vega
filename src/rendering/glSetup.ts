@@ -32,7 +32,7 @@ export function glSetup(canvas: HTMLCanvasElement, glCanvas: HTMLCanvasElement) 
     uniforms: {
       uTexture: { value: tex },
       uTime: { value: 0 },
-      uResolution: { value: new THREE.Vector2(1280, 720) }
+      uResolution: { value: new THREE.Vector2(1280, 720) },
     },
     vertexShader: `
 varying vec2 vUv;
@@ -50,7 +50,7 @@ void main() {
   gl_FragColor = texture2D(uTexture, vUv);
 }
 `,
-    transparent: true
+    transparent: true,
   })
   mat.blending = THREE.CustomBlending
   mat.blendSrc = THREE.OneFactor
@@ -66,6 +66,6 @@ void main() {
     scene,
     tex,
     mat,
-    mesh
+    mesh,
   }
 }

@@ -7,7 +7,7 @@ export class CCaptureConverter implements IVegaConverter {
     this.ccapture = new CCapture({
       format: 'webm',
       framerate: state.fps,
-      quality: 1
+      quality: 1,
     })
   }
   start() {

@@ -4,7 +4,7 @@ import { Strip } from '.'
 import { useEffect, useRef, useState } from 'react'
 
 const meta: Meta<typeof Strip> = {
-  component: Strip
+  component: Strip,
 }
 
 export default meta
@@ -15,7 +15,7 @@ export const Default: Story = {
   args: {
     left: 0,
     width: 100,
-    onChange: (left, width) => console.log(left, width)
+    onChange: (left, width) => console.log(left, width),
   },
   render: function Render(args) {
     const [left, setLeft] = useState(args.left)
@@ -30,7 +30,7 @@ export const Default: Story = {
           display: 'flex',
           border: '1px solid black',
           position: 'relative',
-          overflow: 'hidden'
+          overflow: 'hidden',
         }}
         onPointerDown={() => setSelected(false)}
       >
@@ -49,7 +49,7 @@ export const Default: Story = {
         >
           <div
             style={{
-              padding: '0 4px'
+              padding: '0 4px',
             }}
           >
             Strip
@@ -57,7 +57,7 @@ export const Default: Story = {
         </Strip>
       </div>
     )
-  }
+  },
 }
 import { proxy, useSnapshot } from 'valtio'
 import { createDragHandler } from '../../interactions/createDragHandler'
@@ -68,7 +68,7 @@ import { TextEffect, VegaProject } from '@/schemas'
 
 function checkCollision(
   rectA: { x: number; y: number; width: number; height: number },
-  rectB: { x: number; y: number; width: number; height: number }
+  rectB: { x: number; y: number; width: number; height: number },
 ) {
   return (
     rectA.x < rectB.x + rectB.width &&
@@ -108,13 +108,13 @@ const state = proxy({
           text: '',
           x: 0,
           y: 0,
-          keyframes: []
-        } as TextEffect
+          keyframes: [],
+        } as TextEffect,
       ],
       id: '1',
       layer: 0,
       start: 0,
-      length: 1
+      length: 1,
     },
     {
       effects: [
@@ -126,13 +126,13 @@ const state = proxy({
           text: '',
           x: 0,
           y: 0,
-          keyframes: []
-        } as TextEffect
+          keyframes: [],
+        } as TextEffect,
       ],
       id: '2',
       layer: 1,
       start: 0.8,
-      length: 1.3
+      length: 1.3,
     },
     {
       effects: [
@@ -144,15 +144,15 @@ const state = proxy({
           text: '',
           x: 0,
           y: 0,
-          keyframes: []
-        } as TextEffect
+          keyframes: [],
+        } as TextEffect,
       ],
       id: '3',
       layer: 0,
       start: 1.4,
-      length: 1.1
-    }
-  ]
+      length: 1.1,
+    },
+  ],
 } as VegaProject)
 
 const LAYER_GAP = 4
@@ -169,14 +169,14 @@ function TimeView({ pxPerSec, startSec }: { pxPerSec: number; startSec: number }
           const newTime = e.nativeEvent.offsetX / pxPerSec + startSec
           state.currentTime = newTime
           return {
-            time: newTime
+            time: newTime,
           }
         },
         onMove: (_, ctx, move) => {
           if (!ctx) return
           const newTime = ctx.time + move.diffX / pxPerSec
           state.currentTime = newTime
-        }
+        },
       })}
     />
   )
@@ -260,7 +260,7 @@ function useSelectStripBox() {
           x: bbox.x - parentBB.x,
           y: bbox.y - parentBB.y,
           width: bbox.width,
-          height: bbox.height
+          height: bbox.height,
         }
 
         if (checkCollision(rect, elRect)) {
@@ -277,7 +277,7 @@ function useSelectStripBox() {
     rect,
     onPointerDown,
     parent,
-    refs
+    refs,
   }
 }
 
@@ -304,7 +304,7 @@ function useTimelineSeconds(width: number) {
   const startSec = (snap.viewStartRate * width) / defaultPxPerSec
   return {
     pxPerSec,
-    startSec
+    startSec,
   }
 }
 
@@ -327,7 +327,7 @@ export const Multiple: Story = {
           flexDirection: 'column',
           border: '1px solid #888',
           boxSizing: 'border-box',
-          overflow: 'hidden'
+          overflow: 'hidden',
         }}
       >
         <TimeView pxPerSec={pxPerSec} startSec={startSec} />
@@ -337,7 +337,7 @@ export const Multiple: Story = {
             height: '254px',
             display: 'f6ex',
             position: 'relative',
-            overflow: 'auto'
+            overflow: 'auto',
           }}
         >
           <div
@@ -345,7 +345,7 @@ export const Multiple: Story = {
               width: '100%',
               display: 'flex',
               position: 'relative',
-              overflow: 'hidden'
+              overflow: 'hidden',
             }}
             ref={mergeRefs(parent, rootRef)}
             onPointerDown={(e) => {
@@ -371,7 +371,7 @@ export const Multiple: Story = {
                   borderColor: '#eee',
                   boxSizing: 'border-box',
                   userSelect: 'none',
-                  pointerEvents: 'none'
+                  pointerEvents: 'none',
                 }}
               ></div>
             ))}
@@ -395,7 +395,7 @@ export const Multiple: Story = {
                   onChange={(left, width) => {
                     left += startSec * pxPerSec
                     const snapPoints = getSnapPoints(state.selectedStripIds).map(
-                      (point) => point * pxPerSec
+                      (point) => point * pxPerSec,
                     )
                     const isChangedRight = left === strip?.start * pxPerSec
                     const isChangedLeft = width === strip?.length * pxPerSec
@@ -411,7 +411,7 @@ export const Multiple: Story = {
 
                     const { value: snappedRight, isSnapped: isWidthSnapped } = checkSnap(
                       left + width,
-                      snapPoints
+                      snapPoints,
                     )
                     const snappedRightDiff = snappedRight - (left + width)
                     if (!isChangedRight) {
@@ -449,7 +449,7 @@ export const Multiple: Story = {
                       onDown: (e) => {
                         return {
                           offsetY: e.nativeEvent.offsetY,
-                          currentLayers: snap.strips.map((strip) => strip.layer)
+                          currentLayers: snap.strips.map((strip) => strip.layer),
                         }
                       },
                       onMove: (_, ctx, move) => {
@@ -462,7 +462,7 @@ export const Multiple: Story = {
                           if (newLayer < 0) return
                           state.strips[i].layer = newLayer
                         })
-                      }
+                      },
                     })(e as React.PointerEvent<HTMLElement>)
                   }}
                   onChangeEnd={() => {}}
@@ -470,7 +470,7 @@ export const Multiple: Story = {
                   <div
                     style={{
                       padding: '0 4px',
-                      userSelect: 'none'
+                      userSelect: 'none',
                     }}
                   >
                     Strip
@@ -482,7 +482,7 @@ export const Multiple: Story = {
         </div>
         <Cursor
           style={{
-            left: snap.currentTime * pxPerSec - startSec * pxPerSec
+            left: snap.currentTime * pxPerSec - startSec * pxPerSec,
           }}
         >
           {snap.currentTime.toFixed(2)}
@@ -490,7 +490,7 @@ export const Multiple: Story = {
 
         <div
           style={{
-            width: '100%'
+            width: '100%',
           }}
         >
           <ScaleScrollBar
@@ -504,7 +504,7 @@ export const Multiple: Story = {
         </div>
       </div>
     )
-  }
+  },
 }
 
 function onClickFromPointerDown(callback: () => void) {
@@ -528,7 +528,7 @@ function checkSnap(value: number, snapPoints: number[], threshold = 8) {
     if (Math.abs(value - snapPoint) < threshold)
       return {
         value: snapPoint,
-        isSnapped: true
+        isSnapped: true,
       }
   }
   return { value, isSnapped: false }

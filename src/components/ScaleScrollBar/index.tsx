@@ -17,7 +17,7 @@ export function ScaleScrollBar({ start, end, onChange }: ScaleScrollBarProps) {
           className="scale-scroll-bar-handle"
           style={{
             left: `${start * 100}%`,
-            right: `calc(100% - ${end * 100}%)`
+            right: `calc(100% - ${end * 100}%)`,
           }}
           onPointerDown={createDragHandler({
             onDown: () => {
@@ -38,12 +38,12 @@ export function ScaleScrollBar({ start, end, onChange }: ScaleScrollBarProps) {
                 return
               }
               onChange(newStart, newEnd)
-            }
+            },
           })}
         ></div>
         <Handle
           style={{
-            left: `${start * 100}%`
+            left: `${start * 100}%`,
           }}
           onPointerDown={createDragHandler({
             onDown: () => {
@@ -66,12 +66,12 @@ export function ScaleScrollBar({ start, end, onChange }: ScaleScrollBarProps) {
               }
 
               onChange(newStart, end)
-            }
+            },
           })}
         />
         <Handle
           style={{
-            right: `calc(100% - ${end * 100}%)`
+            right: `calc(100% - ${end * 100}%)`,
           }}
           onPointerDown={createDragHandler({
             onDown: () => {
@@ -92,7 +92,7 @@ export function ScaleScrollBar({ start, end, onChange }: ScaleScrollBarProps) {
               }
 
               onChange(start, newEnd)
-            }
+            },
           })}
         />
       </div>

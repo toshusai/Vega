@@ -7,7 +7,7 @@ import {
   SelectRect,
   useSelectRectHandler,
   View,
-  ViewMode
+  ViewMode,
 } from '@toshusai/cmpui'
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { state } from '../../state'
@@ -34,7 +34,7 @@ export function Preview() {
   const view = {
     x: snap.canvasLeft,
     y: snap.canvasTop,
-    scale: snap.canvasScale
+    scale: snap.canvasScale,
   }
 
   const [width, height] = [1280, 720]
@@ -124,14 +124,14 @@ export function Preview() {
           x: (rect.x - snap.canvasLeft) / snap.canvasScale,
           y: (rect.y - snap.canvasTop) / snap.canvasScale,
           width: rect.width / snap.canvasScale,
-          height: rect.height / snap.canvasScale
+          height: rect.height / snap.canvasScale,
         },
         {
           x: value.scaledRect.left,
           y: value.scaledRect.top,
           width: value.scaledRect.width,
-          height: value.scaledRect.height
-        }
+          height: value.scaledRect.height,
+        },
       )
       if (isHit) {
         state.selectedStripIds.push(key)
@@ -156,13 +156,13 @@ export function Preview() {
         minScale={0.1}
         maxScale={2}
         style={{
-          background: '#ddd'
+          background: '#ddd',
         }}
         content={
           <div
             style={
               {
-                '--cmpui-block-size': `${0.5}px`
+                '--cmpui-block-size': `${0.5}px`,
               } as React.CSSProperties
             }
           >
@@ -174,7 +174,7 @@ export function Preview() {
                 transformOrigin: 'top left',
                 imageRendering: 'pixelated',
                 background: '#fff',
-                display: 'none'
+                display: 'none',
               }}
             />
             <canvas
@@ -184,7 +184,7 @@ export function Preview() {
               style={{
                 transformOrigin: 'top left',
                 imageRendering: 'pixelated',
-                background: '#fff'
+                background: '#fff',
               }}
             />
           </div>
@@ -194,7 +194,7 @@ export function Preview() {
           style={{
             width: '100%',
             height: '100%',
-            position: 'relative'
+            position: 'relative',
           }}
           onPointerDown={(e) => {
             if (mode !== 'default') return
@@ -221,7 +221,7 @@ export function Preview() {
               return
             }
             const strip = getStripByEffectId(
-              state.selectedStripIds[state.selectedStripIds.length - 1]
+              state.selectedStripIds[state.selectedStripIds.length - 1],
             )
             if (!strip) return
             createPreviewDragHandler(strip.id)(e)
@@ -234,7 +234,7 @@ export function Preview() {
               width: width * view.scale,
               height: height * view.scale,
               left: view.x,
-              top: view.y
+              top: view.y,
             }}
           ></div>
         </div>
@@ -264,7 +264,7 @@ export function Preview() {
                       scaleY={(effect.scale?.y ?? 1) * snap.canvasScale}
                       origin={{
                         x: width / 2,
-                        y: height / 2
+                        y: height / 2,
                       }}
                       position={{ x, y }}
                       rootProps={{
@@ -274,7 +274,7 @@ export function Preview() {
                           if (el.parentElement?.firstChild === el) {
                             createPreviewDragHandler(strip.id)(e)
                           }
-                        }
+                        },
                       }}
                       setScaleX={(scaleX) => {
                         if (!isTextEffect(effect)) return
@@ -324,7 +324,7 @@ export function Preview() {
                         whiteSpace: 'pre-wrap',
                         lineHeight: '1em',
                         background: 'transparent',
-                        textAlign: effect.align
+                        textAlign: effect.align,
                       }}
                       onFocus={(e) => {
                         e.target.select()
@@ -360,7 +360,7 @@ export function Preview() {
 export function usePointerEnterFocus() {
   return useCallback((e: React.PointerEvent<HTMLElement>) => {
     e.currentTarget.focus({
-      preventScroll: true
+      preventScroll: true,
     })
   }, [])
 }
@@ -388,7 +388,7 @@ function SnapHints() {
               top: point.direction === 'horizontal' ? value : 0,
               width: point.direction === 'vertical' ? 1 : '100%',
               height: point.direction === 'horizontal' ? 1 : '100%',
-              background: 'red'
+              background: 'red',
             }}
           ></div>
         )
@@ -398,7 +398,7 @@ function SnapHints() {
 }
 
 export const snapState = proxy({
-  points: [] as SnapPoint[]
+  points: [] as SnapPoint[],
 })
 
 type SnapPoint = {

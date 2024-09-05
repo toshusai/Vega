@@ -17,7 +17,7 @@ function TextRender(props: { effect: TextEffect }) {
       id: '1',
       layer: 0,
       start: 0,
-      length: 1
+      length: 1,
     }
     const state: VegaProject = {
       assets: [
@@ -25,8 +25,8 @@ function TextRender(props: { effect: TextEffect }) {
           id: 'Honk',
           type: 'font',
           path: `https://fonts.googleapis.com/css2?family=Honk&display=swap`,
-          name: 'Honk'
-        }
+          name: 'Honk',
+        },
       ],
       strips: [],
       currentTime: 0,
@@ -45,7 +45,7 @@ function TextRender(props: { effect: TextEffect }) {
       selectedAssetIds: [],
       selectedKeyframeIds: [],
       canvasScale: 0.5,
-      recordingState: 'idle'
+      recordingState: 'idle',
     }
     loadFont(state.assets[0] as FontAsset).then(() => {
       updateTextEffect(ctx, strip.effects[0] as TextEffect, strip, state)
@@ -58,14 +58,14 @@ function TextRender(props: { effect: TextEffect }) {
       width={512}
       height={512}
       style={{
-        border: '1px solid black'
+        border: '1px solid black',
       }}
     />
   )
 }
 
 const meta: Meta<typeof TextRender> = {
-  component: TextRender
+  component: TextRender,
 }
 
 export default meta
@@ -82,9 +82,9 @@ export const Default: Story = {
       text: 'Text',
       x: 256,
       y: 256,
-      keyframes: []
-    } as TextEffect
-  }
+      keyframes: [],
+    } as TextEffect,
+  },
 }
 
 export const Font: Story = {
@@ -97,9 +97,9 @@ export const Font: Story = {
       text: 'Text',
       x: 256,
       y: 256,
-      keyframes: []
-    } as TextEffect
-  }
+      keyframes: [],
+    } as TextEffect,
+  },
 }
 
 export const Multiline: Story = {
@@ -112,9 +112,9 @@ export const Multiline: Story = {
       text: 'Hello\nWorld\nMultiline',
       x: 256,
       y: 256,
-      keyframes: []
-    } as TextEffect
-  }
+      keyframes: [],
+    } as TextEffect,
+  },
 }
 
 export const AlignCenter: Story = {
@@ -128,9 +128,9 @@ export const AlignCenter: Story = {
       align: 'center',
       x: 256,
       y: 256,
-      keyframes: []
-    } as TextEffect
-  }
+      keyframes: [],
+    } as TextEffect,
+  },
 }
 
 export const AlignRight: Story = {
@@ -144,7 +144,7 @@ export const AlignRight: Story = {
       align: 'right',
       x: 256,
       y: 256,
-      keyframes: []
-    } as TextEffect
-  }
+      keyframes: [],
+    } as TextEffect,
+  },
 }

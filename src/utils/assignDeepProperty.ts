@@ -2,7 +2,7 @@
 export function assignDeepProperty<T extends object>(
   $obj: T,
   path: string,
-  value: string | number | boolean
+  value: string | number | boolean,
 ) {
   const keys = path.split('.')
   let current = $obj

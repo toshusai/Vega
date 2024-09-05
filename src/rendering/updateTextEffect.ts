@@ -48,7 +48,7 @@ export async function updateTextEffect(
   ctx: CanvasRenderingContext2D,
   effect: TextEffect,
   strip: Strip,
-  scene: VegaProject
+  scene: VegaProject,
 ) {
   const visible = stripIsVisible(strip, scene.currentTime, scene.fps)
   if (!visible) {
@@ -76,7 +76,7 @@ export async function updateTextEffect(
       scene.currentTime - strip.start,
       key,
       value,
-      scene.fps
+      scene.fps,
     )
 
     assignDeepProperty(animatedEffect, key, newValue)
@@ -197,7 +197,7 @@ export async function updateTextEffect(
       left: x - (maxWidth / 2) * (animatedEffect.scale?.x ?? 1),
       top: y - (maxHeight / 2) * (animatedEffect.scale?.y ?? 1),
       width: maxWidth * (animatedEffect.scale?.x ?? 1),
-      height: maxHeight * (animatedEffect.scale?.y ?? 1)
-    }
+      height: maxHeight * (animatedEffect.scale?.y ?? 1),
+    },
   })
 }

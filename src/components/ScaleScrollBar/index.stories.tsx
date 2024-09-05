@@ -4,7 +4,7 @@ import { ScaleScrollBar } from '.'
 import { useState } from 'react'
 
 const meta: Meta<typeof ScaleScrollBar> = {
-  component: ScaleScrollBar
+  component: ScaleScrollBar,
 }
 
 export default meta
@@ -31,5 +31,5 @@ export const Default: Story = {
         />
       </div>
     )
-  }
+  },
 }

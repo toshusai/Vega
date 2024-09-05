@@ -30,7 +30,7 @@ export function KeyframeEditor() {
             onClick={() => {
               selectedTextEffects().forEach((effect) => {
                 effect.keyframes = effect.keyframes.filter(
-                  (keyframe) => !state.selectedKeyframeIds.includes(keyframe.id)
+                  (keyframe) => !state.selectedKeyframeIds.includes(keyframe.id),
                 )
               })
             }}
@@ -81,7 +81,7 @@ export function KeyframeEditor() {
             startSec={0}
             stripStartSec={strip.start}
             snapPoints={selectedTextEffectsSnapshot.flatMap((effect) =>
-              effect.keyframes.map((keyframe) => keyframe.time)
+              effect.keyframes.map((keyframe) => keyframe.time),
             )}
           />
         </div>
@@ -89,7 +89,7 @@ export function KeyframeEditor() {
         {snap.currentTime - strip.start >= 0 && (
           <Cursor
             style={{
-              left: 64 + snap.currentTime * pxPerSec - strip.start * pxPerSec
+              left: 64 + snap.currentTime * pxPerSec - strip.start * pxPerSec,
             }}
           >
             {(snap.currentTime - strip.start).toFixed(2)}

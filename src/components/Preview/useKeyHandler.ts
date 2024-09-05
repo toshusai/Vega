@@ -19,10 +19,10 @@ export function useKeyHandler() {
           },
           onUp: () => {
             setKeyStack((keyStack) => keyStack.filter((k) => k !== key))
-          }
-        })
+          },
+        }),
       ),
-    []
+    [],
   )
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -47,6 +47,6 @@ export function useKeyHandler() {
   return {
     handleKeyDown,
     mode,
-    handlePointerEnter
+    handlePointerEnter,
   }
 }

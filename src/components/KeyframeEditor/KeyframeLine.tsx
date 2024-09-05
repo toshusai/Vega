@@ -31,7 +31,7 @@ export function KeyframeLine() {
   const { rect, onPointerDown, refs, parent } = useSelectStripBox(
     useCallback((ids) => {
       state.selectedKeyframeIds = ids
-    }, [])
+    }, []),
   )
 
   if (effects.length === 0) {
@@ -82,7 +82,7 @@ export function KeyframeLine() {
                       key={j}
                       className="h-8 w-8 absolute flex items-center justify-center translate-x-[-3.5px] translate-y-[3.5px]"
                       style={{
-                        left: `${keyframe.time * 100}px`
+                        left: `${keyframe.time * 100}px`,
                       }}
                       ref={(el) => {
                         refs.current[i * map[propName].length + j] = el
@@ -109,7 +109,7 @@ export function KeyframeLine() {
                             if (!added) {
                               if (e.metaKey) {
                                 state.selectedKeyframeIds = state.selectedKeyframeIds.filter(
-                                  (id) => id !== keyframe.id
+                                  (id) => id !== keyframe.id,
                                 )
                               } else {
                                 if (prevSelectedIds === state.selectedKeyframeIds.length) {
@@ -121,14 +121,14 @@ export function KeyframeLine() {
 
                           const effect = getSelectedEffects()[0]
                           const currentKeyframes = effect.keyframes.filter((k) =>
-                            state.selectedKeyframeIds.includes(k.id)
+                            state.selectedKeyframeIds.includes(k.id),
                           )
                           if (currentKeyframes.length === 0) return null
                           return {
                             time: keyframe.time,
                             effect,
                             keyframes: currentKeyframes,
-                            startKeyframes: currentKeyframes.map((k) => ({ ...k }))
+                            startKeyframes: currentKeyframes.map((k) => ({ ...k })),
                           }
                         },
                         onMove: (_, ctx, move) => {
@@ -139,7 +139,7 @@ export function KeyframeLine() {
                               keyframe.time = prev.time + move.diffX / 100
                             }
                           })
-                        }
+                        },
                       })}
                     >
                       <IconSquareFilled
@@ -155,7 +155,7 @@ export function KeyframeLine() {
                           if (selected) {
                             if (e.metaKey) {
                               state.selectedKeyframeIds = state.selectedKeyframeIds.filter(
-                                (id) => id !== keyframe.id
+                                (id) => id !== keyframe.id,
                               )
                             }
                           } else {

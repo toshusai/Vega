@@ -6,7 +6,7 @@ export default defineConfig({
   resolve: {
     alias: {
       // These are the aliases we set up in tsconfig.json
-      '@': '/src'
-    }
-  }
+      '@': '/src',
+    },
+  },
 })

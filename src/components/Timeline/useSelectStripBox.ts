@@ -19,7 +19,7 @@ export function useSelectStripBox(onSelect: (ids: string[]) => void) {
           x: bbox.x - parentBB.x,
           y: bbox.y - parentBB.y,
           width: bbox.width,
-          height: bbox.height
+          height: bbox.height,
         }
 
         if (checkCollision(rect, elRect)) {
@@ -36,6 +36,6 @@ export function useSelectStripBox(onSelect: (ids: string[]) => void) {
     rect,
     onPointerDown,
     parent,
-    refs
+    refs,
   }
 }

@@ -126,7 +126,7 @@ export type TextEffect = {
 export enum TextAlign {
   left = 'left',
   center = 'center',
-  right = 'right'
+  right = 'right',
 }
 
 export type VideoEffect = {
@@ -157,7 +157,7 @@ export enum Ease {
   EaseInOutQuad = 'easeInOutQuad',
   EaseOutBack = 'easeOutBack',
   EaseInCubic = 'easeInCubic',
-  EaseInOutCubic = 'easeInOutCubic'
+  EaseInOutCubic = 'easeInOutCubic',
 }
 
 export const allEase = Object.values(Ease).map((ease) => ease)

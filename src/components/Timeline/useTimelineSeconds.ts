@@ -8,6 +8,6 @@ export function useTimelineSeconds(width: number) {
   const startSec = (snap.viewStartRate * width) / defaultPxPerSec
   return {
     pxPerSec,
-    startSec
+    startSec,
   }
 }

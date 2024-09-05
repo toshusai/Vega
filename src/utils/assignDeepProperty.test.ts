@@ -16,7 +16,7 @@ test('assignDeepProperty assigns a deep property to an object', () => {
       h: 0,
       s: 0,
       v: 0,
-      a: 1
+      a: 1,
     },
     shadowColor: 'transparent',
     shadowBlur: 0,
@@ -24,7 +24,7 @@ test('assignDeepProperty assigns a deep property to an object', () => {
     outlineWidth: 0,
     fontAssetId: '1',
     fontStyle: '',
-    keyframes: []
+    keyframes: [],
   }
 
   assignDeepProperty(textEffect, 'color.a', 0.5)

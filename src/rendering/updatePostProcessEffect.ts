@@ -19,7 +19,7 @@ export async function updatePostProcessEffect(
   ctx: CanvasRenderingContext2D,
   effect: PostProcessEffect,
   strip: Strip,
-  scene: VegaProject
+  scene: VegaProject,
 ) {
   const visible = stripIsVisible(strip, scene.currentTime, scene.fps)
   if (!visible) {
@@ -35,11 +35,11 @@ export async function updatePostProcessEffect(
       uniforms: {
         uTexture: { value: globalGl.tex },
         uTime: { value: 0 },
-        uResolution: { value: new THREE.Vector2(1280, 720) }
+        uResolution: { value: new THREE.Vector2(1280, 720) },
       },
       vertexShader,
       fragmentShader: effect.fragmentShader,
-      transparent: true
+      transparent: true,
     })
     material.needsUpdate = true
     material.blending = THREE.CustomBlending
@@ -62,7 +62,7 @@ export async function updatePostProcessEffect(
       scene.currentTime - strip.start,
       `uniforms.${key}`,
       value,
-      scene.fps
+      scene.fps,
     )
     if (!material.uniforms[key]) {
       material.uniforms[key] = { value: newValue }
