@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { VegaProject } from '@/schemas'
 import { IconDeviceFloppy } from '@tabler/icons-react'
 import { isTextEffect } from '@/rendering/isTextEffect'
-import { commit, undo } from '@/state/UndoManager'
+import { commit, undo, undoManager } from '@/state/UndoManager'
 
 export function Header() {
   useEffect(() => {
@@ -36,10 +36,14 @@ export function Header() {
           if (!effect.characterSpacing) {
             effect.characterSpacing = 0
           }
+          if (!effect.angle) {
+            effect.angle = 0
+          }
         }
       }
     }
 
+    undoManager.clear()
     commit()
     return () => {
       undo()

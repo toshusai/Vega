@@ -6,4 +6,4 @@ out
 
 *storybook.log
 
-src/renderer/public/*
+.ignore/*

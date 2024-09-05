@@ -19,6 +19,7 @@ import { getStripByEffectId } from '../Preview/getStripByEffectId'
 import { randomId } from '../../utils/randomId'
 import { useAnimatedEffects } from '../../state/useAnimatedEffects'
 import { selectedTextEffects } from '../../state/selectedTextEffects'
+import { commit } from '@/state/UndoManager'
 
 export function TextEffectInspector() {
   const snap = useSnapshot(state)
@@ -70,6 +71,7 @@ export function TextEffectInspector() {
           selectedTextEffects().forEach((effect) => {
             effect.text = text
           })
+          commit()
         }}
       />
 
@@ -85,6 +87,8 @@ export function TextEffectInspector() {
               x: value,
             })
           }}
+          onEnd={() => commit()}
+          onBlur={() => commit()}
         />
 
         <SliderNumberField
@@ -98,6 +102,8 @@ export function TextEffectInspector() {
               y: value,
             })
           }}
+          onEnd={() => commit()}
+          onBlur={() => commit()}
         />
         <IconButton
           onClick={() => {
@@ -105,6 +111,7 @@ export function TextEffectInspector() {
               x: effects.map((effect) => effect.x),
               y: effects.map((effect) => effect.y),
             })
+            commit()
           }}
         >
           <IconClock size={16} />
@@ -121,12 +128,15 @@ export function TextEffectInspector() {
               angle: value,
             })
           }}
+          onEnd={() => commit()}
+          onBlur={() => commit()}
         />
         <IconButton
           onClick={() => {
             setKeyFrameValue({
               angle: effects.map((effect) => effect.angle ?? 0),
             })
+            commit()
           }}
         >
           <IconClock size={16} />
@@ -143,12 +153,15 @@ export function TextEffectInspector() {
               fontSize: value,
             })
           }}
+          onEnd={() => commit()}
+          onBlur={() => commit()}
         />
         <IconButton
           onClick={() => {
             setKeyFrameValue({
               fontSize: effects.map((effect) => effect.fontSize),
             })
+            commit()
           }}
         >
           <IconClock size={16} />
@@ -225,6 +238,7 @@ export function TextEffectInspector() {
                 },
               ),
             )
+            commit()
           }}
         >
           <IconClock size={16} />
@@ -241,12 +255,15 @@ export function TextEffectInspector() {
               characterSpacing: value,
             })
           }}
+          onEnd={() => commit()}
+          onBlur={() => commit()}
         />
         <IconButton
           onClick={() => {
             setKeyFrameValue({
               characterSpacing: effects.map((effect) => effect.characterSpacing ?? 0),
             })
+            commit()
           }}
         >
           <IconClock size={16} />
@@ -279,6 +296,7 @@ export function TextEffectInspector() {
               selectedTextEffects().forEach((effect) => {
                 effect.align = align as TextAlign
               })
+              commit()
             }}
           >
             {icon}
@@ -291,6 +309,7 @@ export function TextEffectInspector() {
           selectedTextEffects().forEach((effect) => {
             effect.fontAssetId = value
           })
+          commit()
         }}
         value={
           effects.every((effect) => effect.fontAssetId === effects[0].fontAssetId)

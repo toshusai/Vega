@@ -21,6 +21,7 @@ export function createPreviewDragHandler(stripId: string) {
         effects[mainEffectIndex],
         ...effects.filter((effect) => effect.id !== stripId),
       ]
+
       return {
         x: effectArray.map((effect) => effect.x),
         y: effectArray.map((effect) => effect.y),
