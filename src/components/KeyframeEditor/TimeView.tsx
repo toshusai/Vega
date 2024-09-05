@@ -2,17 +2,16 @@ import { Ruler } from '@toshusai/cmpui'
 import { state } from '@/state'
 import { createDragHandler } from '@/interactions/createDragHandler'
 import { checkSnap } from '../Timeline/checkSnap'
+import { selectedTextEffects } from '@/state/selectedTextEffects'
 
 export function TimeView({
   pxPerSec,
   startSec,
   stripStartSec,
-  snapPoints,
 }: {
   pxPerSec: number
   startSec: number
   stripStartSec: number
-  snapPoints: number[]
 }) {
   return (
     <Ruler
@@ -33,11 +32,17 @@ export function TimeView({
           if (!ctx) return
           const sec = ctx.time + move.diffX / pxPerSec
 
-          const snap = checkSnap(
-            sec,
-            snapPoints.map((point) => point + stripStartSec),
-            8 / pxPerSec,
-          )
+          const isSnap = state.keyframeSettings.snapToKeyframe
+
+          const effects = selectedTextEffects()
+
+          const snapPoints = isSnap
+            ? effects
+                .flatMap((effect) => effect.keyframes.map((keyframe) => keyframe.time))
+                .map((point) => point + stripStartSec)
+            : []
+
+          const snap = checkSnap(sec, snapPoints, 8 / pxPerSec)
           if (snap.isSnapped) {
             state.currentTime = snap.value
           } else {
