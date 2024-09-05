@@ -9,14 +9,13 @@ import { TimeView } from './TimeView'
 import * as RadixContextMenu from '@radix-ui/react-context-menu'
 import { IconArrowRight } from '@tabler/icons-react'
 import { allEase } from '@/schemas'
+import { ChangeKeyframeEditorSnapToggle } from './ChangeKeyframeEditorSnapToggle'
 
 export function KeyframeEditor() {
   const strips = useSelectedStrips()
   const snap = useSnapshot(state)
   const pxPerSec = 100
-  const selectedTextEffectsSnapshot = useSelectedStrips().flatMap((strip) => {
-    return strip.effects
-  })
+
   if (strips.length === 0) {
     return null
   }
@@ -75,21 +74,22 @@ export function KeyframeEditor() {
       }
     >
       <div className="w-full">
+        <div className="grid grid-cols-3 p-4">
+          <div></div>
+          <div className="flex justify-center"></div>
+          <div className="flex justify-end">
+            <ChangeKeyframeEditorSnapToggle />
+          </div>
+        </div>
         <div className="pl-[64px] border-b border-gray-300">
-          <TimeView
-            pxPerSec={100}
-            startSec={0}
-            stripStartSec={strip.start}
-            snapPoints={selectedTextEffectsSnapshot.flatMap((effect) =>
-              effect.keyframes.map((keyframe) => keyframe.time),
-            )}
-          />
+          <TimeView pxPerSec={100} startSec={0} stripStartSec={strip.start} />
         </div>
         <KeyframeLine />
         {snap.currentTime - strip.start >= 0 && (
           <Cursor
             style={{
               left: 64 + snap.currentTime * pxPerSec - strip.start * pxPerSec,
+              top: 32,
             }}
           >
             {(snap.currentTime - strip.start).toFixed(2)}

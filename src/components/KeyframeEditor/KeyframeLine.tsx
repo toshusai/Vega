@@ -10,6 +10,7 @@ import { onClickFromPointerDown } from '../../interactions/onClickFromPointerDow
 import { keyFrameToMap } from './keyFrameToMap'
 import { useSelectedStrips } from '@/state/useSelectedStrips'
 import { selectedStrips } from '@/state/selectedStrips'
+import { commit } from '@/state/UndoManager'
 
 export function useSelectedEffects() {
   return useSelectedStrips().flatMap((strip) => {
@@ -139,6 +140,9 @@ export function KeyframeLine() {
                               keyframe.time = prev.time + move.diffX / 100
                             }
                           })
+                        },
+                        onUp() {
+                          commit()
                         },
                       })}
                     >
