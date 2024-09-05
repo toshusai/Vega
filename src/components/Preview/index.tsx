@@ -21,6 +21,7 @@ import { checkCollision } from '../../utils/checkCollision'
 import { selectedTextEffects } from '../../state/selectedTextEffects'
 import { useSelectedStrips } from '../../state/useSelectedStrips'
 import { createPreviewDragHandler } from './createPreviewDragHandler'
+import { addTransformWatcher } from './addTransformWatcher'
 
 import { globalGl, glSetup } from '../../rendering/glSetup'
 import { updateCanvas } from '../../rendering/updateCanvas'
@@ -224,6 +225,7 @@ export function Preview() {
               state.selectedStripIds[state.selectedStripIds.length - 1],
             )
             if (!strip) return
+            addTransformWatcher()
             createPreviewDragHandler(strip.id)(e)
           }}
         >
@@ -270,6 +272,7 @@ export function Preview() {
                       rootProps={{
                         className: 'gizmo-origin-override',
                         onPointerDown: (e) => {
+                          addTransformWatcher()
                           const el = e.target as HTMLElement
                           if (el.parentElement?.firstChild === el) {
                             createPreviewDragHandler(strip.id)(e)

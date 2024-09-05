@@ -1,3 +1,4 @@
+import { VegaProject } from '@/schemas'
 import { state } from '@/state'
 
 export class UndoManager {
@@ -51,19 +52,29 @@ export function undo() {
   }
 
   const data = JSON.parse(undoManager.undo() ?? 'null') as typeof state | null
+  console.log('undo', data)
   if (data) {
-    const allKeys = Object.keys(state) as (keyof typeof state)[]
-    allKeys.forEach((key) => {
+    commitProperty.forEach((key) => {
       // @ts-ignore
       state[key] = data[key]
     })
   }
 }
 
+const commitProperty: (keyof VegaProject)[] = ['strips']
+
 export function commit() {
+  const clone: Partial<VegaProject> = {} as typeof state
+  commitProperty.forEach((key) => {
+    // @ts-ignore
+    clone[key] = state[key]
+  })
+  const latest = undoManager.undoStack[undoManager.undoStack.length - 1]
+  if (latest === JSON.stringify(clone)) {
+    return
+  }
   console.log('commit')
-  const clone = JSON.stringify(state)
-  undoManager.push(clone)
+  undoManager.push(JSON.stringify(clone))
 }
 
 export function redo() {
@@ -73,8 +84,8 @@ export function redo() {
 
   const data = JSON.parse(undoManager.redo() ?? 'null')
   if (data) {
-    const allKeys = Object.keys(state) as (keyof typeof state)[]
-    allKeys.forEach((key) => {
+    console.log('redo', data)
+    commitProperty.forEach((key) => {
       // @ts-ignore
       state[key] = data[key]
     })
