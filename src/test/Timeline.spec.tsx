@@ -14,7 +14,7 @@ test('drag strip 30px', async () => {
     </div>,
   )
   const id = state.strips[0].id
-  const el = result.container.querySelector(`#strip-${id}`)
+  const el = result.container.querySelector(`[data-id="${id}"]`)
   expect(el).not.toBeNull()
   const pointerId = 1
   el?.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: pointerId }))

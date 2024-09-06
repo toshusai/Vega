@@ -23,7 +23,7 @@ export function useSelectStripBox(onSelect: (ids: string[]) => void) {
         }
 
         if (checkCollision(rect, elRect)) {
-          return el.id
+          return el.dataset['id']
         }
         return null
       })

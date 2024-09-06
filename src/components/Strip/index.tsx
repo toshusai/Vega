@@ -14,12 +14,25 @@ export type StripProps = {
   onClick?: (e: React.MouseEvent) => void
   selected?: boolean
   invalid?: boolean
+  id?: string
 }
 
 const MIN_WIDTH = 8
 
 export const Strip = forwardRef<HTMLDivElement, StripProps>(function Strip(
-  { left, width, top, children, onChange, onChangeEnd, selected, onClick, onPointerDown, invalid },
+  {
+    id,
+    left,
+    width,
+    top,
+    children,
+    onChange,
+    onChangeEnd,
+    selected,
+    onClick,
+    onPointerDown,
+    invalid,
+  },
   ref,
 ) {
   const handleLeftHandle = createDragHandler({
@@ -111,7 +124,7 @@ export const Strip = forwardRef<HTMLDivElement, StripProps>(function Strip(
       ref={ref}
       className="strip"
       style={{
-        left,
+        left: isNaN(left) ? 0 : left,
         width,
         top,
       }}
@@ -119,6 +132,7 @@ export const Strip = forwardRef<HTMLDivElement, StripProps>(function Strip(
       data-invalid={invalid}
       onPointerDown={handleMove}
       onClick={onClick}
+      data-id={id}
     >
       <Handle onPointerDown={handleLeftHandle} style={{ left: 0 }} />
       <div className="strip-container">{children}</div>
