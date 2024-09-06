@@ -221,6 +221,9 @@ void main() {
                     width={strip.length * pxPerSec}
                     onChange={(left, width) => {
                       left += startSec * pxPerSec
+                      if (revertStripsCache.length === 0) {
+                        revertStripsCache = state.strips.map((strip) => ({ ...strip }))
+                      }
                       const isTimelineSnap = state.timelineSettings.snapToStrip
                       const snapPoints = isTimelineSnap
                         ? getSnapPoints(state.selectedStripIds).map((point) => point * pxPerSec)
@@ -309,6 +312,11 @@ void main() {
                       })(e as React.PointerEvent<HTMLElement>)
                     }}
                     onChangeEnd={() => {
+                      if (state.strips.find((strip) => isInvalid(strip.id))) {
+                        state.strips = revertStripsCache
+                        revertStripsCache = []
+                        return
+                      }
                       commit()
                     }}
                   >
@@ -358,6 +366,8 @@ void main() {
     </div>
   )
 }
+
+let revertStripsCache: StripType[] = []
 
 function getFontFamily(effect: TextEffect) {
   return state.assets.find((asset) => asset.id === effect.fontAssetId)?.name
