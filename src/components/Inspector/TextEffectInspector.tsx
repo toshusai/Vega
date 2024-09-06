@@ -43,17 +43,13 @@ export function TextEffectInspector() {
       selectedTextEffects().forEach((effect, i) => {
         const strip = getStripByEffectId(effect.id)
         if (!strip) return
-        setKeyFrame(
-          effect,
-          {
-            property: key,
-            time: state.currentTime - strip.start,
-            ease: Ease.Linear,
-            id: randomId(),
-            value: value[i],
-          },
-          true,
-        )
+        setKeyFrame(effect, {
+          property: key,
+          time: state.currentTime - strip.start,
+          ease: Ease.Linear,
+          id: randomId(),
+          value: value[i],
+        })
       })
     })
   }
@@ -79,6 +75,7 @@ export function TextEffectInspector() {
         <SliderNumberField
           label="X"
           value={effects.map((effect) => effect.x)}
+          numToString={(num) => num.toFixed(2)}
           onChangeValue={(value) => {
             selectedTextEffects().forEach((effect, i) => {
               effect.x = value[i]
@@ -94,6 +91,7 @@ export function TextEffectInspector() {
         <SliderNumberField
           label="Y"
           value={effects.map((effect) => effect.y)}
+          numToString={(num) => num.toFixed(2)}
           onChangeValue={(value) => {
             selectedTextEffects().forEach((effect, i) => {
               effect.y = value[i]
@@ -123,6 +121,7 @@ export function TextEffectInspector() {
           className="w-full"
           label="Angle"
           value={effects.map((effect) => effect.angle ?? 0)}
+          numToString={(num) => num.toFixed(2)}
           onChangeValue={(value) => {
             setKeyFrameValue({
               angle: value,
