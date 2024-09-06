@@ -3,10 +3,12 @@ import { useState } from 'react'
 import { IconDeviceFloppy } from '@tabler/icons-react'
 import { state } from '@/state'
 import { useBackDataFromLocalStorage } from './useBackDataFromLocalStorage'
+import { SettingsModal } from './SettingsModal'
 
 export function Header() {
   useBackDataFromLocalStorage()
   const [open, setOpen] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
   return (
     <div className="flex justify-between">
       <MenuBar>
@@ -59,12 +61,15 @@ export function Header() {
               >
                 Download the project file
               </MenuBarItem>
+
+              <MenuBarItem onClick={() => setShowSettings(true)}>Settings</MenuBarItem>
             </>
           }
         >
           File
         </MenuBarButton>
       </MenuBar>
+      <SettingsModal isOpen={showSettings} onClose={() => setShowSettings(false)} />
       <IconButton
         onClick={() => {
           const json = JSON.stringify(state)

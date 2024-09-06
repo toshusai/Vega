@@ -1,5 +1,5 @@
-import '@toshusai/cmpui/dist/index.css'
 import '@toshusai/cmpui-css/dist/index.css'
+import '@toshusai/cmpui/dist/index.css'
 
 import { Button, SplitPane, TooltipProvider } from '@toshusai/cmpui'
 import { Panel } from './components/Panel'
