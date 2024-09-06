@@ -37,17 +37,8 @@ export function useBackDataFromLocalStorage() {
       }
     }
 
-    if (!state.timelineSettings) {
-      state.timelineSettings = {
-        snapToStrip: true,
-      }
-    }
-
-    if (!state.keyframeSettings) {
-      state.keyframeSettings = {
-        snapToKeyframe: true,
-      }
-    }
+    state.timelineSettings = data.timelineSettings
+    state.keyframeSettings = data.keyframeSettings
 
     commit()
     return () => {

@@ -52,7 +52,6 @@ export function undo() {
   }
 
   const data = JSON.parse(undoManager.undo() ?? 'null') as typeof state | null
-  console.log('undo', data)
   if (data) {
     commitProperty.forEach((key) => {
       // @ts-ignore
@@ -73,7 +72,6 @@ export function commit() {
   if (latest === JSON.stringify(clone)) {
     return
   }
-  console.log('commit')
   undoManager.push(JSON.stringify(clone))
 }
 
@@ -84,7 +82,6 @@ export function redo() {
 
   const data = JSON.parse(undoManager.redo() ?? 'null')
   if (data) {
-    console.log('redo', data)
     commitProperty.forEach((key) => {
       // @ts-ignore
       state[key] = data[key]
