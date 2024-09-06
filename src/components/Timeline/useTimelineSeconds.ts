@@ -3,7 +3,7 @@ import { state } from '../../state'
 
 export function useTimelineSeconds(width: number) {
   const snap = useSnapshot(state)
-  const defaultPxPerSec = 100
+  const defaultPxPerSec = width / snap.length
   const pxPerSec = (1 / (snap.viewEndRate - snap.viewStartRate)) * defaultPxPerSec
   const startSec = (snap.viewStartRate * width) / defaultPxPerSec
   return {
