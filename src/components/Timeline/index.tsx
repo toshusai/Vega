@@ -1,6 +1,6 @@
 import { useSnapshot } from 'valtio'
 import { createDragHandler } from '../../interactions/createDragHandler'
-import { ContextMenu, ContextMenuItem, hsvToHex, IconButton, SelectRect } from '@toshusai/cmpui'
+import { ContextMenu, hsvToHex, IconButton, SelectRect } from '@toshusai/cmpui'
 import { ScaleScrollBar } from '../ScaleScrollBar'
 import { Cursor } from '../Cursor'
 import { Strip } from '../Strip'
@@ -19,10 +19,11 @@ import { useSelectStripBox } from './useSelectStripBox'
 import { state } from '../../state'
 import { useCallback } from 'react'
 import { isTextEffect } from '../../rendering/isTextEffect'
-import { PostProcessEffect, TextEffect } from '@/schemas'
+import { TextEffect } from '@/schemas'
 import { Strip as StripType } from '@/schemas'
 import { commit } from '@/state/UndoManager'
 import { ChangeSnapToggle } from './ChangeSnapToggle'
+import { TimelineContextMenuContent } from './TimelineContextMenuContent'
 
 const LAYER_GAP = 4
 const LAYER_HEIGHT = 32
@@ -68,87 +69,7 @@ export function Timeline() {
           <ChangeSnapToggle />
         </div>
       </div>
-      <ContextMenu
-        content={
-          <>
-            <ContextMenuItem
-              onClick={() => {
-                const id = Math.random().toString()
-                const newStrip: StripType = {
-                  id,
-                  start: state.currentTime,
-                  length: 1,
-                  layer: 0,
-                  effects: [
-                    {
-                      id,
-                      type: 'text',
-                      text: 'Text',
-                      fontAssetId: '',
-                      color: { a: 1, h: 0, s: 0, v: 0 },
-                      fontSize: 64,
-                      keyframes: [],
-                      x: state.canvasWidth / 2,
-                      y: state.canvasHeight / 2,
-                    } as TextEffect,
-                  ],
-                }
-                state.strips.push(newStrip)
-                state.selectedStripIds = [id]
-              }}
-            >
-              Create Text
-            </ContextMenuItem>
-            <ContextMenuItem
-              onClick={() => {
-                const id = Math.random().toString()
-                const newStrip: StripType = {
-                  id,
-                  start: state.currentTime,
-                  length: 1,
-                  layer: 0,
-                  effects: [
-                    {
-                      id,
-                      fragmentShader: `
-uniform sampler2D uTexture;
-varying vec2 vUv;
-
-void main() {
-  vec2 shift = vec2(0.003, 0);
-  vec4 color = texture2D(uTexture, vUv);
-  color.r = texture2D(uTexture, vUv + shift).r;
-  color.g = texture2D(uTexture, vUv).g;
-  color.b = texture2D(uTexture, vUv - shift).b;
-  color.a = 1.0;
-  gl_FragColor = color;
-}
-`,
-                      keyframes: [],
-                      type: 'postProcess',
-                    } as PostProcessEffect,
-                  ],
-                }
-                state.strips.push(newStrip)
-                state.selectedStripIds = [id]
-              }}
-            >
-              Create PostProcess
-            </ContextMenuItem>
-            <ContextMenuItem
-              onClick={() => {
-                state.strips = state.strips.filter(
-                  (strip) => !state.selectedStripIds.includes(strip.id),
-                )
-                state.selectedStripIds = []
-              }}
-              disabled={snap.selectedStripIds.length === 0}
-            >
-              Delete
-            </ContextMenuItem>
-          </>
-        }
-      >
+      <ContextMenu content={<TimelineContextMenuContent />}>
         <div
           className="flex flex-col h-full"
           style={{
