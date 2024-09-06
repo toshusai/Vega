@@ -211,10 +211,8 @@ void main() {
                   <Strip
                     ref={(el) => {
                       refs.current[i] = el
-                      if (el) {
-                        el.id = `strip-${strip.id}`
-                      }
                     }}
+                    id={strip.id}
                     key={i}
                     invalid={invalid}
                     top={strip.layer * LAYER_HEIGHT + 1 + LAYER_GAP * strip.layer}

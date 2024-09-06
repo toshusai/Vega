@@ -107,4 +107,10 @@ export const state = proxy({
       length: 1.1,
     },
   ],
+  keyframeSettings: {
+    snapToKeyframe: true,
+  },
+  timelineSettings: {
+    snapToStrip: true,
+  },
 } as VegaProject)
