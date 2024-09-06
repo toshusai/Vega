@@ -82,6 +82,7 @@ export function KeyframeLine() {
                     <div
                       key={j}
                       className="h-8 w-8 absolute flex items-center justify-center translate-x-[-3.5px] translate-y-[3.5px]"
+                      data-id={keyframe.id}
                       style={{
                         left: `${keyframe.time * 100}px`,
                       }}
