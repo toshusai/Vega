@@ -8,9 +8,8 @@ export default defineConfig({
   },
   test: {
     browser: {
-      provider: 'playwright',
+      name: 'chrome',
       enabled: true,
-      name: 'chromium',
     },
   },
 })

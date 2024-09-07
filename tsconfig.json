@@ -19,13 +19,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "typeRoots": ["node_modules/@types", ".storybook/@types"],
+    "typeRoots": ["node_modules/@types", ".storybook/@types", "./node_modules"],
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": [
-      "@vitest/browser/providers/playwright",
-    ]
+    "types": ["@vitest/browser/providers/playwright"]
   },
   "include": ["src"]
 }
